@@ -1,0 +1,39 @@
+{
+	"name": "cartalyst/cartify",
+	"description": "",
+	"keywords": ["cart", "carts", "shop", "shopping", "ecommerce"],
+	"license": "BSD License (3-clause)",
+	"authors": [
+		{
+			"name": "Bruno Gaspar",
+			"email": "bruno.gaspar@cartalyst.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0"
+	},
+	"require-dev": {
+		"mockery/mockery": "0.7.2",
+
+		"omnipay/omnipay": "0.8.*",
+		"illuminate/session": "4.0.*"
+	},
+	"suggest": {
+		"omnipay/omnipay" : "",
+		"illuminate/session": "Cartify provides an Illuminate session driver for storage integration."
+	},
+	"autoload": {
+		"classmap": [
+			"src/Cartalyst/Cartify/Cart/Exceptions.php"
+		],
+		"psr-0": {
+			"Cartalyst\\Cartify": "src/"
+		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "3.0-dev"
+		}
+	},
+	"minimum-stability": "dev"
+}
