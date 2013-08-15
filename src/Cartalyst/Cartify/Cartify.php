@@ -85,7 +85,48 @@ class Cartify {
 			return true;
 		}
 
-		return $this->addItem($id, $name, $quantity, $price, $options);
+		// Validate the required parameters
+		if (empty($id) or empty($name) or empty($quantity) or empty($price))
+		{
+			throw new CartInvalidDataException;
+		}
+
+		// Get the cart contents
+		$cart = $this->getContent();
+
+		// Generate the unique row id
+		$rowId = $this->generateRowId($id, $options);
+
+		// Make sure that the quantity value is rounded
+		$quantity = round($quantity);
+
+		if ($this->itemExists($rowId))
+		{
+			$row = $this->getItem($rowId);
+
+			$row->put('quantity', $row->quantity + $quantity);
+		}
+		else
+		{
+			// Create a new item
+			$row = new ItemCollection(array(
+				'rowId'    => $rowId,
+				'id'       => $id,
+				'name'     => $name,
+				'quantity' => $quantity,
+				'price'    => $price,
+				'options'  => new ItemOptionsCollection($options),
+				'subtotal' => $quantity * $price,
+			));
+		}
+
+		// Add the item to the cart
+		$cart->put($rowId, $row);
+
+		// Update the cart contents
+		$this->updateCart($cart);
+
+		return $cart;
 	}
 
 	/**
@@ -226,58 +267,6 @@ class Cartify {
 		// Return the item
 		return $cart->get($rowId);
 	}
-
-
-
-
-
-
-	protected function addItem($id, $name, $quantity, $price, $options = array())
-	{
-		// Validate the required parameters
-		if (empty($id) or empty($name) or empty($quantity) or empty($price))
-		{
-			throw new CartInvalidDataException;
-		}
-
-		// Get the cart contents
-		$cart = $this->getContent();
-
-		// Generate the unique row id
-		$rowId = $this->generateRowId($id, $options);
-
-		// Make sure that the quantity value is rounded
-		$quantity = round($quantity);
-
-		if ($this->itemExists($rowId))
-		{
-			$row = $this->getItem($rowId);
-
-			$row->put('quantity', $row->quantity + $quantity);
-		}
-		else
-		{
-			// Create a new item
-			$row = new ItemCollection(array(
-				'rowId'    => $rowId,
-				'id'       => $id,
-				'name'     => $name,
-				'quantity' => $quantity,
-				'price'    => $price,
-				'options'  => new ItemOptionsCollection($options),
-				'subtotal' => $quantity * $price,
-			));
-		}
-
-		// Add the item to the cart
-		$cart->put($rowId, $row);
-
-		// Update the cart contents
-		$this->updateCart($cart);
-
-		return $cart;
-	}
-
 
 	/**
 	 * Updates the cart.
