@@ -229,32 +229,34 @@ class Cartify {
 			throw new CartInvalidDataException;
 		}
 
-		// Generate the unique row id
-		$rowId = $this->generateRowId($id, $options);
-
-		// Insert the item into the cart
-		$this->createItem($rowId, $id, $name, $quantity, $price, $options);
-	}
-
-
-	protected function createItem($rowId, $id, $name, $quantity, $price, $options = array())
-	{
 		// Get the cart contents
 		$cart = $this->getContent();
 
-		// Create a new item
-		$newRow = new ItemCollection(array(
-			'rowId' => $rowId,
-			'id'    => $id,
-			'name'  => $name,
-			'quantity' => $quantity,
-			'price'    => $price,
-			'options'  => new ItemOptionsCollection($options),
-			'subtotal' => $quantity * $price,
-		));
+		// Generate the unique row id
+		$rowId = $this->generateRowId($id, $options);
+
+		if ($this->itemExists($rowId))
+		{
+			$row = $this->getItem($rowId);
+
+			$row->put('quantity', $row->quantity + $quantity);
+		}
+		else
+		{
+			// Create a new item
+			$row = new ItemCollection(array(
+				'rowId'    => $rowId,
+				'id'       => $id,
+				'name'     => $name,
+				'quantity' => $quantity,
+				'price'    => $price,
+				'options'  => new ItemOptionsCollection($options),
+				'subtotal' => $quantity * $price,
+			));
+		}
 
 		// Add the item to the cart
-		$cart->put($rowId, $newRow);
+		$cart->put($rowId, $row);
 
 		$this->updateCart($cart);
 
