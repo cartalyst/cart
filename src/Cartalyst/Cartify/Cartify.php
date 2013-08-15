@@ -73,13 +73,13 @@ class Cartify {
 	 * @return bool
 	 * @throws Cartalyst\Cartify\Exceptions\InvalidDataException
 	 */
-	public function addBatch()
+	public function addBatch($items)
 	{
-		if (is_array($id))
+		if (is_array($items))
 		{
-			if ($this->isMulti($id))
+			if ($this->isMulti($items))
 			{
-				foreach ($id as $item)
+				foreach ($items as $item)
 				{
 					$options = ! empty($item['options']) ? $item['options'] : array();
 
@@ -89,9 +89,9 @@ class Cartify {
 				return true;
 			}
 
-			$options = ! empty($id['options']) ? $id['options'] : array();
+			$options = ! empty($items['options']) ? $items['options'] : array();
 
-			$this->add($id['id'], $id['name'], $id['quantity'], $id['price'], $options);
+			$this->add($items['items'], $items['name'], $items['quantity'], $items['price'], $options);
 
 			return true;
 		}
@@ -104,6 +104,7 @@ class Cartify {
 	 *
 	 * @param  string  $rowId
 	 * @return bool
+	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
 	 */
 	public function remove($rowId)
 	{
@@ -121,6 +122,23 @@ class Cartify {
 
 		// Update the cart contents
 		return $this->updateCart($cart);
+	}
+
+	/**
+	 * Remove multiple items from the cart.
+	 *
+	 * @param  array  $items
+	 * @return bool
+	 * @throws Cartalyst\Cartify\Exceptions\InvalidDataException
+	 */
+	public function removeBatch($items)
+	{
+		if (is_array($items))
+		{
+
+		}
+
+		throw new InvalidDataException;
 	}
 
 	/**
@@ -157,15 +175,22 @@ class Cartify {
 	 * Returns information about an item.
 	 *
 	 * @param  string  $rowId
-	 * @return mixed
+	 * @return Cartalyst\Cartify\Collections\ItemCollection
+	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
 	 */
 	public function getItem($rowId)
 	{
+		// Check if the item exists
+		if ( ! $this->itemExists($rowId))
+		{
+			throw new CartItemNotFoundException;
+		}
+
 		// Get the cart contents
 		$cart = $this->getContent();
 
 		// Return the item
-		return $cart->has($rowId) ? $cart->get($rowId) : null;
+		return $cart->get($rowId);
 	}
 
 
