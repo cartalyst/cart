@@ -20,6 +20,7 @@
 
 use Cartalyst\Cartify\Collections\CartCollection;
 use Cartalyst\Cartify\Collections\ItemCollection;
+use Cartalyst\Cartify\Collections\ItemOptionsCollection;
 use Cartalyst\Cartify\Exceptions\CartInvalidDataException;
 use Cartalyst\Cartify\Exceptions\CartItemNotFoundException;
 use Illuminate\Session\Store as SessionStorage;
@@ -63,23 +64,11 @@ class Cartify {
 	 */
 	public function add($id = null, $name = null, $quantity = null, $price = null, $options = array())
 	{
-		return $this->addItem($id, $name, $quantity, $price, $options);
-	}
-
-	/**
-	 * Add multiple items to the cart.
-	 *
-	 * @param  array  $items
-	 * @return bool
-	 * @throws Cartalyst\Cartify\Exceptions\InvalidDataException
-	 */
-	public function addBatch($items)
-	{
-		if (is_array($items))
+		if (is_array($id))
 		{
-			if ($this->isMulti($items))
+			if ($this->isMulti($id))
 			{
-				foreach ($items as $item)
+				foreach ($id as $item)
 				{
 					$options = ! empty($item['options']) ? $item['options'] : array();
 
@@ -89,14 +78,14 @@ class Cartify {
 				return true;
 			}
 
-			$options = ! empty($items['options']) ? $items['options'] : array();
+			$options = ! empty($id['options']) ? $id['options'] : array();
 
-			$this->add($items['items'], $items['name'], $items['quantity'], $items['price'], $options);
+			$this->add($id['id'], $id['name'], $id['quantity'], $id['price'], $options);
 
 			return true;
 		}
 
-		throw new InvalidDataException;
+		return $this->addItem($id, $name, $quantity, $price, $options);
 	}
 
 	/**
@@ -108,6 +97,16 @@ class Cartify {
 	 */
 	public function remove($rowId)
 	{
+		if (is_array($rowId))
+		{
+			foreach ($rowId as $item)
+			{
+				$this->remove($item);
+			}
+
+			return true;
+		}
+
 		// Check if the item exists
 		if ( ! $this->itemExists($rowId))
 		{
@@ -122,23 +121,6 @@ class Cartify {
 
 		// Update the cart contents
 		return $this->updateCart($cart);
-	}
-
-	/**
-	 * Remove multiple items from the cart.
-	 *
-	 * @param  array  $items
-	 * @return bool
-	 * @throws Cartalyst\Cartify\Exceptions\InvalidDataException
-	 */
-	public function removeBatch($items)
-	{
-		if (is_array($items))
-		{
-
-		}
-
-		throw new InvalidDataException;
 	}
 
 	/**
@@ -231,7 +213,7 @@ class Cartify {
 			'name'  => $name,
 			'quantity' => $quantity,
 			'price'    => $price,
-			'options'  => $options,
+			'options'  => new ItemOptionsCollection($options),
 			'subtotal' => $quantity * $price,
 		));
 
@@ -311,11 +293,21 @@ class Cartify {
 	}
 
 	/**
+	 * Return all the cart instances.
+	 *
+	 * @return array
+	 */
+	public function getInstances()
+	{
+		return $this->session->get('cartify');
+	}
+
+	/**
 	 * Change the cart instance.
 	 *
 	 * @return Cartalyst\Cartify\Cartify
 	 */
-	public function setInstance($instance)
+	public function instance($instance)
 	{
 		$this->instance = $instance;
 
@@ -323,9 +315,21 @@ class Cartify {
 	}
 
 	/**
+	 * Remove the cart instance.
+	 *
+	 * @return bool
+	 */
+	public function forgetInstance($instance)
+	{
+		$this->session->forget("cartify.{$instance}");
+
+		return tue;
+	}
+
+	/**
 	 * Check if an item exists in the cart.
 	 *
-	 * @param  string  $itemRowId
+	 * @param  string  $rowId
 	 * @return bool
 	 */
 	protected function itemExists($rowId)

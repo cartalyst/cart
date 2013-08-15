@@ -42,7 +42,7 @@ Add the following to the list of class aliases in `app/config/app.php`
 ```php
 try
 {
-	Cart::add('foobar123', 'Foo Bar 123', 1, '12.50');
+	Cart::add('foobar123', 'Foo Bar 123', 1, 12.50);
 }
 catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 {
@@ -55,18 +55,18 @@ catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 ```php
 try
 {
-	Cart::addBatch(array(
+	Cart::add(array(
 		array(
 			'id'       => 'foobar123',
 			'name'     => 'Foo Bar 123',
 			'quantity' => 1,
-			'price'    => '12.50',
+			'price'    => 12.50,
 		),
 		array(
 			'id'       => 'bazfoo',
 			'name'     => 'Baz Foo',
 			'quantity' => 1,
-			'price'    => '12.00',
+			'price'    => 12.00,
 		),
 	));
 }
@@ -83,7 +83,7 @@ catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 ```php
 try
 {
-	Cart::remove('..');
+	Cart::remove('027c91341fd5cf4d2579b49c4b6a90da');
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 {
@@ -96,9 +96,9 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 ```php
 try
 {
-	Cart::removeBatch(array(
-		'..',
-		'..'
+	Cart::remove(array(
+		'027c91341fd5cf4d2579b49c4b6a90da',
+		'56f0ab12a38f8317060d40981f6a4a93'
 	));
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
@@ -112,7 +112,7 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 
 	try
 	{
-		Cartify\Cart::update($rowId, $data);
+		Cartify\Cart::update('027c91341fd5cf4d2579b49c4b6a90da', $data);
 	}
 	catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 	{
