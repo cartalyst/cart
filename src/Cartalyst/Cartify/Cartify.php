@@ -131,16 +131,57 @@ class Cartify {
 	 * @return bool
 	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
 	 */
-	public function update($rowId, $data)
+	public function update($rowId, $data = null)
 	{
+		if (is_array($rowId))
+		{
+			foreach ($rowId as $item => $data)
+			{
+				$this->update($item, $data);
+			}
+
+			return true;
+		}
+
 		// Check if the item exists
 		if ( ! $this->itemExists($rowId))
 		{
 			throw new CartItemNotFoundException;
 		}
 
-		# todo ..
+		$cart = $this->getContent();
 
+		$row = $cart->get($rowId);
+
+		if (is_array($data))
+		{
+			foreach ($data as $key => $value)
+			{
+				$row->put($key, $value);
+			}
+		}
+
+		// We are probably updating the quantity
+		else
+		{
+			$row->put('quantity', (int) $data);
+		}
+
+		if ( ! is_null(array_keys($data, array('quantity', 'price'))))
+		{
+			$row->put('subtotal', (float) $row->quantity * $row->price);
+		}
+
+		if ($row->quantity < 1)
+		{
+			$cart->forget($rowId);
+		}
+		else
+		{
+			$cart->put($rowId, $row);
+		}
+
+		return $cart;
 	}
 
 	/**
@@ -196,11 +237,6 @@ class Cartify {
 	}
 
 
-	protected function updateItem()
-	{
-
-	}
-
 	protected function createItem($rowId, $id, $name, $quantity, $price, $options = array())
 	{
 		// Get the cart contents
@@ -255,7 +291,7 @@ class Cartify {
 			$total += $item->subtotal;
 		}
 
-		return $total;
+		return (float) $total;
 	}
 
 	/**
@@ -267,7 +303,7 @@ class Cartify {
 	{
 		$items = $this->getContent();
 
-		return $items->count();
+		return (int) $items->count();
 	}
 
 	/**
