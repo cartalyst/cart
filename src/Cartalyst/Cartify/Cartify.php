@@ -127,17 +127,17 @@ class Cartify {
 	 * Updates an item in the cart.
 	 *
 	 * @param  string  $rowId
-	 * @param  array   $data
+	 * @param  array   $attributes
 	 * @return bool
 	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
 	 */
-	public function update($rowId, $data = null)
+	public function update($rowId, $attributes = null)
 	{
 		if (is_array($rowId))
 		{
-			foreach ($rowId as $item => $data)
+			foreach ($rowId as $item => $attribute)
 			{
-				$this->update($item, $data);
+				$this->update($item, $attribute);
 			}
 
 			return true;
@@ -149,14 +149,22 @@ class Cartify {
 			throw new CartItemNotFoundException;
 		}
 
+		// Get the cart contents
 		$cart = $this->getContent();
 
+		// Get the item we want to update
 		$row = $cart->get($rowId);
 
-		if (is_array($data))
+		// Do we have multiple item attributes?
+		if (is_array($attributes))
 		{
-			foreach ($data as $key => $value)
+			foreach ($attributes as $key => $value)
 			{
+				if ($key === 'quantity')
+				{
+					$value = round($value);
+				}
+
 				$row->put($key, $value);
 			}
 		}
@@ -164,14 +172,16 @@ class Cartify {
 		// We are probably updating the quantity
 		else
 		{
-			$row->put('quantity', (int) $data);
+			$row->put('quantity', (int) round($attributes));
 		}
 
-		if ( ! is_null(array_keys($data, array('quantity', 'price'))))
+		// Should we update the item subtotal?
+		if ( ! is_null(array_keys($attributes, array('quantity', 'price'))))
 		{
 			$row->put('subtotal', (float) $row->quantity * $row->price);
 		}
 
+		// If quantity is less than one, we remove the item
 		if ($row->quantity < 1)
 		{
 			$cart->forget($rowId);
@@ -191,6 +201,7 @@ class Cartify {
 	 */
 	public function destroy()
 	{
+		// Update the cart contents
 		$this->updateCart(null);
 	}
 
@@ -235,6 +246,9 @@ class Cartify {
 		// Generate the unique row id
 		$rowId = $this->generateRowId($id, $options);
 
+		// Make sure that the quantity value is rounded
+		$quantity = round($quantity);
+
 		if ($this->itemExists($rowId))
 		{
 			$row = $this->getItem($rowId);
@@ -258,6 +272,7 @@ class Cartify {
 		// Add the item to the cart
 		$cart->put($rowId, $row);
 
+		// Update the cart contents
 		$this->updateCart($cart);
 
 		return $cart;
