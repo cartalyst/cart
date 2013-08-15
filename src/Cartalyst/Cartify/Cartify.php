@@ -376,7 +376,7 @@ class Cartify {
 	{
 		$this->session->forget("cartify.{$instance}");
 
-		return tue;
+		return true;
 	}
 
 	/**
