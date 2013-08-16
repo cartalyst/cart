@@ -37,7 +37,7 @@ Add the following to the list of class aliases in `app/config/app.php`
 
 ### Adding items
 
-**Adding a single item to the cart**
+**Add a single item to the cart**
 
 ```php
 try
@@ -50,7 +50,7 @@ catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 }
 ```
 
-**Adding multiple items into the cart**
+**Add multiple items into the cart**
 
 ```php
 try
@@ -78,7 +78,7 @@ catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 
 ### Removing items
 
-**Removing a single item**
+**Remove a single item**
 
 ```php
 try
@@ -91,14 +91,20 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 }
 ```
 
-**Removing multiple items**
+**Remove multiple items**
+
+Removing multiple items is easy and we provide you with two ways to accomplish this.
+
+##### Method 1
+
+Pass in an array with the row ids you want to delete.
 
 ```php
 try
 {
 	Cart::remove(array(
 		'027c91341fd5cf4d2579b49c4b6a90da',
-		'56f0ab12a38f8317060d40981f6a4a93'
+		'56f0ab12a38f8317060d40981f6a4a93',
 	));
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
@@ -106,9 +112,25 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 	echo 'One of the provided items was not found.';
 }
 ```
-### Update items
 
-**Updating an item quantity**
+##### Method 2
+
+Pass in multiple arguments, where each argument correspond to an item row id.
+
+```php
+try
+{
+	Cart::remove('027c91341fd5cf4d2579b49c4b6a90da', '56f0ab12a38f8317060d40981f6a4a93');
+}
+catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
+{
+	echo 'One of the provided items was not found.';
+}
+```
+
+### Updating items
+
+**Update an item quantity**
 
 ```php
 try
@@ -121,7 +143,7 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 }
 ```
 
-**Updating a single item**
+**Update a single item**
 
 ```php
 try
@@ -139,7 +161,7 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 }
 ```
 
-**Updating multiple items**
+**Update multiple items**
 
 ```php
 try

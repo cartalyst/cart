@@ -131,13 +131,41 @@ class Cartify {
 	}
 
 	/**
+	 * Remove an item or items from the cart.
+	 *
+	 * @return bool
+	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
+	 */
+	public function remove()
+	{
+		$items = func_get_args();
+
+		if ($this->isMulti($items))
+		{
+			foreach ($items[0] as $rowId)
+			{
+				$this->removeItem($rowId);
+			}
+		}
+		else
+		{
+			foreach ($items as $rowId)
+			{
+				$this->removeItem($rowId);
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Remove an item from the cart.
 	 *
 	 * @param  string  $rowId
 	 * @return bool
 	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
 	 */
-	public function remove($rowId)
+	protected function removeItem($rowId)
 	{
 		// Do we have an array of items to be removed?
 		if (is_array($rowId))
