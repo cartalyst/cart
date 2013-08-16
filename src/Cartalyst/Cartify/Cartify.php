@@ -44,6 +44,18 @@ class Cartify {
 	protected $instance = 'main';
 
 	/**
+	 * Holds all the required indexes.
+	 *
+	 * @var array
+	 */
+	protected $requiredIndexes = array(
+		'id',
+		'name',
+		'price',
+		'quantity',
+	);
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  \Illuminate\Session\Store  $session
@@ -76,6 +88,8 @@ class Cartify {
 			{
 				foreach ($id as $item)
 				{
+					$this->validateIndexes($item);
+
 					$options = ! empty($item['options']) ? $item['options'] : array();
 
 					$this->add($item['id'], $item['name'], $item['quantity'], $item['price'], $options);
@@ -83,6 +97,8 @@ class Cartify {
 
 				return true;
 			}
+
+			$this->validateIndexes($id);
 
 			$options = ! empty($id['options']) ? $id['options'] : array();
 
@@ -92,9 +108,12 @@ class Cartify {
 		}
 
 		// Validate the required parameters
-		if (empty($id) or empty($name) or empty($quantity) or empty($price))
+		foreach ($this->requiredIndexes as $parameter)
 		{
-			throw new CartInvalidDataException;
+			if (empty($$parameter))
+			{
+				throw new CartInvalidDataException;
+			}
 		}
 
 		// Make sure the quantity is a number, and remove any leading zeros
@@ -233,6 +252,8 @@ class Cartify {
 		{
 			foreach ($rowId as $item => $attributes)
 			{
+				$this->validateIndexes($attributes);
+
 				$this->update($item, $attributes);
 			}
 
@@ -433,6 +454,18 @@ class Cartify {
 		$this->session->put($instance, $cart);
 	}
 
+	public function getRequiredIndexes()
+	{
+		return $this->requiredIndexes;
+	}
+
+	public function setRequiredIndexes($indexes, $merge = true)
+	{
+		$currentIndexes = $merge ? $this->requiredIndexes : array();
+
+		$this->requiredIndexes = array_merge($currentIndexes, $indexes);
+	}
+
 	/**
 	 * Generate a unique identifier base on the item data.
 	 *
@@ -456,6 +489,24 @@ class Cartify {
 		$array = array_shift($array);
 
 		return is_array($array);
+	}
+
+	/**
+	 * Validates if the provided arguments contains all the required indexes.
+	 *
+	 * @param  array  $arguments
+	 * @return void
+	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidDataException
+	 */
+	protected function validateIndexes($arguments)
+	{
+		foreach ($this->getRequiredIndexes() as $parameter)
+		{
+			if ( ! array_key_exists($parameter, $arguments))
+			{
+				throw new CartInvalidDataException;
+			}
+		}
 	}
 
 }
