@@ -106,20 +106,61 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 	echo 'One of the provided items was not found.';
 }
 ```
+### Update items
 
+**Updating an item quantity**
 
-### Update an item
+```php
+try
+{
+	Cart::update('027c91341fd5cf4d2579b49c4b6a90da', 2);
+}
+catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+{
+	echo 'Item was not found.';
+}
+```
 
-	try
-	{
-		Cartify\Cart::update('027c91341fd5cf4d2579b49c4b6a90da', $data);
-	}
-	catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
-	{
-		echo 'The provided array is malformed.';
-	}
-	catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
-	{
-		echo 'Item was not found.';
-	}
+**Updating a single item**
 
+```php
+try
+{
+	Cart::update('027c91341fd5cf4d2579b49c4b6a90da', array(
+		'id'       => 'foobar123',
+		'name'     => 'Foo Bar 123',
+		'quantity' => 1,
+		'price'    => 12.50,
+	));
+}
+catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+{
+	echo 'Item was not found.';
+}
+```
+
+**Updating multiple items**
+
+```php
+try
+{
+	Cart::update(array(
+		'027c91341fd5cf4d2579b49c4b6a90da' => array(
+			'id'       => 'foobar123',
+			'name'     => 'Foo Bar 123',
+			'quantity' => 1,
+			'price'    => 12.50,
+		),
+		'56f0ab12a38f8317060d40981f6a4a93' => array(
+			'id'       => 'bazfoo',
+			'name'     => 'Baz Foo',
+			'quantity' => 1,
+			'price'    => 12.00,
+		),
+	));
+}
+catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+{
+	echo 'One of the provided items was not found.';
+}
+```
