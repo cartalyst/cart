@@ -238,7 +238,7 @@ class Cartify {
 	}
 
 	/**
-	 * Updates an item in the cart.
+	 * Updates an item that is on the cart.
 	 *
 	 * @param  string  $rowId
 	 * @param  array   $attributes
@@ -454,11 +454,26 @@ class Cartify {
 		$this->session->put($instance, $cart);
 	}
 
+	/**
+	 * Return the list of required indexes.
+	 *
+	 * @return array
+	 */
 	public function getRequiredIndexes()
 	{
 		return $this->requiredIndexes;
 	}
 
+	/**
+	 * Set more required indexes.
+	 *
+	 * By default it will merge the new indexes with the current
+	 * indexes, you can change this behavior by setting false
+	 * as the second parameter.
+	 *
+	 * @param  bool  $merge
+	 * @return void
+	 */
 	public function setRequiredIndexes($indexes, $merge = true)
 	{
 		$currentIndexes = $merge ? $this->requiredIndexes : array();
