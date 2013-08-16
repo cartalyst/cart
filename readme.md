@@ -66,6 +66,14 @@ catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 {
 	echo 'Missing a required parameter.';
 }
+catch (Cartalyst\Cartify\Exceptions\CartInvalidQuantityException $e)
+{
+	echo 'Quantity value is invalid.';
+}
+catch (Cartalyst\Cartify\Exceptions\CartInvalidPriceException $e)
+{
+	echo 'Price value is invalid.';
+}
 ```
 
 **Add multiple items into the cart**

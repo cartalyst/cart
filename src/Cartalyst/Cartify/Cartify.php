@@ -22,6 +22,8 @@ use Cartalyst\Cartify\Collections\CartCollection;
 use Cartalyst\Cartify\Collections\ItemCollection;
 use Cartalyst\Cartify\Collections\ItemOptionsCollection;
 use Cartalyst\Cartify\Exceptions\CartInvalidDataException;
+use Cartalyst\Cartify\Exceptions\CartInvalidPriceException;
+use Cartalyst\Cartify\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cartify\Exceptions\CartItemNotFoundException;
 use Illuminate\Session\Store as SessionStorage;
 
@@ -61,6 +63,9 @@ class Cartify {
 	 * @param  float         $price
 	 * @param  array         $options
 	 * @return mixed
+	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidDataException
+	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidQuantityException
+	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidPriceException
 	 */
 	public function add($id = null, $name = null, $quantity = null, $price = null, $options = array())
 	{
@@ -90,6 +95,25 @@ class Cartify {
 		if (empty($id) or empty($name) or empty($quantity) or empty($price))
 		{
 			throw new CartInvalidDataException;
+		}
+
+		// Make sure the quantity is a number, and remove any leading zeros
+		$quantity = (float) $quantity;
+
+		// Remove any leading zeros and anything that isn't a number or a
+		// decimal point from the price.
+		$price = (float) $price;
+
+		// Check if the quantity value is correct
+		if ( ! is_numeric($quantity) or $quantity == 0)
+		{
+			throw new CartInvalidQuantityException;
+		}
+
+		// Check if the price value is correct
+		if ( ! is_numeric($price))
+		{
+			throw new CartInvalidPriceException;
 		}
 
 		// Get the cart contents
