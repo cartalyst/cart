@@ -64,6 +64,7 @@ class Cartify {
 	 */
 	public function add($id = null, $name = null, $quantity = null, $price = null, $options = array())
 	{
+		// Do we have an array of items?
 		if (is_array($id))
 		{
 			if ($this->isMulti($id))
@@ -138,6 +139,7 @@ class Cartify {
 	 */
 	public function remove($rowId)
 	{
+		// Do we have an array of items to be removed?
 		if (is_array($rowId))
 		{
 			foreach ($rowId as $item)
@@ -174,11 +176,12 @@ class Cartify {
 	 */
 	public function update($rowId, $attributes = null)
 	{
+		// Do we have an array of items to be updated?
 		if (is_array($rowId))
 		{
-			foreach ($rowId as $item => $attribute)
+			foreach ($rowId as $item => $attributes)
 			{
-				$this->update($item, $attribute);
+				$this->update($item, $attributes);
 			}
 
 			return true;
@@ -242,7 +245,6 @@ class Cartify {
 	 */
 	public function destroy()
 	{
-		// Update the cart contents
 		$this->updateCart(null);
 	}
 
@@ -266,19 +268,6 @@ class Cartify {
 
 		// Return the item
 		return $cart->get($rowId);
-	}
-
-	/**
-	 * Updates the cart.
-	 *
-	 * @param  Cartalyst\Cartify\Collections\CartCollection
-	 * @return void
-	 */
-	public function updateCart($cart)
-	{
-		$instance = $this->getInstance();
-
-		$this->session->put($instance, $cart);
 	}
 
 	/**
@@ -341,7 +330,7 @@ class Cartify {
 	 */
 	public function getInstances()
 	{
-		return $this->session->get('cartify');
+		return $this->session->get('cartify') ?: array();
 	}
 
 	/**
@@ -377,6 +366,19 @@ class Cartify {
 	protected function itemExists($rowId)
 	{
 		return $this->getContent()->has($rowId);
+	}
+
+	/**
+	 * Updates the cart.
+	 *
+	 * @param  Cartalyst\Cartify\Collections\CartCollection
+	 * @return void
+	 */
+	protected function updateCart($cart)
+	{
+		$instance = $this->getInstance();
+
+		$this->session->put($instance, $cart);
 	}
 
 	/**
