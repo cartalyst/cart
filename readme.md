@@ -50,6 +50,24 @@ catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
 }
 ```
 
+or
+
+```php
+try
+{
+	Cart::add(array(
+		'id'       => 'foobar123',
+		'name'     => 'Foo Bar 123',
+		'quantity' => 1,
+		'price'    => 12.50,
+	));
+}
+catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
+{
+	echo 'Missing a required parameter.';
+}
+```
+
 **Add multiple items into the cart**
 
 ```php
@@ -97,7 +115,7 @@ Removing multiple items is easy and we provide you with two ways to accomplish t
 
 ##### Method 1
 
-Pass in an array with the row ids you want to delete.
+Pass in an array with the row id's you want to remove.
 
 ```php
 try
@@ -115,7 +133,7 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 
 ##### Method 2
 
-Pass in multiple arguments, where each argument correspond to an item row id.
+Pass in multiple arguments, where each argument corresponds to an item row id.
 
 ```php
 try
