@@ -232,7 +232,7 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 }
 ```
 
-**Get the content of the Cart**
+**Get the Cart contents**
 
 ```php
 $content = Cart::getContent();
