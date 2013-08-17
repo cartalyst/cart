@@ -25,6 +25,7 @@ use Cartalyst\Cartify\Exceptions\CartInvalidDataException;
 use Cartalyst\Cartify\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cartify\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cartify\Exceptions\CartItemNotFoundException;
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Session\Store as SessionStorage;
 
 class Cartify {
@@ -37,11 +38,18 @@ class Cartify {
 	protected $session;
 
 	/**
+	 * Cartify config repository.
+	 *
+	 * @var \Illuminate\Config\Repository
+	 */
+	protected $config;
+
+	/**
 	 * Cart instance.
 	 *
 	 * @var string
 	 */
-	protected $instance = 'main';
+	protected $instance;
 
 	/**
 	 * Holds all the required indexes.
@@ -61,9 +69,14 @@ class Cartify {
 	 * @param  \Illuminate\Session\Store  $session
 	 * @return void
 	 */
-	public function __construct(SessionStorage $session = null)
+	public function __construct(SessionStorage $session = null, ConfigRepository $config)
 	{
 		$this->session = $session;
+
+		$this->config = $config;
+
+		// Set the default cart instance
+		$this->instance = $config->get('cartify::instance', 'main');
 	}
 
 	/**
@@ -393,7 +406,9 @@ class Cartify {
 	 */
 	public function getInstance()
 	{
-		return "cartify.{$this->instance}";
+		$session = $this->config->get('cartify::session', 'cartify');
+
+		return "{$session}.{$this->instance}";
 	}
 
 	/**
@@ -403,7 +418,9 @@ class Cartify {
 	 */
 	public function getInstances()
 	{
-		return $this->session->get('cartify') ?: array();
+		$session = $this->config->get('cartify::session', 'cartify');
+
+		return $this->session->get($session) ?: array();
 	}
 
 	/**
@@ -425,7 +442,9 @@ class Cartify {
 	 */
 	public function forgetInstance($instance)
 	{
-		$this->session->forget("cartify.{$instance}");
+		$session = $this->config->get('cartify::session', 'cartify');
+
+		$this->session->forget("{$session}.{$instance}");
 
 		return true;
 	}
@@ -465,7 +484,7 @@ class Cartify {
 	}
 
 	/**
-	 * Set more required indexes.
+	 * Set required indexes.
 	 *
 	 * By default it will merge the new indexes with the current
 	 * indexes, you can change this behavior by setting false

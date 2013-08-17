@@ -40,9 +40,11 @@ class Laravel extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->app['config']->package('cartalyst/cartify', __DIR__.'/../../config');
+
 		$this->app['cartify'] = $this->app->share(function($app)
 		{
-			return new Cartify($app['session']);
+			return new Cartify($app['session'], $app['config']);
 		});
 	}
 
