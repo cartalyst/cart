@@ -156,6 +156,7 @@ class Cartify {
 		// Make sure that the quantity value is rounded
 		$quantity = round($quantity);
 
+		// Check if the item already exists on the cart
 		if ($this->itemExists($rowId))
 		{
 			// Get the item
@@ -173,6 +174,7 @@ class Cartify {
 				'name'     => $item['name'],
 				'quantity' => $quantity,
 				'price'    => $price,
+				'tax'      => ! empty($item['tax']) ? $item['tax'] : null,
 				'options'  => new ItemOptionsCollection($options),
 			));
 		}
@@ -268,8 +270,6 @@ class Cartify {
 		{
 			foreach ($rowId as $item => $attributes)
 			{
-				$this->validateIndexes($attributes);
-
 				$this->update($item, $attributes);
 			}
 
