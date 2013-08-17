@@ -22,14 +22,37 @@ use Illuminate\Support\Collection;
 
 class ItemCollection extends Collection {
 
+	/**
+	 * Magic method.
+	 *
+	 * @param  string  value
+	 * @return mixed
+	 */
 	public function __get($value)
 	{
+		$method = studly_case($value);
+
+		if (method_exists($this, $method))
+		{
+			return $this->get{$method}();
+		}
+
 		if ($this->has($value))
 		{
 			return $this->get($value);
 		}
 
 		return null;
+	}
+
+	/**
+	 * Return the tax value of the item.
+	 *
+	 * @return float
+	 */
+	public function getTax()
+	{
+		return (float) $this->get('tax');
 	}
 
 }
