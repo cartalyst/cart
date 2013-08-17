@@ -86,6 +86,17 @@ try
 			'name'     => 'Baz Foo',
 			'quantity' => 1,
 			'price'    => 12.00,
+			'options'  => array(
+				'size' => array(
+					'label' => 'Size',
+					'value' => 'L',
+					'price' => 5,
+				),
+				'color' => array(
+					'label' => 'Color',
+					'value' => 'Red',
+				),
+			),
 		),
 	));
 }
