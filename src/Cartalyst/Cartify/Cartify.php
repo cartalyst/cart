@@ -417,6 +417,25 @@ class Cartify {
 	}
 
 	/**
+	 * Return the sum of all item taxes.
+	 *
+	 * @return float
+	 */
+	public function getTaxTotal()
+	{
+		$total = 0;
+
+		$items = $this->getContent();
+
+		foreach ($items as $item)
+		{
+			$total += $item->getTax();
+		}
+
+		return (float) $total;
+	}
+
+	/**
 	 * Return the current cart instance.
 	 *
 	 * @return string
