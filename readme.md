@@ -55,17 +55,17 @@ try
 		'price'    => 12.50,
 	));
 }
-catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
+catch (Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException $e)
 {
-	echo 'Missing a required parameter.';
+	die("The [{$e->getMessage()}] value is required.");
 }
 catch (Cartalyst\Cartify\Exceptions\CartInvalidQuantityException $e)
 {
-	echo 'Quantity value is invalid.';
+	die('Quantity is invalid.');
 }
 catch (Cartalyst\Cartify\Exceptions\CartInvalidPriceException $e)
 {
-	echo 'Price value is invalid.';
+	die('Price is invalid.');
 }
 ```
 
@@ -100,9 +100,9 @@ try
 		),
 	));
 }
-catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
+catch (Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException $e)
 {
-	echo 'The provided array is malformed.';
+	die("The [{$e->getMessage()}] value is required.");
 }
 ```
 
@@ -117,7 +117,7 @@ try
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 {
-	echo 'Item was not found.';
+	die('Item was not found.');
 }
 ```
 
@@ -139,7 +139,7 @@ try
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 {
-	echo 'One of the provided items was not found.';
+	die('One of the provided items was not found.');
 }
 ```
 
@@ -154,7 +154,7 @@ try
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
 {
-	echo 'One of the provided items was not found.';
+	die('One of the provided items was not found.');
 }
 ```
 
@@ -169,7 +169,7 @@ try
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 {
-	echo 'Item was not found.';
+	die('Item was not found.');
 }
 ```
 
@@ -187,7 +187,7 @@ try
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 {
-	echo 'Item was not found.';
+	die('Item was not found.');
 }
 ```
 
@@ -213,6 +213,6 @@ try
 }
 catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 {
-	echo 'One of the provided items was not found.';
+	die('One of the provided items was not found.');
 }
 ```
