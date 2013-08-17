@@ -48,19 +48,6 @@ Run `php artisan config:publish cartalyst/cartify`
 ```php
 try
 {
-	Cart::add('foobar123', 'Foo Bar 123', 1, 12.50);
-}
-catch (Cartalyst\Cartify\Exceptions\CartInvalidDataException $e)
-{
-	echo 'Missing a required parameter.';
-}
-```
-
-or
-
-```php
-try
-{
 	Cart::add(array(
 		'id'       => 'foobar123',
 		'name'     => 'Foo Bar 123',

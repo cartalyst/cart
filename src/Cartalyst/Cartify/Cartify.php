@@ -97,40 +97,21 @@ class Cartify {
 	/**
 	 * Adds a new item to the cart.
 	 *
-	 * @param  string|Array  $id
-	 * @param  string        $name
-	 * @param  int           $quantity
-	 * @param  float         $price
-	 * @param  array         $options
+	 * @param  array  $items
 	 * @return mixed
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidDataException
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidQuantityException
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidPriceException
 	 */
-	public function add($id = null, $name = null, $quantity = null, $price = null, $options = array())
+	public function add($item)
 	{
-		// Do we have an array of items?
-		if (is_array($id))
+		// Do we have multiple items?
+		if ($this->isMulti($item))
 		{
-			if ($this->isMulti($id))
+			foreach ($item as $i)
 			{
-				foreach ($id as $item)
-				{
-					$this->validateIndexes($item);
-
-					$options = ! empty($item['options']) ? $item['options'] : array();
-
-					$this->add($item['id'], $item['name'], $item['quantity'], $item['price'], $options);
-				}
-
-				return true;
+				$this->add($i);
 			}
-
-			$this->validateIndexes($id);
-
-			$options = ! empty($id['options']) ? $id['options'] : array();
-
-			$this->add($id['id'], $id['name'], $id['quantity'], $id['price'], $options);
 
 			return true;
 		}
@@ -138,18 +119,18 @@ class Cartify {
 		// Validate the required parameters
 		foreach ($this->requiredIndexes as $parameter)
 		{
-			if (empty($$parameter))
+			if (empty($item[$parameter]))
 			{
 				throw new CartInvalidDataException;
 			}
 		}
 
 		// Make sure the quantity is a number, and remove any leading zeros
-		$quantity = (float) $quantity;
+		$quantity = (float) $item['quantity'];
 
 		// Remove any leading zeros and anything that isn't a number or a
 		// decimal point from the price.
-		$price = (float) $price;
+		$price = (float) $item['price'];
 
 		// Check if the quantity value is correct
 		if ( ! is_numeric($quantity) or $quantity == 0)
@@ -166,16 +147,21 @@ class Cartify {
 		// Get the cart contents
 		$cart = $this->getContent();
 
+		// Get this item options
+		$options = ! empty($item['options']) ? $item['options'] : array();
+
 		// Generate the unique row id
-		$rowId = $this->generateRowId($id, $options);
+		$rowId = $this->generateRowId($item['id'], $options);
 
 		// Make sure that the quantity value is rounded
 		$quantity = round($quantity);
 
 		if ($this->itemExists($rowId))
 		{
+			// Get the item
 			$row = $this->getItem($rowId);
 
+			// Update the item quantity
 			$row->put('quantity', $row->quantity + $quantity);
 		}
 		else
@@ -183,14 +169,16 @@ class Cartify {
 			// Create a new item
 			$row = new ItemCollection(array(
 				'rowId'    => $rowId,
-				'id'       => $id,
-				'name'     => $name,
+				'id'       => $item['id'],
+				'name'     => $item['name'],
 				'quantity' => $quantity,
 				'price'    => $price,
 				'options'  => new ItemOptionsCollection($options),
-				'subtotal' => $quantity * $price,
 			));
 		}
+
+		// Update the item subtotal
+		$row->put('subtotal', (float) $row->quantity * $row->price);
 
 		// Add the item to the cart
 		$cart->put($rowId, $row);
