@@ -30,11 +30,11 @@ class ItemCollection extends Collection {
 	 */
 	public function __get($value)
 	{
-		$method = studly_case($value);
+		$method = "get".studly_case($value);
 
 		if (method_exists($this, $method))
 		{
-			return $this->get{$method}();
+			return $this->{$method}();
 		}
 
 		if ($this->has($value))
@@ -43,6 +43,19 @@ class ItemCollection extends Collection {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Return the item subtotal, taking into consideration
+	 * the item options prices.
+	 *
+	 * @return float
+	 */
+	public function getSubtotal()
+	{
+		$total = $this->get('options')->total;
+
+		return (float) $this->get('price') + $total;
 	}
 
 	/**

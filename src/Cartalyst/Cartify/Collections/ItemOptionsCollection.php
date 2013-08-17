@@ -20,4 +20,21 @@
 
 class ItemOptionsCollection extends ItemCollection {
 
+	/**
+	 * Return the total price of all the options together.
+	 *
+	 * @return float
+	 */
+	public function getTotal()
+	{
+		$total = 0;
+
+		foreach ($this as $option)
+		{
+			$total += $option->get('price');
+		}
+
+		return (float) $total;
+	}
+
 }
