@@ -52,6 +52,13 @@ class Cartify {
 	protected $instance;
 
 	/**
+	 * Holds the session key.
+	 *
+	 * @var string
+	 */
+	protected $sessionKey;
+
+	/**
 	 * Holds all the required indexes.
 	 *
 	 * @var array
@@ -78,12 +85,13 @@ class Cartify {
 		$this->config = $config;
 
 		// Set the default cart instance
-		$this->instance = $config->get('cartify::instance', 'main');
+		$this->instance($config->get('cartify::instance', 'main'));
+
+		// Set the default session key
+		$this->setSessionKey($config->get('cartify::session', 'cartify'));
 
 		// Set the required indexes
 		$this->setRequiredIndexes($config->get('cartify::requiredIndexes'));
-
-		var_dump($this->getRequiredIndexes());
 	}
 
 	/**
@@ -413,9 +421,9 @@ class Cartify {
 	 */
 	public function getInstance()
 	{
-		$session = $this->config->get('cartify::session', 'cartify');
+		$sessionKey = $this->getSessionKey();
 
-		return "{$session}.{$this->instance}";
+		return "{$sessionKey}.{$this->instance}";
 	}
 
 	/**
@@ -425,9 +433,9 @@ class Cartify {
 	 */
 	public function getInstances()
 	{
-		$session = $this->config->get('cartify::session', 'cartify');
+		$sessionKey = $this->getSessionKey();
 
-		return $this->session->get($session) ?: array();
+		return $this->session->get($sessionKey) ?: array();
 	}
 
 	/**
@@ -449,9 +457,9 @@ class Cartify {
 	 */
 	public function forgetInstance($instance)
 	{
-		$session = $this->config->get('cartify::session', 'cartify');
+		$sessionKey = $this->getSessionKey();
 
-		$this->session->forget("{$session}.{$instance}");
+		$this->session->forget("{$sessionKey}.{$instance}");
 
 		return true;
 	}
@@ -505,6 +513,26 @@ class Cartify {
 		$currentIndexes = $merge ? $this->requiredIndexes : array();
 
 		$this->requiredIndexes = array_unique(array_merge($currentIndexes, $indexes));
+	}
+
+	/**
+	 * Return the session key.
+	 *
+	 * @return string
+	 */
+	public function getSessionKey()
+	{
+		return $this->sessionKey;
+	}
+
+	/**
+	 * Set the session key.
+	 *
+	 * @return void
+	 */
+	public function setSessionKey($key)
+	{
+		$this->sessionKey = $key;
 	}
 
 	/**
