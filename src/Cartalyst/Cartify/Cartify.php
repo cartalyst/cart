@@ -95,9 +95,9 @@ class Cartify {
 	}
 
 	/**
-	 * Adds a new item to the cart.
+	 * Adds a single item or multiple items to the cart.
 	 *
-	 * @param  array  $items
+	 * @param  array  $item
 	 * @return mixed
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidDataException
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidQuantityException
@@ -119,7 +119,7 @@ class Cartify {
 		// Validate the required parameters
 		foreach ($this->requiredIndexes as $parameter)
 		{
-			if (empty($item[$parameter]))
+			if ( ! isset($item[$parameter]))
 			{
 				throw new CartInvalidDataException;
 			}
@@ -133,7 +133,7 @@ class Cartify {
 		$price = (float) $item['price'];
 
 		// Check if the quantity value is correct
-		if ( ! is_numeric($quantity) or $quantity == 0)
+		if ( ! is_numeric($quantity) or $quantity < 1)
 		{
 			throw new CartInvalidQuantityException;
 		}
