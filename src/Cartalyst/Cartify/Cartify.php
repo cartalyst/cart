@@ -71,12 +71,19 @@ class Cartify {
 	 */
 	public function __construct(SessionStorage $session = null, ConfigRepository $config)
 	{
+		// Store the session driver
 		$this->session = $session;
 
+		// Store the config repository
 		$this->config = $config;
 
 		// Set the default cart instance
 		$this->instance = $config->get('cartify::instance', 'main');
+
+		// Set the required indexes
+		$this->setRequiredIndexes($config->get('cartify::requiredIndexes'));
+
+		var_dump($this->getRequiredIndexes());
 	}
 
 	/**
@@ -497,7 +504,7 @@ class Cartify {
 	{
 		$currentIndexes = $merge ? $this->requiredIndexes : array();
 
-		$this->requiredIndexes = array_merge($currentIndexes, $indexes);
+		$this->requiredIndexes = array_unique(array_merge($currentIndexes, $indexes));
 	}
 
 	/**

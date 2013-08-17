@@ -25,4 +25,16 @@ return array(
 
 	'instance' => 'main',
 
+	/*
+	|--------------------------------------------------------------------------
+	| Required Indexes
+	|--------------------------------------------------------------------------
+	|
+	| Here you can define all the indexes that are required to be passed
+	| when adding or updating items.
+	|
+	*/
+
+	'requiredIndexes' => array(),
+
 );
