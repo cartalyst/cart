@@ -244,7 +244,7 @@ Cart::destroy();
 **Get the Total of the Cart**
 
 ```php
-$totalItems = Cart::getTotal();
+$total = Cart::getTotal();
 ```
 
 **Get the Total of items that are in the Cart**
