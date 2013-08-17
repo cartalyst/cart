@@ -217,7 +217,7 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 }
 ```
 
-**Grab information of an Item**
+## Grab information of an Item
 
 ```php
 try
@@ -230,24 +230,24 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 }
 ```
 
-**Get the content of the Cart**
+## Get the content of the Cart
 
 ```php
 $content = Cart::getContent();
 ```
 
-**Destroy or Empty the Cart completely**
+## Destroy or Empty the Cart completely
 ```php
 Cart::destroy();
 ```
 
-**Get the Total of the Cart**
+## Get the Total of the Cart
 
 ```php
 $total = Cart::getTotal();
 ```
 
-**Get the Total of items that are in the Cart**
+## Get the Total of items that are in the Cart
 
 ```php
 $totalItems = Cart::getTotalItems();
