@@ -20,4 +20,4 @@
 
 use Exception;
 
-class CartInvalidDataException extends Exception {}
+class CartMissingRequiredIndexException extends Exception {}

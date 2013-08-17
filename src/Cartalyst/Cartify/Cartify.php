@@ -21,10 +21,10 @@
 use Cartalyst\Cartify\Collections\CartCollection;
 use Cartalyst\Cartify\Collections\ItemCollection;
 use Cartalyst\Cartify\Collections\ItemOptionsCollection;
-use Cartalyst\Cartify\Exceptions\CartInvalidDataException;
 use Cartalyst\Cartify\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cartify\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cartify\Exceptions\CartItemNotFoundException;
+use Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Session\Store as SessionStorage;
 
@@ -99,7 +99,7 @@ class Cartify {
 	 *
 	 * @param  array  $item
 	 * @return mixed
-	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidDataException
+	 * @throws Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidQuantityException
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidPriceException
 	 */
@@ -121,7 +121,7 @@ class Cartify {
 		{
 			if ( ! isset($item[$parameter]))
 			{
-				throw new CartInvalidDataException;
+				throw new CartMissingRequiredIndexException($parameter);
 			}
 		}
 
@@ -173,6 +173,11 @@ class Cartify {
 			// Store each option on the collection
 			foreach ($options as $index => $option)
 			{
+				if (empty($option['value']))
+				{
+					throw new CartMissingRequiredIndexException('value');
+				}
+
 				$optionsCollection->put($index, new ItemCollection($option));
 			}
 
@@ -562,7 +567,7 @@ class Cartify {
 	 *
 	 * @param  array  $arguments
 	 * @return void
-	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidDataException
+	 * @throws Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException
 	 */
 	protected function validateIndexes($arguments)
 	{
@@ -570,7 +575,7 @@ class Cartify {
 		{
 			if ( ! array_key_exists($parameter, $arguments))
 			{
-				throw new CartInvalidDataException;
+				throw new CartMissingRequiredIndexException($parameter);
 			}
 		}
 	}
