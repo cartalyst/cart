@@ -217,7 +217,7 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 }
 ```
 
-## Grab information of an Item
+### Grab information of an Item
 
 ```php
 try
@@ -230,24 +230,24 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 }
 ```
 
-## Get the content of the Cart
+### Get the content of the Cart
 
 ```php
 $content = Cart::getContent();
 ```
 
-## Destroy or Empty the Cart completely
+### Destroy or Empty the Cart completely
 ```php
 Cart::destroy();
 ```
 
-## Get the Total of the Cart
+### Get the Total of the Cart
 
 ```php
 $total = Cart::getTotal();
 ```
 
-## Get the Total of items that are in the Cart
+### Get the Total of items that are in the Cart
 
 ```php
 $totalItems = Cart::getTotalItems();
@@ -272,14 +272,15 @@ $content = Cart::getContent();
 ```
 
 As you can see the main difference was that we used the `instance()` method before
-adding the item, this way Cartify nows to where we want to save the item.
+adding the item, this way Cartify knows where we want to save the item.
 
 You probably have noticed that, on the `getContent()` call we are not using the
-`instance()` method anymore, once you use the `instance()` method, the other
-calls will use the instance you declared before.
+`instance()` method anymore, thats because once you use the `instance()`
+ method, the other calls will use the instance you used before.
 
-Now you are probably wondering, how you would go back to the normal cart instance,
-it's very easy, just use that cart instance and you should be good to go, example:
+You are probably wondering, how you would go back to the normal cart instance,
+it's very easy, just use `instance()` method again, and pass in the cart
+instance name, and you should be good to go, example:
 
 ```php
 Cart::instance('main');
