@@ -167,6 +167,15 @@ class Cartify {
 		}
 		else
 		{
+			// Create a new options collection for this item
+			$optionsCollection = new ItemOptionsCollection;
+
+			// Store each option on the collection
+			foreach ($options as $index => $option)
+			{
+				$optionsCollection->put($index, new ItemCollection($option));
+			}
+
 			// Create a new item
 			$row = new ItemCollection(array(
 				'rowId'    => $rowId,
@@ -175,7 +184,7 @@ class Cartify {
 				'quantity' => $quantity,
 				'price'    => $price,
 				'tax'      => ! empty($item['tax']) ? $item['tax'] : null,
-				'options'  => new ItemOptionsCollection($options),
+				'options'  => $optionsCollection,
 			));
 		}
 
