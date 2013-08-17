@@ -216,3 +216,75 @@ catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
 	die('One of the provided items was not found.');
 }
 ```
+
+**Grab information of an Item**
+
+```php
+try
+{
+	$item = Cart::getItem('027c91341fd5cf4d2579b49c4b6a90da');
+}
+catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+{
+	die('One of the provided items was not found.');
+}
+```
+
+**Get the content of the Cart**
+
+```php
+$content = Cart::getContent();
+```
+
+**Destroy or Empty the Cart completely**
+```php
+Cart::destroy();
+```
+
+**Get the Total of the Cart**
+
+```php
+$totalItems = Cart::getTotal();
+```
+
+**Get the Total of items that are in the Cart**
+
+```php
+$totalItems = Cart::getTotalItems();
+```
+
+## Instances
+
+Cartify supports multiple cart instances, so that this way you can have has
+many shopping carts on the same page as you want without any conflicts.
+
+Here are some examples on how it works
+
+**Wishlist cart**
+
+On this example i will create a wishlist cart, where it will hold all of our
+customers wishlist items.
+
+```php
+Cart::instance('wishlist')->add(array(...));
+
+$content = Cart::getContent();
+```
+
+As you can see the main difference was that we used the `instance()` method before
+adding the item, this way Cartify nows to where we want to save the item.
+
+You probably have noticed that, on the `getContent()` call we are not using the
+`instance()` method anymore, once you use the `instance()` method, the other
+calls will use the instance you declared before.
+
+Now you are probably wondering, how you would go back to the normal cart instance,
+it's very easy, just use that cart instance and you should be good to go, example:
+
+```php
+Cart::instance('main');
+
+$content = Cart::getContent();
+```
+
+Now you are able to get the main cart content.
