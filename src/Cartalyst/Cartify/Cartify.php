@@ -405,11 +405,19 @@ class Cartify {
 	/**
 	 * Search for items with the given criteria.
 	 *
-	 * @param  array  $data
+	 * @param  array   $data
+	 * @param  string  $instance
 	 * @return array
 	 */
-	public function find($data)
+	public function find($data, $instance = null)
 	{
+		if ( ! is_null($instance))
+		{
+			$currentInstance = $this->getInstance();
+
+			$this->instance($instance);
+		}
+
 		$rows = array();
 
 		foreach ($this->getContent() as $item)
@@ -418,6 +426,11 @@ class Cartify {
 			{
 				$rows[] = $item;
 			}
+		}
+
+		if ( ! is_null($instance))
+		{
+			$this->instance($currentInstance);
 		}
 
 		return $rows;
