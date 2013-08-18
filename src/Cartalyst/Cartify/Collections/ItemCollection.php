@@ -82,7 +82,7 @@ class ItemCollection extends Collection {
 				return $this->{$key}->find($value);
 			}
 
-			return $this->{$key} == $value ? true : false;
+			return $this->{$key} === $value ? true : false;
 		}
 	}
 
