@@ -53,9 +53,9 @@ class ItemCollection extends Collection {
 	 */
 	public function getSubtotal()
 	{
-		$total = $this->get('options')->total;
+		$optionsTotal = $this->get('options')->total;
 
-		return (float) $this->get('price') + $total;
+		return (float) ($this->get('price') + $optionsTotal) * $this->get('quantity');
 	}
 
 	/**
