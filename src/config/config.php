@@ -22,15 +22,42 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Session Key
+	| Default Storage Driver
 	|--------------------------------------------------------------------------
 	|
-	| Session key that is used to store the cart information into the current
-	| session. This can be changed if it conflicts with another key.
+	| This option controls the default storage "driver" that will be used on
+	| requests. By default, we will use the lightweight session driver but
+	| you may specify any of the other wonderful drivers provided here.
+	|
+	| Supported: "session"
 	|
 	*/
 
-	'session' => 'cartalyst_cartify',
+	'driver' => 'session',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Cookie
+	|--------------------------------------------------------------------------
+	|
+	| Configuration specific to the cookie component of Cartify.
+	|
+	*/
+
+	'cookie' => array(
+
+		/*
+		|--------------------------------------------------------------------------
+		| Default Cookie Key
+		|--------------------------------------------------------------------------
+		|
+		| This option allows you to specify the default cookie key used by Cartify.
+		|
+		*/
+
+		'key' => 'cartalyst_cartify',
+
+ 	),
 
 	/*
 	|--------------------------------------------------------------------------
