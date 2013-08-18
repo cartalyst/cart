@@ -22,6 +22,7 @@ use Cartalyst\Cartify\Collections\CartCollection;
 use Cartalyst\Cartify\Collections\ItemCollection;
 use Cartalyst\Cartify\Collections\ItemOptionsCollection;
 use Cartalyst\Cartify\Exceptions\CartInvalidPriceException;
+use Cartalyst\Cartify\Exceptions\CartInvalidOptionsException;
 use Cartalyst\Cartify\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cartify\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException;
@@ -86,6 +87,7 @@ class Cartify {
 	 * @throws Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidQuantityException
 	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidPriceException
+	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidOptionsException
 	 */
 	public function add($item)
 	{
@@ -128,11 +130,14 @@ class Cartify {
 			throw new CartInvalidPriceException;
 		}
 
-		// Get the cart contents
-		$cart = $this->getContent();
-
 		// Get this item options
 		$options = ! empty($item['options']) ? $item['options'] : array();
+
+		// Validate the options
+		if ( ! is_array($options))
+		{
+			throw new CartInvalidOptionsException;
+		}
 
 		// Generate the unique row id
 		$rowId = $this->generateRowId($item['id'], $options);
@@ -179,6 +184,9 @@ class Cartify {
 
 		// Update the item subtotal
 		$row->put('subtotal', (float) $row->quantity * $row->price);
+
+		// Get the cart contents
+		$cart = $this->getContent();
 
 		// Add the item to the cart
 		$cart->put($rowId, $row);
