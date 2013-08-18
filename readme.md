@@ -260,6 +260,12 @@ $total = Cart::getTotal();
 $totalItems = Cart::getTotalItems();
 ```
 
+**Search for Items**
+
+```php
+Cart::find(array('id' => 'foobar', 'name' => 'Foo Bar'));
+```
+
 ## Instances
 
 Cartify supports multiple cart instances, so that this way you can have has
@@ -313,3 +319,7 @@ Cart::instance('wishlist');
 
 Cart::forgetInstance();
 ```
+
+## Known Issues
+
+- Searching for items on other cart instances doesn't work. (Working on a fix)
