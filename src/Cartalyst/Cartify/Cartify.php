@@ -372,11 +372,9 @@ class Cartify {
 	 */
 	public function getTotal()
 	{
-		$items = $this->getContent();
-
 		$total = 0;
 
-		foreach ($items as $item)
+		foreach ($this->getContent() as $item)
 		{
 			$total += $item->subtotal;
 		}
@@ -391,9 +389,7 @@ class Cartify {
 	 */
 	public function getTotalItems()
 	{
-		$items = $this->getContent();
-
-		return (int) $items->count();
+		return (int) $this->getContent()->count();
 	}
 
 	/**
@@ -414,15 +410,11 @@ class Cartify {
 	 */
 	public function find($data)
 	{
-		$items = $this->getContent();
-
 		$rows = array();
 
-		foreach ($items as $item)
+		foreach ($this->getContent() as $item)
 		{
-			$found = $item->find($data);
-
-			if ($found)
+			if ($item->find($data))
 			{
 				$rows[] = $item;
 			}
@@ -440,9 +432,7 @@ class Cartify {
 	{
 		$total = 0;
 
-		$items = $this->getContent();
-
-		foreach ($items as $item)
+		foreach ($this->getContent() as $item)
 		{
 			$total += $item->getTax();
 		}
