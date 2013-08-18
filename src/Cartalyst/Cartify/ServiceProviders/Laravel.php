@@ -19,6 +19,7 @@
  */
 
 use Cartalyst\Cartify\Cartify;
+use Cartalyst\Cartify\Storage\SessionStorage;
 use Illuminate\Support\ServiceProvider;
 
 class Laravel extends ServiceProvider {
@@ -42,9 +43,16 @@ class Laravel extends ServiceProvider {
 	{
 		$this->app['config']->package('cartalyst/cartify', __DIR__.'/../../config');
 
+		$this->app['cartify.storage'] = $this->app->share(function($app)
+		{
+			$sessionKey = $app['config']->get('cartify::session');
+
+			return new SessionStorage($app['session'], $sessionKey);
+		});
+
 		$this->app['cartify'] = $this->app->share(function($app)
 		{
-			return new Cartify($app['session'], $app['config']);
+			return new Cartify($app['cartify.storage'], $app['config']);
 		});
 	}
 

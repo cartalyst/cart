@@ -25,17 +25,17 @@ use Cartalyst\Cartify\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cartify\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cartify\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException;
+use Cartalyst\Cartify\Storage\StorageInterface;
 use Illuminate\Config\Repository as ConfigRepository;
-use Illuminate\Session\Store as SessionStorage;
 
 class Cartify {
 
 	/**
-	 * The session driver used by Cartify.
+	 * The storage driver used by Cartify.
 	 *
 	 * @var \Illuminate\Session\Store
 	 */
-	protected $session;
+	protected $storage;
 
 	/**
 	 * Cartify config repository.
@@ -50,13 +50,6 @@ class Cartify {
 	 * @var string
 	 */
 	protected $instance;
-
-	/**
-	 * Holds the session key.
-	 *
-	 * @var string
-	 */
-	protected $sessionKey;
 
 	/**
 	 * Holds all the required indexes.
@@ -76,19 +69,16 @@ class Cartify {
 	 * @param  \Illuminate\Session\Store  $session
 	 * @return void
 	 */
-	public function __construct(SessionStorage $session = null, ConfigRepository $config)
+	public function __construct(StorageInterface $storage = null, ConfigRepository $config)
 	{
-		// Store the session driver
-		$this->session = $session;
+		// Set the storage driver
+		$this->storage = $storage;
 
 		// Store the config repository
 		$this->config = $config;
 
 		// Set the default cart instance
 		$this->instance($config->get('cartify::instance', 'main'));
-
-		// Set the default session key
-		$this->setSessionKey($config->get('cartify::session', 'cartify'));
 
 		// Set the required indexes
 		$this->setRequiredIndexes($config->get('cartify::requiredIndexes'));
@@ -413,7 +403,7 @@ class Cartify {
 	{
 		$instance = $this->getInstance();
 
-		return $this->session->has($instance) ? $this->session->get($instance) : new CartCollection;
+		return $this->storage->has($instance) ? $this->storage->get($instance) : new CartCollection;
 	}
 
 	/**
@@ -456,7 +446,7 @@ class Cartify {
 	{
 		$sessionKey = $this->getSessionKey();
 
-		return $this->session->get($sessionKey) ?: array();
+		return $this->storage->get($sessionKey) ?: array();
 	}
 
 	/**
@@ -480,7 +470,7 @@ class Cartify {
 	{
 		$sessionKey = $this->getSessionKey();
 
-		$this->session->forget("{$sessionKey}.{$instance}");
+		$this->storage->forget("{$sessionKey}.{$instance}");
 
 		return true;
 	}
@@ -504,9 +494,7 @@ class Cartify {
 	 */
 	protected function updateCart($cart)
 	{
-		$instance = $this->getInstance();
-
-		$this->session->put($instance, $cart);
+		$this->storage->put($cart);
 	}
 
 	/**
@@ -543,17 +531,7 @@ class Cartify {
 	 */
 	public function getSessionKey()
 	{
-		return $this->sessionKey;
-	}
-
-	/**
-	 * Set the session key.
-	 *
-	 * @return void
-	 */
-	public function setSessionKey($key)
-	{
-		$this->sessionKey = $key;
+		return $this->storage->getKey();
 	}
 
 	/**
