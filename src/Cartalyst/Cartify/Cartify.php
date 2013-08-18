@@ -45,13 +45,6 @@ class Cartify {
 	protected $config;
 
 	/**
-	 * Cart instance.
-	 *
-	 * @var string
-	 */
-	protected $instance;
-
-	/**
 	 * Holds all the required indexes.
 	 *
 	 * @var array
@@ -67,6 +60,7 @@ class Cartify {
 	 * Constructor.
 	 *
 	 * @param  Cartalyst\Cartify\Storage\StorageInterface  $storage
+	 * @param  \Illuminate\Config\Repository  $config
 	 * @return void
 	 */
 	public function __construct(StorageInterface $storage = null, ConfigRepository $config)
@@ -401,9 +395,7 @@ class Cartify {
 	 */
 	public function getContent()
 	{
-		$instance = $this->getInstance();
-
-		return $this->storage->has($instance) ? $this->storage->get($instance) : new CartCollection;
+		return $this->storage->has() ? $this->storage->get() : new CartCollection;
 	}
 
 	/**
@@ -432,9 +424,7 @@ class Cartify {
 	 */
 	public function getInstance()
 	{
-		$sessionKey = $this->getSessionKey();
-
-		return "{$sessionKey}.{$this->instance}";
+		return $this->storage->getInstance();
 	}
 
 	/**
@@ -444,9 +434,7 @@ class Cartify {
 	 */
 	public function getInstances()
 	{
-		$sessionKey = $this->getSessionKey();
-
-		return $this->storage->get($sessionKey) ?: array();
+		return $this->storage->instances() ?: array();
 	}
 
 	/**
@@ -456,7 +444,7 @@ class Cartify {
 	 */
 	public function instance($instance)
 	{
-		$this->instance = $instance;
+		$this->storage->setInstance($instance);
 
 		return $this;
 	}
@@ -466,11 +454,9 @@ class Cartify {
 	 *
 	 * @return bool
 	 */
-	public function forgetInstance($instance)
+	public function forgetInstance()
 	{
-		$sessionKey = $this->getSessionKey();
-
-		$this->storage->forget("{$sessionKey}.{$instance}");
+		$this->storage->forget();
 
 		return true;
 	}

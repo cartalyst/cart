@@ -28,6 +28,35 @@ interface StorageInterface {
 	public function getKey();
 
 	/**
+	 * Return the session instance.
+	 *
+	 * @return string
+	 */
+	public function getInstance();
+
+	/**
+	 * Set the session instance.
+	 *
+	 * @param  string  $instance
+	 * @return void
+	 */
+	public function setInstance($instance);
+
+	/**
+	 * Returns both session key and session instance.
+	 *
+	 * @return string
+	 */
+	public function getSessionKey();
+
+	/**
+	 * Returns all the available session instances of the session key.
+	 *
+	 * @return array
+	 */
+	public function instances();
+
+	/**
 	 * Get the session value.
 	 *
 	 * @return mixed

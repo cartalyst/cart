@@ -48,7 +48,7 @@ class Laravel extends ServiceProvider {
 
 		$this->app['cartify'] = $this->app->share(function($app)
 		{
-			return new Cartify($app["cartify.session"], $app['config']);
+			return new Cartify($app['cartify.session'], $app['config']);
 		});
 	}
 
@@ -61,9 +61,13 @@ class Laravel extends ServiceProvider {
 	{
 		$this->app['cartify.session'] = $this->app->share(function($app)
 		{
-			$storageKey = $app['config']->get('cartify::cookie.key');
+			// Get the key name
+			$key = $app['config']->get('cartify::cookie.key');
 
-			return new SessionStorage($app['session'], $storageKey);
+			// Get the default instance
+			$instance = $app['config']->get('cartify::instance');
+
+			return new SessionStorage($app['session'], $key, $instance);
 		});
 	}
 

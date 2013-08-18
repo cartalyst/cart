@@ -30,6 +30,13 @@ class SessionStorage implements StorageInterface {
 	protected $key = 'cartalyst_cartify';
 
 	/**
+	 * The instance that is being used.
+	 *
+	 * @var string
+	 */
+	protected $instance = 'main';
+
+	/**
 	 * Session store object.
 	 *
 	 * @var \Illuminate\Session\Store
@@ -41,15 +48,21 @@ class SessionStorage implements StorageInterface {
 	 *
 	 * @param  \Illuminate\Session\Store  $session
 	 * @param  string  $key
+	 * @param  string  $instance
 	 * @return void
 	 */
-	public function __construct(SessionStore $session, $key = null)
+	public function __construct(SessionStore $session, $key = null, $instance = null)
 	{
 		$this->session = $session;
 
 		if (isset($key))
 		{
 			$this->key = $key;
+		}
+
+		if (isset($instance))
+		{
+			$this->instance = $instance;
 		}
 	}
 
@@ -64,13 +77,58 @@ class SessionStorage implements StorageInterface {
 	}
 
 	/**
+	 * Return the session instance.
+	 *
+	 * @return string
+	 */
+	public function getInstance()
+	{
+		return $this->instance;
+	}
+
+	/**
+	 * Set the session instance.
+	 *
+	 * @param  string  $instance
+	 * @return void
+	 */
+	public function setInstance($instance)
+	{
+		$this->instance = $instance;
+	}
+
+	/**
+	 * Returns both session key and session instance.
+	 *
+	 * @return string
+	 */
+	public function getSessionKey()
+	{
+		$key = $this->getKey();
+
+		$instance = $this->getInstance();
+
+		return "{$key}.{$instance}";
+	}
+
+	/**
+	 * Returns all the available session instances of the session key.
+	 *
+	 * @return array
+	 */
+	public function instances()
+	{
+		return $this->session->get($this->getKey());
+	}
+
+	/**
 	 * Get the session value.
 	 *
 	 * @return mixed
 	 */
 	public function get()
 	{
-		return $this->session->get($this->getKey());
+		return $this->session->get($this->getSessionKey());
 	}
 
 	/**
@@ -81,7 +139,7 @@ class SessionStorage implements StorageInterface {
 	 */
 	public function put($value)
 	{
-		$this->session->put($this->getKey(), $value);
+		$this->session->put($this->getSessionKey(), $value);
 	}
 
 	/**
@@ -91,7 +149,7 @@ class SessionStorage implements StorageInterface {
 	 */
 	public function has()
 	{
-		return $this->session->has($this->getKey());
+		return $this->session->has($this->getSessionKey());
 	}
 
 	/**
@@ -101,7 +159,7 @@ class SessionStorage implements StorageInterface {
 	 */
 	public function forget()
 	{
-		$this->session->forget($this->getKey());
+		$this->session->forget($this->getSessionKey());
 	}
 
 }
