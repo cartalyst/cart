@@ -67,6 +67,10 @@ catch (Cartalyst\Cartify\Exceptions\CartInvalidPriceException $e)
 {
 	die('Price is invalid.');
 }
+catch (Cartalyst\Cartify\Exceptions\CartInvalidOptionsException $e)
+{
+	die('The provided options array is invalid or malformed.');
+}
 ```
 
 **Add multiple items into the cart**
@@ -292,3 +296,20 @@ $content = Cart::getContent();
 ```
 
 Now you are able to get the main cart content.
+
+**Grabbing all the Instances**
+
+```php
+Cart::getInstances()
+```
+
+**Remove an Instance**
+
+In order to remove an instance, you first need to set the instance you want to
+remove as the active one, then use the `forgetInstance()` method to remove it.
+
+```php
+Cart::instance('wishlist');
+
+Cart::forgetInstance();
+```
