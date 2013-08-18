@@ -69,7 +69,7 @@ class ItemCollection extends Collection {
 	}
 
 	/**
-	 *
+	 * Search for items with the given criteria.
 	 *
 	 * @return bool
 	 */

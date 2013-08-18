@@ -407,7 +407,7 @@ class Cartify {
 	}
 
 	/**
-	 *
+	 * Search for items with the given criteria.
 	 *
 	 * @param  array  $data
 	 * @return array
