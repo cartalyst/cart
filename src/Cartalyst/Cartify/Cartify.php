@@ -33,7 +33,7 @@ class Cartify {
 	/**
 	 * The storage driver used by Cartify.
 	 *
-	 * @var \Illuminate\Session\Store
+	 * @var Cartalyst\Cartify\Storage\StorageInterface
 	 */
 	protected $storage;
 
@@ -66,7 +66,7 @@ class Cartify {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Illuminate\Session\Store  $session
+	 * @param  Cartalyst\Cartify\Storage\StorageInterface  $storage
 	 * @return void
 	 */
 	public function __construct(StorageInterface $storage = null, ConfigRepository $config)

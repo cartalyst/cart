@@ -32,14 +32,14 @@ class SessionStorage implements StorageInterface {
 	/**
 	 * Session store object.
 	 *
-	 * @var Illuminate\Session\Store
+	 * @var \Illuminate\Session\Store
 	 */
 	protected $session;
 
 	/**
 	 * Creates a new Illuminate based Session driver for Cartify.
 	 *
-	 * @param  Illuminate\Session\Store  $session
+	 * @param  \Illuminate\Session\Store  $session
 	 * @param  string  $key
 	 * @return void
 	 */
