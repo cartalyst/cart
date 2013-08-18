@@ -407,6 +407,31 @@ class Cartify {
 	}
 
 	/**
+	 *
+	 *
+	 * @param  array  $data
+	 * @return array
+	 */
+	public function find($data)
+	{
+		$items = $this->getContent();
+
+		$rows = array();
+
+		foreach ($items as $item)
+		{
+			$found = $item->find($data);
+
+			if ($found)
+			{
+				$rows[] = $item;
+			}
+		}
+
+		return $rows;
+	}
+
+	/**
 	 * Return the sum of all item taxes.
 	 *
 	 * @return float

@@ -68,4 +68,22 @@ class ItemCollection extends Collection {
 		return (float) $this->get('tax');
 	}
 
+	/**
+	 *
+	 *
+	 * @return bool
+	 */
+	public function find($data)
+	{
+		foreach ($data as $key => $value)
+		{
+			if ($key === 'options')
+			{
+				return $this->{$key}->find($value);
+			}
+
+			return $this->{$key} == $value ? true : false;
+		}
+	}
+
 }
