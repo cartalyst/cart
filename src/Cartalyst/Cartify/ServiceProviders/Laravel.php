@@ -62,7 +62,7 @@ class Laravel extends ServiceProvider {
 		$this->app['cartify.session'] = $this->app->share(function($app)
 		{
 			// Get the key name
-			$key = $app['config']->get('cartify::cookie.key');
+			$key = $app['config']->get('cartify::session.key');
 
 			// Get the default instance
 			$instance = $app['config']->get('cartify::instance');

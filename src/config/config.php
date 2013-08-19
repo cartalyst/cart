@@ -37,21 +37,21 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Cookie
+	| Session
 	|--------------------------------------------------------------------------
 	|
-	| Configuration specific to the cookie component of Cartify.
+	| Configuration specific to the session component of Cartify.
 	|
 	*/
 
-	'cookie' => array(
+	'session' => array(
 
 		/*
 		|--------------------------------------------------------------------------
-		| Default Cookie Key
+		| Default Session Key
 		|--------------------------------------------------------------------------
 		|
-		| This option allows you to specify the default cookie key used by Cartify.
+		| This option allows you to specify the default session key used by Cartify.
 		|
 		*/
 
