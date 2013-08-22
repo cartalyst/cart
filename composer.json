@@ -1,5 +1,5 @@
 {
-	"name": "cartalyst/cartify",
+	"name": "cartalyst/cart",
 	"description": "Shopping cart package.",
 	"keywords": ["ecommerce", "laravel", "cart", "shopping"],
 	"license": "BSD-3-Clause",
@@ -35,7 +35,7 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Cartalyst\\Cartify": "src/"
+			"Cartalyst\\Cart": "src/"
 		}
 	},
 	"extra": {
