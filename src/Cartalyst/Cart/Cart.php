@@ -21,8 +21,8 @@
 use Cartalyst\Cart\Collections\CartCollection;
 use Cartalyst\Cart\Collections\ItemCollection;
 use Cartalyst\Cart\Collections\ItemOptionsCollection;
-use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartInvalidOptionsException;
+use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
@@ -60,7 +60,7 @@ class Cart {
 	/**
 	 * Constructor.
 	 *
-	 * @param  Cartalyst\Cart\Storage\StorageInterface  $storage
+	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
 	 * @param  \Illuminate\Config\Repository  $config
 	 * @return void
 	 */
@@ -84,10 +84,10 @@ class Cart {
 	 *
 	 * @param  array  $item
 	 * @return mixed
-	 * @throws Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
-	 * @throws Cartalyst\Cart\Exceptions\CartInvalidQuantityException
-	 * @throws Cartalyst\Cart\Exceptions\CartInvalidPriceException
-	 * @throws Cartalyst\Cart\Exceptions\CartInvalidOptionsException
+	 * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
+	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidPriceException
+	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidOptionsException
 	 */
 	public function add($item)
 	{
@@ -201,7 +201,7 @@ class Cart {
 	 * Remove an item or items from the cart.
 	 *
 	 * @return bool
-	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	public function remove()
 	{
@@ -230,7 +230,7 @@ class Cart {
 	 *
 	 * @param  string  $rowId
 	 * @return bool
-	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	protected function removeItem($rowId)
 	{
@@ -267,7 +267,7 @@ class Cart {
 	 * @param  string  $rowId
 	 * @param  array   $attributes
 	 * @return bool
-	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	public function update($rowId, $attributes = null)
 	{
@@ -347,8 +347,8 @@ class Cart {
 	 * Returns information about an item.
 	 *
 	 * @param  string  $rowId
-	 * @return Cartalyst\Cart\Collections\ItemCollection
-	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @return \Cartalyst\Cart\Collections\ItemCollection
+	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	public function getItem($rowId)
 	{
@@ -395,7 +395,7 @@ class Cart {
 	/**
 	 * Return the cart contents.
 	 *
-	 * @return Cartalyst\Cart\Collections\CartCollection
+	 * @return \Cartalyst\Cart\Collections\CartCollection
 	 */
 	public function getContent()
 	{
@@ -476,7 +476,7 @@ class Cart {
 	/**
 	 * Change the cart instance.
 	 *
-	 * @return Cartalyst\Cart\Cart
+	 * @return \Cartalyst\Cart\Cart
 	 */
 	public function instance($instance)
 	{
@@ -511,7 +511,7 @@ class Cart {
 	/**
 	 * Updates the cart.
 	 *
-	 * @param  Cartalyst\Cart\Collections\CartCollection
+	 * @param  \Cartalyst\Cart\Collections\CartCollection
 	 * @return void
 	 */
 	protected function updateCart($cart)
@@ -588,7 +588,7 @@ class Cart {
 	 *
 	 * @param  array  $arguments
 	 * @return void
-	 * @throws Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 */
 	protected function validateIndexes($arguments)
 	{
