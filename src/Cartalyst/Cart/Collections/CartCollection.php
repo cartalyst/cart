@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Cartify\Exceptions;
+<?php namespace Cartalyst\Cart\Collections;
 /**
- * Part of the Cartify package.
+ * Part of the Cart package.
  *
  * NOTICE OF LICENSE
  *
@@ -10,7 +10,7 @@
  * bundled with this package in the LICENSE file.  It is also available at
  * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
  *
- * @package    Cartify
+ * @package    Cart
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
-use Exception;
+use Illuminate\Support\Collection;
 
-class CartInvalidQuantityException extends Exception {}
+class CartCollection extends Collection {
+
+}

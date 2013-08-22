@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Cartify;
+<?php namespace Cartalyst\Cart;
 /**
- * Part of the Cartify package.
+ * Part of the Cart package.
  *
  * NOTICE OF LICENSE
  *
@@ -10,7 +10,7 @@
  * bundled with this package in the LICENSE file.  It is also available at
  * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
  *
- * @package    Cartify
+ * @package    Cart
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
@@ -18,28 +18,28 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cartify\Collections\CartCollection;
-use Cartalyst\Cartify\Collections\ItemCollection;
-use Cartalyst\Cartify\Collections\ItemOptionsCollection;
-use Cartalyst\Cartify\Exceptions\CartInvalidPriceException;
-use Cartalyst\Cartify\Exceptions\CartInvalidOptionsException;
-use Cartalyst\Cartify\Exceptions\CartInvalidQuantityException;
-use Cartalyst\Cartify\Exceptions\CartItemNotFoundException;
-use Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException;
-use Cartalyst\Cartify\Storage\StorageInterface;
+use Cartalyst\Cart\Collections\CartCollection;
+use Cartalyst\Cart\Collections\ItemCollection;
+use Cartalyst\Cart\Collections\ItemOptionsCollection;
+use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
+use Cartalyst\Cart\Exceptions\CartInvalidOptionsException;
+use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
+use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
+use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
+use Cartalyst\Cart\Storage\StorageInterface;
 use Illuminate\Config\Repository as ConfigRepository;
 
-class Cartify {
+class Cart {
 
 	/**
-	 * The storage driver used by Cartify.
+	 * The storage driver used by Cart.
 	 *
-	 * @var Cartalyst\Cartify\Storage\StorageInterface
+	 * @var Cartalyst\Cart\Storage\StorageInterface
 	 */
 	protected $storage;
 
 	/**
-	 * Cartify config repository.
+	 * Cart config repository.
 	 *
 	 * @var \Illuminate\Config\Repository
 	 */
@@ -60,7 +60,7 @@ class Cartify {
 	/**
 	 * Constructor.
 	 *
-	 * @param  Cartalyst\Cartify\Storage\StorageInterface  $storage
+	 * @param  Cartalyst\Cart\Storage\StorageInterface  $storage
 	 * @param  \Illuminate\Config\Repository  $config
 	 * @return void
 	 */
@@ -73,10 +73,10 @@ class Cartify {
 		$this->config = $config;
 
 		// Set the default cart instance
-		$this->instance($config->get('cartify::instance', 'main'));
+		$this->instance($config->get('cart::instance', 'main'));
 
 		// Set the required indexes
-		$this->setRequiredIndexes($config->get('cartify::requiredIndexes'));
+		$this->setRequiredIndexes($config->get('cart::requiredIndexes'));
 	}
 
 	/**
@@ -84,10 +84,10 @@ class Cartify {
 	 *
 	 * @param  array  $item
 	 * @return mixed
-	 * @throws Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException
-	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidQuantityException
-	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidPriceException
-	 * @throws Cartalyst\Cartify\Exceptions\CartInvalidOptionsException
+	 * @throws Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 * @throws Cartalyst\Cart\Exceptions\CartInvalidQuantityException
+	 * @throws Cartalyst\Cart\Exceptions\CartInvalidPriceException
+	 * @throws Cartalyst\Cart\Exceptions\CartInvalidOptionsException
 	 */
 	public function add($item)
 	{
@@ -201,7 +201,7 @@ class Cartify {
 	 * Remove an item or items from the cart.
 	 *
 	 * @return bool
-	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
+	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	public function remove()
 	{
@@ -230,7 +230,7 @@ class Cartify {
 	 *
 	 * @param  string  $rowId
 	 * @return bool
-	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
+	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	protected function removeItem($rowId)
 	{
@@ -267,7 +267,7 @@ class Cartify {
 	 * @param  string  $rowId
 	 * @param  array   $attributes
 	 * @return bool
-	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
+	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	public function update($rowId, $attributes = null)
 	{
@@ -347,8 +347,8 @@ class Cartify {
 	 * Returns information about an item.
 	 *
 	 * @param  string  $rowId
-	 * @return Cartalyst\Cartify\Collections\ItemCollection
-	 * @throws Cartalyst\Cartify\Exceptions\CartItemNotFoundException
+	 * @return Cartalyst\Cart\Collections\ItemCollection
+	 * @throws Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
 	public function getItem($rowId)
 	{
@@ -395,7 +395,7 @@ class Cartify {
 	/**
 	 * Return the cart contents.
 	 *
-	 * @return Cartalyst\Cartify\Collections\CartCollection
+	 * @return Cartalyst\Cart\Collections\CartCollection
 	 */
 	public function getContent()
 	{
@@ -476,7 +476,7 @@ class Cartify {
 	/**
 	 * Change the cart instance.
 	 *
-	 * @return Cartalyst\Cartify\Cartify
+	 * @return Cartalyst\Cart\Cart
 	 */
 	public function instance($instance)
 	{
@@ -511,7 +511,7 @@ class Cartify {
 	/**
 	 * Updates the cart.
 	 *
-	 * @param  Cartalyst\Cartify\Collections\CartCollection
+	 * @param  Cartalyst\Cart\Collections\CartCollection
 	 * @return void
 	 */
 	protected function updateCart($cart)
@@ -539,8 +539,10 @@ class Cartify {
 	 * @param  bool  $merge
 	 * @return void
 	 */
-	public function setRequiredIndexes($indexes, $merge = true)
+	public function setRequiredIndexes($indexes = array(), $merge = true)
 	{
+		$indexes = (array) $indexes;
+
 		$currentIndexes = $merge ? $this->requiredIndexes : array();
 
 		$this->requiredIndexes = array_unique(array_merge($currentIndexes, $indexes));
@@ -586,7 +588,7 @@ class Cartify {
 	 *
 	 * @param  array  $arguments
 	 * @return void
-	 * @throws Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException
+	 * @throws Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 */
 	protected function validateIndexes($arguments)
 	{

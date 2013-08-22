@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Cartify\Storage;
+<?php namespace Cartalyst\Cart\Storage;
 /**
- * Part of the Cartify package.
+ * Part of the Cart package.
  *
  * NOTICE OF LICENSE
  *
@@ -10,7 +10,7 @@
  * bundled with this package in the LICENSE file.  It is also available at
  * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
  *
- * @package    Cartify
+ * @package    Cart
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
@@ -27,7 +27,7 @@ class SessionStorage implements StorageInterface {
 	 *
 	 * @var string
 	 */
-	protected $key = 'cartalyst_cartify';
+	protected $key = 'cartalyst_cart';
 
 	/**
 	 * The instance that is being used.
@@ -44,7 +44,7 @@ class SessionStorage implements StorageInterface {
 	protected $session;
 
 	/**
-	 * Creates a new Illuminate based Session driver for Cartify.
+	 * Creates a new Illuminate based Session driver for Cart.
 	 *
 	 * @param  \Illuminate\Session\Store  $session
 	 * @param  string  $key

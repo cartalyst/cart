@@ -1,13 +1,13 @@
-Cartify v1
+Cart v1
 ===============
 
-Cartify is a framework agnostic shopping cart package.
+Cart is a framework agnostic shopping cart package.
 
 ------
 
 ### Installing In Laravel 4 (with Composer)
 
-There are four simple steps to install Cartify into Laravel 4:
+There are four simple steps to install Cart into Laravel 4:
 
 #### Step 1
 
@@ -23,13 +23,13 @@ Run `composer update` from the command line.
 
 Add the following to the list of service providers in `app/config/app.php`
 
-	Cartalyst\Cartify\ServiceProviders\Laravel
+	Cartalyst\Cart\ServiceProviders\Laravel
 
 #### Step 4
 
 Add the following to the list of class aliases in `app/config/app.php`
 
-	'Cart' => 'Cartalyst\Cartify\Facades\Laravel',
+	'Cart' => 'Cartalyst\Cart\Facades\Laravel',
 
 #### Step 5 (Optional)
 
@@ -55,19 +55,19 @@ try
 		'price'    => 12.50,
 	));
 }
-catch (Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException $e)
+catch (Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException $e)
 {
 	die("The [{$e->getMessage()}] value is required.");
 }
-catch (Cartalyst\Cartify\Exceptions\CartInvalidQuantityException $e)
+catch (Cartalyst\Cart\Exceptions\CartInvalidQuantityException $e)
 {
 	die('Quantity is invalid.');
 }
-catch (Cartalyst\Cartify\Exceptions\CartInvalidPriceException $e)
+catch (Cartalyst\Cart\Exceptions\CartInvalidPriceException $e)
 {
 	die('Price is invalid.');
 }
-catch (Cartalyst\Cartify\Exceptions\CartInvalidOptionsException $e)
+catch (Cartalyst\Cart\Exceptions\CartInvalidOptionsException $e)
 {
 	die('The provided options array is invalid or malformed.');
 }
@@ -104,7 +104,7 @@ try
 		),
 	));
 }
-catch (Cartalyst\Cartify\Exceptions\CartMissingRequiredIndexException $e)
+catch (Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException $e)
 {
 	die("The [{$e->getMessage()}] value is required.");
 }
@@ -119,7 +119,7 @@ try
 {
 	Cart::remove('027c91341fd5cf4d2579b49c4b6a90da');
 }
-catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
+catch (Cartalyst\Cart\Exceptions\CartItemNotfoundException $e)
 {
 	die('Item was not found.');
 }
@@ -141,7 +141,7 @@ try
 		'56f0ab12a38f8317060d40981f6a4a93',
 	));
 }
-catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
+catch (Cartalyst\Cart\Exceptions\CartItemNotfoundException $e)
 {
 	die('One of the provided items was not found.');
 }
@@ -156,7 +156,7 @@ try
 {
 	Cart::remove('027c91341fd5cf4d2579b49c4b6a90da', '56f0ab12a38f8317060d40981f6a4a93');
 }
-catch (Cartalyst\Cartify\Exceptions\CartItemNotfoundException $e)
+catch (Cartalyst\Cart\Exceptions\CartItemNotfoundException $e)
 {
 	die('One of the provided items was not found.');
 }
@@ -171,7 +171,7 @@ try
 {
 	Cart::update('027c91341fd5cf4d2579b49c4b6a90da', 2);
 }
-catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+catch (Cartalyst\Cart\Exceptions\CartItemNotFoundException $e)
 {
 	die('Item was not found.');
 }
@@ -189,7 +189,7 @@ try
 		'price'    => 12.50,
 	));
 }
-catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+catch (Cartalyst\Cart\Exceptions\CartItemNotFoundException $e)
 {
 	die('Item was not found.');
 }
@@ -215,7 +215,7 @@ try
 		),
 	));
 }
-catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+catch (Cartalyst\Cart\Exceptions\CartItemNotFoundException $e)
 {
 	die('One of the provided items was not found.');
 }
@@ -230,7 +230,7 @@ try
 {
 	$item = Cart::getItem('027c91341fd5cf4d2579b49c4b6a90da');
 }
-catch (Cartalyst\Cartify\Exceptions\CartItemNotFoundException $e)
+catch (Cartalyst\Cart\Exceptions\CartItemNotFoundException $e)
 {
 	die('One of the provided items was not found.');
 }
@@ -273,7 +273,7 @@ Cart::find(array('id' => 'foobar', 'name' => 'Foo Bar'), 'wishlist');
 ```
 ## Instances
 
-Cartify supports multiple cart instances, so that this way you can have has
+Cart supports multiple cart instances, so that this way you can have has
 many shopping carts on the same page as you want without any conflicts.
 
 Here are some examples on how it works
@@ -290,7 +290,7 @@ $content = Cart::getContent();
 ```
 
 As you can see the main difference was that we used the `instance()` method before
-adding the item, this way Cartify knows where we want to save the item.
+adding the item, this way Cart knows where we want to save the item.
 
 You probably have noticed that, on the `getContent()` call we are not using the
 `instance()` method anymore, thats because once you use the `instance()`

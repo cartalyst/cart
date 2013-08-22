@@ -1,6 +1,6 @@
-<?php namespace Cartalyst\Cartify\ServiceProviders;
+<?php namespace Cartalyst\Cart\ServiceProviders;
 /**
- * Part of the Cartify package.
+ * Part of the Cart package.
  *
  * NOTICE OF LICENSE
  *
@@ -10,7 +10,7 @@
  * bundled with this package in the LICENSE file.  It is also available at
  * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
  *
- * @package    Cartify
+ * @package    Cart
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
@@ -18,9 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cartify\Cartify;
-use Cartalyst\Cartify\Storage\DatabaseStorage;
-use Cartalyst\Cartify\Storage\SessionStorage;
+use Cartalyst\Cart\Cart;
+use Cartalyst\Cart\Storage\DatabaseStorage;
+use Cartalyst\Cart\Storage\SessionStorage;
 use Illuminate\Support\ServiceProvider;
 
 class Laravel extends ServiceProvider {
@@ -32,7 +32,7 @@ class Laravel extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('cartalyst/cartify', 'cartalyst/cartify');
+		$this->package('cartalyst/cart', 'cartalyst/cart');
 	}
 
 	/**
@@ -42,30 +42,30 @@ class Laravel extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['config']->package('cartalyst/cartify', __DIR__.'/../../config');
+		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../config');
 
 		$this->registerSessionStorage();
 
-		$this->app['cartify'] = $this->app->share(function($app)
+		$this->app['cart'] = $this->app->share(function($app)
 		{
-			return new Cartify($app['cartify.session'], $app['config']);
+			return new Cart($app['cart.session'], $app['config']);
 		});
 	}
 
 	/**
-	 * Register the session driver used by Cartify.
+	 * Register the session driver used by Cart.
 	 *
 	 * @return void
 	 */
 	protected function registerSessionStorage()
 	{
-		$this->app['cartify.session'] = $this->app->share(function($app)
+		$this->app['cart.session'] = $this->app->share(function($app)
 		{
 			// Get the key name
-			$key = $app['config']->get('cartify::session.key');
+			$key = $app['config']->get('cart::session.key');
 
 			// Get the default instance
-			$instance = $app['config']->get('cartify::instance');
+			$instance = $app['config']->get('cart::instance');
 
 			return new SessionStorage($app['session'], $key, $instance);
 		});
