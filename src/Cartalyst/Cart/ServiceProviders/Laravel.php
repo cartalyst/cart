@@ -46,10 +46,7 @@ class Laravel extends ServiceProvider {
 
 		$this->registerSessionStorage();
 
-		$this->app['cart'] = $this->app->share(function($app)
-		{
-			return new Cart($app['cart.session'], $app['config']);
-		});
+		$this->registerCart();
 	}
 
 	/**
@@ -68,6 +65,28 @@ class Laravel extends ServiceProvider {
 			$instance = $app['config']->get('cart::instance');
 
 			return new SessionStorage($app['session'], $key, $instance);
+		});
+	}
+
+	/**
+	 * Register the Cart.
+	 *
+	 * @return void
+	 */
+	protected function registerCart()
+	{
+		$this->app['cart'] = $this->app->share(function($app)
+		{
+			// Create a new Cart instance
+			$cart = new Cart($app['cart.session']);
+
+			// Set the default cart instance
+			$cart->instance($app['config']->get('cart::instance', 'main'));
+
+			// Set the required indexes
+			$cart->setRequiredIndexes($app['config']->get('cart::requiredIndexes'));
+
+			return $cart;
 		});
 	}
 

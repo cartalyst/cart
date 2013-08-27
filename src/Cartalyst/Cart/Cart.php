@@ -27,7 +27,6 @@ use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
-use Illuminate\Config\Repository as ConfigRepository;
 
 class Cart {
 
@@ -37,13 +36,6 @@ class Cart {
 	 * @var Cartalyst\Cart\Storage\StorageInterface
 	 */
 	protected $storage;
-
-	/**
-	 * Cart config repository.
-	 *
-	 * @var \Illuminate\Config\Repository
-	 */
-	protected $config;
 
 	/**
 	 * Holds all the required indexes.
@@ -61,22 +53,12 @@ class Cart {
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
-	 * @param  \Illuminate\Config\Repository  $config
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage = null, ConfigRepository $config)
+	public function __construct(StorageInterface $storage = null)
 	{
 		// Set the storage driver
 		$this->storage = $storage;
-
-		// Store the config repository
-		$this->config = $config;
-
-		// Set the default cart instance
-		$this->instance($config->get('cart::instance', 'main'));
-
-		// Set the required indexes
-		$this->setRequiredIndexes($config->get('cart::requiredIndexes'));
 	}
 
 	/**
@@ -532,9 +514,9 @@ class Cart {
 	/**
 	 * Set required indexes.
 	 *
-	 * By default it will merge the new indexes with the current
-	 * indexes, you can change this behavior by setting false
-	 * as the second parameter.
+	 * By default we will merge the provided indexes with the current
+	 * indexes, you can change this behavior by setting the second
+	 * parameter as false.
 	 *
 	 * @param  bool  $merge
 	 * @return void
