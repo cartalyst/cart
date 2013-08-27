@@ -45,6 +45,14 @@ class Cart {
 	protected $requiredIndexes = array(
 		'id',
 		'name',
+	);
+
+	/**
+	 * Holds all the reserved indexes.
+	 *
+	 * @var array
+	 */
+	protected $reservedIndexes = array(
 		'price',
 		'quantity',
 	);
@@ -525,9 +533,11 @@ class Cart {
 	{
 		$indexes = (array) $indexes;
 
-		$currentIndexes = $merge ? $this->requiredIndexes : array();
+		$currentIndexes = $merge ? $this->getrequiredIndexes() : array();
 
-		$this->requiredIndexes = array_unique(array_merge($currentIndexes, $indexes));
+		$reservedIndexes = $this->reservedIndexes;
+
+		$this->requiredIndexes = array_unique(array_merge($currentIndexes, $indexes, $reservedIndexes));
 	}
 
 	/**
