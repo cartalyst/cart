@@ -35,7 +35,7 @@ Add the following to the list of class aliases in `app/config/app.php`
 
 Publish the config file to change the default settings.
 
-Run `php artisan config:publish cartalyst/cartify`
+Run `php artisan config:publish cartalyst/cart`
 
 ------
 
