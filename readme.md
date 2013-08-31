@@ -13,7 +13,7 @@ There are four simple steps to install Cart into Laravel 4:
 
 Open your `composer.json` and add to the `required` attribute the following line:
 
-	"cartalyst/cartify": "1.0.*"
+	"cartalyst/cart": "1.0.*"
 
 #### Step 2
 
