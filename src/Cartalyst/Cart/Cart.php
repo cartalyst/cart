@@ -104,6 +104,9 @@ class Cart {
 		// Make sure the quantity is a number, and remove any leading zeros
 		$quantity = (float) $item['quantity'];
 
+		// Make sure that the quantity value is rounded
+		$quantity = round($quantity);
+
 		// Remove any leading zeros and anything that isn't a number or a
 		// decimal point from the price.
 		$price = (float) $item['price'];
@@ -131,9 +134,6 @@ class Cart {
 
 		// Generate the unique row id
 		$rowId = $this->generateRowId($item['id'], $options);
-
-		// Make sure that the quantity value is rounded
-		$quantity = round($quantity);
 
 		// Check if the item already exists on the cart
 		if ($this->itemExists($rowId))
