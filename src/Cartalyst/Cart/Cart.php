@@ -551,6 +551,17 @@ class Cart {
 	}
 
 	/**
+	 * Set the storage driver.
+	 *
+	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
+	 * @return void
+	 */
+	public function setStorage(StorageInterface $storage)
+	{
+		$this->storage = $storage;
+	}
+
+	/**
 	 * Generate a unique identifier base on the item data.
 	 *
 	 * @param  string  $id

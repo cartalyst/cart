@@ -19,8 +19,9 @@
  */
 
 use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\DatabaseStorage;
-use Cartalyst\Cart\Storage\SessionStorage;
+use Cartalyst\Cart\Storage\Cookies\IlluminateCookie;
+use Cartalyst\Cart\Storage\Databases\IlluminateDatabase;
+use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 use Illuminate\Support\ServiceProvider;
 
 class Laravel extends ServiceProvider {
@@ -44,19 +45,23 @@ class Laravel extends ServiceProvider {
 	{
 		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../config');
 
-		$this->registerSessionStorage();
+		$this->registerCookie();
+
+		$this->registerDatabase();
+
+		$this->registerSession();
 
 		$this->registerCart();
 	}
 
 	/**
-	 * Register the session driver used by Cart.
+	 * Register the cookie driver used by Cart.
 	 *
 	 * @return void
 	 */
-	protected function registerSessionStorage()
+	protected function registerCookie()
 	{
-		$this->app['cart.session'] = $this->app->share(function($app)
+		$this->app['cart.storage.cookie'] = $this->app->share(function($app)
 		{
 			// Get the key name
 			$key = $app['config']->get('cart::session.key');
@@ -64,7 +69,39 @@ class Laravel extends ServiceProvider {
 			// Get the default instance
 			$instance = $app['config']->get('cart::instance');
 
-			return new SessionStorage($app['session'], $key, $instance);
+			return new IlluminateCookie($app['cookie'], $key, $instance);
+		});
+	}
+
+	/**
+	 * Register the database driver used by Cart.
+	 *
+	 * @return void
+	 */
+	protected function registerDatabase()
+	{
+		$this->app['cart.storage.database'] = $this->app->share(function($app)
+		{
+			return new IlluminateDatabase($app['db'], $instance);
+		});
+	}
+
+	/**
+	 * Register the session driver used by Cart.
+	 *
+	 * @return void
+	 */
+	protected function registerSession()
+	{
+		$this->app['cart.storage.session'] = $this->app->share(function($app)
+		{
+			// Get the key name
+			$key = $app['config']->get('cart::session.key');
+
+			// Get the default instance
+			$instance = $app['config']->get('cart::instance');
+
+			return new IlluminateSession($app['session'], $key, $instance);
 		});
 	}
 
@@ -77,8 +114,11 @@ class Laravel extends ServiceProvider {
 	{
 		$this->app['cart'] = $this->app->share(function($app)
 		{
+			// Get the default storage driver
+			$storage = $app['config']->get('cart::driver', 'session');
+
 			// Create a new Cart instance
-			$cart = new Cart($app['cart.session']);
+			$cart = new Cart($app["cart.storage.{$storage}"]);
 
 			// Set the default cart instance
 			$cart->instance($app['config']->get('cart::instance', 'main'));
