@@ -33,6 +33,13 @@ class IlluminateCookie implements CookieInterface {
 	protected $key = 'cartalyst_cart';
 
 	/**
+	 * The time to live for the cookie.
+	 *
+	 * @var int
+	 */
+	protected $ttl = 10;
+
+	/**
 	 * The instance that is being used.
 	 *
 	 * @var string
@@ -122,6 +129,27 @@ class IlluminateCookie implements CookieInterface {
 	}
 
 	/**
+	 * Return the time to live for the cookie.
+	 *
+	 * @return int
+	 */
+	public function getTtl()
+	{
+		return $this->ttl;
+	}
+
+	/**
+	 * Return the time to live for the cookie.
+	 *
+	 * @param  int  $ttl
+	 * @return void
+	 */
+	public function setTtl($ttl)
+	{
+		$this->ttl = $ttl;
+	}
+
+	/**
 	 * Returns all the available cookie instances of the cookie key.
 	 *
 	 * @return array
@@ -145,12 +173,11 @@ class IlluminateCookie implements CookieInterface {
 	 * Put a value in the Cart cookie.
 	 *
 	 * @param  mixed  $value
-	 * @param  int    $minutes
 	 * @return void
 	 */
-	public function put($value, $minutes = null)
+	public function put($value)
 	{
-		$this->cookie = $this->jar->make($this->getCookieKey(), $value, $minutes);
+		$this->cookie = $this->jar->make($this->getCookieKey(), $value, $this->getTtl());
 	}
 
 	/**

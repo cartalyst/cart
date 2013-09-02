@@ -69,7 +69,11 @@ class Laravel extends ServiceProvider {
 			// Get the default instance
 			$instance = $app['config']->get('cart::instance');
 
-			return new IlluminateCookie($app['cookie'], $key, $instance);
+			$cookie = new IlluminateCookie($app['cookie'], $key, $instance);
+
+			$cookie->setTtl($app['config']->get('cart::cookie.ttl'));
+
+			return $cookie;
 		});
 	}
 

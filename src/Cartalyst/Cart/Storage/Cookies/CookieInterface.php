@@ -23,35 +23,6 @@ use Cartalyst\Cart\Storage\StorageInterface;
 interface CookieInterface extends StorageInterface {
 
 	/**
-	 * Returns the cookie key.
-	 *
-	 * @return string
-	 */
-	public function getKey();
-
-	/**
-	 * Return the session instance.
-	 *
-	 * @return string
-	 */
-	public function getInstance();
-
-	/**
-	 * Set the session instance.
-	 *
-	 * @param  string  $instance
-	 * @return void
-	 */
-	public function setInstance($instance);
-
-	/**
-	 * Returns all the available session instances of the session key.
-	 *
-	 * @return array
-	 */
-	public function instances();
-
-	/**
 	 * Returns both session key and session instance.
 	 *
 	 * @return string
@@ -59,41 +30,18 @@ interface CookieInterface extends StorageInterface {
 	public function getCookieKey();
 
 	/**
-	 * Get the Cart cookie value.
+	 * Return the time to live for the cookie.
 	 *
-	 * @return mixed
+	 * @return int
 	 */
-	public function get();
+	public function getTtl();
 
 	/**
-	 * Put a value in the Cart cookie.
+	 * Return the time to live for the cookie.
 	 *
-	 * @param  mixed  $value
-	 * @param  int    $minutes
+	 * @param  int  $ttl
 	 * @return void
 	 */
-	public function put($value, $minutes = null);
-
-	/**
-	 * Put a value in the Cart cookie forever.
-	 *
-	 * @param  mixed  $value
-	 * @return void
-	 */
-	public function forever($value);
-
-	/**
-	 * Checks if an attribute is defined.
-	 *
-	 * @return bool
-	 */
-	public function has();
-
-	/**
-	 * Remove the Cart cookie.
-	 *
-	 * @return void
-	 */
-	public function forget();
+	public function setTtl($ttl);
 
 }

@@ -136,10 +136,9 @@ class IlluminateSession implements SessionInterface {
 	 * Put a value in the session.
 	 *
 	 * @param  mixed  $value
-	 * @param  int    $minutes
 	 * @return void
 	 */
-	public function put($value, $minutes = null)
+	public function put($value)
 	{
 		$this->session->put($this->getSessionKey(), $value);
 	}
