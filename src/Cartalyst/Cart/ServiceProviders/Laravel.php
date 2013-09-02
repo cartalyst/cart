@@ -55,7 +55,7 @@ class Laravel extends ServiceProvider {
 	}
 
 	/**
-	 * Register the cookie driver used by Cart.
+	 * Register the cookie driver used by the Cart.
 	 *
 	 * @return void
 	 */
@@ -74,7 +74,7 @@ class Laravel extends ServiceProvider {
 	}
 
 	/**
-	 * Register the database driver used by Cart.
+	 * Register the database driver used by the Cart.
 	 *
 	 * @return void
 	 */
@@ -87,7 +87,7 @@ class Laravel extends ServiceProvider {
 	}
 
 	/**
-	 * Register the session driver used by Cart.
+	 * Register the session driver used by the Cart.
 	 *
 	 * @return void
 	 */

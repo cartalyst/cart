@@ -163,5 +163,4 @@ class IlluminateSession implements SessionInterface {
 		$this->session->forget($this->getSessionKey());
 	}
 
-
 }
