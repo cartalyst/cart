@@ -184,7 +184,7 @@ class Cart {
 		// Update the cart contents
 		$this->updateCart($cart);
 
-		return $cart;
+		return $this->storage->getHeaders();
 	}
 
 	/**

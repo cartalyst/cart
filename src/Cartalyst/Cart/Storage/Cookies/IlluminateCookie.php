@@ -184,5 +184,14 @@ class IlluminateCookie implements CookieInterface {
 		$this->cookie = $this->jar->forget($this->getCookieKey());
 	}
 
+	/**
+	 * Return the cookie headers.
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Cookie
+	 */
+	public function getHeaders()
+	{
+		return $this->cookie;
+	}
 
 }
