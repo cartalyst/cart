@@ -399,7 +399,14 @@ class Cart {
 	 */
 	public function getTotalItems()
 	{
-		return (int) $this->getContent()->count();
+		$total = 0;
+
+		foreach ($this->getContent() as $item)
+		{
+			$total += $item->quantity;
+		}
+
+		return (int) $total;
 	}
 
 	/**
