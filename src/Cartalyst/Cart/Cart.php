@@ -89,7 +89,7 @@ class Cart {
 	 */
 	public function add($item)
 	{
-		$this->events->fire('cart.adding', array($cart));
+		$this->events->fire('cart.adding', array());
 
 		// Do we have multiple items?
 		if ($this->isMulti($item))
@@ -207,7 +207,7 @@ class Cart {
 	 */
 	public function remove()
 	{
-		$this->events->fire('cart.removing', array($cart));
+		$this->events->fire('cart.removing', array());
 
 		$items = func_get_args();
 
@@ -277,7 +277,7 @@ class Cart {
 	 */
 	public function update($rowId, $attributes = null)
 	{
-		$this->events->fire('cart.updating', array($cart));
+		$this->events->fire('cart.updating', array());
 
 		// Do we have an array of items to be updated?
 		if (is_array($rowId))
