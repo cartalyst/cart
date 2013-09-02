@@ -30,14 +30,14 @@ interface CookieInterface extends StorageInterface {
 	public function getCookieKey();
 
 	/**
-	 * Return the time to live for the cookie.
+	 * Return the time to live.
 	 *
 	 * @return int
 	 */
 	public function getTtl();
 
 	/**
-	 * Return the time to live for the cookie.
+	 * Set the time to live.
 	 *
 	 * @param  int  $ttl
 	 * @return void

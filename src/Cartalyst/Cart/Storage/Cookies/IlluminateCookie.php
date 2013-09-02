@@ -33,7 +33,7 @@ class IlluminateCookie implements CookieInterface {
 	protected $key = 'cartalyst_cart';
 
 	/**
-	 * The time to live for the cookie.
+	 * The time to live.
 	 *
 	 * @var int
 	 */
@@ -129,7 +129,7 @@ class IlluminateCookie implements CookieInterface {
 	}
 
 	/**
-	 * Return the time to live for the cookie.
+	 * Return the time to live.
 	 *
 	 * @return int
 	 */
@@ -139,7 +139,7 @@ class IlluminateCookie implements CookieInterface {
 	}
 
 	/**
-	 * Return the time to live for the cookie.
+	 * Set the time to live.
 	 *
 	 * @param  int  $ttl
 	 * @return void
