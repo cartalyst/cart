@@ -29,7 +29,7 @@ return array(
 	| requests. By default, we will use the lightweight session driver but
 	| you may specify any of the other wonderful drivers provided here.
 	|
-	| Supported: "session"
+	| Supported: "session", "cookie", "database"
 	|
 	*/
 
