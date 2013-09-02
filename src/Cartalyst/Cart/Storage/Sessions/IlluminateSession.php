@@ -99,6 +99,16 @@ class IlluminateSession implements SessionInterface {
 	}
 
 	/**
+	 * Returns all the available session instances of the session key.
+	 *
+	 * @return array
+	 */
+	public function instances()
+	{
+		return $this->session->get($this->getKey());
+	}
+
+	/**
 	 * Returns both session key and session instance.
 	 *
 	 * @return string
@@ -110,16 +120,6 @@ class IlluminateSession implements SessionInterface {
 		$instance = $this->getInstance();
 
 		return "{$key}.{$instance}";
-	}
-
-	/**
-	 * Returns all the available session instances of the session key.
-	 *
-	 * @return array
-	 */
-	public function instances()
-	{
-		return $this->session->get($this->getKey());
 	}
 
 	/**
@@ -136,9 +136,10 @@ class IlluminateSession implements SessionInterface {
 	 * Put a value in the session.
 	 *
 	 * @param  mixed  $value
+	 * @param  int    $minutes
 	 * @return void
 	 */
-	public function put($value)
+	public function put($value, $minutes = null)
 	{
 		$this->session->put($this->getSessionKey(), $value);
 	}

@@ -30,13 +30,49 @@ interface CookieInterface extends StorageInterface {
 	public function getKey();
 
 	/**
+	 * Return the session instance.
+	 *
+	 * @return string
+	 */
+	public function getInstance();
+
+	/**
+	 * Set the session instance.
+	 *
+	 * @param  string  $instance
+	 * @return void
+	 */
+	public function setInstance($instance);
+
+	/**
+	 * Returns all the available session instances of the session key.
+	 *
+	 * @return array
+	 */
+	public function instances();
+
+	/**
+	 * Returns both session key and session instance.
+	 *
+	 * @return string
+	 */
+	public function getCookieKey();
+
+	/**
+	 * Get the Cart cookie value.
+	 *
+	 * @return mixed
+	 */
+	public function get();
+
+	/**
 	 * Put a value in the Cart cookie.
 	 *
 	 * @param  mixed  $value
 	 * @param  int    $minutes
 	 * @return void
 	 */
-	public function put($value, $minutes);
+	public function put($value, $minutes = null);
 
 	/**
 	 * Put a value in the Cart cookie forever.
@@ -47,11 +83,11 @@ interface CookieInterface extends StorageInterface {
 	public function forever($value);
 
 	/**
-	 * Get the Cart cookie value.
+	 * Checks if an attribute is defined.
 	 *
-	 * @return mixed
+	 * @return bool
 	 */
-	public function get();
+	public function has();
 
 	/**
 	 * Remove the Cart cookie.

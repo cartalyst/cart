@@ -45,18 +45,18 @@ interface SessionInterface extends StorageInterface {
 	public function setInstance($instance);
 
 	/**
-	 * Returns both session key and session instance.
-	 *
-	 * @return string
-	 */
-	public function getSessionKey();
-
-	/**
 	 * Returns all the available session instances of the session key.
 	 *
 	 * @return array
 	 */
 	public function instances();
+
+	/**
+	 * Returns both session key and session instance.
+	 *
+	 * @return string
+	 */
+	public function getSessionKey();
 
 	/**
 	 * Get the session value.

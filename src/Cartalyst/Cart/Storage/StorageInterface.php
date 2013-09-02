@@ -43,13 +43,6 @@ interface StorageInterface {
 	public function setInstance($instance);
 
 	/**
-	 * Returns both session key and session instance.
-	 *
-	 * @return string
-	 */
-	public function getSessionKey();
-
-	/**
 	 * Returns all the available session instances of the session key.
 	 *
 	 * @return array
@@ -62,14 +55,6 @@ interface StorageInterface {
 	 * @return mixed
 	 */
 	public function get();
-
-	/**
-	 * Put a value in the session.
-	 *
-	 * @param  mixed  $value
-	 * @return void
-	 */
-	public function put($value);
 
 	/**
 	 * Checks if an attribute is defined.
