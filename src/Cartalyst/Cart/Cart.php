@@ -274,6 +274,7 @@ class Cart {
 	 * @param  array   $attributes
 	 * @return bool
 	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
 	 */
 	public function update($rowId, $attributes = null)
 	{
@@ -319,7 +320,19 @@ class Cart {
 		// We are probably updating the quantity
 		else
 		{
-			$row->put('quantity', (int) round($attributes));
+			// Make sure the quantity is a number, and remove any leading zeros
+			$quantity = (float) $attributes;
+
+			// Make sure that the quantity value is rounded
+			$quantity = round($quantity);
+
+			// Check if the quantity value is correct
+			if ( ! is_numeric($quantity) or $quantity < 1)
+			{
+				throw new CartInvalidQuantityException;
+			}
+
+			$row->put('quantity', $quantity);
 		}
 
 		// Should we update the item subtotal?
