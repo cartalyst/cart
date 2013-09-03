@@ -207,8 +207,6 @@ class Cart {
 	 */
 	public function remove()
 	{
-		$this->events->fire('cart.removing', array());
-
 		$items = func_get_args();
 
 		if ($this->isMulti($items))
@@ -226,8 +224,6 @@ class Cart {
 			}
 		}
 
-		$this->events->fire('cart.removed', array($cart));
-
 		return true;
 	}
 
@@ -240,6 +236,8 @@ class Cart {
 	 */
 	protected function removeItem($rowId)
 	{
+		$this->events->fire('cart.removing', array());
+
 		// Do we have an array of items to be removed?
 		if (is_array($rowId))
 		{
@@ -262,6 +260,8 @@ class Cart {
 
 		// Remove the item from the cart
 		$cart->forget($rowId);
+
+		$this->events->fire('cart.removed', array($cart));
 
 		// Update the cart contents
 		return $this->updateCart($cart);
