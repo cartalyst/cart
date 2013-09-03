@@ -36,7 +36,7 @@ Package Story
 License
 --------
 
-OSI BSD 3 [license](license.md).
+OSI BSD 3 [licence](licence.md).
 
 Issues
 --------
