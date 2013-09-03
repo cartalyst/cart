@@ -182,10 +182,6 @@ catch (Cartalyst\Cart\Exceptions\CartItemNotFoundException $e)
 {
 	die('Item was not found.');
 }
-catch (Cartalyst\Cart\Exceptions\CartInvalidQuantityException $e)
-{
-	die('Quantity is invalid.');
-}
 ```
 
 **Update a single item**
