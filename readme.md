@@ -33,7 +33,7 @@ Package Story
 - [x] User can empty the cart.
 
 
-License
+Licence
 --------
 
 OSI BSD 3 [licence](licence.md).
