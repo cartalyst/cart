@@ -353,7 +353,3 @@ Cart::instance('wishlist');
 
 Cart::forgetInstance();
 ```
-
-## Known Issues
-
-None
