@@ -53,6 +53,13 @@ try
 		'name'     => 'Foo Bar 123',
 		'quantity' => 1,
 		'price'    => 12.50,
+		'variants'  => array(
+			'size' => array(
+				'label' => 'Size',
+				'value' => 'L',
+				'price' => 5,
+			),
+		),
 	));
 }
 catch (Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException $e)
@@ -67,9 +74,9 @@ catch (Cartalyst\Cart\Exceptions\CartInvalidPriceException $e)
 {
 	die('Price is invalid.');
 }
-catch (Cartalyst\Cart\Exceptions\CartInvalidOptionsException $e)
+catch (Cartalyst\Cart\Exceptions\CartInvalidVariantsException $e)
 {
-	die('The provided options array is invalid or malformed.');
+	die('The provided variants array is invalid or malformed.');
 }
 ```
 
@@ -90,7 +97,7 @@ try
 			'name'     => 'Baz Foo',
 			'quantity' => 1,
 			'price'    => 12.00,
-			'options'  => array(
+			'variants'  => array(
 				'size' => array(
 					'label' => 'Size',
 					'value' => 'L',
@@ -232,7 +239,7 @@ try
 }
 catch (Cartalyst\Cart\Exceptions\CartItemNotFoundException $e)
 {
-	die('One of the provided items was not found.');
+	die('The item was not found.');
 }
 ```
 
