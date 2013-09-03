@@ -81,12 +81,7 @@ class ItemCollection extends Collection {
 			{
 				foreach ($value as $key => $val)
 				{
-					$variants = $this->variants->{$key};
-
-					foreach ($val as $k)
-					{
-						return $variants->find($val);
-					}
+					return $this->variants->{$key}->find($val);
 				}
 			}
 
