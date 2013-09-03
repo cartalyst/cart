@@ -1,4 +1,4 @@
-# Cart v1.0.0
+# Cart v0.0.8
 
 A framework agnostic shopping cart package. 
 
