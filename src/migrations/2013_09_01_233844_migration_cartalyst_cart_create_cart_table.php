@@ -29,10 +29,12 @@ class MigrationCartalystCartCreateCartTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('cart', function()
+		Schema::create('cart', function($table)
 		{
 			$table->increments('id');
 			$table->string('session_id');
+			$table->string('instance');
+			$table->string('row_id');
 			$table->string('name');
 			$table->decimal('price', 10, 5);
 			$table->decimal('quantity', 10, 5);
