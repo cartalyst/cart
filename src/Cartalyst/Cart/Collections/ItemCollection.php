@@ -79,7 +79,7 @@ class ItemCollection extends Collection {
 		{
 			if ($key === 'variants')
 			{
-				return $this->{$key}->find($value);
+				return $this->variants->find($value);
 			}
 
 			return $this->{$key} === $value ? true : false;
