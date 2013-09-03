@@ -270,14 +270,36 @@ $totalItems = Cart::getTotalItems();
 **Search for Items**
 
 ```php
-Cart::find(array('id' => 'foobar', 'name' => 'Foo Bar'));
+Cart::find(array(
+	'id'    => 'foobar',
+	'name'  => 'Foo Bar',
+	'price' => (float) 5,
+));
 ```
 
 **Search for Items on other Cart Instances**
 
 ```php
-Cart::find(array('id' => 'foobar', 'name' => 'Foo Bar'), 'wishlist');
+Cart::find(array(
+	'id'   => 'foobar',
+	'name' => 'Foo Bar',
+), 'wishlist');
 ```
+
+**Search for Items with variants**
+```php
+Cart::find(array(
+	'id'   => 'foobar',
+	'name' => 'Foo Bar',
+	'variants' => array(
+		'size' => array(
+			'price' => (float) 5,
+		),
+	),
+));
+```
+> Note: When searching for `price` or `quantity` make sure that the value is a `float`.
+
 ## Instances
 
 Cart supports multiple cart instances, so that this way you can have has
