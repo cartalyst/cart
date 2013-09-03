@@ -79,7 +79,15 @@ class ItemCollection extends Collection {
 		{
 			if ($key === 'variants')
 			{
-				return $this->variants->find($value);
+				foreach ($value as $k => $v)
+				{
+					$variants = $this->variants->{$k};
+
+					foreach ($v as $x)
+					{
+						return $variants->find($v);
+					}
+				}
 			}
 
 			return $this->{$key} === $value ? true : false;
