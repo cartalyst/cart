@@ -20,7 +20,7 @@
 
 use Cartalyst\Cart\Cart;
 use Cartalyst\Cart\Storage\Cookies\IlluminateCookie;
-use Cartalyst\Cart\Storage\Databases\IlluminateDatabase;
+use Cartalyst\Cart\Storage\Database\IlluminateDatabase;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 use Illuminate\Support\ServiceProvider;
 
@@ -86,7 +86,13 @@ class Laravel extends ServiceProvider {
 	{
 		$this->app['cart.storage.database'] = $this->app->share(function($app)
 		{
-			return new IlluminateDatabase($app['db'], $instance);
+			// Get the key name
+			$key = $app['config']->get('cart::session.key');
+
+			// Get the default instance
+			$instance = $app['config']->get('cart::instance');
+
+			return new IlluminateDatabase($app['db'], $key, $instance);
 		});
 	}
 
