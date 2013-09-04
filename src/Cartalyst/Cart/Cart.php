@@ -178,7 +178,8 @@ class Cart {
 				'quantity' => $quantity,
 				'price'    => $price,
 				'tax'      => ! empty($item['tax']) ? $item['tax'] : null,
-				'variants'  => $variantsCollection,
+				'weight'   => ! empty($item['weight']) ? $item['weight'] : null,
+				'variants' => $variantsCollection,
 			));
 		}
 
@@ -417,6 +418,40 @@ class Cart {
 	}
 
 	/**
+	 * Return the sum of all item taxes.
+	 *
+	 * @return float
+	 */
+	public function getTaxTotal()
+	{
+		$total = 0;
+
+		foreach ($this->getContent() as $item)
+		{
+			$total += $item->getTax();
+		}
+
+		return (float) $total;
+	}
+
+	/**
+	 * Return the total cart weight.
+	 *
+	 * @return float
+	 */
+	public function getWeightTotal()
+	{
+		$total = 0;
+
+		foreach ($this->getContent() as $item)
+		{
+			$total += $item->getWeight();
+		}
+
+		return (float) $total;
+	}
+
+	/**
 	 * Return the cart contents.
 	 *
 	 * @return \Cartalyst\Cart\Collections\CartCollection
@@ -458,23 +493,6 @@ class Cart {
 		}
 
 		return $rows;
-	}
-
-	/**
-	 * Return the sum of all item taxes.
-	 *
-	 * @return float
-	 */
-	public function getTaxTotal()
-	{
-		$total = 0;
-
-		foreach ($this->getContent() as $item)
-		{
-			$total += $item->getTax();
-		}
-
-		return (float) $total;
 	}
 
 	/**

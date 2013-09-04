@@ -69,6 +69,16 @@ class ItemCollection extends Collection {
 	}
 
 	/**
+	 * Return the total weight of the item.
+	 *
+	 * @return float
+	 */
+	public function getWeight()
+	{
+		return (float) $this->get('weight') * $this->get('quantity');
+	}
+
+	/**
 	 * Search for items with the given criteria.
 	 *
 	 * @return bool

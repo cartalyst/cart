@@ -1,10 +1,3 @@
-Cart v1
-===============
-
-Cart is a framework agnostic shopping cart package.
-
-------
-
 ### Installing In Laravel 4 (with Composer)
 
 There are four simple steps to install Cart into Laravel 4:
@@ -116,6 +109,9 @@ catch (Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException $e)
 	die("The [{$e->getMessage()}] value is required.");
 }
 ```
+
+> Note: We have optional parameteres like `tax` and `weight` that you can pass
+when adding a product into the cart.
 
 ### Removing items
 
