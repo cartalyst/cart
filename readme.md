@@ -1,59 +1,34 @@
-# Cart v0.0.8
+#Cart v0.9.0
 
-A framework agnostic shopping cart package.
+A framework agnostic shopping cart package featuring multiple cart instances and item variants. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
 
-Package Story
---------
-[roadmap](roadmap.md)
+##Package Story
 
-- [x] User can add an item to cart.
-- [x] User can add multiple items to cart.
-- [x] User can remove an item from cart.
-- [x] User can remove multiple items from cart.
+Track the history of this packages story via the package [roadmap](roadmap.md).
 
-- [x] User can update an items quantity.
-- [x] User can update a single item.
-- [x] User can update multiple items.
+####Complete
+- User can add an item to cart.
+- User can add multiple items to cart.
+- User can remove an item from cart.
+- User can remove multiple items from cart.
+- User can update an items quantity.
+- User can update a single item.
+- User can update multiple items.
+- User can return info of item in cart.
+- User can return cart total.
+- User can return total # of items in cart.
+- User can search for items in cart.
+- User can search for items in other cart instances.
+- User can create a cart instance.
+- User can return all cart instances.
+- User can remove a cart instance.
+- User can empty the cart.
 
-- [x] User can return info of item in cart.
-- [x] User can return cart total.
-- [x] User can return total # of items in cart.
-- [x] User can search for items in cart.
-- [x] User can search for items in other cart instances.
-
-- [x] User can create a cart instance.
-- [x] User can return all cart instances.
-- [x] User can remove a cart instance.
-- [ ] User can save a cart instance.
-
-- [ ] User can assign variant label
-- [ ] User can assign variant value
-- [ ] User can assign variant price
-
-- [x] User can empty the cart.
-
-
-Licence
---------
-
-OSI BSD 3 [license](license.md).
-
-Issues
---------
-
-Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
-
-https://github.com/cartalyst/cart/issues
-
-Support
---------
-
-Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
-
-Join us for a chat on IRC.
-
-Server: irc.freenode.net
-Channel: #cartalyst
+####Incomplete
+- User can save a cart instance.
+- User can assign variant label
+- User can assign variant value
+- User can assign variant price
 
 Versioning
 ----------
@@ -70,4 +45,17 @@ And constructed with the following guidelines:
 * New additions without breaking backward compatibility bumps the minor (and resets the patch)
 * Bug fixes and misc changes bumps the patch
 
+Support
+--------
+
+Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
+
+https://github.com/cartalyst/cart/issues
+
+Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
+
+Join us for a chat on IRC.
+
+Server: irc.freenode.net
+Channel: #cartalyst
 
