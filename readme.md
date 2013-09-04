@@ -11,7 +11,7 @@ Track the history of this packages story via the package [roadmap](roadmap.md).
 - User can assign variant label
 - User can assign variant value
 - User can assign variant price
-- 
+
 ####Complete
 - User can add an item to cart.
 - User can add multiple items to cart.
