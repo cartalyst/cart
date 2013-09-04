@@ -2,7 +2,7 @@
 
 A framework agnostic shopping cart package featuring multiple cart instances and item variants. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
 
-##Package Roadmap
+##Package Story
 
 History and future capabilities.
 
