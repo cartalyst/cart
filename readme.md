@@ -1,8 +1,8 @@
 # Cart v0.0.8
 
-A framework agnostic shopping cart package. 
+A framework agnostic shopping cart package.
 
-Package Story 
+Package Story
 --------
 [roadmap](roadmap.md)
 
@@ -15,7 +15,7 @@ Package Story
 - [x] User can update a single item.
 - [x] User can update multiple items.
 
-- [x] User can return info of item in cart. 
+- [x] User can return info of item in cart.
 - [x] User can return cart total.
 - [x] User can return total # of items in cart.
 - [x] User can search for items in cart.
@@ -26,7 +26,7 @@ Package Story
 - [x] User can remove a cart instance.
 - [ ] User can save a cart instance.
 
-- [ ] User can assign variant label 
+- [ ] User can assign variant label
 - [ ] User can assign variant value
 - [ ] User can assign variant price
 
@@ -36,7 +36,7 @@ Package Story
 Licence
 --------
 
-OSI BSD 3 [licence](licence.md).
+OSI BSD 3 [license](license.md).
 
 Issues
 --------
