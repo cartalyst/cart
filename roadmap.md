@@ -1,5 +1,11 @@
 #Cart Roadmap
 
+####Incomplete
+- User can save a cart instance.
+- User can assign variant label
+- User can assign variant value
+- User can assign variant price
+
 
 ####Complete
 - User can add an item to cart. **01-AUG-13**
@@ -19,8 +25,3 @@
 - User can remove a cart instance. **01-AUG-13**
 - User can empty the cart. **01-AUG-13**
 
-####Incomplete
-- User can save a cart instance.
-- User can assign variant label
-- User can assign variant value
-- User can assign variant price
