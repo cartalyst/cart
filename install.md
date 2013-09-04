@@ -42,11 +42,11 @@ Run `php artisan config:publish cartalyst/cart`
 try
 {
 	Cart::add(array(
-		'id'       => 'foobar123',
-		'name'     => 'Foo Bar 123',
-		'quantity' => 1,
-		'price'    => 12.50,
-		'variants'  => array(
+		'id'         => 'foobar123',
+		'name'       => 'Foo Bar 123',
+		'quantity'   => 1,
+		'price'      => 12.50,
+		'attributes' => array(
 			'size' => array(
 				'label' => 'Size',
 				'value' => 'L',
@@ -67,9 +67,9 @@ catch (Cartalyst\Cart\Exceptions\CartInvalidPriceException $e)
 {
 	die('Price is invalid.');
 }
-catch (Cartalyst\Cart\Exceptions\CartInvalidVariantsException $e)
+catch (Cartalyst\Cart\Exceptions\CartInvalidAttributesException $e)
 {
-	die('The provided variants array is invalid or malformed.');
+	die('The provided attributes array is invalid or malformed.');
 }
 ```
 
@@ -90,7 +90,7 @@ try
 			'name'     => 'Baz Foo',
 			'quantity' => 1,
 			'price'    => 12.00,
-			'variants'  => array(
+			'attributes'  => array(
 				'size' => array(
 					'label' => 'Size',
 					'value' => 'L',
@@ -282,12 +282,12 @@ Cart::find(array(
 ), 'wishlist');
 ```
 
-**Search for Items with variants**
+**Search for Items with attributes**
 ```php
 Cart::find(array(
 	'id'   => 'foobar',
 	'name' => 'Foo Bar',
-	'variants' => array(
+	'attributes' => array(
 		'size' => array(
 			'price' => (float) 5,
 		),

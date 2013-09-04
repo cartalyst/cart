@@ -20,10 +20,10 @@
 
 use Cartalyst\Cart\Collections\CartCollection;
 use Cartalyst\Cart\Collections\ItemCollection;
-use Cartalyst\Cart\Collections\ItemVariantsCollection;
+use Cartalyst\Cart\Collections\ItemAttributesCollection;
+use Cartalyst\Cart\Exceptions\CartInvalidAttributesException;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
-use Cartalyst\Cart\Exceptions\CartInvalidVariantsException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
@@ -85,7 +85,7 @@ class Cart {
 	 * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
 	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidPriceException
-	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidVariantsException
+	 * @throws \Cartalyst\Cart\Exceptions\CartInvalidAttributesException
 	 */
 	public function add($item)
 	{
@@ -133,17 +133,17 @@ class Cart {
 			throw new CartInvalidPriceException;
 		}
 
-		// Get this item variants
-		$variants = ! empty($item['variants']) ? $item['variants'] : array();
+		// Get this item attribute
+		$attributes = ! empty($item['attributes']) ? $item['attributes'] : array();
 
-		// Validate the variants
-		if ( ! is_array($variants))
+		// Validate the attribute
+		if ( ! is_array($attributes))
 		{
-			throw new CartInvalidVariantsException;
+			throw new CartInvalidAttributesException;
 		}
 
 		// Generate the unique row id
-		$rowId = $this->generateRowId($item['id'], $variants);
+		$rowId = $this->generateRowId($item['id'], $attributes);
 
 		// Check if the item already exists on the cart
 		if ($this->itemExists($rowId))
@@ -156,30 +156,30 @@ class Cart {
 		}
 		else
 		{
-			// Create a new variants collection for this item
-			$variantsCollection = new ItemVariantsCollection;
+			// Create a new attributes collection for this item
+			$attributesCollection = new ItemAttributesCollection;
 
 			// Store each option on the collection
-			foreach ($variants as $index => $option)
+			foreach ($attributes as $index => $option)
 			{
 				if (empty($option['value']))
 				{
 					throw new CartMissingRequiredIndexException('value');
 				}
 
-				$variantsCollection->put($index, new ItemCollection($option));
+				$attributesCollection->put($index, new ItemCollection($option));
 			}
 
 			// Create a new item
 			$row = new ItemCollection(array(
-				'rowId'    => $rowId,
-				'id'       => $item['id'],
-				'name'     => $item['name'],
-				'quantity' => $quantity,
-				'price'    => $price,
-				'tax'      => ! empty($item['tax']) ? $item['tax'] : null,
-				'weight'   => ! empty($item['weight']) ? $item['weight'] : null,
-				'variants' => $variantsCollection,
+				'rowId'      => $rowId,
+				'id'         => $item['id'],
+				'name'       => $item['name'],
+				'quantity'   => $quantity,
+				'price'      => $price,
+				'tax'        => ! empty($item['tax']) ? $item['tax'] : null,
+				'weight'     => ! empty($item['weight']) ? $item['weight'] : null,
+				'attributes' => $attributesCollection,
 			));
 		}
 
@@ -637,12 +637,12 @@ class Cart {
 	 * Generate a unique identifier base on the item data.
 	 *
 	 * @param  string  $id
-	 * @param  array   $variants
+	 * @param  array   $attributes
 	 * @return string
 	 */
-	protected function generateRowId($id, $variants)
+	protected function generateRowId($id, $attributes)
 	{
-		return md5($id.serialize($variants));
+		return md5($id.serialize($attributes));
 	}
 
 	/**
@@ -674,6 +674,21 @@ class Cart {
 				throw new CartMissingRequiredIndexException($parameter);
 			}
 		}
+	}
+
+
+
+
+
+	/**
+	 * Apply a discount to the cart.
+	 *
+	 * @param  \Cartalyst\Discounts\Models\Discount
+	 * @return bool
+	 */
+	public function discount(/*Discount $discount*/)
+	{
+		echo 'todo';
 	}
 
 }

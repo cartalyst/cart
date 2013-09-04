@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-class ItemVariantsCollection extends ItemCollection {
+class ItemAttributesCollection extends ItemCollection {
 
 	/**
 	 * Return the total price of all the options together.

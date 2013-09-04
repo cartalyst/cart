@@ -47,15 +47,15 @@ class ItemCollection extends Collection {
 
 	/**
 	 * Return the item subtotal, taking into consideration
-	 * the item variants prices.
+	 * the item attributes prices.
 	 *
 	 * @return float
 	 */
 	public function getSubtotal()
 	{
-		$variantsTotal = $this->get('variants')->total;
+		$attributesTotal = $this->get('attributes')->total;
 
-		return (float) ($this->get('price') + $variantsTotal) * $this->get('quantity');
+		return (float) ($this->get('price') + $attributesTotal) * $this->get('quantity');
 	}
 
 	/**
@@ -87,11 +87,11 @@ class ItemCollection extends Collection {
 	{
 		foreach ($data as $key => $value)
 		{
-			if ($key === 'variants')
+			if ($key === 'attributes')
 			{
 				foreach ($value as $key => $val)
 				{
-					return $this->variants->{$key}->find($val);
+					return $this->attributes->{$key}->find($val);
 				}
 			}
 
