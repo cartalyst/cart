@@ -6,6 +6,12 @@ A framework agnostic shopping cart package featuring multiple cart instances and
 
 Track the history of this packages story via the package [roadmap](roadmap.md).
 
+####Incomplete
+- User can save a cart instance.
+- User can assign variant label
+- User can assign variant value
+- User can assign variant price
+- 
 ####Complete
 - User can add an item to cart.
 - User can add multiple items to cart.
@@ -23,12 +29,6 @@ Track the history of this packages story via the package [roadmap](roadmap.md).
 - User can return all cart instances.
 - User can remove a cart instance.
 - User can empty the cart.
-
-####Incomplete
-- User can save a cart instance.
-- User can assign variant label
-- User can assign variant value
-- User can assign variant price
 
 Versioning
 ----------
