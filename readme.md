@@ -17,19 +17,20 @@ History and future capabilities.
 	- ```Cart::add(...)``` User can add an item to cart. 
 	- ```Cart::add(...,...)``` User can add multiple items to cart.
 	- ```Cart::remove(...)``` User can remove an item from cart.
-	- ```Cart::``` User can remove multiple items from cart.
-	- ```Cart::``` User can update an items quantity.
-	- ```Cart::``` User can update a single item.
-	- ```Cart::``` User can update multiple items.
-	- ```Cart::``` User can return info of item in cart.
-	- ```Cart::``` User can return cart total.
-	- ```Cart::``` User can return total # of items in cart.
-	- ```Cart::``` User can search for items in cart.
-	- ```Cart::``` User can search for items in other cart instances.
-	- ```Cart::``` User can create a cart instance.
-	- ```Cart::``` User can return all cart instances.
-	- ```Cart::``` User can remove a cart instance.
-	- ```Cart::``` User can empty the cart.
+	- ```Cart::remove(...,...``` User can remove multiple items from cart.
+	- ```Cart::update(id, quantity)``` User can update an items quantity.
+	- ```Cart::update(...)``` User can update a single item.
+	- ```Cart::update(...,...)``` User can update multiple items.
+	- ```Cart::item(id)``` User can return info of item in cart.
+	- ```Cart::item(id)``` User can return info of all items in cart.
+	- ```Cart::total()``` User can return cart total.
+	- ```Cart::quantity()``` User can return total # of items in cart.
+	- ```Cart::find(...)``` User can search for items in cart.
+	- ```Cart::find(..., 'instance')``` User can search for items in other cart instances.
+	- ```Cart::instance()``` User can create a cart instance.
+	- ```Cart::instances()``` User can return all cart instances.
+	- ```Cart::destroy('instance')``` User can remove a cart instance.
+	- ```Cart::empty('instance')``` User can empty the cart.
 
 Versioning
 ----------
