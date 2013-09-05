@@ -14,7 +14,7 @@ History and future capabilities.
 
 ####Complete
 - *15-Aug-13* - v0.9.0
-	- User can add an item to cart. 
+	- ```Cart::add()``` - User can add an item to cart. 
 	- User can add multiple items to cart.
 	- User can remove an item from cart.
 	- User can remove multiple items from cart.
