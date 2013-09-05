@@ -98,7 +98,7 @@ class IlluminateCookie implements CookieInterface {
 	 *
 	 * @return string
 	 */
-	public function getInstance()
+	public function identify()
 	{
 		return $this->instance;
 	}
@@ -123,7 +123,7 @@ class IlluminateCookie implements CookieInterface {
 	{
 		$key = $this->getKey();
 
-		$instance = $this->getInstance();
+		$instance = $this->identify();
 
 		return "{$key}.{$instance}";
 	}
@@ -212,11 +212,12 @@ class IlluminateCookie implements CookieInterface {
 	}
 
 	/**
-	 * Return the cookie headers.
+	 * Return the Symfony cookie object associated with the
+	 * Illuminate cookie.
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Cookie
 	 */
-	public function getHeaders()
+	public function getCookie()
 	{
 		return $this->cookie;
 	}

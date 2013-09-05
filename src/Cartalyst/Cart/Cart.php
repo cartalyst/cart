@@ -356,7 +356,7 @@ class Cart {
 	 *
 	 * @return void
 	 */
-	public function empty()
+	public function clear()
 	{
 		$this->updateCart(null);
 	}
@@ -482,7 +482,7 @@ class Cart {
 	{
 		if ( ! is_null($instance))
 		{
-			$currentInstance = $this->getInstance();
+			$currentInstance = $this->identify();
 
 			$this->instance($instance);
 		}

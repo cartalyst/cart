@@ -34,6 +34,8 @@ class Laravel extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('cartalyst/cart', 'cartalyst/cart');
+
+		$this->observeEvents();
 	}
 
 	/**
@@ -92,7 +94,7 @@ class Laravel extends ServiceProvider {
 			// Get the default instance
 			$instance = $app['config']->get('cart::instance');
 
-			return new IlluminateDatabase($app['db'], $key, $instance);
+			return new IlluminateDatabase($app['db'], $app['cookie'], $key, $instance);
 		});
 	}
 
@@ -124,6 +126,8 @@ class Laravel extends ServiceProvider {
 	{
 		$this->app['cart'] = $this->app->share(function($app)
 		{
+			$app['cart.loaded'] = true;
+
 			// Get the default storage driver
 			$storage = $app['config']->get('cart::driver', 'session');
 
@@ -137,6 +141,24 @@ class Laravel extends ServiceProvider {
 			$cart->setRequiredIndexes($app['config']->get('cart::requiredIndexes'));
 
 			return $cart;
+		});
+	}
+
+	/**
+	 * Sets up the event observations required by the Cart.
+	 *
+	 * @return void
+	 */
+	protected function observeEvents()
+	{
+		$app = $this->app;
+
+		$this->app->after(function($request, $response) use ($app)
+		{
+			if (isset($app['cart.loaded']) and $app['cart.loaded'] == true and ($cookie = $app['cart.storage.cookie']->getCookie()))
+			{
+				$response->headers->setCookie($cookie);
+			}
 		});
 	}
 

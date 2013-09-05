@@ -19,6 +19,7 @@
  */
 
 use Cartalyst\Cart\Storage\Database\DatabaseInterface;
+use Illuminate\Cookie\CookieJar;
 use Illuminate\Database\DatabaseManager;
 
 class IlluminateDatabase implements DatabaseInterface {
@@ -47,14 +48,17 @@ class IlluminateDatabase implements DatabaseInterface {
 	/**
 	 * Creates a new Illuminate based Database driver for Cart.
 	 *
-	 * @param  \Illuminate\Session\Store  $database
+	 * @param  \Illuminate\Database\DatabaseManager  $database
+	 * @param  \Illuminate\Cookie\CookieJar  $cookie
 	 * @param  string  $key
 	 * @param  string  $instance
 	 * @return void
 	 */
-	public function __construct(DatabaseManager $database, $key = null, $instance = null)
+	public function __construct(DatabaseManager $database, CookieJar $cookie, $key = null, $instance = null)
 	{
 		$this->database = $database;
+
+		$this->cookie = $cookie;
 
 		if (isset($key))
 		{
