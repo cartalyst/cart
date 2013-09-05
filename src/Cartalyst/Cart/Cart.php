@@ -432,7 +432,7 @@ class Cart {
 	 *
 	 * @return float
 	 */
-	public function taxTotal()
+	public function tax()
 	{
 		$total = 0;
 
@@ -449,7 +449,7 @@ class Cart {
 	 *
 	 * @return float
 	 */
-	public function weightTotal()
+	public function weight()
 	{
 		$total = 0;
 
