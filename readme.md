@@ -7,29 +7,29 @@ A framework agnostic shopping cart package featuring multiple cart instances and
 History and future capabilities.
 
 ####Incomplete
-- User can save a cart instance.
-- User can assign variant label.
-- User can assign variant value.
-- User can assign variant price.
+- ```Cart::``` User can save a cart instance.
+- ```Cart::``` User can assign variant label.
+- ```Cart::``` User can assign variant value.
+- ```Cart::``` User can assign variant price.
 
 ####Complete
 - *15-Aug-13* - v0.9.0
 	- ```Cart::add(...)``` User can add an item to cart. 
 	- ```Cart::add(...,...)``` User can add multiple items to cart.
 	- ```Cart::remove(...)``` User can remove an item from cart.
-	- User can remove multiple items from cart.
-	- User can update an items quantity.
-	- User can update a single item.
-	- User can update multiple items.
-	- User can return info of item in cart.
-	- User can return cart total.
-	- User can return total # of items in cart.
-	- User can search for items in cart.
-	- User can search for items in other cart instances.
-	- User can create a cart instance.
-	- User can return all cart instances.
-	- User can remove a cart instance.
-	- User can empty the cart.
+	- ```Cart::``` User can remove multiple items from cart.
+	- ```Cart::``` User can update an items quantity.
+	- ```Cart::``` User can update a single item.
+	- ```Cart::``` User can update multiple items.
+	- ```Cart::``` User can return info of item in cart.
+	- ```Cart::``` User can return cart total.
+	- ```Cart::``` User can return total # of items in cart.
+	- ```Cart::``` User can search for items in cart.
+	- ```Cart::``` User can search for items in other cart instances.
+	- ```Cart::``` User can create a cart instance.
+	- ```Cart::``` User can return all cart instances.
+	- ```Cart::``` User can remove a cart instance.
+	- ```Cart::``` User can empty the cart.
 
 Versioning
 ----------
