@@ -7,10 +7,8 @@ A framework agnostic shopping cart package featuring multiple cart instances and
 History and future capabilities.
 
 ####Incomplete
-- ```Cart::``` User can save a cart instance.
-- ```Cart::``` User can assign variant label.
-- ```Cart::``` User can assign variant value.
-- ```Cart::``` User can assign variant price.
+- ```Cart::save('instance')``` User can save a cart instance.
+- ```Cart::attribute(...)``` User can assign an attribute.
 
 ####Complete
 - *15-Aug-13* - v0.9.0
