@@ -1,4 +1,4 @@
-#Cart v0.9.0
+#Cart v1.0.0-alpha
 
 A framework agnostic shopping cart package featuring multiple cart instances and item variants. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
 
@@ -13,6 +13,8 @@ History and future capabilities.
 - ```Cart::discount(Discount object)``` User can set a discount\coupon object.
 
 ####Complete
+- *05-Sep-13* - v0.9.1
+	- ```Cart::weight()``` User can return the total cart weight.
 - *15-Aug-13* - v0.9.0
 	- ```Cart::add(...)``` User can add an item to cart.
 	- ```Cart::add(...,...)``` User can add multiple items to cart.
@@ -25,7 +27,6 @@ History and future capabilities.
 	- ```Cart::items()``` User can return info of all items in cart.
 	- ```Cart::subtotal()``` User can return the subtotal of the cart.
 	- ```Cart::tax()``` User can return the tax total.
-	- ```Cart::weight()``` User can return the total cart weight.
 	- ```Cart::quantity()``` User can return total # of items in cart.
 	- ```Cart::find(...)``` User can search for items in cart.
 	- ```Cart::find(..., 'instance')``` User can search for items in other cart instances.
