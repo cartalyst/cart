@@ -19,8 +19,8 @@
  */
 
 use Cartalyst\Cart\Collections\CartCollection;
-use Cartalyst\Cart\Collections\ItemCollection;
 use Cartalyst\Cart\Collections\ItemAttributesCollection;
+use Cartalyst\Cart\Collections\ItemCollection;
 use Cartalyst\Cart\Exceptions\CartInvalidAttributesException;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
@@ -187,7 +187,7 @@ class Cart {
 		$row->put('subtotal', (float) $row->quantity * $row->price);
 
 		// Get the cart contents
-		$cart = $this->getContent();
+		$cart = $this->items();
 
 		// Add the item to the cart
 		$cart->put($rowId, $row);
@@ -257,7 +257,7 @@ class Cart {
 		}
 
 		// Get the cart contents
-		$cart = $this->getContent();
+		$cart = $this->items();
 
 		// Remove the item from the cart
 		$cart->forget($rowId);
@@ -298,7 +298,7 @@ class Cart {
 		}
 
 		// Get the cart contents
-		$cart = $this->getContent();
+		$cart = $this->items();
 
 		// Get the item we want to update
 		$row = $cart->get($rowId);
@@ -368,7 +368,7 @@ class Cart {
 	 * @return \Cartalyst\Cart\Collections\ItemCollection
 	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function getItem($rowId)
+	public function item($rowId)
 	{
 		// Check if the item exists
 		if ( ! $this->itemExists($rowId))
@@ -377,7 +377,7 @@ class Cart {
 		}
 
 		// Get the cart contents
-		$cart = $this->getContent();
+		$cart = $this->items();
 
 		// Return the item
 		return $cart->get($rowId);
@@ -388,11 +388,21 @@ class Cart {
 	 *
 	 * @return float
 	 */
-	public function getTotal()
+	public function total()
+	{
+		// todo
+	}
+
+	/**
+	 * Return the cart subtotal.
+	 *
+	 * @return float
+	 */
+	public function subtotal()
 	{
 		$total = 0;
 
-		foreach ($this->getContent() as $item)
+		foreach ($this->items() as $item)
 		{
 			$total += $item->subtotal;
 		}
@@ -405,11 +415,11 @@ class Cart {
 	 *
 	 * @return int
 	 */
-	public function getTotalItems()
+	public function quantity()
 	{
 		$total = 0;
 
-		foreach ($this->getContent() as $item)
+		foreach ($this->items() as $item)
 		{
 			$total += $item->quantity;
 		}
@@ -426,7 +436,7 @@ class Cart {
 	{
 		$total = 0;
 
-		foreach ($this->getContent() as $item)
+		foreach ($this->items() as $item)
 		{
 			$total += $item->getTax();
 		}
@@ -443,7 +453,7 @@ class Cart {
 	{
 		$total = 0;
 
-		foreach ($this->getContent() as $item)
+		foreach ($this->items() as $item)
 		{
 			$total += $item->getWeight();
 		}
@@ -456,7 +466,7 @@ class Cart {
 	 *
 	 * @return \Cartalyst\Cart\Collections\CartCollection
 	 */
-	public function getContent()
+	public function items()
 	{
 		return $this->storage->has() ? $this->storage->get() : new CartCollection;
 	}
@@ -479,7 +489,7 @@ class Cart {
 
 		$rows = array();
 
-		foreach ($this->getContent() as $item)
+		foreach ($this->items() as $item)
 		{
 			if ($item->find($data))
 			{
@@ -510,7 +520,7 @@ class Cart {
 	 *
 	 * @return array
 	 */
-	public function getInstances()
+	public function instances()
 	{
 		return $this->storage->instances() ?: array();
 	}
@@ -547,7 +557,7 @@ class Cart {
 	 */
 	protected function itemExists($rowId)
 	{
-		return $this->getContent()->has($rowId);
+		return $this->items()->has($rowId);
 	}
 
 	/**

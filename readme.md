@@ -8,12 +8,14 @@ History and future capabilities.
 
 ####Incomplete
 - ```Cart::save('instance')``` User can save a cart instance.
-- ```Cart::subtotal()``` User can return the subtotal of the cart.
+- ```Cart::total()``` User can return cart total.
 - Items can have attributes. (label, value, price, operation)
+- ```Cart::discount(Discount object)``` User can set a discount\coupon object.
+- ```Cart::taxTotal()``` User can return the tax total.
 
 ####Complete
 - *15-Aug-13* - v0.9.0
-	- ```Cart::add(...)``` User can add an item to cart. 
+	- ```Cart::add(...)``` User can add an item to cart.
 	- ```Cart::add(...,...)``` User can add multiple items to cart.
 	- ```Cart::remove(...)``` User can remove an item from cart.
 	- ```Cart::remove(...,...``` User can remove multiple items from cart.
@@ -22,11 +24,12 @@ History and future capabilities.
 	- ```Cart::update(...,...)``` User can update multiple items.
 	- ```Cart::item('id')``` User can return info of item in cart.
 	- ```Cart::items()``` User can return info of all items in cart.
-	- ```Cart::total()``` User can return cart total.
+	- ```Cart::subtotal()``` User can return the subtotal of the cart.
 	- ```Cart::quantity()``` User can return total # of items in cart.
 	- ```Cart::find(...)``` User can search for items in cart.
 	- ```Cart::find(..., 'instance')``` User can search for items in other cart instances.
 	- ```Cart::instance()``` User can create a cart instance.
+	- ```Cart::getInstance()``` User can return the current cart instance name.
 	- ```Cart::instances()``` User can return all cart instances.
 	- ```Cart::destroy('instance')``` User can remove a cart instance.
 	- ```Cart::empty('instance')``` User can empty the cart.
