@@ -510,9 +510,9 @@ class Cart {
 	 *
 	 * @return string
 	 */
-	public function getInstance()
+	public function identify()
 	{
-		return $this->storage->getInstance();
+		return $this->storage->identify();
 	}
 
 	/**

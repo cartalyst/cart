@@ -32,7 +32,7 @@ interface StorageInterface {
 	 *
 	 * @return string
 	 */
-	public function getInstance();
+	public function identify();
 
 	/**
 	 * Set the instance.

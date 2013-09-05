@@ -82,7 +82,7 @@ class IlluminateSession implements SessionInterface {
 	 *
 	 * @return string
 	 */
-	public function getInstance()
+	public function identify()
 	{
 		return $this->instance;
 	}
@@ -117,7 +117,7 @@ class IlluminateSession implements SessionInterface {
 	{
 		$key = $this->getKey();
 
-		$instance = $this->getInstance();
+		$instance = $this->identify();
 
 		return "{$key}.{$instance}";
 	}
