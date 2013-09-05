@@ -29,11 +29,11 @@ History and future capabilities.
 	- ```Cart::quantity()``` User can return total # of items in cart.
 	- ```Cart::find(...)``` User can search for items in cart.
 	- ```Cart::find(..., 'instance')``` User can search for items in other cart instances.
+	- ```Cart::empty()``` User can empty the cart.
 	- ```Cart::instance()``` User can create a cart instance.
 	- ```Cart::getInstance()``` User can return the current cart instance name.
 	- ```Cart::instances()``` User can return all cart instances.
 	- ```Cart::destroy('instance')``` User can remove a cart instance.
-	- ```Cart::empty('instance')``` User can empty the cart.
 
 Versioning
 ----------

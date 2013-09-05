@@ -356,7 +356,7 @@ class Cart {
 	 *
 	 * @return void
 	 */
-	public function destroy()
+	public function empty()
 	{
 		$this->updateCart(null);
 	}
@@ -540,10 +540,16 @@ class Cart {
 	/**
 	 * Remove the cart instance.
 	 *
+	 * @param  string  $instance
 	 * @return bool
 	 */
-	public function forgetInstance()
+	public function destroy($instance = null)
 	{
+		if ( ! is_null($instance))
+		{
+			$this->instance($instance);
+		}
+
 		$this->storage->forget();
 
 		return true;
