@@ -125,7 +125,7 @@ class IlluminateCookie implements CookieInterface {
 
 		$instance = $this->identify();
 
-		return "{$key}.{$instance}";
+		return "{$key}_{$instance}";
 	}
 
 	/**
