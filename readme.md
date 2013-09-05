@@ -8,6 +8,7 @@ History and future capabilities.
 
 ####Incomplete
 - ```Cart::save('instance')``` User can save a cart instance.
+- ```Cart::subtotal()``` User can return the subtotal of the cart.
 - Items can have attributes. (label, value, price, operation)
 
 ####Complete
