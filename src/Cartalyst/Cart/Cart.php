@@ -69,6 +69,7 @@ class Cart {
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
+	 * @param  \Illuminate\Events\Dispatcher  $events
 	 * @return void
 	 */
 	public function __construct(StorageInterface $storage = null, Dispatcher $events)
@@ -197,7 +198,7 @@ class Cart {
 
 		$this->events->fire('cart.added', array($cart));
 
-		return $this->storage->getHeaders();
+		return $cart;
 	}
 
 	/**

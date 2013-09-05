@@ -163,14 +163,4 @@ class IlluminateSession implements SessionInterface {
 		$this->session->forget($this->getSessionKey());
 	}
 
-	/**
-	 * Return the session headers.
-	 *
-	 * @return \Illuminate\Session\Store
-	 */
-	public function getHeaders()
-	{
-		return $this->session;
-	}
-
 }
