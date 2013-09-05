@@ -11,7 +11,6 @@ History and future capabilities.
 - ```Cart::total()``` User can return cart total.
 - Items can have attributes. (label, value, price, operation)
 - ```Cart::discount(Discount object)``` User can set a discount\coupon object.
-- ```Cart::taxTotal()``` User can return the tax total.
 
 ####Complete
 - *15-Aug-13* - v0.9.0
@@ -25,6 +24,8 @@ History and future capabilities.
 	- ```Cart::item('id')``` User can return info of item in cart.
 	- ```Cart::items()``` User can return info of all items in cart.
 	- ```Cart::subtotal()``` User can return the subtotal of the cart.
+	- ```Cart::taxTotal()``` User can return the tax total.
+	- ```Cart::weightTotal()``` User can return the total cart weight.
 	- ```Cart::quantity()``` User can return total # of items in cart.
 	- ```Cart::find(...)``` User can search for items in cart.
 	- ```Cart::find(..., 'instance')``` User can search for items in other cart instances.
