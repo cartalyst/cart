@@ -8,7 +8,7 @@ History and future capabilities.
 
 ####Incomplete
 - ```Cart::save('instance')``` User can save a cart instance.
-- ```Cart::attribute(...)``` User can assign an attribute.
+- Items can have attributes. (label, value, price, operation)
 
 ####Complete
 - *15-Aug-13* - v0.9.0
