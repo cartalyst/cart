@@ -1,4 +1,4 @@
-#Cart v0.9.0
+#Cart v1.0.0-alpha
 
 A framework agnostic shopping cart package featuring multiple cart instances and item variants. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
 
