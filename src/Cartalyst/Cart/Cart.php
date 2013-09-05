@@ -27,7 +27,6 @@ use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
-use Illuminate\Events\Dispatcher;
 
 class Cart {
 
@@ -37,13 +36,6 @@ class Cart {
 	 * @var Cartalyst\Cart\Storage\StorageInterface
 	 */
 	protected $storage;
-
-	/**
-	 * The event dispatcher instance.
-	 *
-	 * @var \Illuminate\Events\Dispatcher
-	 */
-	protected $events;
 
 	/**
 	 * Holds all the required indexes.
@@ -69,12 +61,10 @@ class Cart {
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
-	 * @param  \Illuminate\Events\Dispatcher  $events
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage = null, Dispatcher $events)
+	public function __construct(StorageInterface $storage = null)
 	{
-		$this->events = $events;
 		$this->storage = $storage;
 	}
 
@@ -90,8 +80,6 @@ class Cart {
 	 */
 	public function add($item)
 	{
-		$this->events->fire('cart.adding', array());
-
 		// Do we have multiple items?
 		if ($this->isMulti($item))
 		{
@@ -196,8 +184,6 @@ class Cart {
 		// Update the cart contents
 		$this->updateCart($cart);
 
-		$this->events->fire('cart.added', array($cart));
-
 		return $cart;
 	}
 
@@ -238,8 +224,6 @@ class Cart {
 	 */
 	protected function removeItem($rowId)
 	{
-		$this->events->fire('cart.removing', array());
-
 		// Do we have an array of items to be removed?
 		if (is_array($rowId))
 		{
@@ -263,8 +247,6 @@ class Cart {
 		// Remove the item from the cart
 		$cart->forget($rowId);
 
-		$this->events->fire('cart.removed', array($cart));
-
 		// Update the cart contents
 		return $this->updateCart($cart);
 	}
@@ -279,8 +261,6 @@ class Cart {
 	 */
 	public function update($rowId, $attributes = null)
 	{
-		$this->events->fire('cart.updating', array());
-
 		// Do we have an array of items to be updated?
 		if (is_array($rowId))
 		{
@@ -346,8 +326,6 @@ class Cart {
 		{
 			$cart->put($rowId, $row);
 		}
-
-		$this->events->fire('cart.updated', array($cart));
 
 		return $cart;
 	}
@@ -628,26 +606,6 @@ class Cart {
 	public function setStorage(StorageInterface $storage)
 	{
 		$this->storage = $storage;
-	}
-
-	/**
-	 * Get the event dispatcher instance.
-	 *
-	 * @return \Illuminate\Events\Dispatcher
-	 */
-	public function getDispatcher()
-	{
-		return $this->events;
-	}
-
-	/**
-	 * Set the event dispatcher instance.
-	 *
-	 * @param  \Illuminate\Events\Dispatcher
-	 */
-	public function setDispatcher(Dispatcher $events)
-	{
-		$this->events = $events;
 	}
 
 	/**
