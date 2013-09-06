@@ -30,7 +30,7 @@ class ItemCollection extends Collection {
 	 */
 	public function __get($value)
 	{
-		$method = "get".studly_case($value);
+		$method = 'get'.studly_case($value);
 
 		if (method_exists($this, $method))
 		{

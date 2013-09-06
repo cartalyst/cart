@@ -140,7 +140,7 @@ class Cart {
 		if ($this->itemExists($rowId))
 		{
 			// Get the item
-			$row = $this->getItem($rowId);
+			$row = $this->item($rowId);
 
 			// Update the item quantity
 			$row->put('quantity', $row->quantity + $quantity);
@@ -406,14 +406,20 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			foreach ($item->get('tax') as $key => $rate)
+			$rates = $item->get('tax');
+
+			if ( ! is_null($rates))
 			{
-				if ($tax['name'] === $rate['name'])
+				foreach ($rates as $key => $rate)
 				{
-					$total += $item->getSubtotal();
+					if ($tax['name'] === $rate['name'])
+					{
+						$total += $item->getSubtotal();
+					}
 				}
 			}
 		}
+
 		return $this->tax->setRate($tax['value'])->setValue($total)->charged();
 	}
 
@@ -424,9 +430,14 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			foreach ($item->get('tax') as $taxSlug => $tax)
+			$rates = $item->get('tax');
+
+			if ( ! is_null($rates))
 			{
-				$rates[$taxSlug] = $tax;
+				foreach ($rates as $taxSlug => $tax)
+				{
+					$rates[$taxSlug] = $tax;
+				}
 			}
 		}
 
