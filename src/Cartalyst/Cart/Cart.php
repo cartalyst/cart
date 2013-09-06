@@ -27,6 +27,7 @@ use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
+use Cartalyst\Tax\Tax;
 
 class Cart {
 
@@ -63,9 +64,10 @@ class Cart {
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage = null)
+	public function __construct(StorageInterface $storage = null, Tax $tax)
 	{
 		$this->storage = $storage;
+		$this->tax = $tax;
 	}
 
 	/**
@@ -201,54 +203,30 @@ class Cart {
 		{
 			foreach ($items[0] as $rowId)
 			{
-				$this->removeItem($rowId);
+				$this->remove($rowId);
 			}
 		}
 		else
 		{
 			foreach ($items as $rowId)
 			{
-				$this->removeItem($rowId);
+				// Check if the item exists
+				if ( ! $this->itemExists($rowId))
+				{
+					throw new CartItemNotFoundException;
+				}
+
+				// Get the cart contents
+				$cart = $this->items();
+
+				// Remove the item from the cart
+				$cart->forget($rowId);
 			}
+
+			$this->updateCart($cart);
 		}
 
 		return true;
-	}
-
-	/**
-	 * Remove an item from the cart.
-	 *
-	 * @param  string  $rowId
-	 * @return bool
-	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
-	 */
-	protected function removeItem($rowId)
-	{
-		// Do we have an array of items to be removed?
-		if (is_array($rowId))
-		{
-			foreach ($rowId as $item)
-			{
-				$this->remove($item);
-			}
-
-			return true;
-		}
-
-		// Check if the item exists
-		if ( ! $this->itemExists($rowId))
-		{
-			throw new CartItemNotFoundException;
-		}
-
-		// Get the cart contents
-		$cart = $this->items();
-
-		// Remove the item from the cart
-		$cart->forget($rowId);
-
-		// Update the cart contents
-		return $this->updateCart($cart);
 	}
 
 	/**
@@ -369,7 +347,7 @@ class Cart {
 	 */
 	public function total()
 	{
-		// todo
+		return $this->subTotal() + $this->tax();
 	}
 
 	/**
@@ -409,18 +387,50 @@ class Cart {
 	/**
 	 * Return the sum of all item taxes.
 	 *
+	 * @param  array  $tax
 	 * @return float
 	 */
-	public function tax()
+	public function tax($tax = null)
 	{
 		$total = 0;
 
-		foreach ($this->items() as $item)
+		if (is_null($tax))
 		{
-			$total += $item->getTax();
+			foreach ($this->taxRates() as $rate)
+			{
+				$total += $this->tax($rate);
+			}
+
+			return $total;
 		}
 
-		return (float) $total;
+		foreach ($this->items() as $item)
+		{
+			foreach ($item->get('tax') as $key => $rate)
+			{
+				if ($tax['name'] === $rate['name'])
+				{
+					$total += $item->getSubtotal();
+				}
+			}
+		}
+		return $this->tax->setRate($tax['value'])->setValue($total)->charged();
+	}
+
+	// return all the tax rates that were applied into the cart
+	public function taxRates()
+	{
+		$rates = array();
+
+		foreach ($this->items() as $item)
+		{
+			foreach ($item->get('tax') as $taxSlug => $tax)
+			{
+				$rates[$taxSlug] = $tax;
+			}
+		}
+
+		return $rates;
 	}
 
 	/**
