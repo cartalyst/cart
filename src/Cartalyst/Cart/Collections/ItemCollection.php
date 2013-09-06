@@ -40,16 +40,7 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function getTax()
 	{
-		$taxes = 0;
-
-		$tax = $this->get('tax');
-
-		if (is_array($tax) and ! empty($tax['value']))
-		{
-			$taxes += $tax['value'];
-		}
-
-		return (float) $taxes;
+		return (float) $this->get('tax')->value;
 	}
 
 	/**

@@ -21,6 +21,7 @@
 use Cartalyst\Cart\Collections\CartCollection;
 use Cartalyst\Cart\Collections\ItemAttributesCollection;
 use Cartalyst\Cart\Collections\ItemCollection;
+use Cartalyst\Cart\Collections\TaxCollection;
 use Cartalyst\Cart\Exceptions\CartInvalidAttributesException;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
@@ -161,6 +162,17 @@ class Cart {
 				$attributesCollection->put($index, new ItemCollection($option));
 			}
 
+			// Create a new Tax collection
+			$taxCollection = new TaxCollection;
+
+			if ( ! empty($item['tax']))
+			{
+				$tax = $item['tax'];
+
+				$taxCollection->put('name', $tax['name']);
+				$taxCollection->put('value', $tax['value']);
+			}
+
 			// Create a new item
 			$row = new ItemCollection(array(
 				'rowId'      => $rowId,
@@ -168,7 +180,7 @@ class Cart {
 				'name'       => $item['name'],
 				'quantity'   => $quantity,
 				'price'      => $price,
-				'tax'        => ! empty($item['tax']) ? $item['tax'] : null,
+				'tax'        => $taxCollection,
 				'weight'     => ! empty($item['weight']) ? $item['weight'] : null,
 				'attributes' => $attributesCollection,
 			));
@@ -408,13 +420,13 @@ class Cart {
 		{
 			$rate = $item->get('tax');
 
-			if ( ! is_null($rate) and $tax['name'] === $rate['name'])
+			if ( ! is_null($rate) and $tax->name === $rate->name)
 			{
 				$total += $item->getSubtotal();
 			}
 		}
 
-		return $this->tax->setRate($tax['value'])->setValue($total)->charged();
+		return $this->tax->setRate($tax->value)->setValue($total)->charged();
 	}
 
 	// return all the tax rates that were applied into the cart
@@ -424,11 +436,11 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			$taxes = $item->get('tax');
+			$tax = $item->get('tax');
 
-			if ( ! is_null($taxes))
+			if ( ! $tax->isEmpty())
 			{
-				$rates[] = $taxes;
+				$rates[] = $tax;
 			}
 		}
 
