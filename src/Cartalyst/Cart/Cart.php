@@ -430,11 +430,11 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			$rates = $item->get('tax');
+			$taxes = $item->get('tax');
 
 			if ( ! is_null($rates))
 			{
-				foreach ($rates as $taxSlug => $tax)
+				foreach ($taxes as $taxSlug => $tax)
 				{
 					$rates[$taxSlug] = $tax;
 				}
