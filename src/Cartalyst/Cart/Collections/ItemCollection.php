@@ -18,32 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\Collection;
-
-class ItemCollection extends Collection {
-
-	/**
-	 * Magic method.
-	 *
-	 * @param  string  value
-	 * @return mixed
-	 */
-	public function __get($value)
-	{
-		$method = 'get'.studly_case($value);
-
-		if (method_exists($this, $method))
-		{
-			return $this->{$method}();
-		}
-
-		if ($this->has($value))
-		{
-			return $this->get($value);
-		}
-
-		return null;
-	}
+class ItemCollection extends BaseCollection {
 
 	/**
 	 * Return the item subtotal, taking into consideration
