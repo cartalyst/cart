@@ -8,12 +8,12 @@ History and future capabilities.
 
 ####Incomplete
 - ```Cart::save('instance')``` User can save a cart instance.
-- ```Cart::total()``` User can return cart total.
 - Items can have attributes. (label, value, price, operation)
 - ```Cart::discount(Discount object)``` User can set a discount\coupon object.
 
 ####Complete
 - *05-Sep-13* - v0.9.1
+	- ```Cart::total()``` User can return cart total.
 	- ```Cart::weight()``` User can return the total cart weight.
 - *15-Aug-13* - v0.9.0
 	- ```Cart::add(...)``` User can add an item to cart.
