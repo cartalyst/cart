@@ -406,17 +406,11 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			$rates = $item->get('tax');
+			$rate = $item->get('tax');
 
-			if ( ! is_null($rates))
+			if ( ! is_null($rate) and $tax['name'] === $rate['name'])
 			{
-				foreach ($rates as $key => $rate)
-				{
-					if ($tax['name'] === $rate['name'])
-					{
-						$total += $item->getSubtotal();
-					}
-				}
+				$total += $item->getSubtotal();
 			}
 		}
 
@@ -432,12 +426,9 @@ class Cart {
 		{
 			$taxes = $item->get('tax');
 
-			if ( ! is_null($rates))
+			if ( ! is_null($taxes))
 			{
-				foreach ($taxes as $taxSlug => $tax)
-				{
-					$rates[$taxSlug] = $tax;
-				}
+				$rates[] = $taxes;
 			}
 		}
 

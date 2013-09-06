@@ -63,18 +63,15 @@ class ItemCollection extends Collection {
 	 *
 	 * @return float
 	 */
-	public function getTax($tax = null)
+	public function getTax()
 	{
 		$taxes = 0;
 
-		foreach ($this->get('tax') as $key => $rate)
-		{
-			if ( ! is_null($tax) and $key != $tax)
-			{
-				continue;
-			}
+		$tax = $this->get('tax');
 
-			$taxes += $rate['value'];
+		if (is_array($tax) and ! empty($tax['value']))
+		{
+			$taxes += $tax['value'];
 		}
 
 		return (float) $taxes;
