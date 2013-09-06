@@ -46,6 +46,10 @@ try
 		'name'       => 'Foo Bar 123',
 		'quantity'   => 1,
 		'price'      => 12.50,
+		'tax'        => array(
+			'name'  => 'VAT (17.5%)',
+			'value' => 17.5,
+		),
 		'attributes' => array(
 			'size' => array(
 				'label' => 'Size',
