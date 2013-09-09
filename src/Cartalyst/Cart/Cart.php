@@ -21,7 +21,7 @@
 use Cartalyst\Cart\Collections\CartCollection;
 use Cartalyst\Cart\Collections\ItemAttributesCollection;
 use Cartalyst\Cart\Collections\ItemCollection;
-use Cartalyst\Cart\Collections\TaxCollection;
+use Cartalyst\Conditions\Condition;
 use Cartalyst\Cart\Exceptions\CartInvalidAttributesException;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
@@ -58,6 +58,13 @@ class Cart {
 		'price',
 		'quantity',
 	);
+
+	/**
+	 * Holds all the cart conditions.
+	 *
+	 * @var array
+	 */
+	protected $conditions = array();
 
 	/**
 	 * Constructor.
@@ -162,28 +169,13 @@ class Cart {
 				$attributesCollection->put($index, new ItemCollection($option));
 			}
 
-			// Create a new Tax collection
-			$taxCollection = new TaxCollection;
-
-			if ( ! empty($item['tax']))
-			{
-				$tax = $item['tax'];
-
-				$taxCollection->put('name', $tax['name']);
-				$taxCollection->put('value', $tax['value']);
-			}
-
 			// Create a new item
-			$row = new ItemCollection(array(
+			$row = new ItemCollection(array_merge($item, array(
 				'rowId'      => $rowId,
-				'id'         => $item['id'],
-				'name'       => $item['name'],
 				'quantity'   => $quantity,
 				'price'      => $price,
-				'tax'        => $taxCollection,
-				'weight'     => ! empty($item['weight']) ? $item['weight'] : null,
 				'attributes' => $attributesCollection,
-			));
+			)));
 		}
 
 		// Update the item subtotal
@@ -376,6 +368,24 @@ class Cart {
 			$total += $item->subtotal;
 		}
 
+		/*
+		foreach ($this->conditions() as $condition)
+		{
+			if ($condition->get('valid'))
+			{
+				$actions = $condition->get('actions');
+
+				foreach ($actions as $action)
+				{
+					if ($action['target'] === 'subtotal')
+					{
+						$total = $this->calculate($action, $total);
+					}
+				}
+			}
+		}
+		*/
+
 		return (float) $total;
 	}
 
@@ -399,10 +409,10 @@ class Cart {
 	/**
 	 * Return the sum of all item taxes.
 	 *
-	 * @param  array  $tax
+	 * @param  \Cartalyst\Conditions\Condition  $tax
 	 * @return float
 	 */
-	public function tax($tax = null)
+	public function tax(Condition $tax = null)
 	{
 		$total = 0;
 
@@ -418,15 +428,15 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			$rate = $item->get('tax');
+			$rate = $item->get('condition');
 
-			if ( ! is_null($rate) and $tax->name === $rate->name)
+			if ( ! is_null($rate) and $tax->get('name') === $rate->get('name'))
 			{
-				$total += $item->getSubtotal();
+				$total += $item->subtotal();
 			}
 		}
 
-		return $this->tax->setRate($tax->value)->setValue($total)->charged();
+		return $this->tax->setRate($tax->get('value'))->setValue($total)->charged();
 	}
 
 	// return all the tax rates that were applied into the cart
@@ -434,15 +444,17 @@ class Cart {
 	{
 		$rates = array();
 
+		// Per item taxes
 		foreach ($this->items() as $item)
 		{
-			$tax = $item->get('tax');
-
-			if ( ! $tax->isEmpty())
+			if ($condition = $item->get('condition'))
 			{
-				$rates[] = $tax;
+				$rates[$condition->get('name')] = $condition;
 			}
 		}
+
+		// Global taxes
+		# todo ..
 
 		return $rates;
 	}
@@ -471,7 +483,30 @@ class Cart {
 	 */
 	public function items()
 	{
-		return $this->storage->has() ? $this->storage->get() : new CartCollection;
+		$items = $this->storage->has() ? $this->storage->get() : new CartCollection;
+
+		foreach ($this->conditions() as $condition)
+		{
+			if ($condition->get('type') !== 'item')
+			{
+				break;
+			}
+
+			$rules = $condition->get('rules');
+
+			foreach ($rules as $rule)
+			{
+				foreach ($items as $item)
+				{
+					if ($item->get('name') === $rule['value'])
+					{
+						#$item->put('subtotal', 11115);
+					}
+				}
+			}
+		}
+
+		return $items;
 	}
 
 	/**
@@ -678,16 +713,67 @@ class Cart {
 
 
 
+##############################################
+
 
 	/**
-	 * Apply a discount to the cart.
+	 * Set a condition.
 	 *
-	 * @param  \Cartalyst\Discounts\Models\Discount
-	 * @return bool
+	 * @param  Cartalyst\Conditions\Condition  $condition
+	 * @return void
 	 */
-	public function discount(/*Discount $discount*/)
+	public function condition(Condition $condition)
 	{
-		echo 'todo';
+		$condition->validate($this);
+
+		$this->conditions[] = $condition;
 	}
 
+	/**
+	 * Return all the applied and valid conditions.
+	 *
+	 * @return array
+	 */
+	public function conditions()
+	{
+		$conditions = array();
+
+		foreach ($this->conditions as $condition)
+		{
+			if ($condition->get('valid'))
+			{
+				$conditions[] = $condition;
+			}
+		}
+
+		return $conditions;
+	}
+
+	public function prepare()
+	{
+		foreach ($this->conditions as $condition)
+		{
+			// Validate the condition
+			$condition->validate($this);
+		}
+	}
+
+
+	protected function calculate($rule, $value)
+	{
+		if ($rule['operation'] === 'percent')
+		{
+			#
+			$value = $value - ($value * $rule['value']);
+		}
+		else
+		{
+			#
+			$value = $value - $discount;
+		}
+
+
+
+		return $value;
+	}
 }

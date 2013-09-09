@@ -25,21 +25,19 @@ class BaseCollection extends Collection {
 	/**
 	 * Magic method.
 	 *
-	 * @param  string  $value
+	 * @param  string  $method
 	 * @return mixed
 	 */
-	public function __get($value)
+	public function __get($method)
 	{
-		$method = 'get'.studly_case($value);
-
 		if (method_exists($this, $method))
 		{
 			return $this->{$method}();
 		}
 
-		if ($this->has($value))
+		if ($this->has($method))
 		{
-			return $this->get($value);
+			return $this->get($method);
 		}
 
 		return null;

@@ -26,8 +26,13 @@ class ItemCollection extends BaseCollection {
 	 *
 	 * @return float
 	 */
-	public function getSubtotal()
+	public function subtotal()
 	{
+		if ($this->has('subtotal'))
+		{
+			return $this->get('subtotal');
+		}
+
 		$attributesTotal = $this->get('attributes')->total;
 
 		return (float) ($this->get('price') + $attributesTotal) * $this->get('quantity');
@@ -38,9 +43,9 @@ class ItemCollection extends BaseCollection {
 	 *
 	 * @return float
 	 */
-	public function getTax()
+	public function tax()
 	{
-		return (float) $this->get('tax')->value;
+		return (float) $this->get('condition')->get('value');
 	}
 
 	/**
@@ -48,7 +53,7 @@ class ItemCollection extends BaseCollection {
 	 *
 	 * @return float
 	 */
-	public function getWeight()
+	public function weight()
 	{
 		return (float) $this->get('weight') * $this->get('quantity');
 	}
