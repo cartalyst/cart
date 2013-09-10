@@ -838,7 +838,7 @@ class Cart {
 
 				break;
 
-			case 'subtrack':
+			case 'subtract':
 			case 'sub':
 
 				return $value - $rule->get('value');;
