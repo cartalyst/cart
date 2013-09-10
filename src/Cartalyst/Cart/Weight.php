@@ -20,6 +20,18 @@
 
 class Weight {
 
+	/**
+	 * Weight value.
+	 *
+	 * @var float
+	 */
+	protected $value;
+
+	/**
+	 * The available weights.
+	 *
+	 * @var array
+	 */
 	protected $weights = array(
 		'kg' => array(
 			'label'  => 'Kilogram',
@@ -43,8 +55,34 @@ class Weight {
 		),
 	);
 
-	public function convert($value, $from, $to)
+	/**
+	 * Set the value to be converted to.
+	 *
+	 * @param  float  $value
+	 * @return \Cartalyst\Cart\Weight
+	 */
+	public function value($value)
 	{
+		$this->value = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Return the value.
+	 *
+	 * @return float
+	 */
+	public function getValue()
+	{
+		return $this->value;
+	}
+
+	public function convert($from, $to)
+	{
+		// Get the value
+		$value = $this->getValue();
+
 		if ($from == $to)
 		{
 			return $value;
@@ -54,19 +92,73 @@ class Weight {
 
 		$to = ! empty($this->weights[$to]) ? $this->weights[$to]['value'] : 1;
 
-		return $value * ($to / $from);
+		$this->value = $value * ($to / $from);
+
+		return $this;
 	}
 
-	public function format($value, $weight_class_id, $decimal_point = '.', $thousand_point = ',')
+	public function format($weight, $decimal = '.', $thousand = ',')
 	{
-		$value = number_format($value, 2, $decimal_point, $thousand_point);
+		// Get the value
+		$value = $this->getValue();
 
-		if ( ! empty($this->weights[$weight_class_id]))
+		// Get the weight format information
+		$data = $this->getWeight($weight);
+
+		// Format the value
+		$value = number_format($value, 2, $decimal, $thousand);
+
+		return str_replace('{value}', $value, $data['format']);
+	}
+
+	/**
+	 * Return the list of available weights.
+	 *
+	 * @return array
+	 */
+	public function getWeights()
+	{
+		return $this->weights;
+	}
+
+	/**
+	 * Set weights.
+	 *
+	 * By default it will merge the new weights with the current
+	 * weights, you can change this behavior by setting false
+	 * as the second parameter.
+	 *
+	 * @param  array  $weights
+	 * @param  bool   $merge
+	 * @return array
+	 */
+	public function setWeights($weights = array(), $merge = true)
+	{
+		$weights = (array) $weights;
+
+		$currentWeights = $merge ? $this->getWeights() : array();
+
+		return $this->weights = array_merge($currentWeights, $weights);
+	}
+
+	/**
+	 * Return information about the provided weight.
+	 *
+	 * @param  string  $weight
+	 * @return array
+	 */
+	public function getWeight($weight)
+	{
+		$weights = $this->getWeights();
+
+		$weight = strtolower($weight);
+
+		if ( ! array_key_exists($weight, $weights))
 		{
-			return str_replace('{value}', $value, $this->weights[$weight_class_id]['format']);
+			throw new Exception("Weight [{$weight}] was not found.");
 		}
 
-		return $value;
+		return $weights[$weight];
 	}
 
 }
