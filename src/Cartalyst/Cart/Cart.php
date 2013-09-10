@@ -70,6 +70,7 @@ class Cart {
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
+	 * @param  \Cartalyst\Tax\Tax  $tax
 	 * @return void
 	 */
 	public function __construct(StorageInterface $storage = null, Tax $tax)
@@ -373,7 +374,7 @@ class Cart {
 		{
 			if ($condition->get('valid'))
 			{
-				$actions = $condition->get('actions');
+				$actions = $condition->get('actions', array());
 
 				foreach ($actions as $action)
 				{
@@ -384,7 +385,7 @@ class Cart {
 				}
 			}
 		}
-		*/
+		/**/
 
 		return (float) $total;
 	}
@@ -439,7 +440,11 @@ class Cart {
 		return $this->tax->setRate($tax->get('value'))->setValue($total)->charged();
 	}
 
-	// return all the tax rates that were applied into the cart
+	/**
+	 * Return all the applied tax rates both global and per item taxes.
+	 *
+	 * @return array
+	 */
 	public function taxRates()
 	{
 		$rates = array();
@@ -454,9 +459,35 @@ class Cart {
 		}
 
 		// Global taxes
-		# todo ..
+		foreach ($this->conditions() as $condition)
+		{
+			if ($condition->get('type') === 'tax')
+			{
+				$rates[$condition->get('name')] = $condition;
+			}
+		}
 
 		return $rates;
+	}
+
+	/**
+	 * Return all the applied discounts.
+	 *
+	 * @return array
+	 */
+	public function discounts()
+	{
+		$discounts = array();
+
+		foreach ($this->conditions() as $condition)
+		{
+			if ($condition->get('type') === 'discount')
+			{
+				$discounts[$condition->get('name')] = $condition;
+			}
+		}
+
+		return $discounts;
 	}
 
 	/**
@@ -485,26 +516,38 @@ class Cart {
 	{
 		$items = $this->storage->has() ? $this->storage->get() : new CartCollection;
 
+
 		foreach ($this->conditions() as $condition)
 		{
-			if ($condition->get('type') !== 'item')
-			{
-				break;
-			}
+			$rules = $condition->get('rules', array());
 
-			$rules = $condition->get('rules');
+			$actions = $condition->get('actions', array());
 
 			foreach ($rules as $rule)
 			{
 				foreach ($items as $item)
 				{
-					if ($item->get('name') === $rule['value'])
+					if ($item->get('name') === $rule->get('value'))
 					{
-						#$item->put('subtotal', 11115);
+						if ($condition->get('valid'))
+						{
+							foreach ($actions as $action)
+							{
+								# rethink this, it is working, but need to be dynamic
+								$item->put('subtotal.discounted', $this->calculate($action, $item->get('subtotal')));
+							}
+						}
+						else
+						{
+							# rethink this, it is working, but need to be dynamic
+							$item->forget('subtotal.discounted');
+						}
 					}
 				}
 			}
 		}
+
+
 
 		return $items;
 	}
@@ -740,40 +783,67 @@ class Cart {
 
 		foreach ($this->conditions as $condition)
 		{
-			if ($condition->get('valid'))
+			$conditions[$condition->get('name')] = $condition;
+		}
+
+		return $conditions;
+	}
+
+	/**
+	 * Return all the conditions that were applied only to items.
+	 *
+	 * @return array
+	 */
+	public function itemConditions()
+	{
+		$conditions = array();
+
+		foreach ($this->items() as $item)
+		{
+			if ($condition = $item->get('condition'))
 			{
-				$conditions[] = $condition;
+				$conditions[$condition->get('name')] = $condition;
 			}
 		}
 
 		return $conditions;
 	}
 
-	public function prepare()
-	{
-		foreach ($this->conditions as $condition)
-		{
-			// Validate the condition
-			$condition->validate($this);
-		}
-	}
 
-
+	# rethink this...
 	protected function calculate($rule, $value)
 	{
-		if ($rule['operation'] === 'percent')
+		$operation = $rule->get('operation');
+		$operator = $rule->get('operator');
+
+		if ($operation === 'percentage')
 		{
 			#
-			$value = $value - ($value * $rule['value']);
-		}
-		else
-		{
-			#
-			$value = $value - $discount;
+			return $value - ($value * $rule->get('value'));
 		}
 
 
+		switch ($operator)
+		{
+			case 'sum':
+			default:
 
-		return $value;
+				return $value + $rule->get('value');
+
+				break;
+
+			case 'multiply':
+
+				return $value * $rule->get('value');
+
+				break;
+
+			case 'subtrack':
+			case 'sub':
+
+				return $value - $rule->get('value');;
+
+				break;
+		}
 	}
 }

@@ -28,6 +28,11 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function subtotal()
 	{
+		if ($this->has('subtotal.discounted'))
+		{
+			return $this->get('subtotal.discounted');
+		}
+
 		if ($this->has('subtotal'))
 		{
 			return $this->get('subtotal');
