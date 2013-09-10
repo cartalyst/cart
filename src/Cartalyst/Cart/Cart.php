@@ -28,6 +28,7 @@ use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
+use Cartalyst\Cart\Weight;
 use Cartalyst\Tax\Tax;
 
 class Cart {
@@ -73,10 +74,11 @@ class Cart {
 	 * @param  \Cartalyst\Tax\Tax  $tax
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage = null, Tax $tax)
+	public function __construct(StorageInterface $storage = null, Tax $tax, Weight $weight)
 	{
 		$this->storage = $storage;
 		$this->tax = $tax;
+		$this->weight = $weight;
 	}
 
 	/**
@@ -111,15 +113,9 @@ class Cart {
 			}
 		}
 
-		// Make sure the quantity is a number, and remove any leading zeros
-		$quantity = (float) $item['quantity'];
-
-		// Make sure that the quantity value is rounded
-		$quantity = round($quantity);
-
-		// Remove any leading zeros and anything that isn't a number or a
-		// decimal point from the price.
-		$price = (float) $item['price'];
+		// Make sure the quantity is a number, and remove any leading zeros,
+		// and make sure the value is rounded.
+		$quantity = (float) round($item['quantity']);
 
 		// Check if the quantity value is correct
 		if ( ! is_numeric($quantity) or $quantity < 1)
@@ -127,16 +123,20 @@ class Cart {
 			throw new CartInvalidQuantityException;
 		}
 
+		// Remove any leading zeros and anything that isn't a number or a
+		// decimal point from the price.
+		$price = (float) $item['price'];
+
 		// Check if the price value is correct
 		if ( ! is_numeric($price))
 		{
 			throw new CartInvalidPriceException;
 		}
 
-		// Get this item attribute
+		// Get this item attributes
 		$attributes = ! empty($item['attributes']) ? $item['attributes'] : array();
 
-		// Validate the attribute
+		// Validate the attributes
 		if ( ! is_array($attributes))
 		{
 			throw new CartInvalidAttributesException;
@@ -197,6 +197,7 @@ class Cart {
 	/**
 	 * Remove an item or items from the cart.
 	 *
+	 * @param  mixed
 	 * @return bool
 	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
@@ -338,11 +339,8 @@ class Cart {
 			throw new CartItemNotFoundException;
 		}
 
-		// Get the cart contents
-		$cart = $this->items();
-
 		// Return the item
-		return $cart->get($rowId);
+		return $this->items()->get($rowId);
 	}
 
 	/**
@@ -501,7 +499,7 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			$total += $item->getWeight();
+			$total += $item->weight();
 		}
 
 		return (float) $total;
@@ -541,9 +539,12 @@ class Cart {
 								// Prepare the target
 								$target = str_replace('item-', '', $target);
 
+								// Only apply the action if the condition is valid
 								if ($condition->get('valid'))
 								{
 									$discount = $item->{$target} - $this->calculate($action, $item->{$target});
+
+									$this->discounts[$condition->get('name')] = $discount;
 
 									$item->put('discounted', $discount);
 								}
@@ -855,5 +856,11 @@ class Cart {
 
 				break;
 		}
+	}
+
+
+	public function discountValue($condition)
+	{
+		return $this->discounts[$condition->get('name')];
 	}
 }

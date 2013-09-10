@@ -22,6 +22,7 @@ use Cartalyst\Cart\Cart;
 use Cartalyst\Cart\Storage\Cookies\IlluminateCookie;
 use Cartalyst\Cart\Storage\Database\IlluminateDatabase;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
+use Cartalyst\Cart\Weight;
 use Illuminate\Support\ServiceProvider;
 
 class Laravel extends ServiceProvider {
@@ -52,6 +53,8 @@ class Laravel extends ServiceProvider {
 		$this->registerDatabase();
 
 		$this->registerSession();
+
+		$this->registerWeight();
 
 		$this->registerCart();
 	}
@@ -118,6 +121,19 @@ class Laravel extends ServiceProvider {
 	}
 
 	/**
+	 * Register the weight class used by the Cart.
+	 *
+	 * @return void.
+	 */
+	protected function registerWeight()
+	{
+		$this->app['cart.weight'] = $this->app->share(function($app)
+		{
+			return new Weight;
+		});
+	}
+
+	/**
 	 * Register the Cart.
 	 *
 	 * @return void
@@ -132,7 +148,7 @@ class Laravel extends ServiceProvider {
 			$storage = $app['config']->get('cart::driver', 'session');
 
 			// Create a new Cart instance
-			$cart = new Cart($app["cart.storage.{$storage}"], $app['tax']);
+			$cart = new Cart($app["cart.storage.{$storage}"], $app['tax'], $app['cart.weight']);
 
 			// Set the default cart instance
 			$cart->instance($app['config']->get('cart::instance', 'main'));
