@@ -28,19 +28,11 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function subtotal()
 	{
-		if ($this->has('subtotal.discounted'))
-		{
-			return $this->get('subtotal.discounted');
-		}
-
-		if ($this->has('subtotal'))
-		{
-			return $this->get('subtotal');
-		}
-
 		$attributesTotal = $this->get('attributes')->total;
 
-		return (float) ($this->get('price') + $attributesTotal) * $this->get('quantity');
+		$total = (float) ($this->get('price') + $attributesTotal) * $this->get('quantity');
+
+		return $total - $this->get('discounted', 0);
 	}
 
 	/**

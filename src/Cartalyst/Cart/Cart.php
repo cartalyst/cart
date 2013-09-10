@@ -514,9 +514,10 @@ class Cart {
 	 */
 	public function items()
 	{
+		// Get all the items
 		$items = $this->storage->has() ? $this->storage->get() : new CartCollection;
 
-
+		// Apply actions to the items
 		foreach ($this->conditions() as $condition)
 		{
 			$rules = $condition->get('rules', array());
@@ -529,26 +530,35 @@ class Cart {
 				{
 					if ($item->get('name') === $rule->get('value'))
 					{
-						if ($condition->get('valid'))
+						# @TODO: check if the condition is a discount or something else?!
+						# and move this logic elsewhere
+						foreach ($actions as $action)
 						{
-							foreach ($actions as $action)
+							$target = $action->get('target');
+
+							if (strpos($target, 'item-') !== 'false')
 							{
-								# rethink this, it is working, but need to be dynamic
-								$item->put('subtotal.discounted', $this->calculate($action, $item->get('subtotal')));
+								// Prepare the target
+								$target = str_replace('item-', '', $target);
+
+								if ($condition->get('valid'))
+								{
+									$discount = $item->{$target} - $this->calculate($action, $item->{$target});
+
+									$item->put('discounted', $discount);
+								}
+								else
+								{
+									$item->forget('discounted');
+								}
 							}
-						}
-						else
-						{
-							# rethink this, it is working, but need to be dynamic
-							$item->forget('subtotal.discounted');
 						}
 					}
 				}
 			}
 		}
 
-
-
+		// Return the items
 		return $items;
 	}
 
@@ -841,7 +851,7 @@ class Cart {
 			case 'subtract':
 			case 'sub':
 
-				return $value - $rule->get('value');;
+				return $value - $rule->get('value');
 
 				break;
 		}
