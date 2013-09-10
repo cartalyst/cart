@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+use Exception;
+
 class Weight {
 
 	/**
@@ -32,28 +34,7 @@ class Weight {
 	 *
 	 * @var array
 	 */
-	protected $weights = array(
-		'kg' => array(
-			'label'  => 'Kilogram',
-			'value'  => 1.00000000,
-			'format' => '{value} kg'
-		),
-		'g' => array(
-			'label'  => 'Gram',
-			'value'  => 1000.00000000,
-			'format' => '{value} g'
-		),
-		'lb' => array(
-			'label'  => 'Pound',
-			'value'  => 2.20460000,
-			'format' => '{value} lb'
-		),
-		'oz' => array(
-			'label'  => 'Ounce',
-			'value'  => 35.27400000,
-			'format' => '{value} oz'
-		),
-	);
+	protected $weights = array();
 
 	/**
 	 * Set the value to be converted to.
@@ -78,6 +59,13 @@ class Weight {
 		return $this->value;
 	}
 
+	/**
+	 * Convert a weight.
+	 *
+	 * @param  string  $from
+	 * @param  string  $to
+	 * @return \Cartalyst\Cart\Weight
+	 */
 	public function convert($from, $to)
 	{
 		// Get the value
@@ -97,6 +85,14 @@ class Weight {
 		return $this;
 	}
 
+	/**
+	 * Format the weight.
+	 *
+	 * @param  int     $weight
+	 * @param  string  $decimal
+	 * @param  string  $thousand
+	 * @return string
+	 */
 	public function format($weight, $decimal = '.', $thousand = ',')
 	{
 		// Get the value

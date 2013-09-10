@@ -129,7 +129,11 @@ class Laravel extends ServiceProvider {
 	{
 		$this->app['cart.weight'] = $this->app->share(function($app)
 		{
-			return new Weight;
+			$weight = new Weight;
+
+			$weight->setWeights($app['config']->get('cart::weights'));
+
+			return $weight;
 		});
 	}
 

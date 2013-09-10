@@ -95,4 +95,33 @@ return array(
 
 	'requiredIndexes' => array(),
 
+
+	'weights' => array(
+
+		'kg' => array(
+			'label'  => 'Kilogram',
+			'value'  => 1.00000000,
+			'format' => '{value} kg'
+		),
+
+		'g' => array(
+			'label'  => 'Gram',
+			'value'  => 1000.00000000,
+			'format' => '{value} g'
+		),
+
+		'lb' => array(
+			'label'  => 'Pound',
+			'value'  => 2.20460000,
+			'format' => '{value} lb'
+		),
+
+		'oz' => array(
+			'label'  => 'Ounce',
+			'value'  => 35.27400000,
+			'format' => '{value} oz'
+		),
+
+	),
+
 );

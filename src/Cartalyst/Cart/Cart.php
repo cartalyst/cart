@@ -72,6 +72,7 @@ class Cart {
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
 	 * @param  \Cartalyst\Tax\Tax  $tax
+	 * @param  \Cartalyst\Cart\Weight  $weight
 	 * @return void
 	 */
 	public function __construct(StorageInterface $storage = null, Tax $tax, Weight $weight)
