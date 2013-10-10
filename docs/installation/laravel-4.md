@@ -1,15 +1,8 @@
-### Install & Configure in Laravel 4
+## Install & Configure in Laravel 4
 
-> **Note:** To use Cartalyst's Cart package you need to have a valid Cartalyst.com subscription.
-Click [here](https://www.cartalyst.com/pricing) to obtain your subscription.
+### 1. Composer {#composer}
 
-1. [Composer](#composer)
-2. [Service Provider](#service-provider)
-3. [Alias](#alias)
-4. [Configuration](#configuration)
-
-<a name="composer"></a>
-#### 1. Composer
+---
 
 Open your `composer.json` file and add the following lines:
 
@@ -32,22 +25,25 @@ Run a composer update from the command line.
 
 	php composer.phar update
 
-<a name="service-provider"></a>
-#### 2. Service Provider
+### 2. Service Provider {#service-provider}
+
+---
 
 Add the following to the list of service providers in `app/config/app.php`.
 
 	'Cartalyst\Cart\ServicesProvider\Laravel',
 
-<a name="alias"></a>
-#### 3. Alias
+### 3. Alias {#alias}
+
+---
 
 Add the following to the to the list of class aliases in `app/config/app.php`.
 
 	'Cart' => 'Cartalyst\Cart\Facades\Laravel',
 
-<a name="configuration"></a>
-#### 4. Configuration
+### 4. Configuration {#configuration}
+
+---
 
 After installing, you can publish the package's configuration file into you application by running the following command:
 
