@@ -31,7 +31,7 @@ Run a composer update from the command line.
 
 Add the following to the list of service providers in `app/config/app.php`.
 
-	'Cartalyst\Cart\ServicesProvider\Laravel',
+	'Cartalyst\Cart\ServiceProviders\Laravel',
 
 ### 3. Alias {#alias}
 
