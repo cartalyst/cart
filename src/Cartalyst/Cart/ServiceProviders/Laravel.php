@@ -116,7 +116,7 @@ class Laravel extends ServiceProvider {
 			// Get the default instance
 			$instance = $app['config']->get('cart::instance');
 
-			return new IlluminateSession($app['session'], $key, $instance);
+			return new IlluminateSession($app['session.store'], $key, $instance);
 		});
 	}
 
