@@ -1,5 +1,7 @@
 ## Install & Configure in Laravel 4
 
+&nbsp;
+
 ### 1. Composer {#composer}
 
 ---
@@ -7,23 +9,23 @@
 Open your `composer.json` file and add the following lines:
 
 	{
-		"require": {
-			"cartalyst/cart": "1.0.*"
-		},
 		"repositories": [
 			{
 				"type": "composer",
 				"url": "http://packages.cartalyst.com"
 			}
 		],
+		"require": {
+			"cartalyst/cart": "1.0.*"
+		},
 		"minimum-stability": "dev"
 	}
 
-> **Note:** The minimum-stability key is needed so that you can use the package (which isn't marked as stable, yet).
+> **Note:** The minimum-stability key is required so that you can use the package (which isn't marked as stable, yet).
 
-Run a composer update from the command line.
+Run composer update from the command line
 
-	php composer.phar update
+	composer update
 
 ### 2. Service Provider {#service-provider}
 
@@ -37,7 +39,7 @@ Add the following to the list of service providers in `app/config/app.php`.
 
 ---
 
-Add the following to the to the list of class aliases in `app/config/app.php`.
+Add the following to the list of aliases in `app/config/app.php`.
 
 	'Cart' => 'Cartalyst\Cart\Facades\Laravel',
 
