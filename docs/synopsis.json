@@ -1,9 +1,5 @@
 {
 	"name" : "Cart",
-	"type" : "package",
-	"public" : false,
-	"branch" : "master",
 	"github" : "cartalyst/cart",
-	"travis" : false,
 	"demo" : false
 }
