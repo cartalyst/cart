@@ -23,24 +23,270 @@ use Illuminate\Support\Collection;
 class BaseCollection extends Collection {
 
 	/**
-	 * Magic method.
+	 * Holds all tax values.
 	 *
-	 * @param  string  $method
-	 * @return mixed
+	 * @var float
 	 */
-	public function __get($method)
+	protected $tax;
+
+	/**
+	 * Holds all discount values.
+	 *
+	 * @var float
+	 */
+	protected $discount;
+
+	/**
+	 * Holds all conditions.
+	 *
+	 * @var array
+	 */
+	protected $conditions = array();
+
+	/**
+	 * Holds the price of the item
+	 * @var float
+	 */
+	protected $price;
+
+	/**
+	 * Get item price.
+	 * @return float
+	 */
+	public function getPrice()
 	{
-		if (method_exists($this, $method))
+		return $this->price;
+	}
+
+	/**
+	 * Set item price.
+	 * @param float $price
+	 */
+	public function setPrice($price)
+	{
+		$this->price = $price;
+	}
+
+	/**
+	 * Returns the tax value.
+	 *
+	 * @return float
+	 */
+	public function getTax()
+	{
+		return $this->tax;
+	}
+
+	/**
+	 * Sets the tax value.
+	 *
+	 * @param float $tax
+	 */
+	public function setTax($tax)
+	{
+		$this->tax = $tax;
+	}
+
+	/**
+	 * Returns the discount value.
+	 *
+	 * @return float
+	 */
+	public function getDiscount()
+	{
+		return $this->discount;
+	}
+
+	/**
+	 * Sets the discount value.
+	 *
+	 * @param float $discount
+	 */
+	public function setDiscount($discount)
+	{
+		$this->discount = $discount;
+	}
+
+	/**
+	 * Return total.
+	 *
+	 * @return float
+	 */
+	public function total()
+	{
+		// Apply conditions
+		$this->applyConditions();
+
+		// If conditions have updated the subtotal ? then return subtotal, if the item
+		// price only has been modified, recalculate subtotal with the new price
+		return $this->subtotal ? $this->subtotal : $this->subtotal($this->price);
+	}
+
+	/**
+	 * Set a condition.
+	 *
+	 * @param  \Cartalyst\Conditions\Condition  $condition
+	 * @return void
+	 */
+	public function condition($condition)
+	{
+		if (is_array($condition))
 		{
-			return $this->{$method}();
+			foreach ($condition as $c)
+			{
+				$this->condition($c);
+			}
+
+			return;
 		}
 
-		if ($this->has($method))
+		if ($condition->validate($this))
 		{
-			return $this->get($method);
+			$this->conditions[] = $condition;
 		}
 
-		return null;
+	}
+
+	/**
+	 * Return all the applied and valid conditions.
+	 *
+	 * @return array
+	 */
+	public function conditions()
+	{
+		return $this->conditions;
+	}
+
+	/**
+	 * Apply all conditions
+	 *
+	 * @return  void
+	 */
+	protected function applyConditions()
+	{
+		// Reset price
+		$this->price = $this->get('price');
+
+		// Reset subtotal
+		$this->subtotal = $this->subtotal();
+
+		// Run price conditions first
+		$this->applyTypeConditions('price', 'discount');
+		$this->applyTypeConditions('price');
+		$this->applyTypeConditions('price', 'tax');
+
+		// Run subtotal conditions
+		$this->applyTypeConditions('subtotal', 'discount');
+		$this->applyTypeConditions('subtotal');
+		$this->applyTypeConditions('subtotal', 'tax');
+	}
+
+	/**
+	 * Apply specific conditions
+	 * @param  float $target
+	 * @param  string $type
+	 * @return void
+	 */
+	public function applyTypeConditions($target, $type = null)
+	{
+
+		foreach ($this->conditions() as $condition)
+		{
+
+			if ($condition->get('type') === $type)
+			{
+				if ($condition->get('target') === $target)
+				{
+					// Temporarily store subtotal
+					$tempSubtotal = $this->subtotal;
+
+					if ($target === 'price')
+					{
+						$value = $target === 'price' ? $this->getPrice() : 0;
+					}
+					else if ($target === 'subtotal')
+					{
+						$value = $target === 'subtotal' ? $this->subtotal ? $this->subtotal : $this->subtotal($this->price) : $this->subtotal($this->price);
+					}
+
+					// Apply condition
+					$price = $condition->apply($this, $value);
+
+					if ($target === 'price')
+					{
+						// Update price
+						$this->setPrice($price);
+
+						// Update subtotal with the new price
+						$this->subtotal = $this->subtotal($price);
+					}
+					else if ($target === 'subtotal')
+					{
+						// Update subtotal
+						$this->subtotal = $price;
+					}
+
+					// Store taxes
+					if ($condition->get('type') === 'tax')
+					{
+						$this->setTax($this->getTax() + $this->subtotal - $tempSubtotal);
+					}
+
+					// Store discounts
+					if ($condition->get('type') === 'discount')
+					{
+						$this->setDiscount($this->getDiscount() + $this->subtotal - $tempSubtotal);
+					}
+
+				}
+			}
+
+		}
+
+	}
+
+	/**
+	 * Return applied taxes.
+	 *
+	 * @return float
+	 */
+	public function tax()
+	{
+		// Reset tax
+		$this->setTax(0);
+
+		// Apply conditions
+		$this->applyConditions();
+
+		// Return tax
+		return $this->getTax();
+	}
+
+	/**
+	 * Return applied discounts.
+	 *
+	 * @return float
+	 */
+	public function discount()
+	{
+		// Reset discount
+		$this->setDiscount(0);
+
+		// Apply conditions
+		$this->applyConditions();
+
+		// Return discount
+		return $this->getDiscount();
+	}
+
+	/**
+	 * Return the total weight of the item.
+	 *
+	 * @return float
+	 */
+	public function weight()
+	{
+		return (float) $this->get('weight') * $this->get('quantity');
 	}
 
 }

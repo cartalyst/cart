@@ -18,8 +18,59 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\Collection;
+class CartCollection extends BaseCollection {
 
-class CartCollection extends Collection {
+	/**
+	 * Return the cart subtotal.
+	 *
+	 * @return float
+	 */
+	public function subtotal()
+	{
+		$subtotal = 0;
+
+		foreach ($this->items() as $item)
+		{
+			$subtotal += $item->total();
+		}
+
+		return $subtotal;
+	}
+
+	/**
+	 * Return the total number of items in the cart.
+	 *
+	 * @return int
+	 */
+	public function quantity()
+	{
+		$total = 0;
+
+		foreach ($this->items() as $item)
+		{
+			$total += $item->get('quantity');
+		}
+
+		return (int) $total;
+	}
+
+	/**
+	 * Return the sum of all item taxes.
+	 *
+	 * @param  \Cartalyst\Conditions\Condition  $tax
+	 * @return float
+	 */
+	public function itemTaxes()
+	{
+		$total = 0;
+
+		foreach ($this->items() as $item)
+		{
+			$item->applyConditions();
+			$total += $item->tax();
+		}
+
+		return $total;
+	}
 
 }

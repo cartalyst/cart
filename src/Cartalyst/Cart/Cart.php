@@ -21,17 +21,14 @@
 use Cartalyst\Cart\Collections\CartCollection;
 use Cartalyst\Cart\Collections\ItemAttributesCollection;
 use Cartalyst\Cart\Collections\ItemCollection;
-use Cartalyst\Conditions\Condition;
 use Cartalyst\Cart\Exceptions\CartInvalidAttributesException;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
-use Cartalyst\Cart\Weight;
-use Cartalyst\Tax\Tax;
 
-class Cart {
+class Cart extends CartCollection {
 
 	/**
 	 * The storage driver used by Cart.
@@ -71,14 +68,12 @@ class Cart {
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
-	 * @param  \Cartalyst\Tax\Tax  $tax
 	 * @param  \Cartalyst\Cart\Weight  $weight
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage = null, Tax $tax, Weight $weight)
+	public function __construct(StorageInterface $storage = null, Weight $weight)
 	{
 		$this->storage = $storage;
-		$this->tax = $tax;
 		$this->weight = $weight;
 	}
 
@@ -114,9 +109,8 @@ class Cart {
 			}
 		}
 
-		// Make sure the quantity is a number, and remove any leading zeros,
-		// and make sure the value is rounded.
-		$quantity = (float) round($item['quantity']);
+		// Make sure the quantity is an integer.
+		$quantity = (int) $item['quantity'];
 
 		// Check if the quantity value is correct
 		if ( ! is_numeric($quantity) or $quantity < 1)
@@ -124,9 +118,7 @@ class Cart {
 			throw new CartInvalidQuantityException;
 		}
 
-		// Remove any leading zeros and anything that isn't a number or a
-		// decimal point from the price.
-		$price = (float) $item['price'];
+		$price = $item['price'];
 
 		// Check if the price value is correct
 		if ( ! is_numeric($price))
@@ -153,7 +145,7 @@ class Cart {
 			$row = $this->item($rowId);
 
 			// Update the item quantity
-			$row->put('quantity', $row->quantity + $quantity);
+			$row->put('quantity', $row->get('quantity') + $quantity);
 		}
 		else
 		{
@@ -180,8 +172,11 @@ class Cart {
 			)));
 		}
 
-		// Update the item subtotal
-		$row->put('subtotal', (float) $row->quantity * $row->price);
+		// Assign item conditions to items
+		!isset($item['conditions']) ?: $row->condition($item['conditions']);
+
+		// Set item price
+		$row->setPrice($price);
 
 		// Get the cart contents
 		$cart = $this->items();
@@ -280,7 +275,7 @@ class Cart {
 				}
 				elseif ($key === 'quantity')
 				{
-					$value = (float) round($value);
+					$value = (int) $value;
 				}
 
 				$row->put($key, $value);
@@ -290,20 +285,17 @@ class Cart {
 		// We are probably updating the quantity
 		else
 		{
-			// Make sure the quantity is a number, and remove any leading zeros
-			$quantity = (float) $attributes;
-
-			// Make sure that the quantity value is rounded
-			$quantity = round($quantity);
+			// Make sure the quantity is an integer.
+			$quantity = (int) $attributes;
 
 			$row->put('quantity', $quantity);
 		}
 
-		// Update the item subtotal
-		$row->put('subtotal', (float) $row->quantity * $row->price);
+		// Set item price
+		$row->setPrice($row->get('price'));
 
 		// If quantity is less than one, we remove the item
-		if ($row->quantity < 1)
+		if ($row->get('quantity') < 1)
 		{
 			$cart->forget($rowId);
 		}
@@ -345,101 +337,6 @@ class Cart {
 	}
 
 	/**
-	 * Return the cart total.
-	 *
-	 * @return float
-	 */
-	public function total()
-	{
-		return $this->subTotal() + $this->tax();
-	}
-
-	/**
-	 * Return the cart subtotal.
-	 *
-	 * @return float
-	 */
-	public function subtotal()
-	{
-		$total = 0;
-
-		foreach ($this->items() as $item)
-		{
-			$total += $item->subtotal;
-		}
-
-		/*
-		foreach ($this->conditions() as $condition)
-		{
-			if ($condition->get('valid'))
-			{
-				$actions = $condition->get('actions', array());
-
-				foreach ($actions as $action)
-				{
-					if ($action['target'] === 'subtotal')
-					{
-						$total = $this->calculate($action, $total);
-					}
-				}
-			}
-		}
-		/**/
-
-		return (float) $total;
-	}
-
-	/**
-	 * Return the total items on the cart.
-	 *
-	 * @return int
-	 */
-	public function quantity()
-	{
-		$total = 0;
-
-		foreach ($this->items() as $item)
-		{
-			$total += $item->quantity;
-		}
-
-		return (int) $total;
-	}
-
-	/**
-	 * Return the sum of all item taxes.
-	 *
-	 * @param  \Cartalyst\Conditions\Condition  $tax
-	 * @return float
-	 */
-	public function tax(Condition $tax = null)
-	{
-		$total = 0;
-
-		if (is_null($tax))
-		{
-			foreach ($this->taxRates() as $rate)
-			{
-				$total += $this->tax($rate);
-			}
-
-			return $total;
-		}
-
-		foreach ($this->items() as $item)
-		{
-			$rate = $item->get('condition');
-
-			if ( ! is_null($rate) and $tax->get('name') === $rate->get('name'))
-			{
-				$total += $item->subtotal();
-			}
-		}
-
-		return $this->tax->setRate($tax->get('value'))->setValue($total)->charged();
-	}
-
-	/**
 	 * Return all the applied tax rates both global and per item taxes.
 	 *
 	 * @return array
@@ -451,9 +348,12 @@ class Cart {
 		// Per item taxes
 		foreach ($this->items() as $item)
 		{
-			if ($condition = $item->get('condition'))
+			foreach ($item->conditions() as $condition)
 			{
-				$rates[$condition->get('name')] = $condition;
+				if ($condition->get('type') === 'tax')
+				{
+					$rates[$condition->get('name')] = $condition;
+				}
 			}
 		}
 
@@ -516,50 +416,6 @@ class Cart {
 		// Get all the items
 		$items = $this->storage->has() ? $this->storage->get() : new CartCollection;
 
-		// Apply actions to the items
-		foreach ($this->conditions() as $condition)
-		{
-			$rules = $condition->get('rules', array());
-
-			$actions = $condition->get('actions', array());
-
-			foreach ($rules as $rule)
-			{
-				foreach ($items as $item)
-				{
-					if ($item->get('name') === $rule->get('value'))
-					{
-						# @TODO: check if the condition is a discount or something else?!
-						# and move this logic elsewhere
-						foreach ($actions as $action)
-						{
-							$target = $action->get('target');
-
-							if (strpos($target, 'item-') !== 'false')
-							{
-								// Prepare the target
-								$target = str_replace('item-', '', $target);
-
-								// Only apply the action if the condition is valid
-								if ($condition->get('valid'))
-								{
-									$discount = $item->{$target} - $this->calculate($action, $item->{$target});
-
-									$this->discounts[$condition->get('name')] = $discount;
-
-									$item->put('discounted', $discount);
-								}
-								else
-								{
-									$item->forget('discounted');
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
 		// Return the items
 		return $items;
 	}
@@ -609,7 +465,7 @@ class Cart {
 	}
 
 	/**
-	 * Return all the cart instances.
+	 * Return all cart instances.
 	 *
 	 * @return array
 	 */
@@ -687,6 +543,7 @@ class Cart {
 	 * indexes, you can change this behavior by setting the second
 	 * parameter as false.
 	 *
+	 * @param  array $indexes
 	 * @param  bool  $merge
 	 * @return void
 	 */
@@ -765,42 +622,6 @@ class Cart {
 		}
 	}
 
-
-
-
-##############################################
-
-
-	/**
-	 * Set a condition.
-	 *
-	 * @param  Cartalyst\Conditions\Condition  $condition
-	 * @return void
-	 */
-	public function condition(Condition $condition)
-	{
-		$condition->validate($this);
-
-		$this->conditions[] = $condition;
-	}
-
-	/**
-	 * Return all the applied and valid conditions.
-	 *
-	 * @return array
-	 */
-	public function conditions()
-	{
-		$conditions = array();
-
-		foreach ($this->conditions as $condition)
-		{
-			$conditions[$condition->get('name')] = $condition;
-		}
-
-		return $conditions;
-	}
-
 	/**
 	 * Return all the conditions that were applied only to items.
 	 *
@@ -812,56 +633,13 @@ class Cart {
 
 		foreach ($this->items() as $item)
 		{
-			if ($condition = $item->get('condition'))
+			if ($condition = $item->get('conditions'))
 			{
-				$conditions[$condition->get('name')] = $condition;
+				$conditions[] = $condition;
 			}
 		}
 
 		return $conditions;
 	}
 
-
-	# rethink this...
-	protected function calculate($rule, $value)
-	{
-		$operation = $rule->get('operation');
-		$operator = $rule->get('operator');
-
-		if ($operation === 'percentage')
-		{
-			#
-			return $value - ($value * $rule->get('value'));
-		}
-
-
-		switch ($operator)
-		{
-			case 'sum':
-			default:
-
-				return $value + $rule->get('value');
-
-				break;
-
-			case 'multiply':
-
-				return $value * $rule->get('value');
-
-				break;
-
-			case 'subtract':
-			case 'sub':
-
-				return $value - $rule->get('value');
-
-				break;
-		}
-	}
-
-
-	public function discountValue($condition)
-	{
-		return $this->discounts[$condition->get('name')];
-	}
 }

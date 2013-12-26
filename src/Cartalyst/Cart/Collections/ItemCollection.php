@@ -18,41 +18,26 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Conditions\Condition;
+
 class ItemCollection extends BaseCollection {
 
 	/**
 	 * Return the item subtotal, taking into consideration
 	 * the item attributes prices.
 	 *
+	 * @param float $price
 	 * @return float
 	 */
-	public function subtotal()
+	public function subtotal($price = 0)
 	{
-		$attributesTotal = $this->get('attributes')->total;
+		$price = $price ? $price : $this->get('price');
 
-		$total = (float) ($this->get('price') + $attributesTotal) * $this->get('quantity');
+		$attributesPrice = $this->get('attributes')->getTotal();
 
-		return $total - $this->get('discounted', 0);
-	}
+		$total = $this->get('quantity') * ($price + $attributesPrice);
 
-	/**
-	 * Return the tax value of the item.
-	 *
-	 * @return float
-	 */
-	public function tax()
-	{
-		return (float) $this->get('condition')->get('value');
-	}
-
-	/**
-	 * Return the total weight of the item.
-	 *
-	 * @return float
-	 */
-	public function weight()
-	{
-		return (float) $this->get('weight') * $this->get('quantity');
+		return $total;
 	}
 
 	/**
@@ -68,11 +53,11 @@ class ItemCollection extends BaseCollection {
 			{
 				foreach ($value as $key => $val)
 				{
-					return $this->attributes->{$key}->find($val);
+					return $this->attributes->get($key)->find($val);
 				}
 			}
 
-			return $this->{$key} === $value ? true : false;
+			return $this->get($key) === $value ? true : false;
 		}
 	}
 
