@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Cart\ServiceProviders;
+<?php namespace Cartalyst\Cart\Laravel;
 /**
  * Part of the Cart package.
  *
@@ -25,7 +25,7 @@ use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 use Cartalyst\Cart\Weight;
 use Illuminate\Support\ServiceProvider;
 
-class Laravel extends ServiceProvider {
+class CartServiceProvider extends ServiceProvider {
 
 	/**
 	 * Boot the service provider.
@@ -152,7 +152,7 @@ class Laravel extends ServiceProvider {
 			$storage = $app['config']->get('cart::driver', 'session');
 
 			// Create a new Cart instance
-			$cart = new Cart($app["cart.storage.{$storage}"], $app['tax'], $app['cart.weight']);
+			$cart = new Cart($app["cart.storage.{$storage}"], $app['cart.weight']);
 
 			// Set the default cart instance
 			$cart->instance($app['config']->get('cart::instance', 'main'));

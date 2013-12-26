@@ -20,4 +20,4 @@
 
 use Exception;
 
-class CartInvalidVariantsException extends Exception {}
+class CartInvalidAttributesException extends Exception {}
