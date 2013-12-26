@@ -20,4 +20,8 @@
 
 use Exception;
 
+class CartInvalidAttributesException extends Exception {}
+class CartInvalidPriceException extends Exception {}
+class CartInvalidQuantityException extends Exception {}
 class CartItemNotFoundException extends Exception {}
+class CartMissingRequiredIndexException extends Exception {}

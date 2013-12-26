@@ -44,13 +44,22 @@ class BaseCollection extends Collection {
 	protected $conditions = array();
 
 	/**
-	 * Holds the price of the item
+	 * Holds the item price.
+	 *
 	 * @var float
 	 */
 	protected $price;
 
 	/**
-	 * Get item price.
+	 * Holds the item subtotal.
+	 *
+	 * @var int
+	 */
+	protected $subtotal;
+
+	/**
+	 * Return the item price.
+	 *
 	 * @return float
 	 */
 	public function getPrice()
@@ -59,8 +68,10 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Set item price.
-	 * @param float $price
+	 * Set the item price.
+	 *
+	 * @param  float  $price
+	 * @return void
 	 */
 	public function setPrice($price)
 	{
@@ -68,7 +79,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns the tax value.
+	 * Return the tax value of the item.
 	 *
 	 * @return float
 	 */
@@ -78,9 +89,10 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Sets the tax value.
+	 * Set the tax value of the item.
 	 *
-	 * @param float $tax
+	 * @param  float  $tax
+	 * @return void
 	 */
 	public function setTax($tax)
 	{
@@ -88,7 +100,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns the discount value.
+	 * Return the discount value.
 	 *
 	 * @return float
 	 */
@@ -98,9 +110,10 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Sets the discount value.
+	 * Set the discount value.
 	 *
-	 * @param float $discount
+	 * @param  float  $discount
+	 * @return void
 	 */
 	public function setDiscount($discount)
 	{
@@ -114,12 +127,9 @@ class BaseCollection extends Collection {
 	 */
 	public function total()
 	{
-		// Apply conditions
 		$this->applyConditions();
 
-		// If conditions have updated the subtotal ? then return subtotal, if the item
-		// price only has been modified, recalculate subtotal with the new price
-		return $this->subtotal ? $this->subtotal : $this->subtotal($this->price);
+		return $this->subtotal ?: $this->subtotal($this->price);
 	}
 
 	/**
@@ -160,7 +170,7 @@ class BaseCollection extends Collection {
 	/**
 	 * Apply all conditions
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	protected function applyConditions()
 	{
@@ -183,8 +193,9 @@ class BaseCollection extends Collection {
 
 	/**
 	 * Apply specific conditions
-	 * @param  float $target
-	 * @param  string $type
+	 *
+	 * @param  float   $target
+	 * @param  string  $type
 	 * @return void
 	 */
 	public function applyTypeConditions($target, $type = null)
@@ -252,13 +263,10 @@ class BaseCollection extends Collection {
 	 */
 	public function tax()
 	{
-		// Reset tax
 		$this->setTax(0);
 
-		// Apply conditions
 		$this->applyConditions();
 
-		// Return tax
 		return $this->getTax();
 	}
 
@@ -269,13 +277,10 @@ class BaseCollection extends Collection {
 	 */
 	public function discount()
 	{
-		// Reset discount
 		$this->setDiscount(0);
 
-		// Apply conditions
 		$this->applyConditions();
 
-		// Return discount
 		return $this->getDiscount();
 	}
 

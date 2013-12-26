@@ -57,7 +57,6 @@ class CartCollection extends BaseCollection {
 	/**
 	 * Return the sum of all item taxes.
 	 *
-	 * @param  \Cartalyst\Conditions\Condition  $tax
 	 * @return float
 	 */
 	public function itemTaxes()

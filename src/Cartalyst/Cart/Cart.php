@@ -33,7 +33,7 @@ class Cart extends CartCollection {
 	/**
 	 * The storage driver used by Cart.
 	 *
-	 * @var Cartalyst\Cart\Storage\StorageInterface
+	 * @var \Cartalyst\Cart\Storage\StorageInterface
 	 */
 	protected $storage;
 
@@ -71,7 +71,7 @@ class Cart extends CartCollection {
 	 * @param  \Cartalyst\Cart\Weight  $weight
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage = null, Weight $weight)
+	public function __construct(StorageInterface $storage, Weight $weight)
 	{
 		$this->storage = $storage;
 		$this->weight = $weight;

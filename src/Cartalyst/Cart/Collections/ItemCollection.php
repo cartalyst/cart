@@ -26,12 +26,12 @@ class ItemCollection extends BaseCollection {
 	 * Return the item subtotal, taking into consideration
 	 * the item attributes prices.
 	 *
-	 * @param float $price
+	 * @param  float  $price
 	 * @return float
 	 */
 	public function subtotal($price = 0)
 	{
-		$price = $price ? $price : $this->get('price');
+		$price = $price ?: $this->get('price');
 
 		$attributesPrice = $this->get('attributes')->getTotal();
 
@@ -57,7 +57,7 @@ class ItemCollection extends BaseCollection {
 				}
 			}
 
-			return $this->get($key) === $value ? true : false;
+			return $this->get($key) === $value;
 		}
 	}
 

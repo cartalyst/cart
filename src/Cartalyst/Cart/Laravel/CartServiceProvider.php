@@ -35,8 +35,6 @@ class CartServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('cartalyst/cart', 'cartalyst/cart');
-
-		$this->observeEvents();
 	}
 
 	/**
@@ -48,8 +46,6 @@ class CartServiceProvider extends ServiceProvider {
 	{
 		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../config');
 
-		$this->registerCookie();
-
 		$this->registerDatabase();
 
 		$this->registerSession();
@@ -57,29 +53,6 @@ class CartServiceProvider extends ServiceProvider {
 		$this->registerWeight();
 
 		$this->registerCart();
-	}
-
-	/**
-	 * Register the cookie driver used by the Cart.
-	 *
-	 * @return void
-	 */
-	protected function registerCookie()
-	{
-		$this->app['cart.storage.cookie'] = $this->app->share(function($app)
-		{
-			// Get the key name
-			$key = $app['config']->get('cart::session.key');
-
-			// Get the default instance
-			$instance = $app['config']->get('cart::instance');
-
-			$cookie = new IlluminateCookie($app['cookie'], $key, $instance);
-
-			$cookie->setTtl($app['config']->get('cart::cookie.ttl'));
-
-			return $cookie;
-		});
 	}
 
 	/**
@@ -161,24 +134,6 @@ class CartServiceProvider extends ServiceProvider {
 			$cart->setRequiredIndexes($app['config']->get('cart::requiredIndexes'));
 
 			return $cart;
-		});
-	}
-
-	/**
-	 * Sets up the event observations required by the Cart.
-	 *
-	 * @return void
-	 */
-	protected function observeEvents()
-	{
-		$app = $this->app;
-
-		$this->app->after(function($request, $response) use ($app)
-		{
-			if (isset($app['cart.loaded']) and $app['cart.loaded'] == true and ($cookie = $app['cart.storage.cookie']->getCookie()))
-			{
-				$response->headers->setCookie($cookie);
-			}
 		});
 	}
 
