@@ -9,7 +9,7 @@ History and future capabilities.
 ####Incomplete
 - ```Cart::save('instance')``` User can save a cart instance.
 - Items can have attributes. (label, value, price, operation)
-- ```Cart::discount(Discount object)``` User can set a discount\coupon object.
+- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
 
 ####Complete
 - *05-Sep-13* - v0.9.1
