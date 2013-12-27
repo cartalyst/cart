@@ -109,7 +109,7 @@ class Cart extends CartCollection {
 			}
 		}
 
-		// Make sure the quantity is an integer.
+		// Make sure the quantity is an integer
 		$quantity = (int) $item['quantity'];
 
 		// Check if the quantity value is correct
@@ -172,8 +172,11 @@ class Cart extends CartCollection {
 			)));
 		}
 
-		// Assign item conditions to items
-		!isset($item['conditions']) ?: $row->condition($item['conditions']);
+		// Assign item conditions
+		if ($conditions = array_get($item, 'conditions'))
+		{
+			$row->condition($conditions);
+		}
 
 		// Set item price
 		$row->setPrice($price);
@@ -207,26 +210,26 @@ class Cart extends CartCollection {
 			{
 				$this->remove($rowId);
 			}
+
+			return true;
 		}
-		else
+
+		foreach ($items as $rowId)
 		{
-			foreach ($items as $rowId)
+			// Check if the item exists
+			if ( ! $this->itemExists($rowId))
 			{
-				// Check if the item exists
-				if ( ! $this->itemExists($rowId))
-				{
-					throw new CartItemNotFoundException;
-				}
-
-				// Get the cart contents
-				$cart = $this->items();
-
-				// Remove the item from the cart
-				$cart->forget($rowId);
+				throw new CartItemNotFoundException;
 			}
 
-			$this->updateCart($cart);
+			// Get the cart contents
+			$cart = $this->items();
+
+			// Remove the item from the cart
+			$cart->forget($rowId);
 		}
+
+		$this->updateCart($cart);
 
 		return true;
 	}
@@ -282,7 +285,7 @@ class Cart extends CartCollection {
 			}
 		}
 
-		// We are probably updating the quantity
+		// We are probably updating the item quantity
 		else
 		{
 			// Make sure the quantity is an integer.
@@ -429,7 +432,7 @@ class Cart extends CartCollection {
 	 */
 	public function find($data, $instance = null)
 	{
-		if ( ! is_null($instance))
+		if ($instance)
 		{
 			$currentInstance = $this->identify();
 
@@ -446,7 +449,7 @@ class Cart extends CartCollection {
 			}
 		}
 
-		if ( ! is_null($instance))
+		if ($instance)
 		{
 			$this->instance($currentInstance);
 		}
@@ -494,7 +497,7 @@ class Cart extends CartCollection {
 	 */
 	public function destroy($instance = null)
 	{
-		if ( ! is_null($instance))
+		if ($instance)
 		{
 			$this->instance($instance);
 		}
