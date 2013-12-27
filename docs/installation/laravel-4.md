@@ -1,10 +1,6 @@
-## Install & Configure in Laravel 4
+# Install & Configure in Laravel 4
 
-&nbsp;
-
-### 1. Composer {#composer}
-
----
+## Composer {#composer}
 
 Open your `composer.json` file and add the following lines:
 
@@ -27,25 +23,20 @@ Run composer update from the command line
 
 	composer update
 
-### 2. Service Provider {#service-provider}
-
----
+## Service Provider {#service-provider}
 
 Add the following to the list of service providers in `app/config/app.php`.
 
 	'Cartalyst\Cart\Laravel\CartServiceProvider',
 
-### 3. Alias {#alias}
 
----
+## Alias {#alias}
 
 Add the following to the list of aliases in `app/config/app.php`.
 
 	'Cart' => 'Cartalyst\Cart\Laravel\Facades\Cart',
 
-### 4. Configuration {#configuration}
-
----
+## Configuration {#configuration}
 
 After installing, you can publish the package's configuration file into you application by running the following command:
 
