@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Cart\Facades\Laravel;
+<?php namespace Cartalyst\Cart\Laravel\Facades;
 /**
  * Part of the Cart package.
  *
