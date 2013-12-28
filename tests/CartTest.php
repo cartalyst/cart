@@ -21,7 +21,6 @@
 use Cartalyst\Cart\Cart;
 use Cartalyst\Conditions\Condition;
 use Cartalyst\Cart\Weight;
-use Illuminate\Support\Collection;
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
 
@@ -34,7 +33,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	protected $cart;
 
 	/**
+	 * Close mockery.
 	 *
+	 * @return void
 	 */
 	public function tearDown()
 	{
@@ -42,31 +43,60 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 *
+	 * Setup resources and dependencies
 	 */
-	public function __construct()
+	public function setUp()
 	{
-		$fileSystem = new \Illuminate\Filesystem\Filesystem();
-		$fileSessionHanlder = new \Illuminate\Session\FileSessionHandler($fileSystem, __DIR__ . '/storage/sessions');
-		$store = new \Illuminate\Session\Store('cartalyst_cart_session', $fileSessionHanlder);
+		$filesystem = new \Illuminate\Filesystem\Filesystem();
+		$fileSessionHandler = new \Illuminate\Session\FileSessionHandler(
+			$filesystem,
+			__DIR__ . '/storage/sessions'
+		);
+
+		$store = new \Illuminate\Session\Store(
+			'cartalyst_cart_session',
+			$fileSessionHandler
+		);
 
 		$session = new \Cartalyst\Cart\Storage\Sessions\IlluminateSession($store);
 
-		$this->cart = new Cart($session, new Weight);
+		$weight = new Weight;
+
+		$weight->setWeights(array(
+			'kg' => array(
+				'label'  => 'Kilogram',
+				'value'  => 1.00000000,
+				'format' => '{value} kg'
+			),
+
+			'g' => array(
+				'label'  => 'Gram',
+				'value'  => 1000.00000000,
+				'format' => '{value} g'
+			),
+
+			'lb' => array(
+				'label'  => 'Pound',
+				'value'  => 2.20460000,
+				'format' => '{value} lb'
+			),
+
+			'oz' => array(
+				'label'  => 'Ounce',
+				'value'  => 35.27400000,
+				'format' => '{value} oz'
+			),
+		));
+
+		$this->cart = new Cart($session, $weight);
 	}
 
-	/**
-	 *
-	 */
 	public function testcartCanBeInstantiated()
 	{
 		$storage = m::mock('\Cartalyst\Cart\Storage\Sessions\IlluminateSession');
 		$this->cart = new Cart($storage, new Weight);
 	}
 
-	/**
-	 *
-	 */
 	public function testCanAdd()
 	{
 		$cart = m::mock('cart');
@@ -75,9 +105,6 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$cart->add();
 	}
 
-	/**
-	 *
-	 */
 	public function testCanUpdate()
 	{
 		$cart = m::mock('cart');
@@ -86,9 +113,14 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$cart->update();
 	}
 
-	/**
-	 *
-	 */
+	public function testCanSwitchInstance()
+	{
+		$cart = m::mock('cart');
+		$cart->shouldReceive('instance')->once();
+
+		$cart->instance();
+	}
+
 	public function testCanDelete()
 	{
 		$cart = m::mock('cart');
@@ -97,18 +129,42 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$cart->delete();
 	}
 
-	/**
-	 *
-	 */
 	public function testClearCart()
 	{
 		$this->cart->clear();
 		$this->assertEmpty($this->cart->items()->toArray());
 	}
 
-	/**
-	 *
-	 */
+	public function testDestroyCart()
+	{
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 2,
+					'price'      => 125.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 5.00,
+						),
+						'color' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+					),
+				),
+			)
+		);
+
+		$this->cart->destroy();
+
+		$this->assertEquals($this->cart->items()->count(), 0);
+	}
+
 	public function testSetRequiredIndexes()
 	{
 		$indexes = array(
@@ -120,18 +176,15 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(in_array('price', $this->cart->getRequiredIndexes()));
 	}
 
-	/**
-	 *
-	 */
 	public function testAddItemToCart()
 	{
 		$this->cart->add(
 			array(
 				array(
-					'id'       => 'foobar1',
-					'name'     => 'Foobar 1',
-					'quantity' => 2,
-					'price'    => 125.00,
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 2,
+					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
 							'label' => 'Size',
@@ -151,9 +204,80 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->items()->count(), 1);
 	}
 
-	/**
-	 *
-	 */
+	public function testAddItemToAnotherInstance()
+	{
+		$this->cart->instance('wishlist');
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 2,
+					'price'      => 125.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 5.00,
+						),
+						'color' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+					),
+				),
+			)
+		);
+
+		$this->assertEquals($this->cart->items()->count(), 1);
+	}
+
+	public function testGetAllInstances()
+	{
+		$this->cart->add(
+			array(
+				array(
+					'id' => 1,
+					'price' => 20.00,
+					'name' => 'foobar',
+					'quantity' => 1,
+				)
+			)
+		);
+
+		$this->cart->instance('wishlist');
+
+		$this->cart->add(
+			array(
+				array(
+					'id' => 1,
+					'price' => 20.00,
+					'name' => 'foobar',
+					'quantity' => 1,
+				)
+			)
+		);
+
+		$this->cart->instance('order');
+
+		$this->cart->add(
+			array(
+				array(
+					'id' => 1,
+					'price' => 20.00,
+					'name' => 'foobar',
+					'quantity' => 1,
+				)
+			)
+		);
+
+		$this->assertTrue(array_key_exists('main', $this->cart->instances()));
+		$this->assertTrue(array_key_exists('wishlist', $this->cart->instances()));
+		$this->assertTrue(array_key_exists('order', $this->cart->instances()));
+	}
+
 	public function testAddItemsToCart()
 	{
 		$indexes = array(
@@ -167,7 +291,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 				array(
 					'id'       => 'foobar1',
 					'name'     => 'Foobar 1',
-					'quantity' => '02.8',
+					'quantity' => '03',
 					'price'    => 4,
 				),
 				array(
@@ -185,27 +309,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->cart->add(
-			array(
-				array(
-					'id'       => 'foobar1',
-					'name'     => 'Foobar 1',
-					'quantity' => '02.8',
-					'price'    => 4,
-				),
-			)
-		);
-
-		foreach ($this->cart->items() as $item) {
-			$this->assertEquals($item->total(), $item->get('price') * $item->get('quantity'));
-		}
-
-		$this->assertLessThan($this->cart->items()->count(), 1);
+		$this->assertEquals($this->cart->items()->count(), 3);
 	}
 
-	/**
-	 *
-	 */
 	public function testUpdateItemQuantity()
 	{
 		$this->cart->add(
@@ -230,13 +336,12 @@ class CartTest extends PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertEquals($this->cart->find(array('id' => 'foobar1'))[0]->get('quantity'), 5);
+		$item = $this->cart->items()->first();
+
+		$this->assertEquals($item->get('quantity'), 5);
 	}
 
-	/**
-	 *
-	 */
-	public function testMultiItems()
+	public function testCartWithMultipleItems()
 	{
 		$this->cart->add(
 			array(
@@ -257,35 +362,20 @@ class CartTest extends PHPUnit_Framework_TestCase {
 						),
 					),
 				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 4,
+					'price'      => 100.00,
+				),
 			)
 		);
 
-		$subtotal = 0;
-
-		foreach ($this->cart->items() as $item) {
-
-			$attrPrice = 0;
-
-			if ($attributes = $item->get('attributes'))
-			{
-				$attrPrice = $attributes->getTotal() * $item->get('quantity');
-			}
-
-			$subtotal += $item->get('price') * $item->get('quantity') + $attrPrice;
-
-			$this->assertEquals($item->get('price') * $item->get('quantity') + $attrPrice, $item->subtotal());
-
-		}
-
-		$this->assertEquals($this->cart->subtotal(), $subtotal);
-
-		$this->assertEquals($this->cart->total(), 256);
+		$this->assertEquals($this->cart->subtotal(), 656);
+		$this->assertEquals($this->cart->total(), 656);
 	}
 
-	/**
-	 *
-	 */
-	public function testUpdateItem()
+	public function testUpdateItemProperties()
 	{
 		$this->cart->add(
 			array(
@@ -306,17 +396,17 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$this->cart->update(array(
-			'27af518595dfd39ae436c70af8a74561' => 6,
+			'27af518595dfd39ae436c70af8a74561' => array(
+				'name'     => 'Foo',
+				'quantity' => 6,
+			),
 		));
 
 		$this->assertEquals($this->cart->items()->first()->get('quantity'), 6);
-
+		$this->assertEquals($this->cart->items()->first()->get('name'), 'Foo');
 	}
 
-	/**
-	 *
-	 */
-	public function testUpdateItems()
+	public function testUpdateMultipleItems()
 	{
 		$this->cart->add(
 			array(
@@ -350,25 +440,106 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$this->cart->update(array(
-			'2c64e56be9013bed1a17e9156e53609b' => 3,
-			'27af518595dfd39ae436c70af8a74561' => 2,
+			'2c64e56be9013bed1a17e9156e53609b' => array('price' => 20.00, 'quantity' => 3),
+			'27af518595dfd39ae436c70af8a74561' => array('price' => 25.00, 'quantity' => 2),
 		));
 
 		$this->assertEquals($this->cart->items()->first()->get('quantity'), 3);
 		$this->assertEquals($this->cart->items()->last()->get('quantity'), 2);
-		$this->assertEquals($this->cart->items()->get('27af518595dfd39ae436c70af8a74561')->get('quantity'), 2);
 
+		$this->assertEquals($this->cart->items()->first()->get('price'), 20.00);
+		$this->assertEquals($this->cart->items()->last()->get('price'), 25.00);
 	}
 
-	/**
-	 *
-	 */
-	public function testgetConditions()
+	public function testDeleteItem()
+	{
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 7,
+					'price'      => 120.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 3,
+					'price'      => 120.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+			)
+		);
+
+		$this->assertEquals($this->cart->items()->count(), 2);
+
+		$this->cart->remove('2c64e56be9013bed1a17e9156e53609b');
+
+		$this->assertEquals($this->cart->items()->count(), 1);
+
+		$this->assertEmpty($this->cart->find(array('2c64e56be9013bed1a17e9156e53609b')));
+	}
+
+	public function testDeleteMultipleItems()
+	{
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 7,
+					'price'      => 120.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 3,
+					'price'      => 120.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+			)
+		);
+
+		$this->assertEquals($this->cart->items()->count(), 2);
+
+		$this->cart->remove('2c64e56be9013bed1a17e9156e53609b', '27af518595dfd39ae436c70af8a74561');
+
+		$this->assertEquals($this->cart->items()->count(), 0);
+	}
+
+	public function testItemConditions()
 	{
 		$condition = new Condition(
 			array(
 				'name' => 'disc',
-				'type' => 'discount'
+				'type' => 'discount',
+				'target' => 'subtotal',
 			)
 		);
 
@@ -378,12 +549,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$condition->setActions(array(
 			array(
-				'target' => 'subtotal',
-				'value'  => '10.00',
+				'value'  => '-10.00',
 			),
 		));
-
-		$this->cart->destroy();
 
 		$this->cart->add(
 			array(
@@ -392,7 +560,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 1',
 					'quantity'   => 1,
 					'price'      => 97.00,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'attributes' => array(
 						'size'  => array(
 							'label' => 'Size',
@@ -410,7 +578,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 2',
 					'quantity'   => 1,
 					'price'      => 85.00,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'attributes' => array(
 						'size' => array(
 							'label' => 'Size',
@@ -422,34 +590,18 @@ class CartTest extends PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->cart->update(array(
-			'd4bbf22f5afcfc9cb8c04e0942402f8d' => 4,
-			'27af518595dfd39ae436c70af8a74561' => 6,
-		));
+		$this->assertEquals($this->cart->items()->first()->total(), 90);
+		$this->assertEquals($this->cart->items()->last()->total(), 90);
 
-		$this->assertEquals($this->cart->items()->first()->get('quantity'), 4);
-		$this->assertEquals($this->cart->items()->get('27af518595dfd39ae436c70af8a74561')->get('quantity'), 6);
-
-		$total = 0;
-
-		foreach ($this->cart->items() as $item) {
-			$total += $item->total();
-		}
-
-		$this->assertEquals($this->cart->subtotal(), $total);
-
+		$this->assertEquals($this->cart->total(), 180.00);
 	}
 
-	/**
-	 *
-	 */
 	public function testCartCondition()
 	{
-
 		$condition = new Condition(
 			array(
-				'name' => 'tax 10%',
-				'type' => 'tax',
+				'name'   => 'tax 10%',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -466,7 +618,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar1',
 					'name'       => 'Foobar 1',
 					'quantity'   => 1,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
@@ -483,11 +635,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$subtotal = 0;
-
 		$conditionCart = new Condition(array(
-			'name' => 'disc 10%',
-			'type' => 'discount',
+			'name'   => 'disc 10%',
+			'type'   => 'discount',
 			'target' => 'subtotal',
 		));
 
@@ -500,8 +650,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->cart->condition($conditionCart);
 
 		$conditionTax = new Condition(array(
-			'name' => 'tax 10%',
-			'type' => 'tax',
+			'name'   => 'tax 10%',
+			'type'   => 'tax',
 			'target' => 'subtotal',
 		));
 
@@ -511,24 +661,18 @@ class CartTest extends PHPUnit_Framework_TestCase {
 			),
 		));
 
-		$item = $this->cart->items()->first();
-
 		$this->cart->condition($conditionTax);
 
 		$this->assertEquals($this->cart->total(), 141.9264);
-
 		$this->assertEquals($this->cart->subtotal(), 140.8);
 	}
 
-	/**
-	 *
-	 */
 	public function testGetItemTotal()
 	{
 		$condition = new Condition(
 			array(
-				'name' => 'tax 10%',
-				'type' => 'tax',
+				'name'   => 'tax 10%',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -545,7 +689,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar1',
 					'name'       => 'Foobar 1',
 					'quantity'   => 2,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
@@ -565,20 +709,16 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$item = $this->cart->items()->first();
 
-		$this->assertEquals($item->total(), 288.2);
 		$this->assertEquals($item->subtotal(), 262);
-
+		$this->assertEquals($item->total(), 288.2);
 	}
 
-	/**
-	 *
-	 */
-	public function testApplyMultipleConditionsToItem()
+	public function testApplyMultipleConditionsOnItem()
 	{
 		$taxCondition = new Condition(
 			array(
-				'name' => 'tax 10%',
-				'type' => 'tax',
+				'name'   => 'tax 10%',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -591,8 +731,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$discountCondition = new Condition(
 			array(
-				'name' => 'discount 5%',
-				'type' => 'discount',
+				'name'   => 'discount 5%',
+				'type'   => 'discount',
 				'target' => 'subtotal',
 			)
 		);
@@ -636,13 +776,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item->subtotal(), 256);
 		$this->assertEquals($item->total(), 265.32);
-
 	}
 
-	/**
-	 *
-	 */
-	public function testNumberOfItems()
+	public function testTotalNumberOfItemsInCart()
 	{
 		$this->cart->add(
 			array(
@@ -684,16 +820,47 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->quantity(), 6);
 	}
 
-	/**
-	 *
-	 */
-	public function testTax()
+	public function testCartWeight()
 	{
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 4,
+					'price'      => 97.00,
+					'weight'	 => 21.00,
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 2,
+					'price'      => 85.00,
+					'weight'	 => 21.00,
+				),
+			)
+		);
 
+		$this->assertEquals($this->cart->weight(), 126);
+		$this->assertEquals($this->cart->weight->convert('kg', 'lb')->format('lb'), '277.78 lb');
+
+		$this->cart->update(array(
+			'2d2d8cb241842b326ce0e095dbfc4d41' => array(
+				'name'     => 'Foo',
+				'quantity' => 3,
+				'weight' => 20.00,
+			),
+		));
+
+		$this->assertEquals($this->cart->weight(), 144);
+	}
+
+	public function testTaxes()
+	{
 		$tax10p = new Condition(
 			array(
-				'name' => 'tax10',
-				'type' => 'tax',
+				'name'   => 'tax10',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -706,8 +873,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$add5 = new Condition(
 			array(
-				'name' => 'add10',
-				'type' => 'tax',
+				'name'   => 'add10',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -720,8 +887,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$tax5p = new Condition(
 			array(
-				'name' => 'tax5',
-				'type' => 'tax',
+				'name'   => 'tax5',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -758,7 +925,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 2',
 					'quantity'   => 2,
 					'price'      => 85.00,
-					'conditions' => [$tax5p, $tax10p],
+					'conditions' => array($tax5p, $tax10p),
 					'weight'	 => 21.00,
 					'attributes' => array(
 						'size' => array(
@@ -773,18 +940,13 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		// Items 1 tax check
 		$item1 = $this->cart->items()->first();
-		$tax1 = $item1->tax();
-		$this->assertEquals($tax1, 20);
+		$this->assertEquals($item1->tax(), 20);
 
 		// Items 2 tax check
 		$item2 = $this->cart->items()->last();
-		$tax2 = $item2->tax();
-		$this->assertEquals($tax2, 31);
+		$this->assertEquals($item2->tax(), 31);
 
-		// Weight
-		$this->assertEquals($this->cart->weight(), 84);
-
-		// Apply 5% Tax
+		// Apply 5% Global Tax
 		$this->cart->condition($tax5p);
 
 		// Cart tax
@@ -798,23 +960,15 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		// Cart total
 		$this->assertEquals($this->cart->total(), 473.55);
-
-		// Number of items
-		$this->assertEquals($this->cart->quantity(), 4);
-
 	}
 
-	/**
-	 *
-	 */
-	public function testgetConditions21()
+	public function testCombinedConditionsOnItemsAndCart()
 	{
-
 		$tax10p = new Condition(
 			array(
 				'target' => 'subtotal',
-				'name' => 'tax10',
-				'type' => 'tax'
+				'name'   => 'tax10',
+				'type'   => 'tax'
 			)
 		);
 
@@ -827,8 +981,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$disc10p = new Condition(
 			array(
 				'target' => 'price',
-				'name' => 'disc',
-				'type' => 'discount',
+				'name'   => 'disc',
+				'type'   => 'discount',
 			)
 		);
 
@@ -870,8 +1024,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 1',
 					'quantity'   => 4,
 					'price'      => 100.00,
-					'weight'	 => 21.00,
-					'conditions'  => [$disc10p],
+					'weight'     => 21.00,
+					'conditions' => $disc10p,
 					'attributes' => array(
 						'size'  => array(
 							'label' => 'Size',
@@ -889,8 +1043,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 2',
 					'quantity'   => 2,
 					'price'      => 100.00,
-					'weight'	 => 45.04,
-					'conditions'  => [$add5p, $disc10p],
+					'weight'     => 45.04,
+					'conditions' => array($add5p, $disc10p),
 					'attributes' => array(
 						'size' => array(
 							'label' => 'Size',
@@ -918,9 +1072,6 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		// Cart total ( No conditions applied yet )
 		$this->assertEquals($this->cart->total(), 591);
 
-		// Cart Weight
-		$this->assertEquals($this->cart->weight(), 174.08);
-
 		// Apply 10% Tax
 		$this->cart->condition($tax10p);
 
@@ -932,66 +1083,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->subtotal(), 591);
 		$this->assertEquals($this->cart->total(), 682.605);
-
 	}
 
-	/**
-	 *
-	 */
-	public function testgetConditions11()
-	{
-
-		$tax10p = new Condition(
-			array(
-				'name' => 'tax10',
-				'type' => 'tax',
-				'target' => 'subtotal',
-			)
-		);
-
-		$tax10p->setActions(array(
-			array(
-				'value'  => '10.00%',
-			),
-		));
-
-		$this->cart->add(
-			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 4,
-					'price'      => 100.00,
-					'weight'	 => 21.00,
-					'conditions'  => [$tax10p],
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-					),
-				),
-			)
-		);
-
-		// First item
-		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->subtotal(), 412);
-		$this->assertEquals($item1->total(), 453.2);
-
-
-	}
-
-	/**
-	 *
-	 */
-	public function testConditionsItemPrice()
+	public function testConditionOnItemPrice()
 	{
 		$condition = new Condition(
 			array(
@@ -1011,7 +1105,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar1',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
@@ -1039,8 +1133,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$tax10p = new Condition(
 			array(
-				'name' => 'tax10',
-				'type' => 'tax',
+				'name'   => 'tax10',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -1055,13 +1149,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->subtotal(), 408);
 		$this->assertEquals($this->cart->total(), 448.8);
-
 	}
 
-	/**
-	 *
-	 */
-	public function testConditionsItemNoMatchingRules()
+	public function testConditionOnItemNoMatchingRules()
 	{
 		$condition = new Condition(
 			array(
@@ -1085,7 +1175,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar1',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
@@ -1107,35 +1197,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item->subtotal(), 393);
 		$this->assertEquals($item->total(), 393);
-
-		$this->assertEquals($this->cart->subtotal(), 393);
-		$this->assertEquals($this->cart->total(), 393);
-
-		$tax10p = new Condition(
-			array(
-				'name' => 'tax10',
-				'type' => 'tax',
-				'target' => 'subtotal',
-			)
-		);
-
-		$tax10p->setActions(array(
-			array(
-				'value'  => '10.00%',
-			),
-		));
-
-		$this->cart->condition($tax10p);
-
-		$this->assertEquals($this->cart->subtotal(), 393);
-		$this->assertEquals($this->cart->total(), 432.3);
-
 	}
 
-	/**
-	 *
-	 */
-	public function testConditionsItemsNoMatchingRules()
+	public function testMultipleConditionsWithRulesOnItems()
 	{
 		$condition = new Condition(
 			array(
@@ -1155,8 +1219,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$tax10p = new Condition(
 			array(
-				'name' => 'tax10',
-				'type' => 'tax',
+				'name'   => 'tax10',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
@@ -1173,7 +1237,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar4',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions'  => [$tax10p, $condition],
+					'conditions' => array($tax10p, $condition),
 					'price'      => 244.00,
 					'attributes' => array(
 						'size'  => array(
@@ -1193,7 +1257,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar1',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
@@ -1211,42 +1275,22 @@ class CartTest extends PHPUnit_Framework_TestCase {
 			)
 		);
 
+		// Item 1
 		$item1 = $this->cart->items()->first();
 		$this->assertEquals($item1->subtotal(), 750);
 		$this->assertEquals($item1->total(), 841.5);
 
+		// Item 2
 		$item2 = $this->cart->items()->last();
 		$this->assertEquals($item2->subtotal(), 393);
 		$this->assertEquals($item2->total(), 393);
 
+		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1234.5);
 		$this->assertEquals($this->cart->total(), 1234.5);
-
-		$tax10p = new Condition(
-			array(
-				'name' => 'tax10',
-				'type' => 'tax',
-				'target' => 'subtotal',
-			)
-		);
-
-		$tax10p->setActions(array(
-			array(
-				'value'  => '10.00%',
-			),
-		));
-
-		$this->cart->condition($tax10p);
-
-		$this->assertEquals($this->cart->subtotal(), 1234.5);
-		$this->assertEquals($this->cart->total(), 1357.95);
-
 	}
 
-	/**
-	 *
-	 */
-	public function testConditionsDiscounts()
+	public function testMultipleConditionsWithDiscounts()
 	{
 		$condition = new Condition(
 			array(
@@ -1256,7 +1300,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$condition->setActions(array(
 			array(
-				'value'  => '5.00',
+				'value' => '5.00',
 			),
 		));
 
@@ -1266,15 +1310,15 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$disc5p = new Condition(
 			array(
-				'name' => 'disc5p',
-				'type' => 'discount',
+				'name'   => 'disc5p',
+				'type'   => 'discount',
 				'target' => 'subtotal',
 			)
 		);
 
 		$disc5p->setActions(array(
 			array(
-				'value'  => '-5.00%',
+				'value' => '-5.00%',
 			),
 		));
 
@@ -1284,7 +1328,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar4',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions'  => [$disc5p, $condition],
+					'conditions' => array($disc5p, $condition),
 					'price'      => 244.00,
 					'attributes' => array(
 						'size'  => array(
@@ -1304,7 +1348,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar1',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions'  => $condition,
+					'conditions' => $condition,
 					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
@@ -1322,44 +1366,420 @@ class CartTest extends PHPUnit_Framework_TestCase {
 			)
 		);
 
-		// item 1
+		// Item 1
 		$item1 = $this->cart->items()->first();
 		$this->assertEquals($item1->subtotal(), 750);
 		$this->assertEquals($item1->total(), 726.75);
 
-		// item discount
+		// Discount
 		$this->assertEquals($item1->discount(), -38.25);
 
-		// item 2
+		// Item 2
 		$item2 = $this->cart->items()->last();
 		$this->assertEquals($item2->subtotal(), 393);
 		$this->assertEquals($item2->total(), 393);
 
+		// Discount
+		$this->assertEquals($item2->discount(), 0);
+
+		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1119.75);
 		$this->assertEquals($this->cart->total(), 1119.75);
 
+		$discount10p = new Condition(
+			array(
+				'name'   => 'discount10',
+				'type'   => 'discount',
+				'target' => 'subtotal',
+			)
+		);
+
+		$discount10p->setActions(array(
+			array(
+				'value' => '-10.00%',
+			),
+		));
+
+		$this->cart->condition($discount10p);
+
+		// Cart
+		$this->assertEquals($this->cart->subtotal(), 1119.75);
+		$this->assertEquals($this->cart->total(), 1007.775);
+
+		// Cart discount
+		$this->assertEquals($this->cart->discount(), -111.975);
+	}
+
+	public function testFindItemsByProperties()
+	{
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 2,
+					'price'      => 97.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'S',
+						),
+						'color' => array(
+							'label' => 'Color',
+							'value' => 'Red',
+							'price' => 3.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 2,
+					'price'      => 85.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar3',
+					'name'       => 'Foobar 3',
+					'quantity'   => 5,
+					'price'      => 35.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 5.00,
+						),
+					),
+				),
+			)
+		);
+
+		$item = $this->cart->find(
+			array(
+				'price' => 85,
+			)
+		);
+
+		$this->assertEquals($item[0]->get('id'), 'foobar2');
+	}
+
+	public function testFindItemsByAttributes()
+	{
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 2,
+					'price'      => 97.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'S',
+						),
+						'color' => array(
+							'label' => 'Color',
+							'value' => 'Red',
+							'price' => 3.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 2,
+					'price'      => 85.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar3',
+					'name'       => 'Foobar 3',
+					'quantity'   => 5,
+					'price'      => 85.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 5.00,
+						),
+					),
+				),
+			)
+		);
+
+		$item = $this->cart->find(
+			array(
+				'attributes' => array(
+					'size' => array(
+						'value' => 'L',
+					)
+				)
+			)
+		);
+
+		$this->assertEquals($item[0]->get('id'), 'foobar2');
+		$this->assertEquals($item[1]->get('id'), 'foobar3');
+	}
+
+	public function testFindItemsByPropertiesOnOtherCartInstances()
+	{
+		$this->cart->instance('wishlist');
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 2,
+					'price'      => 97.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'S',
+						),
+						'color' => array(
+							'label' => 'Color',
+							'value' => 'Red',
+							'price' => 3.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 2,
+					'price'      => 85.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar3',
+					'name'       => 'Foobar 3',
+					'quantity'   => 5,
+					'price'      => 35.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 5.00,
+						),
+					),
+				),
+			)
+		);
+
+		// Switch back to the main instance
+		$this->cart->instance('main');
+
+		$item = $this->cart->find(
+			array(
+				'price' => 85,
+			),
+			'wishlist'
+		);
+
+		$this->assertEquals($item[0]->get('id'), 'foobar2');
+	}
+
+	public function testAddRemoveConditionsItems()
+	{
+		$condition = new Condition(
+			array(
+				'target' => 'price',
+			)
+		);
+
+		$condition->setActions(array(
+			array(
+				'value'  => '5.00',
+			),
+		));
+
 		$tax10p = new Condition(
 			array(
-				'name' => 'tax10',
-				'type' => 'discount',
+				'name'   => 'tax10',
+				'type'   => 'tax',
 				'target' => 'subtotal',
 			)
 		);
 
 		$tax10p->setActions(array(
 			array(
-				'value'  => '-10.00%',
+				'value'  => '10.00%',
 			),
 		));
 
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar4',
+					'name'       => 'Foobar 1',
+					'quantity'   => 3,
+					'conditions' => array($tax10p, $condition),
+					'price'      => 244.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+						'color' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+					),
+				),
+
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 3,
+					'conditions' => $condition,
+					'price'      => 125.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+						'color' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+					),
+				),
+			)
+		);
+
+		// Item 1
+		$item1 = $this->cart->items()->first();
+		$this->assertEquals($item1->total(), 841.5);
+
+		$this->cart->update(array(
+			'94c52868c7af27c86c337cf4a026db40' => array(
+				'conditions' => $tax10p
+			)
+		));
+
+		$this->assertEquals($item1->total(), 825);
+
+		// Item 2
+		$item2 = $this->cart->items()->last();
+		$this->assertEquals($item2->total(), 408);
+
+		// Remove conditions
+		$this->cart->update(array(
+			'194e85f089d754cc4759da6657840f8a' => array(
+				'conditions' => null
+			)
+		));
+
+		$this->assertEquals($item2->total(), 393);
+
+		// Add two conditions
+		$this->cart->update(array(
+			'194e85f089d754cc4759da6657840f8a' => array(
+				'conditions' => array($tax10p, $condition)
+			)
+		));
+
+		$this->assertEquals($item2->total(), 448.8);
+	}
+
+	public function testAddRemoveConditionsCart()
+	{
+		$tax10p = new Condition(
+			array(
+				'name'   => 'tax10',
+				'type'   => 'tax',
+				'target' => 'subtotal',
+			)
+		);
+
+		$tax10p->setActions(array(
+			array(
+				'value'  => '10.00%',
+			),
+		));
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar4',
+					'name'       => 'Foobar 1',
+					'quantity'   => 3,
+					'conditions' => $tax10p,
+					'price'      => 244.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+						'color' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+					),
+				),
+
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 3,
+					'price'      => 125.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+						'color' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 3.00,
+						),
+					),
+				),
+			)
+		);
+
 		$this->cart->condition($tax10p);
 
-		$this->assertEquals($this->cart->subtotal(), 1119.75);
-		$this->assertEquals($this->cart->total(), 1007.775);
+		$this->assertEquals($this->cart->total(), 1339.8);
 
-		// Cart discount
-		$this->assertEquals($this->cart->discount(), -111.975);
+		$this->cart->clearConditions();
 
+		$this->assertEquals($this->cart->total(), 1218);
 	}
 
 	/*
@@ -1378,13 +1798,12 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->cart->add(
 			array(
 				array(
-					'name' => 'abc',
-					'price' => 20.00,
+					'name'     => 'abc',
+					'price'    => 20.00,
 					'quantity' => 5,
 				),
 			)
 		);
-
 	}
 
 	/**
@@ -1395,14 +1814,13 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->cart->add(
 			array(
 				array(
-					'id' => 1,
-					'name' => 'abc',
-					'price' => 20.00,
+					'id'       => 1,
+					'name'     => 'abc',
+					'price'    => 20.00,
 					'quantity' => 'dsdas',
 				),
 			)
 		);
-
 	}
 
 	/**
@@ -1413,9 +1831,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->cart->add(
 			array(
 				array(
-					'id' => 1,
-					'name' => 'abc',
-					'price' => 'dd',
+					'id'       => 1,
+					'name'     => 'abc',
+					'price'    => 'dd',
 					'quantity' => 5,
 				),
 			)
@@ -1430,15 +1848,14 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->cart->add(
 			array(
 				array(
-					'id' => 1,
-					'name' => 'abc',
-					'price' => 20.00,
-					'quantity' => 5,
+					'id'         => 1,
+					'name'       => 'abc',
+					'price'      => 20.00,
+					'quantity'   => 5,
 					'attributes' => 'abc',
 				),
 			)
 		);
-
 	}
 
 	/**
