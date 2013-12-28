@@ -298,16 +298,10 @@ class Cart extends CartCollection {
 		}
 
 		// Reset conditions
-		if (array_key_exists('conditions', $attributes))
-		{
-			$row->clearConditions();
-		}
+		$row->clearConditions();
 
 		// Assign item conditions
-		if ($conditions = array_get($attributes, 'conditions'))
-		{
-			$row->condition($conditions);
-		}
+		$row->condition(array_get($attributes, 'conditions'));
 
 		// Set item price
 		$row->setPrice($row->get('price'));

@@ -140,6 +140,8 @@ class BaseCollection extends Collection {
 	 */
 	public function condition($condition)
 	{
+		if (empty($condition)) return;
+
 		if (is_array($condition))
 		{
 			foreach ($condition as $c)
@@ -154,7 +156,6 @@ class BaseCollection extends Collection {
 		{
 			$this->conditions[] = $condition;
 		}
-
 	}
 
 	/**
