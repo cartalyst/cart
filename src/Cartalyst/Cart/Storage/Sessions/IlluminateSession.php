@@ -119,7 +119,7 @@ class IlluminateSession implements SessionInterface {
 
 		$instance = $this->identify();
 
-		return "{$key}_{$instance}";
+		return "{$key}.{$instance}";
 	}
 
 	/**

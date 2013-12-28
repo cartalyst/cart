@@ -53,12 +53,32 @@ class ItemCollection extends BaseCollection {
 			{
 				foreach ($value as $key => $val)
 				{
-					return $this->attributes->get($key)->find($val);
+					return $this->get('attributes')->get($key)->find($val);
 				}
+			}
+
+			if ($key === 'price')
+			{
+				$value = (float) $value;
+			}
+
+			if ($key === 'quantity')
+			{
+				$value = (int) $value;
 			}
 
 			return $this->get($key) === $value;
 		}
+	}
+
+	/**
+	 * Return the total weight of the item.
+	 *
+	 * @return float
+	 */
+	public function weight()
+	{
+		return (float) $this->get('weight') * $this->get('quantity');
 	}
 
 }

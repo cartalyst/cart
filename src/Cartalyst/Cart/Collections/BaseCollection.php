@@ -168,6 +168,14 @@ class BaseCollection extends Collection {
 	}
 
 	/**
+	 * Clear conditions.
+	 */
+	public function clearConditions()
+	{
+		$this->conditions = array();
+	}
+
+	/**
 	 * Apply all conditions
 	 *
 	 * @return void
@@ -282,16 +290,6 @@ class BaseCollection extends Collection {
 		$this->applyConditions();
 
 		return $this->getDiscount();
-	}
-
-	/**
-	 * Return the total weight of the item.
-	 *
-	 * @return float
-	 */
-	public function weight()
-	{
-		return (float) $this->get('weight') * $this->get('quantity');
 	}
 
 }

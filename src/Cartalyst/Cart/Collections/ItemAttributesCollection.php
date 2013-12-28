@@ -18,7 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-class ItemAttributesCollection extends ItemCollection {
+use Illuminate\Support\Collection;
+
+class ItemAttributesCollection extends Collection {
 
 	/**
 	 * Return the total price of all the options together.

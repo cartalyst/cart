@@ -190,6 +190,9 @@ class Cart extends CartCollection {
 		// Update the cart contents
 		$this->updateCart($cart);
 
+		// Update the cart weight
+		$this->weight->value($this->weight());
+
 		return $cart;
 	}
 
@@ -294,6 +297,18 @@ class Cart extends CartCollection {
 			$row->put('quantity', $quantity);
 		}
 
+		// Reset conditions
+		if (array_key_exists('conditions', $attributes))
+		{
+			$row->clearConditions();
+		}
+
+		// Assign item conditions
+		if ($conditions = array_get($attributes, 'conditions'))
+		{
+			$row->condition($conditions);
+		}
+
 		// Set item price
 		$row->setPrice($row->get('price'));
 
@@ -306,6 +321,9 @@ class Cart extends CartCollection {
 		{
 			$cart->put($rowId, $row);
 		}
+
+		// Update the cart weight
+		$this->weight->value($this->weight());
 
 		return $cart;
 	}
