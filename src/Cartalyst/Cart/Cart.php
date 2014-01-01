@@ -68,13 +68,11 @@ class Cart extends CartCollection {
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
-	 * @param  \Cartalyst\Cart\Weight  $weight
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage, Weight $weight)
+	public function __construct(StorageInterface $storage)
 	{
 		$this->storage = $storage;
-		$this->weight = $weight;
 	}
 
 	/**
@@ -189,9 +187,6 @@ class Cart extends CartCollection {
 
 		// Update the cart contents
 		$this->updateCart($cart);
-
-		// Update the cart weight
-		$this->weight->value($this->weight());
 
 		return $cart;
 	}
@@ -315,9 +310,6 @@ class Cart extends CartCollection {
 		{
 			$cart->put($rowId, $row);
 		}
-
-		// Update the cart weight
-		$this->weight->value($this->weight());
 
 		return $cart;
 	}

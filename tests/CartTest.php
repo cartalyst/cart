@@ -20,7 +20,6 @@
 
 use Cartalyst\Cart\Cart;
 use Cartalyst\Conditions\Condition;
-use Cartalyst\Cart\Weight;
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
 
@@ -60,41 +59,13 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$session = new \Cartalyst\Cart\Storage\Sessions\IlluminateSession($store);
 
-		$weight = new Weight;
-
-		$weight->setWeights(array(
-			'kg' => array(
-				'label'  => 'Kilogram',
-				'value'  => 1.00000000,
-				'format' => '{value} kg'
-			),
-
-			'g' => array(
-				'label'  => 'Gram',
-				'value'  => 1000.00000000,
-				'format' => '{value} g'
-			),
-
-			'lb' => array(
-				'label'  => 'Pound',
-				'value'  => 2.20460000,
-				'format' => '{value} lb'
-			),
-
-			'oz' => array(
-				'label'  => 'Ounce',
-				'value'  => 35.27400000,
-				'format' => '{value} oz'
-			),
-		));
-
-		$this->cart = new Cart($session, $weight);
+		$this->cart = new Cart($session);
 	}
 
 	public function testcartCanBeInstantiated()
 	{
 		$storage = m::mock('\Cartalyst\Cart\Storage\Sessions\IlluminateSession');
-		$this->cart = new Cart($storage, new Weight);
+		$this->cart = new Cart($storage);
 	}
 
 	public function testCanAdd()
@@ -276,6 +247,12 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(array_key_exists('main', $this->cart->instances()));
 		$this->assertTrue(array_key_exists('wishlist', $this->cart->instances()));
 		$this->assertTrue(array_key_exists('order', $this->cart->instances()));
+	}
+
+	public function testGetCurrentInstanceName()
+	{
+		$this->cart->instance('wishlist');
+		$this->assertEquals($this->cart->identify(), 'wishlist');
 	}
 
 	public function testAddItemsToCart()
@@ -842,17 +819,23 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals($this->cart->weight(), 126);
-		$this->assertEquals($this->cart->weight->convert('kg', 'lb')->format('lb'), '277.78 lb');
+	}
 
-		$this->cart->update(array(
-			'2d2d8cb241842b326ce0e095dbfc4d41' => array(
-				'name'     => 'Foo',
-				'quantity' => 3,
-				'weight' => 20.00,
-			),
-		));
+	public function testItemWeight()
+	{
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 4,
+					'price'      => 97.00,
+					'weight'	 => 21.00,
+				),
+			)
+		);
 
-		$this->assertEquals($this->cart->weight(), 144);
+		$this->assertEquals($this->cart->items()->first()->weight(), 84);
 	}
 
 	public function testTaxes()

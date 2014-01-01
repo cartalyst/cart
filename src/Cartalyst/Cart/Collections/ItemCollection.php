@@ -72,7 +72,7 @@ class ItemCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return the total weight of the item.
+	 * Return the total item weight.
 	 *
 	 * @return float
 	 */
