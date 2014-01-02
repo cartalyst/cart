@@ -339,6 +339,8 @@ class Cart extends CartCollection {
 	public function clear()
 	{
 		$this->updateCart(null);
+
+		$this->dispatcher->fire('cart.clear');
 	}
 
 	/**
