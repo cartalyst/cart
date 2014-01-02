@@ -12,5 +12,6 @@
 	- [Item Quantity](#item-quantity)
 - [Search the Cart]({url}/usage/search)
 - [Other Methods]({url}/usage/other)
+- [Events]({url}/usage/events)
 - [Instances]({url}/usage/instances)
 - [Exceptions]({url}/usage/exceptions)
