@@ -37,8 +37,9 @@
 	],
 	"require": {
 		"php": ">=5.3.0",
-		"illuminate/support": "~4",
-		"cartalyst/conditions": "1.0.*"
+		"cartalyst/conditions": "1.0.*",
+		"illuminate/events": "~4",
+		"illuminate/support": "~4"
 	},
 	"require-dev": {
 		"illuminate/session": "~4",

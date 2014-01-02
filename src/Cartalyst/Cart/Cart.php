@@ -27,6 +27,7 @@ use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
+use Illuminate\Events\Dispatcher;
 
 class Cart extends CartCollection {
 
@@ -36,6 +37,13 @@ class Cart extends CartCollection {
 	 * @var \Cartalyst\Cart\Storage\StorageInterface
 	 */
 	protected $storage;
+
+	/**
+	 * The event dispatcher instance.
+	 *
+	 * @var \Illuminate\Events\Dispatcher
+	 */
+	protected $dispatcher;
 
 	/**
 	 * Holds all the required indexes.
@@ -68,11 +76,14 @@ class Cart extends CartCollection {
 	 * Constructor.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
+	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage)
+	public function __construct(StorageInterface $storage, Dispatcher $dispatcher)
 	{
 		$this->storage = $storage;
+
+		$this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -188,6 +199,8 @@ class Cart extends CartCollection {
 		// Update the cart contents
 		$this->updateCart($cart);
 
+		$this->dispatcher->fire('cart.added');
+
 		return $cart;
 	}
 
@@ -228,6 +241,8 @@ class Cart extends CartCollection {
 		}
 
 		$this->updateCart($cart);
+
+		$this->dispatcher->fire('cart.removed');
 
 		return true;
 	}
@@ -310,6 +325,8 @@ class Cart extends CartCollection {
 		{
 			$cart->put($rowId, $row);
 		}
+
+		$this->dispatcher->fire('cart.updated');
 
 		return $cart;
 	}

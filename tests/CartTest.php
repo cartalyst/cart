@@ -20,6 +20,7 @@
 
 use Cartalyst\Cart\Cart;
 use Cartalyst\Conditions\Condition;
+use Illuminate\Events\Dispatcher;
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
 
@@ -59,13 +60,18 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 		$session = new \Cartalyst\Cart\Storage\Sessions\IlluminateSession($store);
 
-		$this->cart = new Cart($session);
+		$dispatcher = new Dispatcher;
+
+		$this->cart = new Cart($session, $dispatcher);
 	}
 
 	public function testcartCanBeInstantiated()
 	{
 		$storage = m::mock('\Cartalyst\Cart\Storage\Sessions\IlluminateSession');
-		$this->cart = new Cart($storage);
+
+		$dispatcher = new Dispatcher;
+
+		$this->cart = new Cart($storage, $dispatcher);
 	}
 
 	public function testCanAdd()

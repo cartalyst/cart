@@ -105,7 +105,7 @@ class CartServiceProvider extends ServiceProvider {
 			$storage = $app['config']->get('cart::driver', 'session');
 
 			// Create a new Cart instance
-			$cart = new Cart($app["cart.storage.{$storage}"]);
+			$cart = new Cart($app["cart.storage.{$storage}"], $app['events']);
 
 			// Set the default cart instance
 			$cart->instance($app['config']->get('cart::instance', 'main'));
