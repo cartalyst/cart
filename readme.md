@@ -1,6 +1,8 @@
 # Cart v1.0.0-alpha
 
-A framework agnostic shopping cart package featuring multiple cart instances, item attributes and conditions. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
+A framework agnostic shopping cart package featuring multiple cart instances, item attributes and conditions. 
+
+Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
 ## Package Story
 
