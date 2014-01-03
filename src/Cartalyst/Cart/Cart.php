@@ -199,7 +199,7 @@ class Cart extends CartCollection {
 		// Update the cart contents
 		$this->updateCart($cart);
 
-		$this->dispatcher->fire('cart.added');
+		$this->dispatcher->fire('cart.added', $this->item($rowId));
 
 		return $cart;
 	}
@@ -238,11 +238,11 @@ class Cart extends CartCollection {
 
 			// Remove the item from the cart
 			$cart->forget($rowId);
+
+			$this->dispatcher->fire('cart.removed', $rowId);
 		}
 
 		$this->updateCart($cart);
-
-		$this->dispatcher->fire('cart.removed');
 
 		return true;
 	}
@@ -326,7 +326,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 		}
 
-		$this->dispatcher->fire('cart.updated');
+		$this->dispatcher->fire('cart.updated', $this->item($rowId));
 
 		return $cart;
 	}
