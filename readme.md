@@ -1,18 +1,17 @@
-#Cart v1.0.0-alpha
+# Cart v1.0.0-alpha
 
-A framework agnostic shopping cart package featuring multiple cart instances and item variants. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
+A framework agnostic shopping cart package featuring multiple cart instances, item attributes and conditions. Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
 
-##Package Story
+## Package Story
 
 History and future capabilities.
 
-####Incomplete
-- ```Cart::save('instance')``` User can save a cart instance.
-- Items can have attributes. (label, value, price, operation)
-- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
+#### Incomplete
+- ```Cart::save('instance')``` User can save a cart instance to the database.
 
-####Complete
+#### Complete
 - *05-Sep-13* - v0.9.1
+	- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
 	- ```Cart::total()``` User can return cart total.
 	- ```Cart::weight()``` User can return the total cart weight.
 - *15-Aug-13* - v0.9.0
@@ -36,8 +35,7 @@ History and future capabilities.
 	- ```Cart::instances()``` User can return all cart instances.
 	- ```Cart::destroy('instance')``` User can remove a cart instance.
 
-Versioning
-----------
+## Versioning
 
 We version under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
 
@@ -51,8 +49,7 @@ And constructed with the following guidelines:
 * New additions without breaking backward compatibility bumps the minor (and resets the patch)
 * Bug fixes and misc changes bumps the patch
 
-Support
---------
+## Support
 
 Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
 
