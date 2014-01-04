@@ -10,4 +10,3 @@ You can use Cartalyst's Cart package both with Laravel 4 and outside by installi
 Like most of our packages, Cart has the same requirements as Laravel 4. Since Sentry is framework agnostic the following is required.
 
 - PHP >= 5.3.0
-- MCrypt PHP Extension
