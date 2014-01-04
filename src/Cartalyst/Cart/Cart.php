@@ -158,19 +158,8 @@ class Cart extends CartCollection {
 		}
 		else
 		{
-			// Create a new attributes collection for this item
-			$attributesCollection = new ItemAttributesCollection;
-
-			// Store each option on the collection
-			foreach ($attributes as $index => $option)
-			{
-				if (empty($option['value']))
-				{
-					throw new CartMissingRequiredIndexException('value');
-				}
-
-				$attributesCollection->put($index, new ItemCollection($option));
-			}
+			// Prepare attributes
+			$attributesCollection = $this->prepareAttributes($attributes);
 
 			// Create a new item
 			$row = new ItemCollection(array_merge($item, array(
@@ -293,6 +282,10 @@ class Cart extends CartCollection {
 				{
 					$value = (int) $value;
 				}
+				elseif ($key === 'attributes')
+				{
+					$value = $this->prepareAttributes($value);
+				}
 
 				$row->put($key, $value);
 			}
@@ -341,6 +334,31 @@ class Cart extends CartCollection {
 		$this->updateCart(null);
 
 		$this->dispatcher->fire('cart.clear', $this->identify());
+	}
+
+	/**
+	 * Prepare attributes.
+	 *
+	 * @param  array $attributes
+	 * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
+	 */
+	protected function prepareAttributes(array $attributes)
+	{
+		// Create a new attributes collection for this item
+		$attributesCollection = new ItemAttributesCollection;
+
+		// Store each option on the collection
+		foreach ($attributes as $index => $option)
+		{
+			if (empty($option['value']))
+			{
+				throw new CartMissingRequiredIndexException('value');
+			}
+
+			$attributesCollection->put($index, new ItemCollection($option));
+		}
+
+		return $attributesCollection;
 	}
 
 	/**
