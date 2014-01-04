@@ -55,18 +55,42 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
+	 * Return all the applied tax rates on the item.
+	 *
+	 * @return array
+	 */
+	public function itemsTaxes()
+	{
+		$taxes = array();
+
+		foreach ($this->items() as $item)
+		{
+			foreach ($item->conditions() as $condition)
+			{
+				if ($condition->get('type') === 'tax')
+				{
+					$taxes[$condition->get('name')] = $condition;
+				}
+			}
+		}
+
+		return $taxes;
+	}
+
+	/**
 	 * Return the sum of all item taxes.
 	 *
 	 * @return float
 	 */
-	public function itemTaxes()
+	public function itemsTaxesTotal()
 	{
 		$total = 0;
 
 		foreach ($this->items() as $item)
 		{
 			$item->applyConditions();
-			$total += $item->tax();
+
+			$total += $item->taxTotal();
 		}
 
 		return $total;

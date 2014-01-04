@@ -158,13 +158,11 @@ class Cart extends CartCollection {
 		}
 		else
 		{
+			// Prepare the attributes
+			$attributes = $this->prepareAttributes($attributes);
+
 			// Create a new item
-			$row = new ItemCollection(array_merge($item, array(
-				'rowId'      => $rowId,
-				'quantity'   => $quantity,
-				'price'      => $price,
-				'attributes' => $this->prepareAttributes($attributes),
-			)));
+			$row = new ItemCollection(array_merge($item, compact('rowId', 'quantity', 'price', 'attributes')));
 		}
 
 		// Assign item conditions
@@ -185,7 +183,7 @@ class Cart extends CartCollection {
 		// Update the cart contents
 		$this->updateCart($cart);
 
-		// Fire the cart.added event
+		// Fire the 'cart.added' event
 		$this->dispatcher->fire('cart.added', array($this->item($rowId), $this->identify()));
 
 		return $cart;
@@ -226,7 +224,7 @@ class Cart extends CartCollection {
 			// Remove the item from the cart
 			$cart->forget($rowId);
 
-			// Fire the cart.removed event
+			// Fire the 'cart.removed' event
 			$this->dispatcher->fire('cart.removed', array($rowId, $this->identify()));
 		}
 
@@ -318,7 +316,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 		}
 
-		// Fire the cart.updated event
+		// Fire the 'cart.updated' event
 		$this->dispatcher->fire('cart.updated', array($this->item($rowId), $this->identify()));
 
 		return $cart;
@@ -333,7 +331,7 @@ class Cart extends CartCollection {
 	{
 		$this->updateCart(null);
 
-		// Fire the cart.cleared event
+		// Fire the 'cart.cleared' event
 		$this->dispatcher->fire('cart.cleared', $this->identify());
 	}
 
@@ -357,22 +355,40 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return all the applied tax rates both global and per item taxes.
+	 * Return the cart contents.
 	 *
+	 * @return \Cartalyst\Cart\Collections\CartCollection
+	 */
+	public function items()
+	{
+		// Get all the items
+		$items = $this->storage->has() ? $this->storage->get() : new CartCollection;
+
+		// Return the items
+		return $items;
+	}
+
+	/**
+	 * Return all the applied tax rates both global and per item.
+	 *
+	 * @param  bool  $includeItems
 	 * @return array
 	 */
-	public function taxRates()
+	public function taxes($includeItems = true)
 	{
-		$rates = array();
+		$taxes = array();
 
-		// Per item taxes
-		foreach ($this->items() as $item)
+		if ($includeItems)
 		{
-			foreach ($item->conditions() as $condition)
+			// Per item taxes
+			foreach ($this->items() as $item)
 			{
-				if ($condition->get('type') === 'tax')
+				foreach ($item->conditions() as $condition)
 				{
-					$rates[$condition->get('name')] = $condition;
+					if ($condition->get('type') === 'tax')
+					{
+						$taxes[$condition->get('name')] = $condition;
+					}
 				}
 			}
 		}
@@ -382,11 +398,11 @@ class Cart extends CartCollection {
 		{
 			if ($condition->get('type') === 'tax')
 			{
-				$rates[$condition->get('name')] = $condition;
+				$taxes[$condition->get('name')] = $condition;
 			}
 		}
 
-		return $rates;
+		return $taxes;
 	}
 
 	/**
@@ -424,20 +440,6 @@ class Cart extends CartCollection {
 		}
 
 		return (float) $total;
-	}
-
-	/**
-	 * Return the cart contents.
-	 *
-	 * @return \Cartalyst\Cart\Collections\CartCollection
-	 */
-	public function items()
-	{
-		// Get all the items
-		$items = $this->storage->has() ? $this->storage->get() : new CartCollection;
-
-		// Return the items
-		return $items;
 	}
 
 	/**
@@ -525,6 +527,26 @@ class Cart extends CartCollection {
 	}
 
 	/**
+	 * Return all the conditions that were applied only to items.
+	 *
+	 * @return array
+	 */
+	public function itemConditions()
+	{
+		$conditions = array();
+
+		foreach ($this->items() as $item)
+		{
+			if ($condition = $item->get('conditions'))
+			{
+				$conditions[] = $condition;
+			}
+		}
+
+		return $conditions;
+	}
+
+	/**
 	 * Return the list of required indexes.
 	 *
 	 * @return array
@@ -535,7 +557,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Set required indexes.
+	 * Set the required indexes.
 	 *
 	 * By default we will merge the provided indexes with the current
 	 * indexes, you can change this behavior by setting the second
@@ -564,6 +586,16 @@ class Cart extends CartCollection {
 	public function getSessionKey()
 	{
 		return $this->storage->getKey();
+	}
+
+	/**
+	 * Return the storage driver.
+	 *
+	 * @return mixed
+	 */
+	public function getStorage()
+	{
+		return $this->storage;
 	}
 
 	/**
@@ -665,26 +697,6 @@ class Cart extends CartCollection {
 				throw new CartMissingRequiredIndexException($parameter);
 			}
 		}
-	}
-
-	/**
-	 * Return all the conditions that were applied only to items.
-	 *
-	 * @return array
-	 */
-	public function itemConditions()
-	{
-		$conditions = array();
-
-		foreach ($this->items() as $item)
-		{
-			if ($condition = $item->get('conditions'))
-			{
-				$conditions[] = $condition;
-			}
-		}
-
-		return $conditions;
 	}
 
 }

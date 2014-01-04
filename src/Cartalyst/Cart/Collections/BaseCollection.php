@@ -209,10 +209,8 @@ class BaseCollection extends Collection {
 	 */
 	public function applyTypeConditions($target, $type = null)
 	{
-
 		foreach ($this->conditions() as $condition)
 		{
-
 			if ($condition->get('type') === $type)
 			{
 				if ($condition->get('target') === $target)
@@ -257,34 +255,42 @@ class BaseCollection extends Collection {
 					{
 						$this->setDiscount($this->getDiscount() + $this->subtotal - $tempSubtotal);
 					}
-
 				}
 			}
-
 		}
-
 	}
 
 	/**
-	 * Return applied taxes.
+	 * Return applied taxes total.
 	 *
+	 * @param  bool  $includeItems
 	 * @return float
 	 */
-	public function tax()
+	public function taxTotal($includeItems = true)
 	{
 		$this->setTax(0);
 
 		$this->applyConditions();
 
-		return $this->getTax();
+		if ($includeItems)
+		{
+			$taxes = $this->getTax();
+		}
+		else
+		{
+			$taxes = array(); # todo
+		}
+
+		return $taxes;
 	}
 
 	/**
-	 * Return applied discounts.
+	 * Return applied discounts total.
 	 *
+	 * @param  bool  $includeItems
 	 * @return float
 	 */
-	public function discount()
+	public function discountsTotal()
 	{
 		$this->setDiscount(0);
 
