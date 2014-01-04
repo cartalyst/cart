@@ -201,7 +201,7 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 2',
 					'quantity'   => 2,
 					'price'      => 85.00,
-					'weight'	 => 21.00,
+					'weight'     => 21.00,
 					'attributes' => array(
 						'size' => array(
 							'label' => 'Size',
@@ -215,7 +215,7 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 3',
 					'quantity'   => 5,
 					'price'      => 35.00,
-					'weight'	 => 21.00,
+					'weight'     => 21.00,
 					'attributes' => array(
 						'size' => array(
 							'label' => 'Size',
