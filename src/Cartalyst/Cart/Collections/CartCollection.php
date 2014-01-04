@@ -97,7 +97,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return applied taxes total.
+	 * Return the applied taxes total.
 	 *
 	 * @param  bool  $includeItems
 	 * @return float

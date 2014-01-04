@@ -82,7 +82,7 @@ class ItemCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return applied taxes total.
+	 * Return the applied taxes total.
 	 *
 	 * @return float
 	 */
