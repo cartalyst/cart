@@ -1,6 +1,6 @@
-# Cart v1.0.0-alpha
+# Cart v1.0.0
 
-A framework agnostic shopping cart package featuring multiple cart instances, item attributes and conditions. 
+A framework agnostic shopping cart package featuring multiple cart instances, item attributes and conditions.
 
 Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
@@ -12,30 +12,38 @@ History and future capabilities.
 - ```Cart::save('instance')``` User can save a cart instance to the database.
 
 #### Complete
-- *05-Sep-13* - v0.9.1
-	- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
-	- ```Cart::total()``` User can return cart total.
-	- ```Cart::weight()``` User can return the total cart weight.
-- *15-Aug-13* - v0.9.0
-	- ```Cart::add(...)``` User can add an item to cart.
-	- ```Cart::add(...,...)``` User can add multiple items to cart.
-	- ```Cart::remove(...)``` User can remove an item from cart.
-	- ```Cart::remove(...,...``` User can remove multiple items from cart.
-	- ```Cart::update('id', 'quantity')``` User can update an items quantity.
-	- ```Cart::update(...)``` User can update a single item.
-	- ```Cart::update(...,...)``` User can update multiple items.
-	- ```Cart::item('id')``` User can return info of item in cart.
-	- ```Cart::items()``` User can return info of all items in cart.
-	- ```Cart::subtotal()``` User can return the subtotal of the cart.
-	- ```Cart::tax()``` User can return the tax total.
+- *xx-Jan-14* - v1.0.0
+	- ```Cart::add($item)``` User can add an item to the cart.
+	- ```Cart::add($item)``` User can add multiple items to the cart.
+	- ```Cart::remove($rowId)``` User can remove an item from the cart.
+	- ```Cart::remove($rowId, $rowId)``` User can remove multiple items from the cart.
+	- ```Cart::remove(array($rowId, $rowId))``` User can remove multiple items from the cart.
+	- ```Cart::update($rowId, $quantity)``` User can update an items quantity.
+	- ```Cart::update($rowId, $data)``` User can update a single item.
+	- ```Cart::update($items)``` User can update multiple items.
+	- ```Cart::update($rowId, $quantity)``` User can update a single item quantity.
+	- ```Cart::items()``` User can return information of all items in cart.
+	- ```Cart::item($rowId)``` User can return information of the item that is on the cart.
 	- ```Cart::quantity()``` User can return total # of items in cart.
-	- ```Cart::find(...)``` User can search for items in cart.
-	- ```Cart::find(..., 'instance')``` User can search for items in other cart instances.
+	- ```Cart::subtotal()``` User can return the subtotal of the cart.
+	- ```Cart::total()``` User can return the cart total.
+	- ```Cart::taxes()``` User can return all the applied tax rates including item taxes.
+	- ```Cart::taxes(false)``` User can return all the applied tax rates excluding item taxes.
+	- ```Cart::taxTotal()``` User can return the cart tax total including item taxes.
+	- ```Cart::taxTotal(false)``` User can return the cart tax total excluding item taxes.
+	- ```Cart::itemsTaxes()``` User can return all the taxes applied to the items only.
+	- ```Cart::itemsTaxTotal()``` User can return the total of taxes applied to items only.
+	- ```Cart::discounts()``` User can return all the applied discounts.
+	- ```Cart::discountsTotal(true)``` User can return the total of applied discounts.
+	- ```Cart::weight()``` User can return the total cart weight.
 	- ```Cart::clear()``` User can empty the cart.
+	- ```Cart::find($data)``` User can search for items in cart.
+	- ```Cart::find($data, 'instance')``` User can search for items in other cart instances.
 	- ```Cart::instance()``` User can create a cart instance.
 	- ```Cart::identify()``` User can return the current cart instance name.
 	- ```Cart::instances()``` User can return all cart instances.
 	- ```Cart::destroy('instance')``` User can remove a cart instance.
+	- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
 
 ## Versioning
 
