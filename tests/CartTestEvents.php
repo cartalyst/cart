@@ -128,7 +128,7 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 	public function testClearCartEvent()
 	{
-		$this->dispatcher->shouldReceive('fire')->once()->with('cart.clear', m::any());
+		$this->dispatcher->shouldReceive('fire')->once()->with('cart.cleared', m::any());
 
 		$this->cart->clear();
 	}
