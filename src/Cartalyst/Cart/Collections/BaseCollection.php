@@ -261,30 +261,6 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return applied taxes total.
-	 *
-	 * @param  bool  $includeItems
-	 * @return float
-	 */
-	public function taxTotal($includeItems = true)
-	{
-		$this->setTax(0);
-
-		$this->applyConditions();
-
-		if ($includeItems)
-		{
-			$taxes = $this->getTax();
-		}
-		else
-		{
-			$taxes = array(); # todo
-		}
-
-		return $taxes;
-	}
-
-	/**
 	 * Return applied discounts total.
 	 *
 	 * @param  bool  $includeItems
