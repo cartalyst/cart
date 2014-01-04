@@ -136,7 +136,7 @@ class Cart extends CartCollection {
 		}
 
 		// Get this item attributes
-		$attributes = ! empty($item['attributes']) ? $item['attributes'] : array();
+		$attributes = array_get($item, 'attributes', array());
 
 		// Validate the attributes
 		if ( ! is_array($attributes))
@@ -158,15 +158,12 @@ class Cart extends CartCollection {
 		}
 		else
 		{
-			// Prepare attributes
-			$attributesCollection = $this->prepareAttributes($attributes);
-
 			// Create a new item
 			$row = new ItemCollection(array_merge($item, array(
 				'rowId'      => $rowId,
 				'quantity'   => $quantity,
 				'price'      => $price,
-				'attributes' => $attributesCollection,
+				'attributes' => $this->prepareAttributes($attributes),
 			)));
 		}
 
@@ -188,6 +185,7 @@ class Cart extends CartCollection {
 		// Update the cart contents
 		$this->updateCart($cart);
 
+		// Fire the cart.added event
 		$this->dispatcher->fire('cart.added', array($this->item($rowId), $this->identify()));
 
 		return $cart;
@@ -228,6 +226,7 @@ class Cart extends CartCollection {
 			// Remove the item from the cart
 			$cart->forget($rowId);
 
+			// Fire the cart.removed event
 			$this->dispatcher->fire('cart.removed', array($rowId, $this->identify()));
 		}
 
@@ -319,6 +318,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 		}
 
+		// Fire the cart.updated event
 		$this->dispatcher->fire('cart.updated', array($this->item($rowId), $this->identify()));
 
 		return $cart;
@@ -333,7 +333,8 @@ class Cart extends CartCollection {
 	{
 		$this->updateCart(null);
 
-		$this->dispatcher->fire('cart.clear', $this->identify());
+		// Fire the cart.cleared event
+		$this->dispatcher->fire('cart.cleared', $this->identify());
 	}
 
 	/**

@@ -7,7 +7,7 @@ Event        | Parameters        | Description
 cart.added   | $item, $instance  | When an item is added to the cart.
 cart.removed | $rowId, $instance | When an item is removed from the cart.
 cart.updated | $item, $instance  | When an item is updated.
-cart.clear   | $instance         | When the cart is cleared/destroyed.
+cart.cleared | $instance         | When the cart is cleared/destroyed.
 
 ## Example
 
