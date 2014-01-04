@@ -785,7 +785,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item1->total(), 726.75);
 
 		// Discount
-		$this->assertEquals($item1->discountTotal(), -38.25);
+		$this->assertEquals($item1->discountsTotal(), -38.25);
 
 		// Item 2
 		$item2 = $this->cart->items()->last();
@@ -794,7 +794,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item2->total(), 393);
 
 		// Discount
-		$this->assertEquals($item2->discountTotal(), 0);
+		$this->assertEquals($item2->discountsTotal(), 0);
 
 		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1119.75);
@@ -819,7 +819,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->total(), 1007.775);
 
 		// Cart discount
-		$this->assertEquals($this->cart->discountTotal(), -111.975);
+		$this->assertEquals($this->cart->discountsTotal(), -111.975);
 	}
 
 
