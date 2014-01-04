@@ -337,31 +337,6 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Prepare attributes.
-	 *
-	 * @param  array $attributes
-	 * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
-	 */
-	protected function prepareAttributes(array $attributes)
-	{
-		// Create a new attributes collection for this item
-		$attributesCollection = new ItemAttributesCollection;
-
-		// Store each option on the collection
-		foreach ($attributes as $index => $option)
-		{
-			if (empty($option['value']))
-			{
-				throw new CartMissingRequiredIndexException('value');
-			}
-
-			$attributesCollection->put($index, new ItemCollection($option));
-		}
-
-		return $attributesCollection;
-	}
-
-	/**
 	 * Returns information about an item.
 	 *
 	 * @param  string  $rowId
@@ -549,28 +524,6 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Check if an item exists in the cart.
-	 *
-	 * @param  string  $rowId
-	 * @return bool
-	 */
-	protected function itemExists($rowId)
-	{
-		return $this->items()->has($rowId);
-	}
-
-	/**
-	 * Updates the cart.
-	 *
-	 * @param  \Cartalyst\Cart\Collections\CartCollection
-	 * @return void
-	 */
-	protected function updateCart($cart)
-	{
-		$this->storage->put($cart);
-	}
-
-	/**
 	 * Return the list of required indexes.
 	 *
 	 * @return array
@@ -621,6 +574,53 @@ class Cart extends CartCollection {
 	public function setStorage(StorageInterface $storage)
 	{
 		$this->storage = $storage;
+	}
+
+	/**
+	 * Check if an item exists in the cart.
+	 *
+	 * @param  string  $rowId
+	 * @return bool
+	 */
+	protected function itemExists($rowId)
+	{
+		return $this->items()->has($rowId);
+	}
+
+	/**
+	 * Updates the cart.
+	 *
+	 * @param  \Cartalyst\Cart\Collections\CartCollection
+	 * @return void
+	 */
+	protected function updateCart($cart)
+	{
+		$this->storage->put($cart);
+	}
+
+	/**
+	 * Prepare attributes.
+	 *
+	 * @param  array $attributes
+	 * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
+	 */
+	protected function prepareAttributes(array $attributes)
+	{
+		// Create a new attributes collection for this item
+		$attributesCollection = new ItemAttributesCollection;
+
+		// Store each option on the collection
+		foreach ($attributes as $index => $option)
+		{
+			if (empty($option['value']))
+			{
+				throw new CartMissingRequiredIndexException('value');
+			}
+
+			$attributesCollection->put($index, new ItemCollection($option));
+		}
+
+		return $attributesCollection;
 	}
 
 	/**
