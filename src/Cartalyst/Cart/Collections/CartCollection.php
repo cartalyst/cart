@@ -96,4 +96,33 @@ class CartCollection extends BaseCollection {
 		return $total;
 	}
 
+	/**
+	 * Return applied taxes total.
+	 *
+	 * @param  bool  $includeItems
+	 * @return float
+	 */
+	public function taxTotal($includeItems = true)
+	{
+		$this->setTax(0);
+
+		$this->applyConditions();
+
+		$taxes = $this->getTax();
+
+		if ($includeItems)
+		{
+			foreach ($this->items() as $item)
+			{
+				$item->setTax(0);
+
+				$item->applyConditions();
+
+				$taxes += $item->getTax();
+			}
+		}
+
+		return $taxes;
+	}
+
 }

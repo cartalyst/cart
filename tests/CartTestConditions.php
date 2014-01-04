@@ -382,8 +382,11 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Apply 5% Global Tax
 		$this->cart->condition($tax5p);
 
-		// Cart tax
-		$this->assertEquals($this->cart->taxTotal(), 22.55);
+		// Cart tax without items
+		$this->assertEquals($this->cart->taxTotal(false), 22.55);
+
+		// Cart tax with items
+		$this->assertEquals($this->cart->taxTotal(), 73.55);
 
 		// All item taxes
 		$this->assertEquals($this->cart->itemsTaxesTotal(), 51);
