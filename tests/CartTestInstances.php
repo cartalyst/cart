@@ -19,7 +19,6 @@
  */
 
 use Cartalyst\Cart\Cart;
-use Cartalyst\Conditions\Condition;
 use Illuminate\Events\Dispatcher;
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
@@ -67,7 +66,6 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 	}
 
 
-
 	public function testCanSwitchInstance()
 	{
 		$cart = m::mock('cart');
@@ -75,6 +73,7 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 
 		$cart->instance();
 	}
+
 
 	public function testAddItemToAnotherInstance()
 	{
@@ -93,9 +92,9 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 						'price' => 5.00,
 					),
 					'color' => array(
-						'label' => 'Size',
-						'value' => 'L',
-						'price' => 3.00,
+						'label' => 'Brown',
+						'value' => 'brown',
+						'price' => 3.50,
 					),
 				),
 			)
@@ -103,7 +102,7 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->items()->count(), 1);
 
-		$this->assertEquals($this->cart->total(), 266);
+		$this->assertEquals($this->cart->total(), 267);
 	}
 
 
@@ -111,42 +110,57 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 	{
 		$this->cart->add(
 			array(
-				'id' => 1,
-				'price' => 20.00,
-				'name' => 'foobar',
-				'quantity' => 1,
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'quantity' => 2,
+				'price'    => 125.00,
 			)
 		);
+
+		$this->assertEquals($this->cart->total(), 250);
+
 
 		$this->cart->instance('wishlist');
 
 		$this->cart->add(
 			array(
-				'id' => 1,
-				'price' => 20.00,
-				'name' => 'foobar',
-				'quantity' => 1,
+				array(
+					'id'       => 'foobar1',
+					'name'     => 'Foobar 1',
+					'quantity' => 25,
+					'price'    => 125.00,
+				),
+				array(
+					'id'       => 'foobar2',
+					'name'     => 'Foobar 2',
+					'quantity' => 1,
+					'price'    => 53.27,
+				)
 			)
 		);
+		$this->assertEquals($this->cart->total(), 3178.27);
+
 
 		$this->cart->instance('order');
 
 		$this->cart->add(
 			array(
-				array(
-					'id' => 1,
-					'price' => 20.00,
-					'name' => 'foobar',
-					'quantity' => 1,
-				)
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'quantity' => 5,
+				'price'    => 125.00,
 			)
 		);
+		$this->assertEquals($this->cart->total(), 625);
 
-		$this->assertTrue(array_key_exists('main', $this->cart->instances()));
 
-		$this->assertTrue(array_key_exists('wishlist', $this->cart->instances()));
+		$instances = $this->cart->instances();
 
-		$this->assertTrue(array_key_exists('order', $this->cart->instances()));
+		$this->assertTrue(array_key_exists('main', $instances));
+
+		$this->assertTrue(array_key_exists('wishlist', $instances));
+
+		$this->assertTrue(array_key_exists('order', $instances));
 	}
 
 
@@ -155,6 +169,75 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 		$this->cart->instance('wishlist');
 
 		$this->assertEquals($this->cart->identify(), 'wishlist');
+	}
+
+
+	public function testFindItemsByPropertiesOnOtherCartInstances()
+	{
+		$this->cart->instance('wishlist');
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 2,
+					'price'      => 97.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size'  => array(
+							'label' => 'Size',
+							'value' => 'S',
+						),
+						'color' => array(
+							'label' => 'Color',
+							'value' => 'Red',
+							'price' => 3.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 2,
+					'price'      => 85.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 15.00,
+						),
+					),
+				),
+				array(
+					'id'         => 'foobar3',
+					'name'       => 'Foobar 3',
+					'quantity'   => 5,
+					'price'      => 35.00,
+					'weight'	 => 21.00,
+					'attributes' => array(
+						'size' => array(
+							'label' => 'Size',
+							'value' => 'L',
+							'price' => 5.00,
+						),
+					),
+				),
+			)
+		);
+
+		// Switch back to the main instance
+		$this->cart->instance('main');
+
+		$item = $this->cart->find(
+			array(
+				'price' => 85,
+			),
+			'wishlist'
+		);
+
+		$this->assertEquals($item[0]->get('id'), 'foobar2');
 	}
 
 }
