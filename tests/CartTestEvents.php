@@ -72,59 +72,55 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart($session, $this->dispatcher);
 	}
 
+
 	public function testAddItemEvent()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cart.added', m::any());
 
-		$this->cart->add(
-			array(
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 2,
-				'price'      => 125.00,
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 2,
+			'price'    => 125.00,
+		));
 	}
+
 
 	public function testUpdateItemEvent()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cart.added', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cart.updated', m::any());
 
-		$this->cart->add(
-			array(
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 3,
-					'price'      => 120.00,
-				),
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 'foobar2',
+			'name'     => 'Foobar 2',
+			'quantity' => 3,
+			'price'    => 120.00,
+		));
 
 		$this->cart->update('2d2d8cb241842b326ce0e095dbfc4d41', array(
-			'name'       => 'Foo',
+			'name' => 'Foo',
 		));
 	}
+
 
 	public function testDeleteItemEvent()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cart.added', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cart.removed', m::any());
 
-		$this->cart->add(
-			array(
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 3,
-					'price'      => 120.00,
-				),
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 'foobar2',
+			'name'     => 'Foobar 2',
+			'quantity' => 3,
+			'price'    => 120.00,
+		));
 
 		$this->cart->remove('2d2d8cb241842b326ce0e095dbfc4d41');
 	}
+
 
 	public function testClearCartEvent()
 	{
