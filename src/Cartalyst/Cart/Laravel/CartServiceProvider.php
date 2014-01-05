@@ -45,7 +45,7 @@ class CartServiceProvider extends ServiceProvider {
 	{
 		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../config');
 
-		$this->registerDatabase();
+		//$this->registerDatabase();
 
 		$this->registerSession();
 
@@ -99,8 +99,6 @@ class CartServiceProvider extends ServiceProvider {
 	{
 		$this->app['cart'] = $this->app->share(function($app)
 		{
-			$app['cart.loaded'] = true;
-
 			// Get the default storage driver
 			$storage = $app['config']->get('cart::driver', 'session');
 

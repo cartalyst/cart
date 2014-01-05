@@ -329,14 +329,14 @@ class Cart extends CartCollection {
 	 */
 	public function clear()
 	{
-		$this->updateCart(null);
+		$this->updateCart();
 
 		// Fire the 'cart.cleared' event
 		$this->dispatcher->fire('cart.cleared', $this->identify());
 	}
 
 	/**
-	 * Returns information about an item.
+	 * Returns information about the provided item.
 	 *
 	 * @param  string  $rowId
 	 * @return \Cartalyst\Cart\Collections\ItemCollection
@@ -361,11 +361,7 @@ class Cart extends CartCollection {
 	 */
 	public function items()
 	{
-		// Get all the items
-		$items = $this->storage->has() ? $this->storage->get() : new CartCollection;
-
-		// Return the items
-		return $items;
+		return $this->storage->has() ? $this->storage->get() : new CartCollection;
 	}
 
 	/**
@@ -626,7 +622,7 @@ class Cart extends CartCollection {
 	 * @param  \Cartalyst\Cart\Collections\CartCollection
 	 * @return void
 	 */
-	protected function updateCart($cart)
+	protected function updateCart($cart = null)
 	{
 		$this->storage->put($cart);
 	}
