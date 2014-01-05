@@ -87,7 +87,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Adds a single item or multiple items to the cart.
+	 * Adds a single or multiple items to the cart.
 	 *
 	 * @param  array  $item
 	 * @return mixed
@@ -190,7 +190,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Remove an item or items from the cart.
+	 * Remove a single or multiple items from the cart.
 	 *
 	 * @param  mixed
 	 * @return bool
@@ -234,7 +234,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Updates an item that is on the cart.
+	 * Update a single or multiple items that are on the cart.
 	 *
 	 * @param  string  $rowId
 	 * @param  array   $attributes
