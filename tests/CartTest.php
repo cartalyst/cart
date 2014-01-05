@@ -118,20 +118,39 @@ class CartTest extends PHPUnit_Framework_TestCase {
 
 	public function testAddSingleItemToCart()
 	{
-		$this->cart->add(
-			array(
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 2,
-				'price'    => 125.00,
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 2,
+			'price'    => 125.00,
+		));
 
 		$this->assertEquals($this->cart->items()->count(), 1);
 
 		$this->assertEquals($this->cart->quantity(), 2);
 
 		$this->assertEquals($this->cart->total(), 250);
+	}
+
+
+	public function testAddSingleItemWithNegativeQuantityToCart()
+	{
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 5,
+			'price'    => 10.00,
+		));
+
+		$item = $this->cart->items()->first();
+
+		$this->assertEquals($item->get('quantity'), 5);
+
+		$this->cart->update('f53e8bcc3534788e4b4f296c1889cc99', array(
+			'quantity' => -1,
+		));
+
+		$this->assertEquals($this->cart->quantity(), 0);
 	}
 
 

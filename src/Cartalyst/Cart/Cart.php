@@ -313,11 +313,11 @@ class Cart extends CartCollection {
 		}
 		else
 		{
+			// Fire the 'cart.updated' event
+			$this->dispatcher->fire('cart.updated', array($this->item($rowId), $this->identify()));
+
 			$cart->put($rowId, $row);
 		}
-
-		// Fire the 'cart.updated' event
-		$this->dispatcher->fire('cart.updated', array($this->item($rowId), $this->identify()));
 
 		return $cart;
 	}
