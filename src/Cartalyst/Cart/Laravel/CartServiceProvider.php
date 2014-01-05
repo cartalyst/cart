@@ -43,7 +43,7 @@ class CartServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../config');
+		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../../config');
 
 		//$this->registerDatabase();
 
