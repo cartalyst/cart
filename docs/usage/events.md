@@ -9,7 +9,7 @@ cart.removed | $rowId, $instance | When an item is removed from the cart.
 cart.updated | $item, $instance  | When an item is updated.
 cart.cleared | $instance         | When the cart is cleared/destroyed.
 
-## Example
+## Examples
 
 Whenever an item is added to the shopping cart.
 
