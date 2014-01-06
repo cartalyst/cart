@@ -5,7 +5,7 @@ The cart fires some events that you can listen for.
 Event        | Parameters        | Description
 ------------ | ----------------- | -----------
 cart.added   | $item, $instance  | When an item is added to the cart.
-cart.removed | $rowId, $instance | When an item is removed from the cart.
+cart.removed | $item, $instance  | When an item is removed from the cart.
 cart.updated | $item, $instance  | When an item is updated.
 cart.cleared | $instance         | When the cart is cleared/destroyed.
 
@@ -20,7 +20,7 @@ Whenever an item is added to the shopping cart.
 
 Whenever an item is removed from the shopping cart.
 
-	Event::listen('cart.removed', function($rowId, $instance)
+	Event::listen('cart.removed', function($item, $instance)
 	{
 		// Apply your own logic here
 	});

@@ -218,6 +218,9 @@ class Cart extends CartCollection {
 				throw new CartItemNotFoundException;
 			}
 
+			// Get the item information
+			$item = $this->item($rowId);
+
 			// Get the cart contents
 			$cart = $this->items();
 
@@ -225,7 +228,7 @@ class Cart extends CartCollection {
 			$cart->forget($rowId);
 
 			// Fire the 'cart.removed' event
-			$this->dispatcher->fire('cart.removed', array($rowId, $this->identify()));
+			$this->dispatcher->fire('cart.removed', array($item, $this->identify()));
 		}
 
 		$this->updateCart($cart);
