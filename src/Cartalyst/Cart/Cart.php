@@ -312,7 +312,7 @@ class Cart extends CartCollection {
 		// If quantity is less than one, we remove the item
 		if ($row->get('quantity') < 1)
 		{
-			$cart->forget($rowId);
+			$this->remove($rowId);
 		}
 		else
 		{
