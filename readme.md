@@ -10,7 +10,7 @@ History and future capabilities.
 
 ### Complete
 
-#### *xx-Jan-14* - v1.0.0
+#### xx-Jan-14 - v1.0.0
 
 - ```Cart::add($item)``` User can add an item to the cart.
 - ```Cart::add($items)``` User can add multiple items to the cart.
