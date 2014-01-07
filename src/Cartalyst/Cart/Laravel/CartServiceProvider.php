@@ -33,7 +33,7 @@ class CartServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('cartalyst/cart', 'cartalyst/cart');
+		$this->package('cartalyst/cart', 'cartalyst/cart', __DIR__.'/../../..');
 	}
 
 	/**
@@ -43,8 +43,6 @@ class CartServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../../config');
-
 		$this->registerSession();
 
 		$this->registerCart();
@@ -60,10 +58,10 @@ class CartServiceProvider extends ServiceProvider {
 		$this->app['cart.storage.session'] = $this->app->share(function($app)
 		{
 			// Get the key name
-			$key = $app['config']->get('cart::session.key');
+			$key = $app['config']->get('cartalyst/cart::session.key');
 
 			// Get the default instance
-			$instance = $app['config']->get('cart::instance');
+			$instance = $app['config']->get('cartalyst/cart::instance');
 
 			return new IlluminateSession($app['session.store'], $key, $instance);
 		});
@@ -79,16 +77,16 @@ class CartServiceProvider extends ServiceProvider {
 		$this->app['cart'] = $this->app->share(function($app)
 		{
 			// Get the default storage driver
-			$storage = $app['config']->get('cart::driver', 'session');
+			$storage = $app['config']->get('cartalyst/cart::driver', 'session');
 
 			// Create a new Cart instance
 			$cart = new Cart($app["cart.storage.{$storage}"], $app['events']);
 
 			// Set the default cart instance
-			$cart->instance($app['config']->get('cart::instance', 'main'));
+			$cart->instance($app['config']->get('cartalyst/cart::instance', 'main'));
 
 			// Set the required indexes
-			$cart->setRequiredIndexes($app['config']->get('cart::requiredIndexes'));
+			$cart->setRequiredIndexes($app['config']->get('cartalyst/cart::requiredIndexes'));
 
 			return $cart;
 		});
