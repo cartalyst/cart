@@ -45,30 +45,9 @@ class CartServiceProvider extends ServiceProvider {
 	{
 		$this->app['config']->package('cartalyst/cart', __DIR__.'/../../../config');
 
-		//$this->registerDatabase();
-
 		$this->registerSession();
 
 		$this->registerCart();
-	}
-
-	/**
-	 * Register the database driver used by the Cart.
-	 *
-	 * @return void
-	 */
-	protected function registerDatabase()
-	{
-		$this->app['cart.storage.database'] = $this->app->share(function($app)
-		{
-			// Get the key name
-			$key = $app['config']->get('cart::session.key');
-
-			// Get the default instance
-			$instance = $app['config']->get('cart::instance');
-
-			return new IlluminateDatabase($app['db'], $app['cookie'], $key, $instance);
-		});
 	}
 
 	/**
