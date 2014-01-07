@@ -55,7 +55,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return all the applied tax rates on the item.
+	 * Return all the applied tax rates from all the items.
 	 *
 	 * @return array
 	 */

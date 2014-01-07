@@ -23,21 +23,21 @@ use Illuminate\Support\Collection;
 class BaseCollection extends Collection {
 
 	/**
-	 * Holds all tax values.
+	 * Holds all the tax values.
 	 *
 	 * @var float
 	 */
 	protected $tax;
 
 	/**
-	 * Holds all discount values.
+	 * Holds all the discount values.
 	 *
 	 * @var float
 	 */
 	protected $discount;
 
 	/**
-	 * Holds all conditions.
+	 * Holds all the conditions.
 	 *
 	 * @var array
 	 */
@@ -170,6 +170,8 @@ class BaseCollection extends Collection {
 
 	/**
 	 * Clear conditions.
+	 *
+	 * @return void
 	 */
 	public function clearConditions()
 	{
@@ -183,10 +185,10 @@ class BaseCollection extends Collection {
 	 */
 	protected function applyConditions()
 	{
-		// Reset price
+		// Reset the price
 		$this->price = $this->get('price');
 
-		// Reset subtotal
+		// Reset the subtotal
 		$this->subtotal = $this->subtotal();
 
 		// Run price conditions first

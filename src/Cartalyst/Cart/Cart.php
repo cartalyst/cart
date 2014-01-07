@@ -294,10 +294,7 @@ class Cart extends CartCollection {
 		// We are probably updating the item quantity
 		else
 		{
-			// Make sure the quantity is an integer.
-			$quantity = (int) $attributes;
-
-			$row->put('quantity', $quantity);
+			$row->put('quantity', (int) $attributes);
 		}
 
 		// Reset conditions
@@ -309,7 +306,7 @@ class Cart extends CartCollection {
 		// Set item price
 		$row->setPrice($row->get('price'));
 
-		// If quantity is less than one, we remove the item
+		// Remove the item if the quantity is less than one
 		if ($row->get('quantity') < 1)
 		{
 			$this->remove($rowId);
@@ -358,7 +355,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the cart contents.
+	 * Returns the cart contents on the current condition.
 	 *
 	 * @return \Cartalyst\Cart\Collections\CartCollection
 	 */
@@ -368,7 +365,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return all the applied tax rates both global and per item.
+	 * Returns all the applied tax rates both global and per item.
 	 *
 	 * @param  bool  $includeItems
 	 * @return array
@@ -405,7 +402,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return all the applied discounts.
+	 * Returns all the applied discounts.
 	 *
 	 * @return array
 	 */
@@ -425,7 +422,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the total cart weight.
+	 * Returns the total cart weight.
 	 *
 	 * @return float
 	 */
@@ -476,7 +473,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the current cart instance.
+	 * Returns the current cart instance.
 	 *
 	 * @return string
 	 */
@@ -486,7 +483,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return all cart instances.
+	 * Returns all cart instances.
 	 *
 	 * @return array
 	 */
@@ -504,13 +501,14 @@ class Cart extends CartCollection {
 	{
 		$this->storage->setInstance($instance);
 
+		// Fire the 'cart.instance.created' event
 		$this->dispatcher->fire('cart.instance.created', $instance);
 
 		return $this;
 	}
 
 	/**
-	 * Remove the cart instance.
+	 * Remove the given cart instance.
 	 *
 	 * @param  string  $instance
 	 * @return bool
@@ -524,13 +522,14 @@ class Cart extends CartCollection {
 
 		$this->storage->forget();
 
+		// Fire the 'cart.instance.removed' event
 		$this->dispatcher->fire('cart.instance.removed', $instance);
 
 		return true;
 	}
 
 	/**
-	 * Return all the conditions that were applied only to items.
+	 * Returns all the conditions that were applied only to items.
 	 *
 	 * @return array
 	 */
@@ -550,7 +549,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the list of required indexes.
+	 * Returns the list of required indexes.
 	 *
 	 * @return array
 	 */
@@ -566,8 +565,8 @@ class Cart extends CartCollection {
 	 * indexes, you can change this behavior by setting the second
 	 * parameter as false.
 	 *
-	 * @param  array $indexes
-	 * @param  bool  $merge
+	 * @param  array  $indexes
+	 * @param  bool   $merge
 	 * @return void
 	 */
 	public function setRequiredIndexes($indexes = array(), $merge = true)
@@ -582,7 +581,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the session key.
+	 * Returns the session key.
 	 *
 	 * @return string
 	 */
@@ -592,7 +591,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the storage driver.
+	 * Returns the storage driver.
 	 *
 	 * @return mixed
 	 */
@@ -635,10 +634,11 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Prepare attributes.
+	 * Prepare the attributes.
 	 *
-	 * @param  array $attributes
+	 * @param  array  $attributes
 	 * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
+	 * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 */
 	protected function prepareAttributes(array $attributes)
 	{
@@ -660,7 +660,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Generate a unique identifier base on the item data.
+	 * Generate a unique identifier based on the item data.
 	 *
 	 * @param  string  $id
 	 * @param  array   $attributes

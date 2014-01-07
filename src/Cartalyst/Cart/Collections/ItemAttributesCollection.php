@@ -23,7 +23,7 @@ use Illuminate\Support\Collection;
 class ItemAttributesCollection extends Collection {
 
 	/**
-	 * Return the total price of all the options together.
+	 * Return the total price of all the attributes together.
 	 *
 	 * @return float
 	 */
