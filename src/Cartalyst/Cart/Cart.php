@@ -504,6 +504,8 @@ class Cart extends CartCollection {
 	{
 		$this->storage->setInstance($instance);
 
+		$this->dispatcher->fire('cart.instance.created', $instance);
+
 		return $this;
 	}
 
@@ -521,6 +523,8 @@ class Cart extends CartCollection {
 		}
 
 		$this->storage->forget();
+
+		$this->dispatcher->fire('cart.instance.removed', $instance);
 
 		return true;
 	}
