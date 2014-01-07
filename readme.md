@@ -8,10 +8,6 @@ Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, ro
 
 History and future capabilities.
 
-### Incomplete
-
-- ```Cart::save('instance')``` User can save a cart instance to the database.
-
 ### Complete
 
 #### *xx-Jan-14* - v1.0.0
