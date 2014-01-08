@@ -14,7 +14,7 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -55,7 +55,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return all the applied tax rates on the item.
+	 * Return all the applied tax rates from all the items.
 	 *
 	 * @return array
 	 */
@@ -69,7 +69,7 @@ class CartCollection extends BaseCollection {
 			{
 				if ($condition->get('type') === 'tax')
 				{
-					$taxes[$condition->get('name')] = $condition;
+					$taxes[] = $condition;
 				}
 			}
 		}
@@ -88,8 +88,6 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			$item->applyConditions();
-
 			$total += $item->taxTotal();
 		}
 
@@ -97,32 +95,20 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return the applied taxes total.
+	 * Return the sum of all item discounts.
 	 *
-	 * @param  bool  $includeItems
 	 * @return float
 	 */
-	public function taxTotal($includeItems = true)
+	public function itemsDiscountsTotal()
 	{
-		$this->setTax(0);
+		$total = 0;
 
-		$this->applyConditions();
-
-		$taxes = $this->getTax();
-
-		if ($includeItems)
+		foreach ($this->items() as $item)
 		{
-			foreach ($this->items() as $item)
-			{
-				$item->setTax(0);
-
-				$item->applyConditions();
-
-				$taxes += $item->getTax();
-			}
+			$total += $item->discountTotal();
 		}
 
-		return $taxes;
+		return $total;
 	}
 
 }

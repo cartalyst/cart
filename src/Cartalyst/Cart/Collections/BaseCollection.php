@@ -14,27 +14,13 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
 use Illuminate\Support\Collection;
 
 class BaseCollection extends Collection {
-
-	/**
-	 * Holds all tax values.
-	 *
-	 * @var float
-	 */
-	protected $tax;
-
-	/**
-	 * Holds all discount values.
-	 *
-	 * @var float
-	 */
-	protected $discount;
 
 	/**
 	 * Holds all conditions.
@@ -79,60 +65,6 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return the tax value of the item.
-	 *
-	 * @return float
-	 */
-	public function getTax()
-	{
-		return $this->tax;
-	}
-
-	/**
-	 * Set the tax value of the item.
-	 *
-	 * @param  float  $tax
-	 * @return void
-	 */
-	public function setTax($tax)
-	{
-		$this->tax = $tax;
-	}
-
-	/**
-	 * Return the discount value.
-	 *
-	 * @return float
-	 */
-	public function getDiscount()
-	{
-		return $this->discount;
-	}
-
-	/**
-	 * Set the discount value.
-	 *
-	 * @param  float  $discount
-	 * @return void
-	 */
-	public function setDiscount($discount)
-	{
-		$this->discount = $discount;
-	}
-
-	/**
-	 * Return total.
-	 *
-	 * @return float
-	 */
-	public function total()
-	{
-		$this->applyConditions();
-
-		return $this->subtotal ?: $this->subtotal($this->price);
-	}
-
-	/**
 	 * Set a condition.
 	 *
 	 * @param  \Cartalyst\Conditions\Condition  $condition
@@ -163,13 +95,25 @@ class BaseCollection extends Collection {
 	 *
 	 * @return array
 	 */
-	public function conditions()
+	public function conditions($type = null)
 	{
-		return $this->conditions;
+		$conditions = array();
+
+		foreach ($this->conditions as $condition)
+		{
+			if ($condition->get('type') === $type)
+			{
+				$conditions[] = $condition;
+			}
+		}
+
+		return $conditions;
 	}
 
 	/**
 	 * Clear conditions.
+	 *
+	 * @return void
 	 */
 	public function clearConditions()
 	{
@@ -177,27 +121,180 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Apply all conditions
+	 * Return all the applied discounts.
+	 *
+	 * @return array
+	 */
+	public function discounts()
+	{
+		$discounts = array();
+
+		foreach ($this->conditions('discount') as $condition)
+		{
+			$discounts[] = $condition;
+		}
+
+		return $discounts;
+	}
+
+	/**
+	 * Return all the applied taxes.
+	 *
+	 * @return array
+	 */
+	public function taxes()
+	{
+		$discounts = array();
+
+		foreach ($this->conditions('tax') as $condition)
+		{
+			$discounts[] = $condition;
+		}
+
+		return $discounts;
+	}
+
+	/**
+	 * Return total.
+	 *
+	 * @return float
+	 */
+	public function total()
+	{
+		return $this->discountedSubtotal() + $this->otherSubtotal() + $this->taxSubtotal();
+	}
+
+	/**
+	 * Return the applied taxes total.
+	 *
+	 * @return float
+	 */
+	public function taxTotal($items = false)
+	{
+		$res = $this->conditionTotals('tax', $this->discountOtherSubtotal());
+
+		if ($items)
+		{
+			$res += $this->itemsTaxesTotal();
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Return the applied discounts total.
+	 *
+	 * @return float
+	 */
+	public function discountTotal($items = false)
+	{
+		$res = $this->conditionTotals('discount');
+
+		if ($items)
+		{
+			$res += $this->itemsDiscountsTotal();
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Calculate condition totals.
+	 *
+	 * @param  string $type
+	 * @param  float  $value
+	 * @return float
+	 */
+	protected function conditionTotals($type = null, $value = null)
+	{
+		$res = 0;
+
+		$this->applyPriceConditions();
+
+		$value = $value ?: $this->subtotal($this->getPrice());
+
+		foreach ($this->conditions($type) as $condition)
+		{
+			if ($condition->get('target') === 'price')
+			{
+				$res = $condition->result() * $this->get('quantity');
+			}
+		}
+
+		foreach ($this->conditions($type) as $condition)
+		{
+			if ($condition->get('target') === 'subtotal')
+			{
+				$condition->apply($this, $value);
+
+				$res += $condition->result();
+			}
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Return total.
+	 *
+	 * @return float
+	 */
+	protected function discountedSubtotal()
+	{
+		$this->applyPriceConditions();
+
+		return $this->subtotal + $this->discountSubtotal();
+	}
+
+	/**
+	 * Return the tax applied on subtotal.
+	 *
+	 * @return float
+	 */
+	protected function taxSubtotal()
+	{
+		$res = 0;
+
+		foreach ($this->conditions('tax') as $condition)
+		{
+			if ($condition->get('target') === 'subtotal')
+			{
+				$condition->apply($this, $this->discountOtherSubtotal());
+
+				$res += $condition->result();
+			}
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Return subtotal after applying discounts and other conditions
+	 *
+	 * @return float
+	 */
+	protected function discountOtherSubtotal()
+	{
+		return $this->discountedSubtotal() + $this->otherSubtotal();
+	}
+
+	/**
+	 * Apply price based conditions.
 	 *
 	 * @return void
 	 */
-	protected function applyConditions()
+	protected function applyPriceConditions()
 	{
-		// Reset price
-		$this->price = $this->get('price');
+		// Reset the price
+		$this->setPrice($this->get('price'));
 
-		// Reset subtotal
+		// Reset the subtotal
 		$this->subtotal = $this->subtotal();
 
 		// Run price conditions first
-		$this->applyTypeConditions('price', 'discount');
-		$this->applyTypeConditions('price');
-		$this->applyTypeConditions('price', 'tax');
-
-		// Run subtotal conditions
-		$this->applyTypeConditions('subtotal', 'discount');
-		$this->applyTypeConditions('subtotal');
-		$this->applyTypeConditions('subtotal', 'tax');
+		$this->applyPriceTypeConditions('price', 'discount');
+		$this->applyPriceTypeConditions('price');
+		$this->applyPriceTypeConditions('price', 'tax');
 	}
 
 	/**
@@ -207,55 +304,26 @@ class BaseCollection extends Collection {
 	 * @param  string  $type
 	 * @return void
 	 */
-	public function applyTypeConditions($target, $type = null)
+	protected function applyPriceTypeConditions($target, $type = null)
 	{
-		foreach ($this->conditions() as $condition)
+		foreach ($this->conditions($type) as $condition)
 		{
-			if ($condition->get('type') === $type)
+			if ($condition->get('target') === $target)
 			{
-				if ($condition->get('target') === $target)
+				if ($target === 'price')
 				{
-					// Temporarily store subtotal
-					$tempSubtotal = $this->subtotal;
-
-					if ($target === 'price')
-					{
-						$value = $target === 'price' ? $this->getPrice() : 0;
-					}
-					else if ($target === 'subtotal')
-					{
-						$value = $target === 'subtotal' ? $this->subtotal ? $this->subtotal : $this->subtotal($this->price) : $this->subtotal($this->price);
-					}
+					$value = $this->getPrice() ?: $this->get('price');
 
 					// Apply condition
 					$price = $condition->apply($this, $value);
 
-					if ($target === 'price')
-					{
-						// Update price
-						$this->setPrice($price);
+					// Update price
+					$this->setPrice($price);
 
-						// Update subtotal with the new price
-						$this->subtotal = $this->subtotal($price);
-					}
-					else if ($target === 'subtotal')
-					{
-						// Update subtotal
-						$this->subtotal = $price;
-					}
-
-					// Store taxes
-					if ($condition->get('type') === 'tax')
-					{
-						$this->setTax($this->getTax() + $this->subtotal - $tempSubtotal);
-					}
-
-					// Store discounts
-					if ($condition->get('type') === 'discount')
-					{
-						$this->setDiscount($this->getDiscount() + $this->subtotal - $tempSubtotal);
-					}
+					// Update subtotal with the new price
+					$this->subtotal = $this->subtotal($price);
 				}
+
 			}
 		}
 	}
@@ -266,13 +334,43 @@ class BaseCollection extends Collection {
 	 * @param  bool  $includeItems
 	 * @return float
 	 */
-	public function discountsTotal()
+	protected function discountSubtotal()
 	{
-		$this->setDiscount(0);
+		$res = 0;
 
-		$this->applyConditions();
+		foreach ($this->conditions('discount') as $condition)
+		{
+			if ($condition->get('target') === 'subtotal')
+			{
+				$condition->apply($this, $this->subtotal);
 
-		return $this->getDiscount();
+				$res += $condition->result();
+			}
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Return applied other conditions total.
+	 *
+	 * @return float
+	 */
+	protected function otherSubtotal()
+	{
+		$res = 0;
+
+		foreach ($this->conditions() as $condition)
+		{
+			if ($condition->get('target') === 'subtotal')
+			{
+				$condition->apply($this, $this->discountedSubtotal());
+
+				$res += $condition->result();
+			}
+		}
+
+		return $res;
 	}
 
 }

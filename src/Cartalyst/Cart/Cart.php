@@ -14,7 +14,7 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -294,22 +294,19 @@ class Cart extends CartCollection {
 		// We are probably updating the item quantity
 		else
 		{
-			// Make sure the quantity is an integer.
-			$quantity = (int) $attributes;
-
-			$row->put('quantity', $quantity);
+			$row->put('quantity', (int) $attributes);
 		}
 
 		// Reset conditions
 		$row->clearConditions();
 
 		// Assign item conditions
-		$row->condition(array_get($attributes, 'conditions'));
+		$row->condition(array_get($row, 'conditions'));
 
 		// Set item price
 		$row->setPrice($row->get('price'));
 
-		// If quantity is less than one, we remove the item
+		// Remove the item if the quantity is less than one
 		if ($row->get('quantity') < 1)
 		{
 			$this->remove($rowId);
@@ -365,63 +362,6 @@ class Cart extends CartCollection {
 	public function items()
 	{
 		return $this->storage->has() ? $this->storage->get() : new CartCollection;
-	}
-
-	/**
-	 * Return all the applied tax rates both global and per item.
-	 *
-	 * @param  bool  $includeItems
-	 * @return array
-	 */
-	public function taxes($includeItems = true)
-	{
-		$taxes = array();
-
-		if ($includeItems)
-		{
-			// Per item taxes
-			foreach ($this->items() as $item)
-			{
-				foreach ($item->conditions() as $condition)
-				{
-					if ($condition->get('type') === 'tax')
-					{
-						$taxes[$condition->get('name')] = $condition;
-					}
-				}
-			}
-		}
-
-		// Global taxes
-		foreach ($this->conditions() as $condition)
-		{
-			if ($condition->get('type') === 'tax')
-			{
-				$taxes[$condition->get('name')] = $condition;
-			}
-		}
-
-		return $taxes;
-	}
-
-	/**
-	 * Return all the applied discounts.
-	 *
-	 * @return array
-	 */
-	public function discounts()
-	{
-		$discounts = array();
-
-		foreach ($this->conditions() as $condition)
-		{
-			if ($condition->get('type') === 'discount')
-			{
-				$discounts[$condition->get('name')] = $condition;
-			}
-		}
-
-		return $discounts;
 	}
 
 	/**
@@ -486,7 +426,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return all cart instances.
+	 * Returns all cart instances.
 	 *
 	 * @return array
 	 */
@@ -504,13 +444,14 @@ class Cart extends CartCollection {
 	{
 		$this->storage->setInstance($instance);
 
+		// Fire the 'cart.instance.created' event
 		$this->dispatcher->fire('cart.instance.created', $instance);
 
 		return $this;
 	}
 
 	/**
-	 * Remove the cart instance.
+	 * Remove the given cart instance.
 	 *
 	 * @param  string  $instance
 	 * @return bool
@@ -524,13 +465,14 @@ class Cart extends CartCollection {
 
 		$this->storage->forget();
 
+		// Fire the 'cart.instance.removed' event
 		$this->dispatcher->fire('cart.instance.removed', $instance);
 
 		return true;
 	}
 
 	/**
-	 * Return all the conditions that were applied only to items.
+	 * Returns all the conditions that were applied only to items.
 	 *
 	 * @return array
 	 */
@@ -550,7 +492,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the list of required indexes.
+	 * Returns the list of required indexes.
 	 *
 	 * @return array
 	 */
@@ -566,8 +508,8 @@ class Cart extends CartCollection {
 	 * indexes, you can change this behavior by setting the second
 	 * parameter as false.
 	 *
-	 * @param  array $indexes
-	 * @param  bool  $merge
+	 * @param  array  $indexes
+	 * @param  bool   $merge
 	 * @return void
 	 */
 	public function setRequiredIndexes($indexes = array(), $merge = true)
@@ -582,7 +524,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the session key.
+	 * Returns the session key.
 	 *
 	 * @return string
 	 */
@@ -592,7 +534,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the storage driver.
+	 * Returns the storage driver.
 	 *
 	 * @return mixed
 	 */
@@ -635,10 +577,11 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Prepare attributes.
+	 * Prepare the attributes.
 	 *
-	 * @param  array $attributes
+	 * @param  array  $attributes
 	 * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
+	 * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 */
 	protected function prepareAttributes(array $attributes)
 	{
@@ -660,7 +603,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Generate a unique identifier base on the item data.
+	 * Generate a unique identifier based on the item data.
 	 *
 	 * @param  string  $id
 	 * @param  array   $attributes

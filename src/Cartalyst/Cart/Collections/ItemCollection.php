@@ -81,18 +81,4 @@ class ItemCollection extends BaseCollection {
 		return (float) $this->get('weight') * $this->get('quantity');
 	}
 
-	/**
-	 * Return the applied taxes total.
-	 *
-	 * @return float
-	 */
-	public function taxTotal()
-	{
-		$this->setTax(0);
-
-		$this->applyConditions();
-
-		return $this->getTax();
-	}
-
 }

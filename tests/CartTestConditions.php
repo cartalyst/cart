@@ -14,7 +14,7 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -66,6 +66,153 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart($session, $dispatcher);
 	}
 
+
+	public function testItemConditionAllTypes()
+	{
+		$add5price = new Condition(array(
+			'name'   => 'Add 5 to price',
+			'target' => 'price',
+		));
+
+		$add5price->setActions(array(
+			'value' => '5.00',
+		));
+
+		$disc5Psubtotal = new Condition(array(
+			'name'   => 'Discount',
+			'type'   => 'discount',
+			'target' => 'subtotal',
+		));
+
+		$disc5Psubtotal->setActions(array(
+			'value' => '-5.00%',
+		));
+
+		$tax10psubtotal = new Condition(array(
+			'name'   => 'Tax 10%',
+			'type'   => 'tax',
+			'target' => 'subtotal',
+		));
+
+		$tax10psubtotal->setActions(array(
+			'value' => '10.00%',
+		));
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 5,
+					'price'      => 100.00,
+					'conditions' => array($add5price, $disc5Psubtotal, $tax10psubtotal),
+				),
+			)
+		);
+
+		// Item 1
+		$item1 = $this->cart->items()->first();
+
+		$this->assertEquals($item1->subtotal(), 500);
+
+		$this->assertEquals($item1->discountTotal(), -26.25);
+
+		$this->assertEquals($item1->taxTotal(), 49.875);
+
+		$this->assertEquals($item1->total(), 548.625);
+
+		// Cart
+		$this->assertEquals($this->cart->subtotal(), 548.625);
+
+		$this->assertEquals($this->cart->total(), 548.625);
+
+		$this->cart->condition($tax10psubtotal);
+
+		$this->assertEquals($this->cart->total(), 603.4875);
+
+		$this->cart->condition($disc5Psubtotal);
+
+		$this->assertEquals($this->cart->total(), 573.313125);
+
+	}
+
+
+	public function testItemTaxOnPrice()
+	{
+		$add5price = new Condition(array(
+			'name'   => 'Tax 5% Price',
+			'target' => 'price',
+			'type'   => 'tax',
+		));
+
+		$add5price->setActions(array(
+			'value' => '5.00%',
+		));
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 5,
+					'price'      => 100.00,
+					'conditions' => $add5price,
+				),
+			)
+		);
+
+		// Item 1
+		$item1 = $this->cart->items()->first();
+
+		$this->assertEquals($item1->taxTotal(), 25);
+
+		$this->assertEquals($item1->total(), 525);
+	}
+
+	public function testItemConditions1()
+	{
+		$tax10psubtotal = new Condition(array(
+			'name'   => 'Tax 10%',
+			'type'   => 'tax',
+			'target' => 'subtotal',
+		));
+
+		$tax10psubtotal->setActions(array(
+			'value' => '10.00%',
+		));
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 5,
+					'price'      => 100.00,
+					'conditions' => $tax10psubtotal,
+				),
+			)
+		);
+
+		// Item 1
+		$item1 = $this->cart->items()->first();
+
+		$this->assertEquals($item1->subtotal(), 500);
+
+		$this->assertEquals($item1->discountTotal(), 0);
+
+		$this->assertEquals($item1->taxTotal(), 50);
+
+		$this->assertEquals($item1->total(), 550);
+
+		// Cart
+		$this->assertEquals($this->cart->subtotal(), 550);
+
+		$this->assertEquals($this->cart->total(), 550);
+
+		$this->cart->condition($tax10psubtotal);
+
+		$this->assertEquals($this->cart->total(), 605);
+	}
 
 	public function testItemConditions()
 	{
@@ -126,7 +273,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->total(), 180.00);
 	}
-
 
 	public function testCartCondition()
 	{
@@ -192,7 +338,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->subtotal(), 140.8);
 	}
 
-
 	public function testGetItemTotal()
 	{
 		$condition = new Condition(array(
@@ -235,7 +380,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item->total(), 288.2);
 	}
-
 
 	public function testApplyMultipleConditionsOnItem()
 	{
@@ -297,7 +441,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item->total(), 265.32);
 	}
 
-
 	public function testTaxes()
 	{
 		$tax10p = new Condition(array(
@@ -311,9 +454,8 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		));
 
 		$add5 = new Condition(array(
-			'name'   => 'add10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
+			'name'   => 'Add 5',
+			'target' => 'price',
 		));
 
 		$add5->setActions(array(
@@ -328,6 +470,16 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$tax5p->setActions(array(
 			'value' => '5.00%',
+		));
+
+		$disc5p = new Condition(array(
+			'name'   => 'Discount 5%',
+			'type'   => 'discount',
+			'target' => 'subtotal',
+		));
+
+		$disc5p->setActions(array(
+			'value' => '-5.00%',
 		));
 
 		$this->cart->add(
@@ -356,13 +508,12 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 					'name'       => 'Foobar 2',
 					'quantity'   => 2,
 					'price'      => 85.00,
-					'conditions' => array($tax5p, $tax10p),
+					'conditions' => array($add5, $tax10p, $tax5p, $disc5p),
 					'weight'	 => 21.00,
 					'attributes' => array(
 						'size' => array(
 							'label' => 'Size',
 							'value' => 'L',
-							'price' => 15.00,
 						),
 					),
 				),
@@ -372,32 +523,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Items 1 tax check
 		$item1 = $this->cart->items()->first();
 
+		$this->assertEquals($item1->subtotal(), 200);
+
 		$this->assertEquals($item1->taxTotal(), 20);
+
+		$this->assertEquals($item1->discountTotal(), 0);
+
+		$this->assertEquals($item1->total(), 220);
 
 		// Items 2 tax check
 		$item2 = $this->cart->items()->last();
 
-		$this->assertEquals($item2->taxTotal(), 31);
+		$this->assertEquals($item2->subtotal(), 170);
+
+		$this->assertEquals($item2->taxTotal(), 25.65);
+
+		$this->assertEquals($item2->discountTotal(), -9);
+
+		$this->assertEquals($item2->total(), 196.65);
 
 		// Apply 5% Global Tax
 		$this->cart->condition($tax5p);
 
-		// Cart tax without items
-		$this->assertEquals($this->cart->taxTotal(false), 22.55);
-
-		// Cart tax with items
-		$this->assertEquals($this->cart->taxTotal(), 73.55);
-
-		// All item taxes
-		$this->assertEquals($this->cart->itemsTaxesTotal(), 51);
-
-		// Cart subtotal
-		$this->assertEquals($this->cart->subtotal(), 451);
+		// Cart sub total
+		$this->assertEquals($this->cart->subtotal(), 416.65);
 
 		// Cart total
-		$this->assertEquals($this->cart->total(), 473.55);
-	}
+		$this->assertEquals($this->cart->total(), 437.4825);
 
+		// Cart tax without items
+		$this->assertEquals($this->cart->taxTotal(), 20.8325);
+
+		// Cart tax with items
+		$this->assertEquals($this->cart->taxTotal(true), 66.4825);
+
+		// Cart discount with items
+		$this->assertEquals($this->cart->discountTotal(true), -9);
+
+		// All item taxes
+		$this->assertEquals($this->cart->itemsTaxesTotal(), 45.65);
+	}
 
 	public function testCombinedConditionsOnItemsAndCart()
 	{
@@ -479,17 +644,19 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// First item
 		$item1 = $this->cart->items()->first();
+
 		$this->assertEquals($item1->subtotal(), 412);
+
+		$this->assertEquals($item1->discountTotal(), -40);
 
 		$this->assertEquals($item1->total(), 372);
 
-
 		// Second item
 		$item2 = $this->cart->items()->last();
+
 		$this->assertEquals($item2->subtotal(), 230);
 
 		$this->assertEquals($item2->total(), 219);
-
 
 		// Cart sub total
 		$this->assertEquals($this->cart->subtotal(), 591);
@@ -511,7 +678,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->total(), 682.605);
 	}
-
 
 	public function testConditionOnItemPrice()
 	{
@@ -714,15 +880,15 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 	public function testMultipleConditionsWithDiscounts()
 	{
-		$condition = new Condition(array(
+		$add5ToPrice = new Condition(array(
 			'target' => 'price',
 		));
 
-		$condition->setActions(array(
+		$add5ToPrice->setActions(array(
 			'value' => '5.00',
 		));
 
-		$condition->setRules(array(
+		$add5ToPrice->setRules(array(
 			'price > 200'
 		));
 
@@ -742,7 +908,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar4',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions' => array($disc5p, $condition),
+					'conditions' => array($disc5p, $add5ToPrice),
 					'price'      => 244.00,
 					'attributes' => array(
 						'size'  => array(
@@ -762,7 +928,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 					'id'         => 'foobar1',
 					'name'       => 'Foobar 1',
 					'quantity'   => 3,
-					'conditions' => $condition,
+					'conditions' => $add5ToPrice,
 					'price'      => 125.00,
 					'attributes' => array(
 						'size'  => array(
@@ -783,21 +949,18 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Item 1
 		$item1 = $this->cart->items()->first();
 
-		$this->assertEquals($item1->subtotal(), 750);
+		// $this->assertEquals($item1->subtotal(), 750);
+
+		$this->assertEquals($item1->discountTotal(), -38.25);
 
 		$this->assertEquals($item1->total(), 726.75);
 
-		// Discount
-		$this->assertEquals($item1->discountsTotal(), -38.25);
 
 		// Item 2
 		$item2 = $this->cart->items()->last();
 		$this->assertEquals($item2->subtotal(), 393);
 
 		$this->assertEquals($item2->total(), 393);
-
-		// Discount
-		$this->assertEquals($item2->discountsTotal(), 0);
 
 		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1119.75);
@@ -822,7 +985,10 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->total(), 1007.775);
 
 		// Cart discount
-		$this->assertEquals($this->cart->discountsTotal(), -111.975);
+		$this->assertEquals($this->cart->discountTotal(), -111.975);
+
+		// Cart discount with items
+		$this->assertEquals($this->cart->discountTotal(true), -150.225);
 	}
 
 
