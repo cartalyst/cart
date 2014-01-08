@@ -189,6 +189,35 @@ class BaseCollection extends Collection {
 	}
 
 	/**
+	 * Returns the conditions sum grouped by type.
+	 *
+	 * @return array
+	 */
+	public function sumConditions($type = null)
+	{
+		$val = array();
+
+		foreach ($this->items() as $item)
+		{
+			foreach($item->conditionsOfType($type) as $condition)
+			{
+				$key = $condition->get('name');
+
+				if (array_key_exists($key, $val))
+				{
+					$val[$key] += $condition->result();
+				}
+				else
+				{
+					$val[$key] = $condition->result();
+				}
+			}
+		}
+
+		return $val;
+	}
+
+	/**
 	 * Return conditions by type.
 	 *
 	 * @return array
@@ -333,7 +362,6 @@ class BaseCollection extends Collection {
 					// Update subtotal with the new price
 					$this->subtotal = $this->subtotal($price);
 				}
-
 			}
 		}
 	}
