@@ -166,10 +166,7 @@ class Cart extends CartCollection {
 		}
 
 		// Assign item conditions
-		if ($conditions = array_get($item, 'conditions'))
-		{
-			$row->condition($conditions);
-		}
+		$row->condition(array_get($item, 'conditions', array()));
 
 		// Set item price
 		$row->setPrice($price);
@@ -301,7 +298,7 @@ class Cart extends CartCollection {
 		$row->clearConditions();
 
 		// Assign item conditions
-		$row->condition(array_get($attributes, 'conditions'));
+		$row->condition(array_get($row, 'conditions'));
 
 		// Set item price
 		$row->setPrice($row->get('price'));
