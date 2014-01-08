@@ -95,19 +95,9 @@ class BaseCollection extends Collection {
 	 *
 	 * @return array
 	 */
-	public function conditions($type = null)
+	public function conditions()
 	{
-		$conditions = array();
-
-		foreach ($this->conditions as $condition)
-		{
-			if ($condition->get('type') === $type)
-			{
-				$conditions[] = $condition;
-			}
-		}
-
-		return $conditions;
+		return $this->conditions;
 	}
 
 	/**
@@ -129,7 +119,7 @@ class BaseCollection extends Collection {
 	{
 		$discounts = array();
 
-		foreach ($this->conditions('discount') as $condition)
+		foreach ($this->conditionsOfType('discount') as $condition)
 		{
 			$discounts[] = $condition;
 		}
@@ -146,7 +136,7 @@ class BaseCollection extends Collection {
 	{
 		$discounts = array();
 
-		foreach ($this->conditions('tax') as $condition)
+		foreach ($this->conditionsOfType('tax') as $condition)
 		{
 			$discounts[] = $condition;
 		}
@@ -199,6 +189,26 @@ class BaseCollection extends Collection {
 	}
 
 	/**
+	 * Return conditions by type.
+	 *
+	 * @return array
+	 */
+	protected function conditionsOfType($type = null)
+	{
+		$conditions = array();
+
+		foreach ($this->conditions as $condition)
+		{
+			if ($condition->get('type') === $type)
+			{
+				$conditions[] = $condition;
+			}
+		}
+
+		return $conditions;
+	}
+
+	/**
 	 * Calculate condition totals.
 	 *
 	 * @param  string $type
@@ -213,7 +223,7 @@ class BaseCollection extends Collection {
 
 		$value = $value ?: $this->subtotal($this->getPrice());
 
-		foreach ($this->conditions($type) as $condition)
+		foreach ($this->conditionsOfType($type) as $condition)
 		{
 			if ($condition->get('target') === 'price')
 			{
@@ -221,7 +231,7 @@ class BaseCollection extends Collection {
 			}
 		}
 
-		foreach ($this->conditions($type) as $condition)
+		foreach ($this->conditionsOfType($type) as $condition)
 		{
 			if ($condition->get('target') === 'subtotal')
 			{
@@ -255,7 +265,7 @@ class BaseCollection extends Collection {
 	{
 		$res = 0;
 
-		foreach ($this->conditions('tax') as $condition)
+		foreach ($this->conditionsOfType('tax') as $condition)
 		{
 			if ($condition->get('target') === 'subtotal')
 			{
@@ -306,7 +316,7 @@ class BaseCollection extends Collection {
 	 */
 	protected function applyPriceTypeConditions($target, $type = null)
 	{
-		foreach ($this->conditions($type) as $condition)
+		foreach ($this->conditionsOfType($type) as $condition)
 		{
 			if ($condition->get('target') === $target)
 			{
@@ -338,7 +348,7 @@ class BaseCollection extends Collection {
 	{
 		$res = 0;
 
-		foreach ($this->conditions('discount') as $condition)
+		foreach ($this->conditionsOfType('discount') as $condition)
 		{
 			if ($condition->get('target') === 'subtotal')
 			{
@@ -360,7 +370,7 @@ class BaseCollection extends Collection {
 	{
 		$res = 0;
 
-		foreach ($this->conditions() as $condition)
+		foreach ($this->conditionsOfType() as $condition)
 		{
 			if ($condition->get('target') === 'subtotal')
 			{
