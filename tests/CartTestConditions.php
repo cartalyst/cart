@@ -21,7 +21,6 @@
 use Cartalyst\Cart\Cart;
 use Cartalyst\Conditions\Condition;
 use Illuminate\Events\Dispatcher;
-use Mockery as m;
 use PHPUnit_Framework_TestCase;
 
 class CartTestConditions extends PHPUnit_Framework_TestCase {
@@ -34,21 +33,12 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 	protected $cart;
 
 	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
-
-	/**
 	 * Setup resources and dependencies
 	 */
 	public function setUp()
 	{
 		$filesystem = new \Illuminate\Filesystem\Filesystem();
+
 		$fileSessionHandler = new \Illuminate\Session\FileSessionHandler(
 			$filesystem,
 			__DIR__ . '/storage/sessions'
@@ -65,7 +55,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->cart = new Cart($session, $dispatcher);
 	}
-
 
 	public function testItemConditionAllTypes()
 	{
@@ -133,9 +122,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->cart->condition($disc5Psubtotal);
 
 		$this->assertEquals($this->cart->total(), 573.313125);
-
 	}
-
 
 	public function testItemTaxOnPrice()
 	{
@@ -594,7 +581,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '5.00%',
 		));
 
-
 		$add5pCart = new Condition(array(
 			'target' => 'subtotal',
 		));
@@ -723,7 +709,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->total(), 408);
 
-
 		$tax10p = new Condition(array(
 			'name'   => 'tax10',
 			'type'   => 'tax',
@@ -740,7 +725,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->total(), 448.8);
 	}
-
 
 	public function testConditionOnItemNoMatchingRules()
 	{
@@ -786,7 +770,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item->total(), 393);
 	}
-
 
 	public function testMultipleConditionsWithRulesOnItems()
 	{
@@ -877,7 +860,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->total(), 1234.5);
 	}
 
-
 	public function testMultipleConditionsWithDiscounts()
 	{
 		$add5ToPrice = new Condition(array(
@@ -949,15 +931,15 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Item 1
 		$item1 = $this->cart->items()->first();
 
-		// $this->assertEquals($item1->subtotal(), 750);
+		$this->assertEquals($item1->subtotal(), 750);
 
 		$this->assertEquals($item1->discountTotal(), -38.25);
 
 		$this->assertEquals($item1->total(), 726.75);
 
-
 		// Item 2
 		$item2 = $this->cart->items()->last();
+
 		$this->assertEquals($item2->subtotal(), 393);
 
 		$this->assertEquals($item2->total(), 393);
@@ -990,7 +972,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Cart discount with items
 		$this->assertEquals($this->cart->discountTotal(true), -150.225);
 	}
-
 
 	public function testAddRemoveConditionsItems()
 	{
@@ -1091,8 +1072,16 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($item2->total(), 448.8);
-	}
 
+		// Make sure conditions are still assigned after an item is updated
+		$this->cart->update(array(
+			'194e85f089d754cc4759da6657840f8a' => array(
+				'weights' => 20.00
+			)
+		));
+
+		$this->assertEquals($item2->total(), 448.8);
+	}
 
 	public function testAddRemoveConditionsCart()
 	{
