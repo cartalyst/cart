@@ -14,7 +14,7 @@
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -23,7 +23,7 @@ use Illuminate\Support\Collection;
 class ItemAttributesCollection extends Collection {
 
 	/**
-	 * Return the total price of all the options together.
+	 * Return the total price of all the attributes together.
 	 *
 	 * @return float
 	 */

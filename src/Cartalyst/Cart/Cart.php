@@ -301,7 +301,7 @@ class Cart extends CartCollection {
 		$row->clearConditions();
 
 		// Assign item conditions
-		$row->condition(array_get($row, 'conditions'));
+		$row->condition(array_get($attributes, 'conditions'));
 
 		// Set item price
 		$row->setPrice($row->get('price'));
@@ -355,7 +355,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the cart contents.
+	 * Returns the cart contents on the current condition.
 	 *
 	 * @return \Cartalyst\Cart\Collections\CartCollection
 	 */
@@ -365,7 +365,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the total cart weight.
+	 * Returns the total cart weight.
 	 *
 	 * @return float
 	 */
@@ -416,7 +416,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Return the current cart instance.
+	 * Returns the current cart instance.
 	 *
 	 * @return string
 	 */
