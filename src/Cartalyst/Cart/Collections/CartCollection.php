@@ -21,7 +21,7 @@
 class CartCollection extends BaseCollection {
 
 	/**
-	 * Return the cart subtotal.
+	 * Return the items subtotal with conditions applied.
 	 *
 	 * @return float
 	 */
@@ -32,6 +32,23 @@ class CartCollection extends BaseCollection {
 		foreach ($this->items() as $item)
 		{
 			$subtotal += $item->total();
+		}
+
+		return $subtotal;
+	}
+
+	/**
+	 * Return the items subtotal without conditions.
+	 *
+	 * @return float
+	 */
+	public function itemsSubtotal()
+	{
+		$subtotal = 0;
+
+		foreach ($this->items() as $item)
+		{
+			$subtotal += $item->subtotal();
 		}
 
 		return $subtotal;

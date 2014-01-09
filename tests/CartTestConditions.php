@@ -113,6 +113,8 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Cart
 		$this->assertEquals($this->cart->subtotal(), 548.625);
 
+		$this->assertEquals($this->cart->itemsSubtotal(), 500);
+
 		$this->assertEquals($this->cart->total(), 548.625);
 
 		$this->cart->condition($tax10psubtotal);
@@ -257,6 +259,8 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->items()->first()->total(), 90);
 
 		$this->assertEquals($this->cart->items()->last()->total(), 90);
+
+		$this->assertEquals($this->cart->itemsSubtotal(), 200);
 
 		$this->assertEquals($this->cart->total(), 180.00);
 	}
@@ -535,6 +539,9 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Cart sub total
 		$this->assertEquals($this->cart->subtotal(), 416.65);
 
+		// Items subtotal
+		$this->assertEquals($this->cart->itemsSubtotal(), 370);
+
 		// Cart total
 		$this->assertEquals($this->cart->total(), 437.4825);
 
@@ -646,6 +653,9 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Cart sub total
 		$this->assertEquals($this->cart->subtotal(), 591);
+
+		// Items subtotal
+		$this->assertEquals($this->cart->itemsSubtotal(), 642);
 
 		// Cart total ( No conditions applied yet )
 		$this->assertEquals($this->cart->total(), 591);
@@ -946,6 +956,8 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1119.75);
+
+		$this->assertEquals($this->cart->itemsSubtotal(), 1143);
 
 		$this->assertEquals($this->cart->total(), 1119.75);
 
