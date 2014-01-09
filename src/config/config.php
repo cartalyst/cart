@@ -22,55 +22,14 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Default Storage Driver
+	| Default Session Key
 	|--------------------------------------------------------------------------
 	|
-	| This option controls the default storage "driver" that will be used on
-	| requests. By default, we will use the lightweight session driver but
-	| you may specify any of the other wonderful drivers provided here.
-	|
-	| Supported: "session"
+	| This option allows you to specify the default session key used by the Cart.
 	|
 	*/
 
-	'driver' => 'session',
-
-	/*
-	|--------------------------------------------------------------------------
-	| Session
-	|--------------------------------------------------------------------------
-	|
-	| Configuration specific to the session component of the Cart.
-	|
-	*/
-
-	'session' => array(
-
-		/*
-		|--------------------------------------------------------------------------
-		| Default Session Key
-		|--------------------------------------------------------------------------
-		|
-		| This option allows you to specify the default session key used by the Cart.
-		|
-		*/
-
-		'key' => 'cartalyst_cart',
-
-		/*
-		|--------------------------------------------------------------------------
-		| Session Lifetime
-		|--------------------------------------------------------------------------
-		|
-		| Here you may specify the number of minutes that you wish the session
-		| to be allowed to remain idle for it is expired. If you want them
-		| to immediately expire when the browser closes, set it to zero.
-		|
-		*/
-
-		// 'ttl' => 120,
-
-	),
+	'session_key' => 'cartalyst_cart',
 
 	/*
 	|--------------------------------------------------------------------------
