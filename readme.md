@@ -38,10 +38,11 @@ History and future capabilities.
 - ```Cart::weight()``` User can return the total cart weight.
 - ```Cart::clear()``` User can empty the cart.
 - ```Cart::find($data)``` User can search for items that are in the cart.
-- ```Cart::find($data, 'instance')``` User can search for items that are in other cart instances.
+- ```Cart::find($data, $instance)``` User can search for items that are in other cart instances.
 - ```Cart::instance()``` User can create a new cart instance.
 - ```Cart::identify()``` User can return the current cart instance name.
 - ```Cart::instances()``` User can return all the created cart instances.
+- ```Cart::instanceExists($instance)``` User can check if the instance exists.
 - ```Cart::destroy('instance')``` User can remove a cart instance.
 - ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
 
