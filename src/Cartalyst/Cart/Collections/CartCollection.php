@@ -55,6 +55,35 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
+	 * Returns the item conditions sum grouped by type.
+	 *
+	 * @return  array
+	 */
+	public function getItemsConditionsTotal($type = null)
+	{
+		$rates = array();
+
+		foreach ($this->items() as $item)
+		{
+			foreach($item->conditionsOfType($type) as $condition)
+			{
+				$key = $condition->get('name');
+
+				if (array_key_exists($key, $rates))
+				{
+					$rates[$key] += $condition->result();
+				}
+				else
+				{
+					$rates[$key] = $condition->result();
+				}
+			}
+		}
+
+		return $rates;
+	}
+
+	/**
 	 * Return all the applied tax rates from all the items.
 	 *
 	 * @return array
@@ -88,7 +117,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			$total += $item->taxTotal();
+			$total += $item->taxTotal(false);
 		}
 
 		return $total;
@@ -105,7 +134,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			$total += $item->discountTotal();
+			$total += $item->discountTotal(false);
 		}
 
 		return $total;

@@ -115,13 +115,24 @@ class BaseCollection extends Collection {
 	 *
 	 * @return array
 	 */
-	public function discounts()
+	public function discounts($items = true)
 	{
 		$discounts = array();
 
 		foreach ($this->conditionsOfType('discount') as $condition)
 		{
 			$discounts[] = $condition;
+		}
+
+		if ($items)
+		{
+			foreach ($this->items() as $item)
+			{
+				foreach ($item->conditionsOfType('discount') as $condition)
+				{
+					$discounts[] = $condition;
+				}
+			}
 		}
 
 		return $discounts;
@@ -132,16 +143,27 @@ class BaseCollection extends Collection {
 	 *
 	 * @return array
 	 */
-	public function taxes()
+	public function taxes($items = true)
 	{
-		$discounts = array();
+		$taxes = array();
 
 		foreach ($this->conditionsOfType('tax') as $condition)
 		{
-			$discounts[] = $condition;
+			$taxes[] = $condition;
 		}
 
-		return $discounts;
+		if ($items)
+		{
+			foreach ($this->items() as $item)
+			{
+				foreach ($item->conditionsOfType('tax') as $condition)
+				{
+					$taxes[] = $condition;
+				}
+			}
+		}
+
+		return $taxes;
 	}
 
 	/**
@@ -159,7 +181,7 @@ class BaseCollection extends Collection {
 	 *
 	 * @return float
 	 */
-	public function taxTotal($items = false)
+	public function taxTotal($items = true)
 	{
 		$res = $this->conditionTotals('tax', $this->discountOtherSubtotal());
 
@@ -176,7 +198,7 @@ class BaseCollection extends Collection {
 	 *
 	 * @return float
 	 */
-	public function discountTotal($items = false)
+	public function discountTotal($items = true)
 	{
 		$res = $this->conditionTotals('discount');
 
@@ -193,28 +215,45 @@ class BaseCollection extends Collection {
 	 *
 	 * @return array
 	 */
-	public function sumConditions($type = null)
+	public function getConditionsTotal($type = null, $items = true)
 	{
-		$val = array();
+		$rates = array();
 
-		foreach ($this->items() as $item)
+		if ($items)
 		{
-			foreach($item->conditionsOfType($type) as $condition)
+			foreach ($this->items() as $item)
 			{
-				$key = $condition->get('name');
+				foreach($item->conditionsOfType($type) as $condition)
+				{
+					$key = $condition->get('name');
 
-				if (array_key_exists($key, $val))
-				{
-					$val[$key] += $condition->result();
-				}
-				else
-				{
-					$val[$key] = $condition->result();
+					if (array_key_exists($key, $rates))
+					{
+						$rates[$key] += $condition->result();
+					}
+					else
+					{
+						$rates[$key] = $condition->result();
+					}
 				}
 			}
 		}
 
-		return $val;
+		foreach($this->conditionsOfType($type) as $condition)
+		{
+			$key = $condition->get('name');
+
+			if (array_key_exists($key, $rates))
+			{
+				$rates[$key] += $condition->result();
+			}
+			else
+			{
+				$rates[$key] = $condition->result();
+			}
+		}
+
+		return $rates;
 	}
 
 	/**
