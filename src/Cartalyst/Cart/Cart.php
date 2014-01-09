@@ -385,9 +385,9 @@ class Cart extends CartCollection {
 	 * @param  string  $instance
 	 * @return array
 	 */
-	public function find($data, $instance)
+	public function find($data, $instance = null)
 	{
-		if ( ! $this->instanceExists($instance))
+		if ($instance and ! $this->instanceExists($instance))
 		{
 			return array();
 		}
