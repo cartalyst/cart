@@ -41,24 +41,41 @@ class CartServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['cart'] = $this->app->share(function($app)
+		$this->registerSession();
+
+		$this->registerCart();
+	}
+
+	/**
+	 * Register the session driver used by the Cart.
+	 *
+	 * @return void
+	 */
+	protected function registerSession()
+	{
+		$this->app['cart.storage'] = $this->app->share(function($app)
 		{
-			// Get the Cart config
 			$config = $app['config']->get('cartalyst/cart::config');
 
-			// Get the default instance
-			$instance = $config['instance'];
+			return new IlluminateSession($app['session.store'], $config['session_key'], $config['instance']);
+		});
+	}
 
-			// Create a new Session instance
-			$session = new IlluminateSession($app['session.store'], $config['session_key'], $instance);
+	/**
+	 * Register the Cart.
+	 *
+	 * @return void
+	 */
+	protected function registerCart()
+	{
+		$this->app['cart'] = $this->app->share(function($app)
+		{
+			$config = $app['config']->get('cartalyst/cart::config');
 
-			// Create a new Cart instance
-			$cart = new Cart($session, $app['events']);
+			$cart = new Cart($app['cart.storage'], $app['events']);
 
-			// Set the default cart instance
-			$cart->instance($instance);
+			$cart->instance($config['instance']);
 
-			// Set the required indexes
 			$cart->setRequiredIndexes($config['requiredIndexes']);
 
 			return $cart;
