@@ -521,16 +521,6 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns the session key.
-	 *
-	 * @return string
-	 */
-	public function getSessionKey()
-	{
-		return $this->storage->getKey();
-	}
-
-	/**
 	 * Returns the storage driver.
 	 *
 	 * @return mixed

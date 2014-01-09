@@ -25,14 +25,16 @@ History and future capabilities.
 - ```Cart::quantity()``` User can return the total # of items that are in the cart.
 - ```Cart::subtotal()``` User can return the subtotal of the cart.
 - ```Cart::total()``` User can return the cart total.
+- ```Cart::discounts()``` User can return all the applied discounts including item discounts.
+- ```Cart::discounts(false)``` User can return all the applied discounts excluding item discounts.
+- ```Cart::discountsTotal()``` User can return the total of applied discounts including item discounts.
+- ```Cart::discountsTotal(false)``` User can return the total of applied discounts excluding item discounts.
 - ```Cart::taxes()``` User can return all the applied tax rates including item taxes.
 - ```Cart::taxes(false)``` User can return all the applied tax rates excluding item taxes.
-- ```Cart::taxTotal()``` User can return the cart tax total including item taxes.
-- ```Cart::taxTotal(false)``` User can return the cart tax total excluding item taxes.
+- ```Cart::taxesTotal()``` User can return the cart tax total including item taxes.
+- ```Cart::taxesTotal(false)``` User can return the cart tax total excluding item taxes.
 - ```Cart::itemsTaxes()``` User can return all the taxes applied on items.
 - ```Cart::itemsTaxTotal()``` User can return the total of taxes applied on items.
-- ```Cart::discounts()``` User can return all the applied discounts.
-- ```Cart::discountsTotal()``` User can return the total of applied discounts.
 - ```Cart::weight()``` User can return the total cart weight.
 - ```Cart::clear()``` User can empty the cart.
 - ```Cart::find($data)``` User can search for items that are in the cart.

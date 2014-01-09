@@ -23,7 +23,7 @@ use Illuminate\Support\Collection;
 class BaseCollection extends Collection {
 
 	/**
-	 * Holds all conditions.
+	 * Holds all the conditions.
 	 *
 	 * @var array
 	 */
@@ -44,7 +44,7 @@ class BaseCollection extends Collection {
 	protected $subtotal;
 
 	/**
-	 * Return the item price.
+	 * Returns the item price.
 	 *
 	 * @return float
 	 */
@@ -65,7 +65,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Set a condition.
+	 * Set's a new condition.
 	 *
 	 * @param  \Cartalyst\Conditions\Condition  $condition
 	 * @return void
@@ -91,7 +91,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return all the applied and valid conditions.
+	 * Returns all the applied and valid conditions.
 	 *
 	 * @return array
 	 */
@@ -101,7 +101,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Clear conditions.
+	 * Clear the conditions.
 	 *
 	 * @return void
 	 */
@@ -111,11 +111,15 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return all the applied discounts.
+	 * Returns all the applied discounts.
 	 *
+	 * When passing a boolean true as the second parameter,
+	 * it will include the items discounts as well.
+	 *
+	 * @param  bool  $includeItems
 	 * @return array
 	 */
-	public function discounts($items = true)
+	public function discounts($includeItems = true)
 	{
 		$discounts = array();
 
@@ -124,7 +128,7 @@ class BaseCollection extends Collection {
 			$discounts[] = $condition;
 		}
 
-		if ($items)
+		if ($includeItems)
 		{
 			foreach ($this->items() as $item)
 			{
@@ -139,11 +143,71 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return all the applied taxes.
+	 * Returns the applied discounts subtotal.
 	 *
+	 * @return float
+	 */
+	public function discountsSubtotal()
+	{
+		$subtotal = 0;
+
+		foreach ($this->conditionsOfType('discount') as $condition)
+		{
+			if ($condition->get('target') === 'subtotal')
+			{
+				$condition->apply($this, $this->subtotal);
+
+				$subtotal += $condition->result();
+			}
+		}
+
+		return $subtotal;
+	}
+
+	/**
+	 * Returns the applied discounts total.
+	 *
+	 * When passing a boolean true as the second parameter,
+	 * it will include the items discounts as well.
+	 *
+	 * @param  bool  $includeItems
+	 * @return float
+	 */
+	public function discountsTotal($includeItems = true)
+	{
+		$total = $this->conditionTotals('discount');
+
+		if ($includeItems)
+		{
+			$total += $this->itemsDiscountsTotal();
+		}
+
+		return $total;
+	}
+
+	/**
+	 * Return total.
+	 *
+	 * @return float
+	 * @todo Rephrase the docblock description.
+	 */
+	public function discountedSubtotal()
+	{
+		$this->applyPriceConditions();
+
+		return $this->subtotal + $this->discountsSubtotal();
+	}
+
+	/**
+	 * Returns all the applied taxes.
+	 *
+	 * When passing a boolean true as the second parameter,
+	 * it will include the items discounts as well.
+	 *
+	 * @param  bool  $includeItems
 	 * @return array
 	 */
-	public function taxes($items = true)
+	public function taxes($includeItems = true)
 	{
 		$taxes = array();
 
@@ -152,7 +216,7 @@ class BaseCollection extends Collection {
 			$taxes[] = $condition;
 		}
 
-		if ($items)
+		if ($includeItems)
 		{
 			foreach ($this->items() as $item)
 			{
@@ -167,59 +231,72 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return total.
+	 * Returns the tax applied that were applied on the subtotal.
+	 *
+	 * @return float
+	 */
+	public function taxesSubtotal()
+	{
+		$subtotal = 0;
+
+		foreach ($this->conditionsOfType('tax') as $condition)
+		{
+			if ($condition->get('target') === 'subtotal')
+			{
+				$condition->apply($this, $this->discountOtherSubtotal());
+
+				$subtotal += $condition->result();
+			}
+		}
+
+		return $subtotal;
+	}
+
+	/**
+	 * Returns all the applied taxes total.
+	 *
+	 * When passing a boolean true as the second parameter,
+	 * it will include the items discounts as well.
+	 *
+	 * @param  bool  $includeItems
+	 * @return float
+	 */
+	public function taxesTotal($includeItems = true)
+	{
+		$total = $this->conditionTotals('tax', $this->discountOtherSubtotal());
+
+		if ($includeItems)
+		{
+			$total += $this->itemsTaxesTotal();
+		}
+
+		return $total;
+	}
+
+	/**
+	 * Returns the cart total.
 	 *
 	 * @return float
 	 */
 	public function total()
 	{
-		return $this->discountedSubtotal() + $this->otherSubtotal() + $this->taxSubtotal();
+		return $this->discountedSubtotal() + $this->otherSubtotal() + $this->taxesSubtotal();
 	}
 
 	/**
-	 * Return the applied taxes total.
+	 * Returns all the conditions sum grouped by type.
 	 *
-	 * @return float
-	 */
-	public function taxTotal($items = true)
-	{
-		$res = $this->conditionTotals('tax', $this->discountOtherSubtotal());
-
-		if ($items)
-		{
-			$res += $this->itemsTaxesTotal();
-		}
-
-		return $res;
-	}
-
-	/**
-	 * Return the applied discounts total.
+	 * When passing a boolean true as the second parameter,
+	 * it will include the items discounts as well.
 	 *
-	 * @return float
-	 */
-	public function discountTotal($items = true)
-	{
-		$res = $this->conditionTotals('discount');
-
-		if ($items)
-		{
-			$res += $this->itemsDiscountsTotal();
-		}
-
-		return $res;
-	}
-
-	/**
-	 * Returns the conditions sum grouped by type.
-	 *
+	 * @param  bool  $includeItems
 	 * @return array
 	 */
-	public function getConditionsTotal($type = null, $items = true)
+	public function getConditionsTotal($type = null, $includeItems = true)
 	{
 		$rates = array();
 
-		if ($items)
+		if ($includeItems)
 		{
 			foreach ($this->items() as $item)
 			{
@@ -313,40 +390,6 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return total.
-	 *
-	 * @return float
-	 */
-	protected function discountedSubtotal()
-	{
-		$this->applyPriceConditions();
-
-		return $this->subtotal + $this->discountSubtotal();
-	}
-
-	/**
-	 * Return the tax applied on subtotal.
-	 *
-	 * @return float
-	 */
-	protected function taxSubtotal()
-	{
-		$res = 0;
-
-		foreach ($this->conditionsOfType('tax') as $condition)
-		{
-			if ($condition->get('target') === 'subtotal')
-			{
-				$condition->apply($this, $this->discountOtherSubtotal());
-
-				$res += $condition->result();
-			}
-		}
-
-		return $res;
-	}
-
-	/**
 	 * Return subtotal after applying discounts and other conditions
 	 *
 	 * @return float
@@ -403,29 +446,6 @@ class BaseCollection extends Collection {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Return applied discounts total.
-	 *
-	 * @param  bool  $includeItems
-	 * @return float
-	 */
-	protected function discountSubtotal()
-	{
-		$res = 0;
-
-		foreach ($this->conditionsOfType('discount') as $condition)
-		{
-			if ($condition->get('target') === 'subtotal')
-			{
-				$condition->apply($this, $this->subtotal);
-
-				$res += $condition->result();
-			}
-		}
-
-		return $res;
 	}
 
 	/**

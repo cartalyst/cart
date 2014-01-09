@@ -134,7 +134,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			$total += $item->taxTotal(false);
+			$total += $item->taxesTotal(false);
 		}
 
 		return $total;
@@ -151,7 +151,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			$total += $item->discountTotal(false);
+			$total += $item->discountsTotal(false);
 		}
 
 		return $total;

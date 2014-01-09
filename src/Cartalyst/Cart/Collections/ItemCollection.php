@@ -23,19 +23,19 @@ use Cartalyst\Conditions\Condition;
 class ItemCollection extends BaseCollection {
 
 	/**
-	 * Return the item subtotal, taking into consideration
-	 * the item attributes prices.
+	 * Returns the item subtotal and it will take into
+	 * consideration the attributes total.
 	 *
 	 * @param  float  $price
 	 * @return float
 	 */
-	public function subtotal($price = 0)
+	public function subtotal($price = null)
 	{
 		$price = $price ?: $this->get('price');
 
-		$attributesPrice = $this->get('attributes')->getTotal();
+		$attributesTotal = $this->get('attributes')->getTotal();
 
-		$total = $this->get('quantity') * ($price + $attributesPrice);
+		$total = $this->get('quantity') * ($price + $attributesTotal);
 
 		return $total;
 	}
@@ -43,6 +43,7 @@ class ItemCollection extends BaseCollection {
 	/**
 	 * Search for items with the given criteria.
 	 *
+	 * @param  array  $data
 	 * @return bool
 	 */
 	public function find($data)
@@ -72,7 +73,7 @@ class ItemCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return the total item weight.
+	 * Returns the total item weight.
 	 *
 	 * @return float
 	 */
