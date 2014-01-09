@@ -19,8 +19,6 @@
  */
 
 use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Cookies\IlluminateCookie;
-use Cartalyst\Cart\Storage\Database\IlluminateDatabase;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 use Illuminate\Support\ServiceProvider;
 
