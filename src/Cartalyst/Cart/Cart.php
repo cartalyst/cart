@@ -387,7 +387,7 @@ class Cart extends CartCollection {
 	 */
 	public function find($data, $instance)
 	{
-		if ( ! array_key_exists($instance, $this->instances()))
+		if ( ! $this->instanceExists($instance))
 		{
 			return array();
 		}
@@ -446,13 +446,24 @@ class Cart extends CartCollection {
 	{
 		$this->storage->setInstance($instance);
 
-		if ( ! array_key_exists($instance, $this->instances()))
+		if ( ! $this->instanceExists($instance))
 		{
 			// Fire the 'cart.instance.created' event
 			$this->dispatcher->fire('cart.instance.created', $instance);
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Checks if the given instance exists.
+	 *
+	 * @param  string  $instance
+	 * @return bool
+	 */
+	public function instanceExists($instance)
+	{
+		return array_key_exists($instance, $this->instances());
 	}
 
 	/**
@@ -526,16 +537,6 @@ class Cart extends CartCollection {
 		$reservedIndexes = $this->reservedIndexes;
 
 		$this->requiredIndexes = array_unique(array_merge($currentIndexes, $indexes, $reservedIndexes));
-	}
-
-	/**
-	 * Returns the session key.
-	 *
-	 * @return string
-	 */
-	public function getSessionKey()
-	{
-		return $this->storage->getKey();
 	}
 
 	/**
