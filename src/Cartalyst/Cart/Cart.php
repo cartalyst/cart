@@ -53,6 +53,8 @@ class Cart extends CartCollection {
 	protected $requiredIndexes = array(
 		'id',
 		'name',
+		'price',
+		'quantity',
 	);
 
 	/**
