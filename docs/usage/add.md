@@ -34,8 +34,8 @@ You can add items to the cart and it is superbly easy.
 
 Another key that you can pass when you add an item to the cart is the 'tax'.
 
-This is an array with a `name` and  `value` or a multidimensional, where each array
-will contain the `name` and the `value`.
+This is an array with a `name` and  `value` or a multidimensional array, where
+each array will contain the `name` and the `value`.
 
 The `name` is the Tax identifier.
 
