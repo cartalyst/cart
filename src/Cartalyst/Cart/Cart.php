@@ -354,7 +354,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns the cart contents on the current condition.
+	 * Returns the cart contents.
 	 *
 	 * @return \Cartalyst\Cart\Collections\CartCollection
 	 */
@@ -430,7 +430,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns all cart instances.
+	 * Returns all the cart instances.
 	 *
 	 * @return array
 	 */
