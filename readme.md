@@ -46,6 +46,22 @@ History and future capabilities.
 - ```Cart::destroy('instance')``` User can remove a cart instance.
 - ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
 
+## Requirements
+
+- PHP >=5.3
+
+## Installation
+
+Cart is installable with Composer. Read further information on how to install.
+
+[Installation Guide](http://cartalyst.com/manual/cart/introduction/installation)
+
+## Documentation
+
+Refer to the following guide on how to use the Cart package.
+
+[Documentation](http://cartalyst.com/manual/cart/)
+
 ## Versioning
 
 We version under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.

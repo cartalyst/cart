@@ -1,4 +1,5 @@
-## Introduction
+## Getting Started
 
-- [About]({url}/introduction)
-	- [Features](#features)
+- [Introduction]({url}/introduction)
+- [Installation]({url}/introduction/installation)
+- [Laravel 4 Integration]({url}/introduction/laravel-4)
