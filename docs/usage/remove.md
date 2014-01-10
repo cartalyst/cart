@@ -4,7 +4,6 @@
 
 	Cart::remove('027c91341fd5cf4d2579b49c4b6a90da');
 
-
 ## Remove multiple items {#multiple-items}
 
 Removing multiple items is easy and we provide you with two ways to accomplish this.

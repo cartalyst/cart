@@ -1,5 +1,7 @@
 # Updating items
 
+You can update items that are on your cart by updating any property on a cart item.
+
 ## Update a single item {#single-item}
 
 	Cart::update('027c91341fd5cf4d2579b49c4b6a90da', array(
@@ -25,7 +27,6 @@
 			'price'    => 12.00,
 		),
 	));
-
 
 ## Update an item quantity {#item-quantity}
 

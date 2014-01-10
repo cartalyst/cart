@@ -10,5 +10,5 @@ interoperability between shared PHP code and is fully unit-tested.
 The package requires at least PHP version 5.3 and comes with a Laravel 4 Facade
 and a Service Provider to simplify the optional framework integration.
 
-[Read the Installation Guide]({url}/introduction/installation) and how to
-[Integrate it with Laravel 4]({url}/introduction/laravel-4).
+Have a [read through the Installation Guide]({url}/introduction/installation) and
+on how to [Integrate it with Laravel 4]({url}/introduction/laravel-4).

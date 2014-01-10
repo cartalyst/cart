@@ -1,8 +1,9 @@
 # Instances
 
-Cart supports multiple cart instances, so that you can have as many shopping carts on the same page as you want without any kind of conflict.
+Cart supports multiple cart instances, so that you can have as many shopping
+carts on the same page as you want without any kind of conflict.
 
-Here are some examples on how it works
+Here are some examples on how it works.
 
 ## Creating a new Cart Instance
 
@@ -12,7 +13,7 @@ On this example we'll create a wishlist cart, it will hold all of our customers 
 
 	Cart::add($item);
 
-	$content = Cart::items();
+	$items = Cart::items();
 
 As you can see the main difference was that we used the `instance()` method before
 adding the item, this way Cart knows where we want to save the item.
@@ -27,6 +28,15 @@ You are probably wondering, how would i go back to the normal cart instance? it'
 
 Now you are able to get the main cart content.
 
-## Grabbing all instances
+## Grabbing all Instances
 
-	Cart::instances()
+	$instances Cart::instances();
+
+## Check for Instance existence
+
+If you ever need to check if an instance already exists you can.
+
+	if ( ! Cart::instanceExists('wishlist'))
+	{
+		// Instance doesn't exists
+	}

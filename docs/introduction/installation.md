@@ -2,7 +2,7 @@
 
 The best way to install the Cart package is quickly and easily done with [Composer](http://getcomposer.org).
 
-Open your `composer.json` and add the following to the require array
+Open your `composer.json` and add the following to the `require` array
 
 	"cartalyst/cart": "1.0.*"
 
@@ -15,7 +15,9 @@ Add the following lines after the `require` array on your `composer.json` file
 		}
 	]
 
-**Note:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
+> **Note:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
+
+### Install the dependencies
 
 Run Composer to install or update the new requirement.
 
@@ -46,16 +48,16 @@ Now you are able to require the `vendor/autoload.php` file to PSR-0 autoload the
 	// Instantiate a new Session storage
 	$fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/storage/sessions');
 
-	$store = new Store('cartalyst_cart_session', $fileSessionHandler);
+	$store = new Store('your_app_session_name', $fileSessionHandler);
 
-	$session = new IlluminateSession($store);
+	$session = new IlluminateSession($store, $config['session_key'], $config['instance']);
 
 	// Instantiate the Cart and set the necessary configuration
 	$cart = new Cart($session, new Dispatcher);
 	$cart->instance($config['instance']);
 	$cart->setRequiredIndexes($config['requiredIndexes']);
 
-	// Get all the items on the cart
+	// Get all the items from the cart
 	$items = $cart->items();
 
 
