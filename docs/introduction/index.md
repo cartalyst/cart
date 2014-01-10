@@ -12,3 +12,26 @@ and a Service Provider to simplify the optional framework integration.
 
 Have a [read through the Installation Guide]({url}/introduction/installation) and
 on how to [Integrate it with Laravel 4]({url}/introduction/laravel-4).
+
+## Quick Example
+
+	// Add a new item to the cart
+	Cart::add(array(
+		'id'       => 'foobar1',
+		'name'     => 'Foo Bar 1',
+		'quantity' => 1,
+		'price'    => 12.50,
+	));
+
+	// Get all the cart items
+	$items = Cart::items();
+
+### Method chaining
+
+You can chain some of the methods together, wich means you can do more with only
+one single line
+
+> **Note:** Not all the methods are chainable!
+
+	// Get all the items from the 'wishlist' instance
+	$items = Cart::instance('wishlist')->items();
