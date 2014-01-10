@@ -27,10 +27,14 @@ History and future capabilities.
 - ```Cart::total()``` User can return the cart total.
 - ```Cart::discounts()``` User can return all the applied discounts including item discounts.
 - ```Cart::discounts(false)``` User can return all the applied discounts excluding item discounts.
+- ```Cart::discountsSubtotal()``` User can return the subtotal of applied discounts including item discounts.
+- ```Cart::discountsSubtotal(false)``` User can return the subtotal of applied discounts excluding item discounts.
 - ```Cart::discountsTotal()``` User can return the total of applied discounts including item discounts.
 - ```Cart::discountsTotal(false)``` User can return the total of applied discounts excluding item discounts.
 - ```Cart::taxes()``` User can return all the applied tax rates including item taxes.
 - ```Cart::taxes(false)``` User can return all the applied tax rates excluding item taxes.
+- ```Cart::taxesSubtotal()``` User can return the cart tax subtotal including item taxes.
+- ```Cart::taxesSubtotal(false)``` User can return the cart tax subtotal excluding item taxes.
 - ```Cart::taxesTotal()``` User can return the cart tax total including item taxes.
 - ```Cart::taxesTotal(false)``` User can return the cart tax total excluding item taxes.
 - ```Cart::itemsTaxes()``` User can return all the taxes applied on items.
@@ -45,6 +49,9 @@ History and future capabilities.
 - ```Cart::instanceExists($instance)``` User can check if the instance exists.
 - ```Cart::destroy('instance')``` User can remove a cart instance.
 - ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
+- ```Cart::conditions()``` User can return all the applied conditions.
+- ```Cart::clearConditions()``` User can clear all the applied conditions.
+- ```Cart::itemsConditions()``` User can return all the conditions that were applied only on items.
 
 ## Requirements
 
