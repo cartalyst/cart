@@ -17,7 +17,7 @@ In the `$aliases` array add the following facade for this package.
 
 ## Configuration {#configuration}
 
-After installing, you can publish the package's configuration file into you
+After installing, you can publish the package's configuration file into your
 application by running the following command:
 
 	php artisan config:publish cartalyst/cart
