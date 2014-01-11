@@ -32,16 +32,16 @@ Conditions are applied in the following order regardless of the order they've be
 You can add one or more (array) conditions to an item that will be assigned automatically when adding or updating on the cart.
 
 	$condition = new Condition(array(
-		'name' => 'VAT (12.5%)',
-		'type' => 'tax',
+		'name'   => 'VAT (12.5%)',
+		'type'   => 'tax',
 		'target' => 'subtotal',
 	));
 
 	Cart::add(array(
-		'id'       => 'foobar1',
-		'name'     => 'Foo Bar 1',
-		'quantity' => 1,
-		'price'    => 12.50,
+		'id'         => 'foobar1',
+		'name'       => 'Foo Bar 1',
+		'quantity'   => 1,
+		'price'      => 12.50,
 		'conditions' => $condition,
 	));
 
@@ -51,8 +51,8 @@ You can add one or more (array) conditions to the cart.
 
 	// Single condition
 	$condition = new Condition(array(
-		'name' => 'VAT (12.5%)',
-		'type' => 'tax',
+		'name'   => 'VAT (12.5%)',
+		'type'   => 'tax',
 		'target' => 'subtotal',
 	));
 
@@ -64,8 +64,8 @@ You can add one or more (array) conditions to the cart.
 
 	// Multiple conditions
 	$conditionTax = new Condition(array(
-		'name' => 'VAT (12.5%)',
-		'type' => 'tax',
+		'name'   => 'VAT (12.5%)',
+		'type'   => 'tax',
 		'target' => 'subtotal',
 	));
 
@@ -74,8 +74,8 @@ You can add one or more (array) conditions to the cart.
 	));
 
 	$conditionDiscount = new Condition(array(
-		'name' => 'Discount (2.5%)',
-		'type' => 'discount',
+		'name'   => 'Discount (2.5%)',
+		'type'   => 'discount',
 		'target' => 'subtotal',
 	));
 
@@ -92,8 +92,8 @@ You can add one or more (array) conditions to the cart.
 Tax conditions must have the type set to tax
 
 	$condition = new Condition(array(
-		'name' => 'VAT (12.5%)',
-		'type' => 'tax',
+		'name'   => 'VAT (12.5%)',
+		'type'   => 'tax',
 		'target' => 'subtotal'
 	));
 
@@ -106,8 +106,8 @@ Tax conditions must have the type set to tax
 Discount conditions must have the type set to discount
 
 	$condition = new Condition(array(
-		'name' => 'Discount (5%)',
-		'type' => 'discount',
+		'name'   => 'Discount (5%)',
+		'type'   => 'discount',
 		'target' => 'subtotal'
 	));
 
@@ -122,7 +122,7 @@ The condition above will apply a 5% discount.
 Dropping the type key from the condition turns it into a regular condition.
 
 	$condition = new Condition(array(
-		'name' => 'Other (5%)',
+		'name'   => 'Other (5%)',
 		'target' => 'subtotal'
 	));
 
