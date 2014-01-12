@@ -72,11 +72,32 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Returns the item conditions sum grouped by type.
+	 * Returns all the conditions that were applied only to items.
 	 *
-	 * @return  array
+	 * @return array
 	 */
-	public function getItemsConditionsTotal($type = null)
+	public function itemsConditions()
+	{
+		$conditions = array();
+
+		foreach ($this->items() as $item)
+		{
+			if ($condition = $item->get('conditions'))
+			{
+				$conditions[] = $condition;
+			}
+		}
+
+		return $conditions;
+	}
+
+	/**
+	 * Returns the items conditions total grouped by type.
+	 *
+	 * @param  string  $type
+	 * @return array
+	 */
+	public function itemsConditionsTotal($type = null)
 	{
 		$rates = array();
 
@@ -101,7 +122,47 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return all the applied tax rates from all the items.
+	 * Returns all the applied discounts from all the items.
+	 *
+	 * @return array
+	 */
+	public function itemsDiscounts()
+	{
+		$discounts = array();
+
+		foreach ($this->items() as $item)
+		{
+			foreach ($item->conditions() as $condition)
+			{
+				if ($condition->get('type') === 'discount')
+				{
+					$discounts[] = $condition;
+				}
+			}
+		}
+
+		return $discounts;
+	}
+
+	/**
+	 * Returns the sum of all item discounts.
+	 *
+	 * @return float
+	 */
+	public function itemsDiscountsTotal()
+	{
+		$total = 0;
+
+		foreach ($this->items() as $item)
+		{
+			$total += $item->discountsTotal(false);
+		}
+
+		return $total;
+	}
+
+	/**
+	 * Returns all the applied tax rates from all the items.
 	 *
 	 * @return array
 	 */
@@ -124,7 +185,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return the sum of all item taxes.
+	 * Returns the sum of all item taxes.
 	 *
 	 * @return float
 	 */
@@ -135,23 +196,6 @@ class CartCollection extends BaseCollection {
 		foreach ($this->items() as $item)
 		{
 			$total += $item->taxesTotal(false);
-		}
-
-		return $total;
-	}
-
-	/**
-	 * Return the sum of all item discounts.
-	 *
-	 * @return float
-	 */
-	public function itemsDiscountsTotal()
-	{
-		$total = 0;
-
-		foreach ($this->items() as $item)
-		{
-			$total += $item->discountsTotal(false);
 		}
 
 		return $total;

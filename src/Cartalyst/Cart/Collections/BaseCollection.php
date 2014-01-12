@@ -231,7 +231,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns the tax applied that were applied on the subtotal.
+	 * Returns the taxes applied that were applied on the subtotal.
 	 *
 	 * @return float
 	 */
@@ -289,10 +289,11 @@ class BaseCollection extends Collection {
 	 * When passing a boolean true as the second parameter,
 	 * it will include the items discounts as well.
 	 *
-	 * @param  bool  $includeItems
+	 * @param  string  $type
+	 * @param  bool    $includeItems
 	 * @return array
 	 */
-	public function getConditionsTotal($type = null, $includeItems = true)
+	public function conditionsTotal($type = null, $includeItems = true)
 	{
 		$rates = array();
 

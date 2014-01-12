@@ -170,7 +170,7 @@ class Cart extends CartCollection {
 		// Assign item conditions
 		$row->condition(array_get($item, 'conditions', array()));
 
-		// Set item price
+		// Set the item price
 		$row->setPrice($price);
 
 		// Get the cart contents
@@ -296,13 +296,13 @@ class Cart extends CartCollection {
 			$row->put('quantity', (int) $attributes);
 		}
 
-		// Reset conditions
+		// Reset the item conditions
 		$row->clearConditions();
 
-		// Assign item conditions
+		// Assign conditions to the item
 		$row->condition(array_get($row, 'conditions'));
 
-		// Set item price
+		// Set the item price
 		$row->setPrice($row->get('price'));
 
 		// Remove the item if the quantity is less than one
@@ -312,10 +312,11 @@ class Cart extends CartCollection {
 		}
 		else
 		{
+			// Update the item
+			$cart->put($rowId, $row);
+
 			// Fire the 'cart.updated' event
 			$this->dispatcher->fire('cart.updated', array($this->item($rowId), $this->identify()));
-
-			$cart->put($rowId, $row);
 		}
 
 		return $cart;
@@ -487,26 +488,6 @@ class Cart extends CartCollection {
 		$this->dispatcher->fire('cart.instance.removed', $instance);
 
 		return true;
-	}
-
-	/**
-	 * Returns all the conditions that were applied only to items.
-	 *
-	 * @return array
-	 */
-	public function itemConditions()
-	{
-		$conditions = array();
-
-		foreach ($this->items() as $item)
-		{
-			if ($condition = $item->get('conditions'))
-			{
-				$conditions[] = $condition;
-			}
-		}
-
-		return $conditions;
 	}
 
 	/**
