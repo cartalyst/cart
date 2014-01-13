@@ -20,25 +20,27 @@ History and future capabilities.
 - ```Cart::update($rowId, $data)``` User can update a single item.
 - ```Cart::update($items)``` User can update multiple items.
 - ```Cart::update($rowId, $quantity)``` User can update an items quantity.
-- ```Cart::items()``` User can return information of all the items that are in the cart.
-- ```Cart::item($rowId)``` User can return information of the given item that is on the cart.
+- ```Cart::item($rowId)``` User can return information of the given item.
+- ```Cart::items()``` User can return information of all the items.
+- ```Cart::itemsSubtotal()``` User can return the subtotal of the items without conditions.
 - ```Cart::quantity()``` User can return the total # of items that are in the cart.
 - ```Cart::subtotal()``` User can return the subtotal of the cart.
 - ```Cart::total()``` User can return the cart total.
 - ```Cart::discounts()``` User can return all the applied discounts including item discounts.
 - ```Cart::discounts(false)``` User can return all the applied discounts excluding item discounts.
 - ```Cart::discountsSubtotal()``` User can return the subtotal of applied discounts including item discounts.
-- ```Cart::discountsSubtotal(false)``` User can return the subtotal of applied discounts excluding item discounts.
 - ```Cart::discountsTotal()``` User can return the total of applied discounts including item discounts.
-- ```Cart::discountsTotal(false)``` User can return the total of applied discounts excluding item discounts.
+- ```Cart::discountsTotal($includeItems)``` User can return the total of applied discounts excluding item discounts.
+- ```Cart::discountedSubtotal()``` User can return the subtotal of the cart with the discounts applied.
+- ```Cart::itemsDiscounts()``` User can return all the discounts applied on items
+- ```Cart::itemsDiscountsTotal()``` User can return the total of discounts applied on items.
 - ```Cart::taxes()``` User can return all the applied tax rates including item taxes.
-- ```Cart::taxes(false)``` User can return all the applied tax rates excluding item taxes.
+- ```Cart::taxes($includeItems)``` User can return all the applied tax rates excluding item taxes.
 - ```Cart::taxesSubtotal()``` User can return the cart tax subtotal including item taxes.
-- ```Cart::taxesSubtotal(false)``` User can return the cart tax subtotal excluding item taxes.
 - ```Cart::taxesTotal()``` User can return the cart tax total including item taxes.
 - ```Cart::taxesTotal(false)``` User can return the cart tax total excluding item taxes.
 - ```Cart::itemsTaxes()``` User can return all the taxes applied on items.
-- ```Cart::itemsTaxTotal()``` User can return the total of taxes applied on items.
+- ```Cart::itemsTaxesTotal()``` User can return the total of taxes applied on items.
 - ```Cart::weight()``` User can return the total cart weight.
 - ```Cart::clear()``` User can empty the cart.
 - ```Cart::find($data)``` User can search for items that are in the cart.
@@ -50,8 +52,10 @@ History and future capabilities.
 - ```Cart::destroy('instance')``` User can remove a cart instance.
 - ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
 - ```Cart::conditions()``` User can return all the applied conditions.
+- ```Cart::conditionsTotal($type)``` User can return all the conditions total grouped by type.
 - ```Cart::clearConditions()``` User can clear all the applied conditions.
-- ```Cart::itemsConditions()``` User can return all the conditions that were applied only on items.
+- ```Cart::itemsConditions()``` User can return all the conditions applied only to items.
+- ```Cart::itemsConditionsTotal($type)``` User can return the items conditions sum grouped by type.
 
 ## Requirements
 
@@ -67,7 +71,7 @@ Cart is installable with Composer. Read further information on how to install.
 
 Refer to the following guide on how to use the Cart package.
 
-[Documentation](http://cartalyst.com/manual/cart/)
+[Documentation](http://cartalyst.com/manual/cart)
 
 ## Versioning
 
