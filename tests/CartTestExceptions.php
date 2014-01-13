@@ -19,8 +19,11 @@
  */
 
 use Cartalyst\Cart\Cart;
-use Cartalyst\Conditions\Condition;
+use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Session\FileSessionHandler;
+use Illuminate\Session\Store;
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
 
@@ -48,22 +51,11 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function setUp()
 	{
-		$filesystem = new \Illuminate\Filesystem\Filesystem();
-		$fileSessionHandler = new \Illuminate\Session\FileSessionHandler(
-			$filesystem,
-			__DIR__ . '/storage/sessions'
-		);
+		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__ . '/storage/sessions');
 
-		$store = new \Illuminate\Session\Store(
-			'cartalyst_cart_session',
-			$fileSessionHandler
-		);
+		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
 
-		$session = new \Cartalyst\Cart\Storage\Sessions\IlluminateSession($store);
-
-		$dispatcher = new Dispatcher;
-
-		$this->cart = new Cart($session, $dispatcher);
+		$this->cart = new Cart($session, new Dispatcher);
 	}
 
 
