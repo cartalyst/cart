@@ -207,6 +207,16 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testSearchWithoutReturningAnyResults()
+	{
+		$item = $this->cart->find(array(
+			'price' => 85,
+		));
+
+		$this->assertEquals(count($item), 0);
+	}
+
+
 	public function testFindItemsByProperties()
 	{
 		$this->cart->add(array(
@@ -263,6 +273,20 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
+
+		$items = $this->cart->find(array(
+			'attributes' => array(
+				'size' => array(
+					'value' => 'l'
+				),
+			),
+		));
+
+		$this->assertEquals(count($items), 2);
+
+		$this->assertEquals($items[0]->get('id'), 'foobar2');
+
+		$this->assertEquals($items[1]->get('id'), 'foobar3');
 	}
 
 

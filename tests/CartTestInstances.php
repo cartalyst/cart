@@ -72,78 +72,91 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 	{
 		$this->cart->instance('wishlist');
 
-		$this->cart->add(
-			array(
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 2,
-				'price'      => 125.00,
-				'attributes' => array(
-					'size'  => array(
-						'label' => 'Size',
-						'value' => 'L',
-						'price' => 5.00,
-					),
-					'color' => array(
-						'label' => 'Brown',
-						'value' => 'brown',
-						'price' => 3.50,
-					),
+		$this->cart->add(array(
+			'id'         => 'foobar1',
+			'name'       => 'Foobar 1',
+			'quantity'   => 2,
+			'price'      => 125.00,
+			'attributes' => array(
+				'size'  => array(
+					'label' => 'Large',
+					'value' => 'l',
+					'price' => 5.00,
 				),
-			)
-		);
+				'color' => array(
+					'label' => 'Brown',
+					'value' => 'brown',
+					'price' => 3.50,
+				),
+			),
+		));
 
 		$this->assertEquals($this->cart->items()->count(), 1);
 
 		$this->assertEquals($this->cart->total(), 267);
+
+
+		$this->cart->instance('main');
+
+		$this->assertEquals($this->cart->items()->count(), 0);
+
+		$this->assertEquals($this->cart->total(), 0);
 	}
 
 
 	public function testGetAllInstances()
 	{
-		$this->cart->add(
-			array(
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 2,
-				'price'    => 125.00,
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 2,
+			'price'    => 125.00,
+		));
+
+		$this->assertEquals($this->cart->quantity(), 2);
+
+		$this->assertEquals($this->cart->items()->count(), 1);
 
 		$this->assertEquals($this->cart->total(), 250);
 
 
 		$this->cart->instance('wishlist');
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'       => 'foobar1',
-					'name'     => 'Foobar 1',
-					'quantity' => 25,
-					'price'    => 125.00,
-				),
-				array(
-					'id'       => 'foobar2',
-					'name'     => 'Foobar 2',
-					'quantity' => 1,
-					'price'    => 53.27,
-				)
-			)
-		);
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'quantity' => 25,
+				'price'    => 125.00,
+			),
+			array(
+				'id'       => 'foobar2',
+				'name'     => 'Foobar 2',
+				'quantity' => 1,
+				'price'    => 53.27,
+			),
+		));
+
+		$this->assertEquals($this->cart->quantity(), 26);
+
+		$this->assertEquals($this->cart->items()->count(), 2);
+
 		$this->assertEquals($this->cart->total(), 3178.27);
 
 
 		$this->cart->instance('order');
 
-		$this->cart->add(
-			array(
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 5,
-				'price'    => 125.00,
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 5,
+			'price'    => 125.00,
+		));
+
+		$this->assertEquals($this->cart->quantity(), 5);
+
+		$this->assertEquals($this->cart->items()->count(), 1);
+
 		$this->assertEquals($this->cart->total(), 625);
 
 
@@ -169,66 +182,61 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 	{
 		$this->cart->instance('wishlist');
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 2,
-					'price'      => 97.00,
-					'weight'	 => 21.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'S',
-						),
-						'color' => array(
-							'label' => 'Color',
-							'value' => 'Red',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 2,
+				'price'      => 97.00,
+				'weight'	 => 21.00,
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Small',
+						'value' => 's',
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 2,
-					'price'      => 85.00,
-					'weight'     => 21.00,
-					'attributes' => array(
-						'size' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 15.00,
-						),
+			),
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 2,
+				'price'      => 85.00,
+				'weight'     => 21.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 15.00,
 					),
 				),
-				array(
-					'id'         => 'foobar3',
-					'name'       => 'Foobar 3',
-					'quantity'   => 5,
-					'price'      => 35.00,
-					'weight'     => 21.00,
-					'attributes' => array(
-						'size' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 5.00,
-						),
+			),
+			array(
+				'id'         => 'foobar3',
+				'name'       => 'Foobar 3',
+				'quantity'   => 5,
+				'price'      => 35.00,
+				'weight'     => 21.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 5.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// Switch back to the main instance
 		$this->cart->instance('main');
 
-		$item = $this->cart->find(
-			array(
-				'price' => 85,
-			),
-			'wishlist'
-		);
+		$item = $this->cart->find(array(
+			'price' => 85,
+		), 'wishlist');
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
 	}
