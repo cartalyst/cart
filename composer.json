@@ -1,7 +1,14 @@
 {
 	"name": "cartalyst/cart",
 	"description": "Shopping cart package.",
-	"keywords": ["ecommerce", "laravel", "cart", "shopping"],
+	"keywords": [
+		"php",
+		"cartalyst",
+		"laravel",
+		"ecommerce",
+		"cart",
+		"shopping"
+	],
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
