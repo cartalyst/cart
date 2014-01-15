@@ -69,6 +69,8 @@ class Adding extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->assertEquals($this->cart->quantity(), 2);
+
+		$this->assertEquals($this->cart->items()->count(), 1);
 	}
 
 
@@ -291,7 +293,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 
 		$item = $this->cart->items()->first();
 
-		$this->assertEquals($item->get('attributes')->count(), 3);
+		$this->assertEquals($item->attributes()->count(), 3);
 
 		$this->assertEquals($this->cart->items()->count(), 1);
 
@@ -347,9 +349,9 @@ class Adding extends PHPUnit_Framework_TestCase {
 
 		$lastItem = $this->cart->items()->last();
 
-		$this->assertEquals($firstItem->get('attributes')->count(), 2);
+		$this->assertEquals($firstItem->attributes()->count(), 2);
 
-		$this->assertEquals($lastItem->get('attributes')->count(), 1);
+		$this->assertEquals($lastItem->attributes()->count(), 1);
 
 		$this->assertEquals($this->cart->items()->count(), 3);
 

@@ -111,38 +111,6 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns all the applied discounts.
-	 *
-	 * When passing a boolean true as the second parameter,
-	 * it will include the items discounts as well.
-	 *
-	 * @param  bool  $includeItems
-	 * @return array
-	 */
-	public function discounts($includeItems = true)
-	{
-		$discounts = array();
-
-		foreach ($this->conditionsOfType('discount') as $condition)
-		{
-			$discounts[] = $condition;
-		}
-
-		if ($includeItems)
-		{
-			foreach ($this->items() as $item)
-			{
-				foreach ($item->conditionsOfType('discount') as $condition)
-				{
-					$discounts[] = $condition;
-				}
-			}
-		}
-
-		return $discounts;
-	}
-
-	/**
 	 * Returns the applied discounts subtotal.
 	 *
 	 * @return float
@@ -199,38 +167,6 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns all the applied taxes.
-	 *
-	 * When passing a boolean true as the second parameter,
-	 * it will include the items discounts as well.
-	 *
-	 * @param  bool  $includeItems
-	 * @return array
-	 */
-	public function taxes($includeItems = true)
-	{
-		$taxes = array();
-
-		foreach ($this->conditionsOfType('tax') as $condition)
-		{
-			$taxes[] = $condition;
-		}
-
-		if ($includeItems)
-		{
-			foreach ($this->items() as $item)
-			{
-				foreach ($item->conditionsOfType('tax') as $condition)
-				{
-					$taxes[] = $condition;
-				}
-			}
-		}
-
-		return $taxes;
-	}
-
-	/**
 	 * Returns the taxes applied that were applied on the subtotal.
 	 *
 	 * @return float
@@ -281,57 +217,6 @@ class BaseCollection extends Collection {
 	public function total()
 	{
 		return $this->discountedSubtotal() + $this->otherSubtotal() + $this->taxesSubtotal();
-	}
-
-	/**
-	 * Returns all the conditions sum grouped by type.
-	 *
-	 * When passing a boolean true as the second parameter,
-	 * it will include the items discounts as well.
-	 *
-	 * @param  string  $type
-	 * @param  bool    $includeItems
-	 * @return array
-	 */
-	public function conditionsTotal($type = null, $includeItems = true)
-	{
-		$rates = array();
-
-		if ($includeItems)
-		{
-			foreach ($this->items() as $item)
-			{
-				foreach($item->conditionsOfType($type) as $condition)
-				{
-					$key = $condition->get('name');
-
-					if (array_key_exists($key, $rates))
-					{
-						$rates[$key] += $condition->result();
-					}
-					else
-					{
-						$rates[$key] = $condition->result();
-					}
-				}
-			}
-		}
-
-		foreach($this->conditionsOfType($type) as $condition)
-		{
-			$key = $condition->get('name');
-
-			if (array_key_exists($key, $rates))
-			{
-				$rates[$key] += $condition->result();
-			}
-			else
-			{
-				$rates[$key] = $condition->result();
-			}
-		}
-
-		return $rates;
 	}
 
 	/**

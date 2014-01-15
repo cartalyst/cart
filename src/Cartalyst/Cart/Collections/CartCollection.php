@@ -82,9 +82,12 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			if ($condition = $item->get('conditions'))
+			if ($_conditions = $item->get('conditions'))
 			{
-				$conditions[] = $condition;
+				foreach ($_conditions as $condition)
+				{
+					$conditions[] = $condition;
+				}
 			}
 		}
 
@@ -132,13 +135,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			foreach ($item->conditions() as $condition)
-			{
-				if ($condition->get('type') === 'discount')
-				{
-					$discounts[] = $condition;
-				}
-			}
+			$discounts[] = $item->discounts();
 		}
 
 		return $discounts;
@@ -172,13 +169,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			foreach ($item->conditions() as $condition)
-			{
-				if ($condition->get('type') === 'tax')
-				{
-					$taxes[] = $condition;
-				}
-			}
+			$taxes[] = $item->taxes();
 		}
 
 		return $taxes;

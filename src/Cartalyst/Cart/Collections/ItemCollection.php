@@ -23,7 +23,37 @@ use Cartalyst\Conditions\Condition;
 class ItemCollection extends BaseCollection {
 
 	/**
-	 * Returns the item subtotal and it will take into
+	 * Returns this item attributes.
+	 *
+	 * @return \Illuminate\Support\Collection
+	 */
+	public function attributes()
+	{
+		return $this->get('attributes');
+	}
+
+	/**
+	 * Returns this item price.
+	 *
+	 * @return float
+	 */
+	public function price()
+	{
+		return $this->get('price');
+	}
+
+	/**
+	 * Returns this item quantity.
+	 *
+	 * @return int
+	 */
+	public function quantity()
+	{
+		return $this->get('quantity');
+	}
+
+	/**
+	 * Returns this item subtotal and it will take into
 	 * consideration the attributes total.
 	 *
 	 * @param  float  $price
@@ -31,13 +61,57 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function subtotal($price = null)
 	{
-		$price = $price ?: $this->get('price');
+		$price = $price ?: $this->price();
 
-		$attributesTotal = $this->get('attributes')->getTotal();
+		$attributesTotal = $this->attributes()->getTotal();
 
-		$total = $this->get('quantity') * ($price + $attributesTotal);
+		$total = $this->quantity() * ($price + $attributesTotal);
 
 		return $total;
+	}
+
+	/**
+	 * Returns all the discounts applied on this item.
+	 *
+	 * @return array
+	 */
+	public function discounts()
+	{
+		$discounts = array();
+
+		foreach ($this->conditionsOfType('discount') as $condition)
+		{
+			$discounts[] = $condition;
+		}
+
+		return $discounts;
+	}
+
+	/**
+	 * Returns all the taxes applied on this item.
+	 *
+	 * @return array
+	 */
+	public function taxes()
+	{
+		$taxes = array();
+
+		foreach ($this->conditionsOfType('tax') as $condition)
+		{
+			$taxes[] = $condition;
+		}
+
+		return $taxes;
+	}
+
+	/**
+	 * Returns the total item weight.
+	 *
+	 * @return float
+	 */
+	public function weight()
+	{
+		return (float) $this->get('weight') * $this->quantity();
 	}
 
 	/**
@@ -54,7 +128,7 @@ class ItemCollection extends BaseCollection {
 			{
 				foreach ($value as $key => $val)
 				{
-					return $this->get('attributes')->get($key)->find($val);
+					return $this->attributes()->get($key)->find($val);
 				}
 			}
 
@@ -70,16 +144,6 @@ class ItemCollection extends BaseCollection {
 
 			return $this->get($key) === $value;
 		}
-	}
-
-	/**
-	 * Returns the total item weight.
-	 *
-	 * @return float
-	 */
-	public function weight()
-	{
-		return (float) $this->get('weight') * $this->get('quantity');
 	}
 
 }

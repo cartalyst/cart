@@ -145,20 +145,6 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function testItemWeight()
-	{
-		$this->cart->add(array(
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 4,
-			'price'    => 97.00,
-			'weight'=> 21.00,
-		));
-
-		$this->assertEquals($this->cart->items()->first()->weight(), 84);
-	}
-
-
 	public function testClearCart()
 	{
 		$this->cart->add(array(
