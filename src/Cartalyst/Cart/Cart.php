@@ -566,8 +566,8 @@ class Cart extends CartCollection {
 
 		if ( ! $this->instanceExists($instance))
 		{
-			// Fire the 'cartalyst.cart.instance.created' event
-			$this->dispatcher->fire('cartalyst.cart.instance.created', $instance);
+			// Fire the 'cartalyst.cart.created' event
+			$this->dispatcher->fire('cartalyst.cart.created', $instance);
 		}
 
 		return $this;
@@ -599,8 +599,8 @@ class Cart extends CartCollection {
 
 		$this->storage->forget();
 
-		// Fire the 'cartalyst.cart.instance.removed' event
-		$this->dispatcher->fire('cartalyst.cart.instance.removed', $instance);
+		// Fire the 'cartalyst.cart.destroyed' event
+		$this->dispatcher->fire('cartalyst.cart.destroyed', $instance);
 
 		return true;
 	}

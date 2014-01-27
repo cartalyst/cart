@@ -2,14 +2,14 @@
 
 The cart fires some events that you can listen for.
 
-Event                           | Parameters        | Description
-------------------------------- | ----------------- | -----------
-cartalyst.cart.added            | $item, $instance  | Fired when an item is added to the cart.
-cartalyst.cart.removed          | $item, $instance  | Fired when an item is removed from the cart.
-cartalyst.cart.updated          | $item, $instance  | Fired when an item is updated.
-cartalyst.cart.cleared          | $instance         | Fired when the cart is cleared/destroyed.
-cartalyst.cart.instance.created | $instance         | Fired when a cart instance is created.
-cartalyst.cart.instance.removed | $instance         | Fired when a cart instance is removed.
+Event                    | Parameters        | Description
+------------------------ | ----------------- | -----------
+cartalyst.cart.added     | $item, $instance  | Fired when an item is added to the cart.
+cartalyst.cart.removed   | $item, $instance  | Fired when an item is removed from the cart.
+cartalyst.cart.updated   | $item, $instance  | Fired when an item is updated.
+cartalyst.cart.cleared   | $instance         | Fired when a cart instance is cleared.
+cartalyst.cart.created   | $instance         | Fired when a cart instance is created.
+cartalyst.cart.destroyed | $instance         | Fired when a cart instance is destroyed.
 
 ## Examples
 
