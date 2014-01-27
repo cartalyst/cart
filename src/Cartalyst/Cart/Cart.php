@@ -182,8 +182,8 @@ class Cart extends CartCollection {
 		// Update the cart contents
 		$this->updateCart($cart);
 
-		// Fire the 'cart.added' event
-		$this->dispatcher->fire('cart.added', array($this->item($rowId), $this->identify()));
+		// Fire the 'cartalyst.cart.added' event
+		$this->dispatcher->fire('cartalyst.cart.added', array($this->item($rowId), $this->identify()));
 
 		return $cart;
 	}
@@ -226,8 +226,8 @@ class Cart extends CartCollection {
 			// Remove the item from the cart
 			$cart->forget($rowId);
 
-			// Fire the 'cart.removed' event
-			$this->dispatcher->fire('cart.removed', array($item, $this->identify()));
+			// Fire the 'cartalyst.cart.removed' event
+			$this->dispatcher->fire('cartalyst.cart.removed', array($item, $this->identify()));
 		}
 
 		$this->updateCart($cart);
@@ -315,8 +315,8 @@ class Cart extends CartCollection {
 			// Update the item
 			$cart->put($rowId, $row);
 
-			// Fire the 'cart.updated' event
-			$this->dispatcher->fire('cart.updated', array($this->item($rowId), $this->identify()));
+			// Fire the 'cartalyst.cart.updated' event
+			$this->dispatcher->fire('cartalyst.cart.updated', array($this->item($rowId), $this->identify()));
 		}
 
 		return $cart;
@@ -331,8 +331,8 @@ class Cart extends CartCollection {
 	{
 		$this->updateCart();
 
-		// Fire the 'cart.cleared' event
-		$this->dispatcher->fire('cart.cleared', $this->identify());
+		// Fire the 'cartalyst.cart.cleared' event
+		$this->dispatcher->fire('cartalyst.cart.cleared', $this->identify());
 	}
 
 	/**
@@ -566,8 +566,8 @@ class Cart extends CartCollection {
 
 		if ( ! $this->instanceExists($instance))
 		{
-			// Fire the 'cart.instance.created' event
-			$this->dispatcher->fire('cart.instance.created', $instance);
+			// Fire the 'cartalyst.cart.instance.created' event
+			$this->dispatcher->fire('cartalyst.cart.instance.created', $instance);
 		}
 
 		return $this;
@@ -599,8 +599,8 @@ class Cart extends CartCollection {
 
 		$this->storage->forget();
 
-		// Fire the 'cart.instance.removed' event
-		$this->dispatcher->fire('cart.instance.removed', $instance);
+		// Fire the 'cartalyst.cart.instance.removed' event
+		$this->dispatcher->fire('cartalyst.cart.instance.removed', $instance);
 
 		return true;
 	}
