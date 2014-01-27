@@ -34,7 +34,7 @@ Whenever an item is updated on the shopping cart.
 		// Apply your own logic here
 	});
 
-Whenever the shopping cart is cleared.
+Whenever a shopping cart instance is cleared.
 
 	Event::listen('cartalyst.cart.cleared', function($instance)
 	{
@@ -43,14 +43,14 @@ Whenever the shopping cart is cleared.
 
 Whenever a shopping cart instance is created.
 
-	Event::listen('cartalyst.cart.instance.created', function($instance)
+	Event::listen('cartalyst.cart.created', function($instance)
 	{
 		// Apply your own logic here
 	});
 
-Whenever a shopping cart instance is removed.
+Whenever a shopping cart instance is destroyed.
 
-	Event::listen('cartalyst.cart.instance.removed', function($instance)
+	Event::listen('cartalyst.cart.destroyed', function($instance)
 	{
 		// Apply your own logic here
 	});
