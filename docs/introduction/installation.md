@@ -36,7 +36,7 @@ Now you are able to require the `vendor/autoload.php` file to PSR-0 autoload the
 
 	// Import the necessary classes
 	use Cartalyst\Cart\Cart;
-	use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
+	use Cartalyst\Cart\Storage\Sessions\NativeSession;
 	use Illuminate\Events\Dispatcher;
 	use Illuminate\Filesystem\Filesystem;
 	use Illuminate\Session\FileSessionHandler;
@@ -50,7 +50,7 @@ Now you are able to require the `vendor/autoload.php` file to PSR-0 autoload the
 
 	$store = new Store('your_app_session_name', $fileSessionHandler);
 
-	$session = new IlluminateSession($store, $config['session_key'], $config['instance']);
+	$session = new NativeSession($store, $config['session_key'], $config['instance']);
 
 	// Instantiate the Cart and set the necessary configuration
 	$cart = new Cart($session, new Dispatcher);
