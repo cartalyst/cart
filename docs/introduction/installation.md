@@ -60,6 +60,7 @@ Now you are able to require the `vendor/autoload.php` file to PSR-0 autoload the
 	// Get all the items from the cart
 	$items = $cart->items();
 
+> **Note:** Please make sure the `storage/sessions` (which is the default storage folder and can be changed to something else) exists and has the correct permissions.
 > **Note:** To setup garbage collection, call the gc method on the FileSessionHandler `$fileSessionHandler->gc($seconds);`, You can also setup a function that randomizes calls to this function rather than calling it on every request.
 
 The package also has optional Laravel 4 support. The integration into the framework is done in seconds.
