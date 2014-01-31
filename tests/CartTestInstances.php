@@ -51,7 +51,7 @@ class CartTestInstances extends PHPUnit_Framework_TestCase {
 	 */
 	public function setUp()
 	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__ . '/storage/sessions');
+		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
 
 		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
 
