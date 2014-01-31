@@ -70,7 +70,7 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 	public function testAddItemEvent()
 	{
-		$this->dispatcher->shouldReceive('fire')->once()->with('cart.added', m::any());
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -83,9 +83,9 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 	public function testUpdateItemEvent()
 	{
-		$this->dispatcher->shouldReceive('fire')->once()->with('cart.added', m::any());
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
-		$this->dispatcher->shouldReceive('fire')->once()->with('cart.updated', m::any());
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.updated', m::any());
 
 		$this->cart->add(array(
 			'id'       => 'foobar2',
@@ -102,9 +102,9 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 	public function testDeleteItemEvent()
 	{
-		$this->dispatcher->shouldReceive('fire')->once()->with('cart.added', m::any());
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
-		$this->dispatcher->shouldReceive('fire')->once()->with('cart.removed', m::any());
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.removed', m::any());
 
 		$this->cart->add(array(
 			'id'       => 'foobar2',
@@ -119,9 +119,17 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 	public function testClearCartEvent()
 	{
-		$this->dispatcher->shouldReceive('fire')->once()->with('cart.cleared', m::any());
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.cleared', m::any());
 
 		$this->cart->clear();
+	}
+
+
+	public function testDestroyCartEvent()
+	{
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.destroyed', m::any());
+
+		$this->cart->destroy();
 	}
 
 }
