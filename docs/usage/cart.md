@@ -6,6 +6,13 @@ methods available within the cart
 
 	$content = Cart::items();
 
+## Get the subtotal of the items in the Cart
+
+	$itemsSubtotal = Cart::itemsSubtotal();
+
+
+
+
 ## Empty the Cart {#clear-cart}
 
 	Cart::clear();
