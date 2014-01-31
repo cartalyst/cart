@@ -58,10 +58,7 @@ that you can have a better understanding on how it really works.
 		{
 			$this->app['wishlist'] = $this->app->share(function($app)
 			{
-				$this->app['wishlist'] = $this->app->share(function($app)
-				{
-					return new Cart('wishlist', $app['cart.storage'], $app['events']);
-				});
+				return new Cart('wishlist', $app['cart.storage'], $app['events']);
 			});
 		}
 
