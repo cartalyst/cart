@@ -46,7 +46,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
 
-		$this->cart = new Cart($session, new Dispatcher);
+		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
 	public function testItemConditionAllTypes()

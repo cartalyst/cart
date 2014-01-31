@@ -64,7 +64,7 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 		$this->dispatcher = m::mock('Illuminate\Events\Dispatcher');
 
-		$this->cart = new Cart($session, $this->dispatcher);
+		$this->cart = new Cart('cart', $session, $this->dispatcher);
 	}
 
 

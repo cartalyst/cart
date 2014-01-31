@@ -77,15 +77,39 @@ class Cart extends CartCollection {
 	/**
 	 * Constructor.
 	 *
+	 * @param  mixed  $id
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
 	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
 	 * @return void
 	 */
-	public function __construct(StorageInterface $storage, Dispatcher $dispatcher)
+	public function __construct($id, StorageInterface $storage, Dispatcher $dispatcher)
 	{
+		$this->id = $id;
+
 		$this->storage = $storage;
 
 		$this->dispatcher = $dispatcher;
+	}
+
+	/**
+	 * Return the Cart identifier.
+	 *
+	 * @return mixed
+	 */
+	public function getIdentity()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * Set the Cart identifier.
+	 *
+	 * @param  mixed  $id
+	 * @return void
+	 */
+	public function setIdentity($id)
+	{
+		$this->id = $id;
 	}
 
 	/**
@@ -183,7 +207,7 @@ class Cart extends CartCollection {
 		$this->updateCart($cart);
 
 		// Fire the 'cartalyst.cart.added' event
-		$this->dispatcher->fire('cartalyst.cart.added', array($this->item($rowId)));
+		$this->dispatcher->fire('cartalyst.cart.added', array($this->item($rowId), $this->id));
 
 		return $cart;
 	}
@@ -227,7 +251,7 @@ class Cart extends CartCollection {
 			$cart->forget($rowId);
 
 			// Fire the 'cartalyst.cart.removed' event
-			$this->dispatcher->fire('cartalyst.cart.removed', array($item));
+			$this->dispatcher->fire('cartalyst.cart.removed', array($item, $this->id));
 		}
 
 		$this->updateCart($cart);
@@ -316,7 +340,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 
 			// Fire the 'cartalyst.cart.updated' event
-			$this->dispatcher->fire('cartalyst.cart.updated', array($this->item($rowId)));
+			$this->dispatcher->fire('cartalyst.cart.updated', array($this->item($rowId), $this->id));
 		}
 
 		return $cart;
@@ -332,7 +356,7 @@ class Cart extends CartCollection {
 		$this->updateCart();
 
 		// Fire the 'cartalyst.cart.cleared' event
-		$this->dispatcher->fire('cartalyst.cart.cleared', null);
+		$this->dispatcher->fire('cartalyst.cart.cleared', $this->id);
 	}
 
 	/**

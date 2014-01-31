@@ -72,9 +72,7 @@ class CartServiceProvider extends ServiceProvider {
 		{
 			$config = $app['config']->get('cartalyst/cart::config');
 
-			$cart = new Cart($app['cart.storage'], $app['events']);
-
-			$cart->instance($config['instance']);
+			$cart = new Cart($config['instance'], $app['cart.storage'], $app['events']);
 
 			$cart->setRequiredIndexes($config['requiredIndexes']);
 
