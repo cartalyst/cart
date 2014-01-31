@@ -11,14 +11,6 @@ You can use one or multiple properties to search for items in the cart
 	));
 
 
-## Search for Items on other Cart Instances
-
-	Cart::find(array(
-		'id'   => 'foobar',
-		'name' => 'Foo Bar',
-	), 'wishlist');
-
-
 ## Search for Items with attributes
 
 	Cart::find(array(

@@ -53,16 +53,16 @@ Now you are able to require the `vendor/autoload.php` file to autoload the packa
 	$session = new NativeSession($store, $config['session_key'], $config['instance']);
 
 	// Instantiate the Cart and set the necessary configuration
-	$cart = new Cart($session, new Dispatcher);
-	$cart->instance($config['instance']);
+	$cart = new Cart($config['instance'], $session, new Dispatcher);
+
 	$cart->setRequiredIndexes($config['requiredIndexes']);
 
 	// Get all the items from the cart
 	$items = $cart->items();
 
-> **Note:** Please make sure that the `storage/sessions` folder exists and has write access by the web server. This can be changed to other folder structure if required.
+> **Note 1:** Please make sure that the `storage/sessions` folder exists and has write access by the web server. This can be changed to other folder structure if required.
 
-> **Note:** To setup garbage collection, call the gc method on the FileSessionHandler `$fileSessionHandler->gc($seconds);`, You can also setup a function that randomizes calls to this function rather than calling it on every request.
+> **Note 2:** To setup garbage collection, call the gc method on the FileSessionHandler `$fileSessionHandler->gc($seconds);`, You can also setup a function that randomizes calls to this function rather than calling it on every request.
 
 The package also has optional Laravel 4 support. The integration into the framework is done in seconds.
 
