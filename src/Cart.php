@@ -183,7 +183,7 @@ class Cart extends CartCollection {
 		$this->updateCart($cart);
 
 		// Fire the 'cartalyst.cart.added' event
-		$this->dispatcher->fire('cartalyst.cart.added', array($this->item($rowId), $this->identify()));
+		$this->dispatcher->fire('cartalyst.cart.added', array($this->item($rowId)));
 
 		return $cart;
 	}
@@ -227,7 +227,7 @@ class Cart extends CartCollection {
 			$cart->forget($rowId);
 
 			// Fire the 'cartalyst.cart.removed' event
-			$this->dispatcher->fire('cartalyst.cart.removed', array($item, $this->identify()));
+			$this->dispatcher->fire('cartalyst.cart.removed', array($item));
 		}
 
 		$this->updateCart($cart);
@@ -316,7 +316,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 
 			// Fire the 'cartalyst.cart.updated' event
-			$this->dispatcher->fire('cartalyst.cart.updated', array($this->item($rowId), $this->identify()));
+			$this->dispatcher->fire('cartalyst.cart.updated', array($this->item($rowId)));
 		}
 
 		return $cart;
@@ -332,7 +332,7 @@ class Cart extends CartCollection {
 		$this->updateCart();
 
 		// Fire the 'cartalyst.cart.cleared' event
-		$this->dispatcher->fire('cartalyst.cart.cleared', $this->identify());
+		$this->dispatcher->fire('cartalyst.cart.cleared', null);
 	}
 
 	/**
@@ -500,22 +500,10 @@ class Cart extends CartCollection {
 	 * Search for items with the given criteria.
 	 *
 	 * @param  array   $data
-	 * @param  string  $instance
 	 * @return array
 	 */
-	public function find($data, $instance = null)
+	public function find($data)
 	{
-		if ($instance and ! $this->instanceExists($instance))
-		{
-			return array();
-		}
-
-		if ($instance)
-		{
-			$currentInstance = $this->identify();
-
-			$this->instance($instance);
-		}
 
 		$rows = array();
 
@@ -527,82 +515,7 @@ class Cart extends CartCollection {
 			}
 		}
 
-		if ($instance)
-		{
-			$this->instance($currentInstance);
-		}
-
 		return $rows;
-	}
-
-	/**
-	 * Returns the current cart instance.
-	 *
-	 * @return string
-	 */
-	public function identify()
-	{
-		return $this->storage->identify();
-	}
-
-	/**
-	 * Returns all the cart instances.
-	 *
-	 * @return array
-	 */
-	public function instances()
-	{
-		return $this->storage->instances() ?: array();
-	}
-
-	/**
-	 * Change the cart instance.
-	 *
-	 * @return \Cartalyst\Cart\Cart
-	 */
-	public function instance($instance)
-	{
-		$this->storage->setInstance($instance);
-
-		if ( ! $this->instanceExists($instance))
-		{
-			// Fire the 'cartalyst.cart.created' event
-			$this->dispatcher->fire('cartalyst.cart.created', $instance);
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Checks if the given instance exists.
-	 *
-	 * @param  string  $instance
-	 * @return bool
-	 */
-	public function instanceExists($instance)
-	{
-		return array_key_exists($instance, $this->instances());
-	}
-
-	/**
-	 * Remove the given cart instance.
-	 *
-	 * @param  string  $instance
-	 * @return bool
-	 */
-	public function destroy($instance = null)
-	{
-		if ($instance)
-		{
-			$this->instance($instance);
-		}
-
-		$this->storage->forget();
-
-		// Fire the 'cartalyst.cart.destroyed' event
-		$this->dispatcher->fire('cartalyst.cart.destroyed', $instance);
-
-		return true;
 	}
 
 	/**

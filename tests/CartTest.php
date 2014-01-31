@@ -162,37 +162,6 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function testDestroyCart()
-	{
-		$this->cart->add(array(
-			'id'         => 'foobar1',
-			'name'       => 'Foobar 1',
-			'quantity'   => 2,
-			'price'      => 125.00,
-			'attributes' => array(
-				'size'  => array(
-					'label' => 'Large',
-					'value' => 'l',
-					'price' => 5.00,
-				),
-				'color' => array(
-					'label' => 'Red',
-					'value' => 'red',
-					'price' => 3.00,
-				),
-			),
-		));
-
-		$this->assertEquals($this->cart->items()->count(), 1);
-
-		$this->assertEquals($this->cart->quantity(), 2);
-
-		$this->cart->destroy();
-
-		$this->assertEquals($this->cart->items()->count(), 0);
-	}
-
-
 	public function testSearchWithoutReturningAnyResults()
 	{
 		$item = $this->cart->find(array(

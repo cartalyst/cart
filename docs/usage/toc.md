@@ -13,6 +13,5 @@
 - [Search the Cart]({url}/usage/search)
 - [Other Methods]({url}/usage/other)
 - [Events]({url}/usage/events)
-- [Instances]({url}/usage/instances)
 - [Conditions]({url}/usage/conditions)
 - [Exceptions]({url}/usage/exceptions)

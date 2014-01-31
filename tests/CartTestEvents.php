@@ -125,11 +125,4 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function testDestroyCartEvent()
-	{
-		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.destroyed', m::any());
-
-		$this->cart->destroy();
-	}
-
 }
