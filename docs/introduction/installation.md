@@ -60,7 +60,7 @@ Now you are able to require the `vendor/autoload.php` file to autoload the packa
 	// Get all the items from the cart
 	$items = $cart->items();
 
-> **Note:** Please make sure the `storage/sessions` (which is the default storage folder and can be changed to something else) exists and has the correct permissions.
+> **Note:** Please make sure that the `storage/sessions` folder exists and has write access by the web server. This can be changed to other folder structure if required.
 
 > **Note:** To setup garbage collection, call the gc method on the FileSessionHandler `$fileSessionHandler->gc($seconds);`, You can also setup a function that randomizes calls to this function rather than calling it on every request.
 
