@@ -1,10 +1,95 @@
+# Instances
+
+Cart supports multiple cart instances, so that you can have as many shopping
+carts on the same page as you want without any kind of conflict.
+
+In order for you to understand the usage of new cart instances, we recommend a
+read on [Facades](http://laravel.com/docs/facades) and
+[Service Providers](http://laravel.com/docs/packages#service-providers) first so
+that you can have a better understanding on how it really works.
+
+## Example
+
+### Create your Service Provider
+
+`app/services/WishlistServiceProvider.php`
+
+	<?php
+
+	use Cartalyst\Cart\Cart;
+	use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
+	use Illuminate\Support\ServiceProvider;
+
+	class WishlistServiceProvider extends ServiceProvider {
+
+		/**
+		 * Register the service provider.
+		 *
+		 * @return void
+		 */
+		public function register()
+		{
+			$this->registerSession();
+
+			$this->registerCart();
+		}
+
+		/**
+		 * Register the session driver used by the Wishlist.
+		 *
+		 * @return void
+		 */
+		protected function registerSession()
+		{
+			$this->app['wishlist.storage'] = $this->app->share(function($app)
+			{
+				$config = $app['config']->get('cartalyst/cart::config');
+
+				return new IlluminateSession($app['session.store'], $config['session_key'], 'wishlist');
+			});
+		}
+
+		/**
+		 * Register the Wishlist.
+		 *
+		 * @return void
+		 */
+		protected function registerCart()
+		{
+			$this->app['wishlist'] = $this->app->share(function($app)
+			{
+				$this->app['wishlist'] = $this->app->share(function($app)
+				{
+					return new Cart('wishlist', $app['cart.storage'], $app['events']);
+				});
+			});
+		}
+
+	}
 
 
-	$whishlist = new Cart('wishlist', $app['cart.storage'], $app['events']);
+### Create your Facade
 
-	$wishlist->add(array(..));
+`app/facades/Wishlist.php`
+
+	<?php
+
+	use Illuminate\Support\Facades\Facade;
+
+	class Wishlist extends Facade {
+
+		protected static function getFacadeAccessor()
+		{
+			return 'wishlist';
+		}
+
+	}
 
 
-	# we can probably document on how they can create a facade and or a service provider
-	# to register their own cart instances and then just alias the cart instance so they
-	# can do: Wishlist::add(array(..));
+### Register your Service Provider
+
+
+### Register your Facade
+
+
+### Usage
