@@ -31,7 +31,7 @@ class CartServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('cartalyst/cart', 'cartalyst/cart', __DIR__.'/../../..');
+		$this->package('cartalyst/cart', 'cartalyst/cart', __DIR__.'/..');
 	}
 
 	/**
