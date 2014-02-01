@@ -1,21 +1,37 @@
-## Get all the applied discounts
+# Discounts
+
+## Get all the applied discounts including item discounts
 
 	$discounts = Cart::discounts();
+
+## Get all the applied discounts excluding item discounts
+
 	$discounts = Cart::discounts(false);
 
-## Get the subtotal of the applied discounts
+## Get the subtotal of applied discounts including item discounts
 
-	$discountsSubtotal = Cart::discountsSubtotal();
-	$discountsSubtotal = Cart::discountsSubtotal(false);
+	$subtotal = Cart::discountsSubtotal();
 
-## Get the total of the applied discounts
+## Get the subtotal of applied discounts excluding item discounts
 
-	$discountsTotal = Cart::discountsTotal();
-	$discountsTotal = Cart::discountsTotal(false);
+	$subtotal = Cart::discountsSubtotal(false);
 
+## Get the total of applied discounts including item discounts
 
-	Cart::discountedSubtotal();
+	$total = Cart::discountsTotal();
 
-	Cart::itemsDiscounts();
+## Get the total of applied discounts excluding item discounts
 
-	Cart::itemsDiscountsTotal();
+	$total = Cart::discountsTotal(false);
+
+## Get the subtotal of the cart with the discounts applied
+
+	$subtotal = Cart::discountedSubtotal();
+
+## Get all the discounts applied on items
+
+	$discounts = Cart::itemsDiscounts();
+
+## Get the total of discounts applied on items
+
+	$total = Cart::itemsDiscountsTotal();

@@ -27,14 +27,10 @@ class CartCollection extends BaseCollection {
 	 */
 	public function subtotal()
 	{
-		$subtotal = 0;
-
-		foreach ($this->items() as $item)
+		return $this->items()->sum(function($item)
 		{
-			$subtotal += $item->total();
-		}
-
-		return $subtotal;
+			return $item->total();
+		});
 	}
 
 	/**
@@ -44,14 +40,10 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsSubtotal()
 	{
-		$subtotal = 0;
-
-		foreach ($this->items() as $item)
+		return $this->items()->sum(function($item)
 		{
-			$subtotal += $item->subtotal();
-		}
-
-		return $subtotal;
+			return $item->subtotal();
+		});
 	}
 
 	/**
@@ -61,14 +53,10 @@ class CartCollection extends BaseCollection {
 	 */
 	public function quantity()
 	{
-		$total = 0;
-
-		foreach ($this->items() as $item)
+		return (int) $this->items()->sum(function($item)
 		{
-			$total += $item->get('quantity');
-		}
-
-		return (int) $total;
+			return $item->get('quantity');
+		});
 	}
 
 	/**
@@ -148,14 +136,10 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsDiscountsTotal()
 	{
-		$total = 0;
-
-		foreach ($this->items() as $item)
+		return $this->items()->sum(function($item)
 		{
-			$total += $item->discountsTotal(false);
-		}
-
-		return $total;
+			return $item->discountsTotal(false);
+		});
 	}
 
 	/**
@@ -182,14 +166,10 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsTaxesTotal()
 	{
-		$total = 0;
-
-		foreach ($this->items() as $item)
+		return $this->items()->sum(function($item)
 		{
-			$total += $item->taxesTotal(false);
-		}
-
-		return $total;
+			return $item->taxesTotal(false);
+		});
 	}
 
 }

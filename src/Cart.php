@@ -32,6 +32,13 @@ use Illuminate\Events\Dispatcher;
 class Cart extends CartCollection {
 
 	/**
+	 * Holds the Cart identifier.
+	 *
+	 * @var mixed
+	 */
+	protected $id;
+
+	/**
 	 * The storage driver used by Cart.
 	 *
 	 * @var \Cartalyst\Cart\Storage\StorageInterface
@@ -510,25 +517,20 @@ class Cart extends CartCollection {
 	 */
 	public function weight()
 	{
-		$total = 0;
-
-		foreach ($this->items() as $item)
+		return $this->items()->sum(function($item)
 		{
-			$total += $item->weight();
-		}
-
-		return (float) $total;
+			return $item->weight();
+		});
 	}
 
 	/**
 	 * Search for items with the given criteria.
 	 *
-	 * @param  array   $data
+	 * @param  array  $data
 	 * @return array
 	 */
 	public function find($data)
 	{
-
 		$rows = array();
 
 		foreach ($this->items() as $item)
@@ -666,24 +668,6 @@ class Cart extends CartCollection {
 		$array = array_shift($array);
 
 		return is_array($array);
-	}
-
-	/**
-	 * Validates if the provided arguments contains all the required indexes.
-	 *
-	 * @param  array  $arguments
-	 * @return void
-	 * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
-	 */
-	protected function validateIndexes($arguments)
-	{
-		foreach ($this->getRequiredIndexes() as $parameter)
-		{
-			if ( ! array_key_exists($parameter, $arguments))
-			{
-				throw new CartMissingRequiredIndexException($parameter);
-			}
-		}
 	}
 
 }

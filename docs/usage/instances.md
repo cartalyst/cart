@@ -5,7 +5,7 @@ carts on the same page as you want without any kind of conflict.
 
 In order for you to understand the usage of new cart instances, we recommend a
 read on [Facades](http://laravel.com/docs/facades) and
-[Service Providers](http://laravel.com/docs/packages#service-providers) first so
+[Service Providers](http://laravel.com/docs/ioc#service-providers) first so
 that you can have a better understanding on how it really works.
 
 ## Example

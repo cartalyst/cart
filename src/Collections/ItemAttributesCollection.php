@@ -29,14 +29,10 @@ class ItemAttributesCollection extends Collection {
 	 */
 	public function getTotal()
 	{
-		$total = 0;
-
-		foreach ($this as $option)
+		return $this->sum(function($option)
 		{
-			$total += $option->get('price');
-		}
-
-		return (float) $total;
+			return $option->get('price');
+		});
 	}
 
 }

@@ -12,6 +12,8 @@ History and future capabilities.
 
 #### xx-Jan-14 - v1.0.0
 
+- ```Cart::getIdentity()``` User can return the cart identity.
+- ```Cart::setIdentity($name)``` User can set the cart identity.
 - ```Cart::add($item)``` User can add an item to the cart.
 - ```Cart::add($items)``` User can add multiple items to the cart.
 - ```Cart::remove($rowId)``` User can remove an item from the cart.
