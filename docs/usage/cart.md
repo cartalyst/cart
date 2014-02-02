@@ -1,10 +1,5 @@
 # Cart
 
-Since the whole Cart is a Collection, you have at your disposal quite a few useful
-methods to interact and retrieve information from your Cart, however, we added a
-few more methods to help you get the job done more quickly.
-
-> Click [here]({url}/usage/collections) to read more about **Collections**.
 
 ## Get Total number of items in the Cart {#get-total-items}
 
