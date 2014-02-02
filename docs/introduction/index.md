@@ -1,6 +1,6 @@
 # Introduction
 
-A framework agnostic shopping cart package featuring multiple cart instances and item variants.
+A framework agnostic shopping cart package featuring multiple cart instances and item attributes.
 
 The package follows the FIG standard PSR-4 to ensure a high level of
 interoperability between shared PHP code and is fully unit-tested.
@@ -25,13 +25,3 @@ on how to [Integrate it with Laravel 4]({url}/introduction/laravel-4).
 
 	// Get all the cart items
 	$items = Cart::items();
-
-### Method chaining
-
-You can chain some of the methods together, wich means you can do more with only
-one single line
-
-> **Note:** Not all the methods are chainable!
-
-	// Get all the items from the 'wishlist' instance
-	$items = Cart::instance('wishlist')->items();

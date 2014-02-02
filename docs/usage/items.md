@@ -82,21 +82,13 @@ You can update items that are on your cart by updating any property on a cart it
 
 ### Remove multiple items
 
-Removing multiple items is easy and we provide you with two different ways to accomplish this.
-
-Pass in an array with the row id's you want to remove.
+Removing multiple items is very easy, you just need to provide an array with the
+row id's that you wish to remove.
 
 	Cart::remove(array(
 		'027c91341fd5cf4d2579b49c4b6a90da',
 		'56f0ab12a38f8317060d40981f6a4a93',
 	));
-
-----
-
-Pass in multiple arguments, where each argument corresponds to an item row id.
-
-	Cart::remove('027c91341fd5cf4d2579b49c4b6a90da', '56f0ab12a38f8317060d40981f6a4a93');
-
 
 ## Grab information of an Item
 
