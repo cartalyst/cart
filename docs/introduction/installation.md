@@ -17,7 +17,10 @@ Add the following lines after the `require` array on your `composer.json` file:
 		}
 	]
 
-> **Note:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
+> **Note 1:** Change the `"minimum-stability"` flag to `"dev"` `"minimum-stability" : "dev"` as at
+this point the package is not marked as stable.
+
+> **Note 2:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
 
 ### Install the dependencies
 
