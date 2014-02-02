@@ -154,7 +154,7 @@ class IlluminateSession implements SessionInterface {
 	}
 
 	/**
-	 * Remove the Sentry session.
+	 * Remove the Cart session.
 	 *
 	 * @return void
 	 */

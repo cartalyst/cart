@@ -81,6 +81,36 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testGetCartIdentity()
+	{
+		$this->assertEquals($this->cart->getIdentity(), 'cart');
+	}
+
+
+	public function testSetCartIdentity()
+	{
+		$this->cart->setIdentity('testCart');
+
+		$this->assertEquals($this->cart->getIdentity(), 'testCart');
+	}
+
+
+	public function testGetCartStorage()
+	{
+		$this->assertTrue($this->cart->getStorage() instanceof \Cartalyst\Cart\Storage\StorageInterface);
+	}
+
+
+	public function testSetCartStorage()
+	{
+		$storage = m::mock('\Cartalyst\Cart\Storage\StorageInterface');
+
+		$this->cart->setStorage($storage);
+
+		$this->assertTrue($this->cart->getStorage() instanceof \Cartalyst\Cart\Storage\StorageInterface);
+	}
+
+
 	public function testTotalNumberOfItemsInCart()
 	{
 		$this->cart->add(array(
@@ -165,7 +195,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	public function testSearchWithoutReturningAnyResults()
 	{
 		$item = $this->cart->find(array(
-			'price' => 85,
+			'price'    => 85,
 		));
 
 		$this->assertEquals(count($item), 0);
@@ -224,7 +254,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		));
 
 		$item = $this->cart->find(array(
-			'price' => 85,
+			'price'    => 85,
+			'quantity' => 2,
+			'weight'   => 21.00,
 		));
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
@@ -278,6 +310,86 @@ class CartTest extends PHPUnit_Framework_TestCase {
 						'value' => 'l',
 						'price' => 15.00,
 					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+					),
+				),
+			),
+			array(
+				'id'         => 'foobar3',
+				'name'       => 'Foobar 3',
+				'quantity'   => 5,
+				'price'      => 85.00,
+				'weight'	 => 21.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 5.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+					),
+				),
+			),
+		));
+
+		$item = $this->cart->find(array(
+			'attributes' => array(
+				'size' => array(
+					'value' => 'l',
+				),
+				'color' => array(
+					'value' => 'red',
+				),
+			),
+		));
+
+		$this->assertEquals($item[0]->get('id'), 'foobar2');
+
+		$this->assertEquals($item[1]->get('id'), 'foobar3');
+	}
+
+
+	public function testFindItemsWithDifferentAttributesByAttributes()
+	{
+		$this->cart->add(array(
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 2,
+				'price'      => 97.00,
+				'weight'	 => 21.00,
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Small',
+						'value' => 's',
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
+					),
+				),
+			),
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 2,
+				'price'      => 85.00,
+				'weight'	 => 21.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 15.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+					),
 				),
 			),
 			array(
@@ -301,12 +413,15 @@ class CartTest extends PHPUnit_Framework_TestCase {
 				'size' => array(
 					'value' => 'l',
 				),
+				'color' => array(
+					'value' => 'red',
+				),
 			),
 		));
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
 
-		$this->assertEquals($item[1]->get('id'), 'foobar3');
+		$this->assertFalse(isset($item[1]));
 	}
 
 }

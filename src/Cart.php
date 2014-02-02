@@ -222,25 +222,13 @@ class Cart extends CartCollection {
 	/**
 	 * Remove a single or multiple items from the cart.
 	 *
-	 * @param  mixed
+	 * @param  mixed  $items
 	 * @return bool
 	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function remove()
+	public function remove($items)
 	{
-		$items = func_get_args();
-
-		if ($this->isMulti($items))
-		{
-			foreach ($items[0] as $rowId)
-			{
-				$this->remove($rowId);
-			}
-
-			return true;
-		}
-
-		foreach ($items as $rowId)
+		foreach ((array) $items as $rowId)
 		{
 			// Check if the item exists
 			if ( ! $this->itemExists($rowId))
@@ -396,6 +384,60 @@ class Cart extends CartCollection {
 	}
 
 	/**
+	 * Returns all the applied and valid conditions.
+	 *
+	 * @return array
+	 */
+	public function conditions()
+	{
+		return $this->items()->conditions;
+	}
+
+	/**
+	 * Sets a new condition.
+	 *
+	 * @param  \Cartalyst\Conditions\Condition  $condition
+	 * @return void
+	 */
+	public function condition($condition)
+	{
+		if (empty($condition)) return;
+
+		if (is_array($condition))
+		{
+			foreach ($condition as $c)
+			{
+				$this->condition($c);
+			}
+
+			return;
+		}
+
+		$cart = $this->items();
+
+		if ($condition->validate($this))
+		{
+			$cart->conditions[$condition->get('name')] = $condition;
+		}
+
+		$this->updateCart($cart);
+	}
+
+	/**
+	 * Clear the conditions.
+	 *
+	 * @return void
+	 */
+	public function clearConditions()
+	{
+		$cart = $this->items();
+
+		$cart->conditions = array();
+
+		$this->updateCart($cart);
+	}
+
+	/**
 	 * Returns all the applied discounts.
 	 *
 	 * When passing a boolean true as the second parameter,
@@ -457,57 +499,6 @@ class Cart extends CartCollection {
 		}
 
 		return $taxes;
-	}
-
-	/**
-	 * Returns all the conditions sum grouped by type.
-	 *
-	 * When passing a boolean true as the second parameter,
-	 * it will include the items discounts as well.
-	 *
-	 * @param  string  $type
-	 * @param  bool    $includeItems
-	 * @return array
-	 */
-	public function conditionsTotal($type = null, $includeItems = true)
-	{
-		$rates = array();
-
-		if ($includeItems)
-		{
-			foreach ($this->items() as $item)
-			{
-				foreach($item->conditionsOfType($type) as $condition)
-				{
-					$key = $condition->get('name');
-
-					if (array_key_exists($key, $rates))
-					{
-						$rates[$key] += $condition->result();
-					}
-					else
-					{
-						$rates[$key] = $condition->result();
-					}
-				}
-			}
-		}
-
-		foreach($this->conditionsOfType($type) as $condition)
-		{
-			$key = $condition->get('name');
-
-			if (array_key_exists($key, $rates))
-			{
-				$rates[$key] += $condition->result();
-			}
-			else
-			{
-				$rates[$key] = $condition->result();
-			}
-		}
-
-		return $rates;
 	}
 
 	/**

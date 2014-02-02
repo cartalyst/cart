@@ -60,6 +60,118 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
+	 * Returns the condition results by name.
+	 *
+	 * @return array
+	 */
+	public function getConditionResults($includeItems = true)
+	{
+		$this->applySpecificConditions();
+
+		if ($includeItems)
+		{
+			foreach ($this->items() as $item)
+			{
+				$item->applySpecificConditions();
+
+				$this->totalConditionResults = array_merge_recursive(
+					$item->getConditionResults(),
+					$this->totalConditionResults
+				);
+			}
+		}
+
+		foreach ($this->totalConditionResults as $key => $value)
+		{
+			if (is_array($value))
+			{
+				$this->totalConditionResults[$key] = array_sum($value);
+			}
+		}
+
+		return $this->totalConditionResults;
+	}
+
+	/**
+	 * Returns all the conditions sum grouped by type.
+	 *
+	 * When passing a boolean true as the second parameter,
+	 * it will include the items discounts as well.
+	 *
+	 * @param  string  $type
+	 * @param  bool    $includeItems
+	 * @return array
+	 */
+	public function conditionsTotal($type = '', $includeItems = true)
+	{
+		$rates = array();
+
+		if ($includeItems)
+		{
+			foreach ($this->items() as $item)
+			{
+				foreach($item->conditionsOfType($type) as $condition)
+				{
+					$key = $condition->get('name');
+
+					if (array_key_exists($key, $rates))
+					{
+						$condition->apply($item);
+
+						$rates[$key] += $condition->result();
+					}
+					else
+					{
+						$condition->apply($item);
+
+						$rates[$key] = $condition->result();
+					}
+				}
+			}
+		}
+
+		foreach($this->conditionsOfType($type) as $condition)
+		{
+			$key = $condition->get('name');
+
+			if (array_key_exists($key, $rates))
+			{
+				$condition->apply($this, $this->subtotal());
+
+				$rates[$key] += $condition->result();
+			}
+			else
+			{
+				$condition->apply($this, $this->subtotal());
+
+				$rates[$key] = $condition->result();
+			}
+		}
+
+		return $rates;
+	}
+
+	/**
+	 * Return conditions by type.
+	 *
+	 * @return array
+	 */
+	protected function conditionsOfType($type = null)
+	{
+		$conditions = array();
+
+		foreach ($this->items()->conditions as $condition)
+		{
+			if ($condition->get('type') === $type)
+			{
+				$conditions[] = $condition;
+			}
+		}
+
+		return $conditions;
+	}
+
+	/**
 	 * Returns all the conditions that were applied only to items.
 	 *
 	 * @return array
@@ -83,28 +195,24 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Returns the items conditions total grouped by type.
+	 * Returns the items conditions total.
 	 *
 	 * @param  string  $type
-	 * @return array
+	 * @return float
 	 */
 	public function itemsConditionsTotal($type = null)
 	{
-		$rates = array();
+		$rates = 0;
 
 		foreach ($this->items() as $item)
 		{
-			foreach($item->conditionsOfType($type) as $condition)
-			{
-				$key = $condition->get('name');
+			$item->applySpecificConditions($type);
 
-				if (array_key_exists($key, $rates))
+			foreach ($item->conditionResults as $key => $result)
+			{
+				if ( ! $type or $type === $key)
 				{
-					$rates[$key] += $condition->result();
-				}
-				else
-				{
-					$rates[$key] = $condition->result();
+					$rates += $result['price'] + $result['subtotal'];
 				}
 			}
 		}

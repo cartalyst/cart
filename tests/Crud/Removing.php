@@ -99,31 +99,6 @@ class Removing extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function testDeleteMultipleItemsInline()
-	{
-		$this->cart->add(array(
-			array(
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 7,
-				'price'    => 120.00,
-			),
-			array(
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 3,
-				'price'    => 120.00,
-			),
-		));
-
-		$this->assertEquals($this->cart->items()->count(), 2);
-
-		$this->cart->remove('f53e8bcc3534788e4b4f296c1889cc99', '2d2d8cb241842b326ce0e095dbfc4d41');
-
-		$this->assertEquals($this->cart->items()->count(), 0);
-	}
-
-
 	public function testDeleteMultipleItemsArray()
 	{
 		$this->cart->add(array(

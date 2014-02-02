@@ -23,6 +23,18 @@ use Cartalyst\Conditions\Condition;
 class ItemCollection extends BaseCollection {
 
 	/**
+	 * Returns the condition results grouped by name.
+	 *
+	 * @return array
+	 */
+	public function getConditionResults()
+	{
+		$this->applySpecificConditions();
+
+		return $this->totalConditionResults;
+	}
+
+	/**
 	 * Returns this item attributes.
 	 *
 	 * @return \Illuminate\Support\Collection
@@ -122,14 +134,25 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function find($data)
 	{
+		$valid = true;
+
 		foreach ($data as $key => $value)
 		{
 			if ($key === 'attributes')
 			{
 				foreach ($value as $key => $val)
 				{
-					return $this->attributes()->get($key)->find($val);
+					if ($attribute = $this->attributes()->get($key))
+					{
+						$valid = $valid && $attribute->find($val);
+					}
+					else
+					{
+						return false;
+					}
 				}
+
+				return $valid;
 			}
 
 			if ($key === 'price')
@@ -142,8 +165,15 @@ class ItemCollection extends BaseCollection {
 				$value = (int) $value;
 			}
 
-			return $this->get($key) === $value;
+			if ($key === 'weight')
+			{
+				$value = (float) $value;
+			}
+
+			$valid = $valid && $this->get($key) === $value;
 		}
+
+		return $valid;
 	}
 
 }

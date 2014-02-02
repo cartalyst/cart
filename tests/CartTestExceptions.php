@@ -75,6 +75,27 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 
 
 	/**
+	 * @expectedException  \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 */
+	public function testThrowsCartMissingRequiredIndexExceptionOnMissingAttribute()
+	{
+		$this->cart->add(
+			array(
+				'id'         => 'abc',
+				'name'       => 'abc',
+				'price'      => 20.00,
+				'quantity'   => 5,
+				'attributes' => array(
+					'print' => array(
+						'label' => 'Bear',
+					),
+				)
+			)
+		);
+	}
+
+
+	/**
 	 * @expectedException  \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
 	 */
 	public function testThrowsCartInvalidQuantityException()
@@ -126,9 +147,29 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException  \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function testThrowsCartItemNotFoundException()
+	public function testThrowsCartItemNotFoundExceptionOnRemove()
 	{
 		$this->cart->remove('abc');
+	}
+
+
+	/**
+	 * @expectedException  \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 */
+	public function testThrowsCartItemNotFoundExceptionOnUpdate()
+	{
+		$this->cart->update('abc', array(
+			'price' => 20.00
+		));
+	}
+
+
+	/**
+	 * @expectedException  \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 */
+	public function testThrowsCartItemNotFoundExceptionOnRetrieve()
+	{
+		$this->cart->item('abc');
 	}
 
 }
