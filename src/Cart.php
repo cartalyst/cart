@@ -228,19 +228,7 @@ class Cart extends CartCollection {
 	 */
 	public function remove($items)
 	{
-		$items = (array) $items;
-
-		if ($this->isMulti($items))
-		{
-			foreach ($items[0] as $rowId)
-			{
-				$this->remove($rowId);
-			}
-
-			return true;
-		}
-
-		foreach ($items as $rowId)
+		foreach ((array) $items as $rowId)
 		{
 			// Check if the item exists
 			if ( ! $this->itemExists($rowId))
