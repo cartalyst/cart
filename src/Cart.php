@@ -222,13 +222,13 @@ class Cart extends CartCollection {
 	/**
 	 * Remove a single or multiple items from the cart.
 	 *
-	 * @param  mixed
+	 * @param  mixed  $items
 	 * @return bool
 	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function remove()
+	public function remove($items)
 	{
-		$items = func_get_args();
+		$items = (array) $items;
 
 		if ($this->isMulti($items))
 		{
