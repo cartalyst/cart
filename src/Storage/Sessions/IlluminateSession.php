@@ -88,27 +88,6 @@ class IlluminateSession implements SessionInterface {
 	}
 
 	/**
-	 * Set the session instance.
-	 *
-	 * @param  string  $instance
-	 * @return void
-	 */
-	public function setInstance($instance)
-	{
-		$this->instance = $instance;
-	}
-
-	/**
-	 * Returns all the available session instances of the session key.
-	 *
-	 * @return array
-	 */
-	public function instances()
-	{
-		return $this->session->get($this->getKey());
-	}
-
-	/**
 	 * Returns both session key and session instance.
 	 *
 	 * @return string

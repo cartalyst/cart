@@ -35,21 +35,6 @@ interface StorageInterface {
 	public function identify();
 
 	/**
-	 * Set the instance.
-	 *
-	 * @param  string  $instance
-	 * @return void
-	 */
-	public function setInstance($instance);
-
-	/**
-	 * Returns all the available instances of the key.
-	 *
-	 * @return array
-	 */
-	public function instances();
-
-	/**
 	 * Get the value from the storage.
 	 *
 	 * @return mixed
