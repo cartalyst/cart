@@ -30,7 +30,7 @@ Now you are able to get the main cart content.
 
 ## Grabbing all Instances
 
-	$instances Cart::instances();
+	$instances = Cart::instances();
 
 ## Check for Instance existence
 
