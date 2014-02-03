@@ -1,10 +1,10 @@
 # Instances
 
 Cart supports multiple cart instances, so that you can have as many shopping
-carts on the same page as you want without any kind of conflict.
+carts instances on the same page as you want without any conflicts.
 
-In order for you to understand the usage of new cart instances, we recommend a
-read on [Facades](http://laravel.com/docs/facades) and
+In order for you to understand the usage of instances, we recommend you
+to have a read on [Facades](http://laravel.com/docs/facades) and
 [Service Providers](http://laravel.com/docs/ioc#service-providers) first so
 that you can have a better understanding on how it really works.
 

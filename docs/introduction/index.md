@@ -2,20 +2,19 @@
 
 A framework agnostic shopping cart package featuring multiple cart instances and item attributes.
 
-The package follows the FIG standard PSR-4 to ensure a high level of
-interoperability between shared PHP code and is fully unit-tested.
+The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
 
 ## Getting started
 
-The package requires PHP 5.3+ and comes bundled with a Laravel 4 Facade
-and a Service Provider to simplify the optional framework integration.
+The package requires PHP 5.3+ and comes bundled with a Laravel 4 Facade and a Service Provider to simplify the optional framework integration.
 
 Have a [read through the Installation Guide]({url}/introduction/installation) and
 on how to [Integrate it with Laravel 4]({url}/introduction/laravel-4).
 
 ## Quick Example
 
-	// Add a new item to the cart
+### Add a new item to the cart
+
 	Cart::add(array(
 		'id'       => 'foobar1',
 		'name'     => 'Foo Bar 1',
@@ -23,5 +22,6 @@ on how to [Integrate it with Laravel 4]({url}/introduction/laravel-4).
 		'price'    => 12.50,
 	));
 
-	// Get all the cart items
+### Get all the cart items
+
 	$items = Cart::items();

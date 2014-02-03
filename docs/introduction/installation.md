@@ -2,7 +2,7 @@
 
 The best and easy way to install the Cart package is with [Composer](http://getcomposer.org).
 
-### Preparation
+## Preparation
 
 Open your `composer.json` and add the following to the `require` array:
 
@@ -22,7 +22,7 @@ this point the package is not marked as stable.
 
 > **Note 2:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
 
-### Install the dependencies
+## Install the dependencies
 
 Run Composer to install or update the new requirement.
 
