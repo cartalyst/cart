@@ -105,7 +105,7 @@ class BaseCollection extends Collection {
 	 * @param  array  $order
 	 * @return void
 	 */
-	public function setConditionsOrder($order)
+	public function setConditionsOrder(array $order)
 	{
 		$this->conditionsOrder = $order;
 	}

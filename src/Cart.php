@@ -396,9 +396,10 @@ class Cart extends CartCollection {
 	/**
 	 * Sets the conditions order.
 	 *
+	 * @param  array  $order
 	 * @return array
 	 */
-	public function setConditionsOrder($order)
+	public function setConditionsOrder(array $order)
 	{
 		$cart = $this->items();
 
@@ -508,13 +509,11 @@ class Cart extends CartCollection {
 	 */
 	public function setRequiredIndexes($indexes = array(), $merge = true)
 	{
-		$indexes = (array) $indexes;
-
 		$currentIndexes = $merge ? $this->getrequiredIndexes() : array();
 
 		$reservedIndexes = $this->reservedIndexes;
 
-		$this->requiredIndexes = array_unique(array_merge($currentIndexes, $indexes, $reservedIndexes));
+		$this->requiredIndexes = array_unique(array_merge($currentIndexes, (array) $indexes, $reservedIndexes));
 	}
 
 	/**
