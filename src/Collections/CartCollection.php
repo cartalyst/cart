@@ -60,29 +60,11 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return sum of item conditions.
-	 *
-	 * @param  string $type
-	 * @return float
-	 */
-	public function itemsConditionsTotalSum($type = null)
-	{
-		if ( ! $type)
-		{
-			return array_sum(array_map(function($item) {
-			    return is_array($item) ? array_sum($item) : $item;
-			}, $this->itemsConditionsTotal()));
-		}
-
-		return array_sum($this->itemsConditionsTotal($type));
-	}
-
-	/**
 	 * Return conditions by type.
 	 *
 	 * @return array
 	 */
-	public function conditionsOfType($type = null, $includeItems = true)
+	public function conditions($type = null, $includeItems = true)
 	{
 		$conditions = array();
 
@@ -99,7 +81,7 @@ class CartCollection extends BaseCollection {
 				}
 			}
 
-			foreach ($this->conditions() as $condition)
+			foreach ($this->cartConditions() as $condition)
 			{
 				$conditions[] = $condition;
 			}
@@ -178,6 +160,24 @@ class CartCollection extends BaseCollection {
 		}
 
 		return $this->totalConditionResults;
+	}
+
+	/**
+	 * Return sum of item conditions.
+	 *
+	 * @param  string $type
+	 * @return float
+	 */
+	public function itemsConditionsTotalSum($type = null)
+	{
+		if ( ! $type)
+		{
+			return array_sum(array_map(function($item) {
+			    return is_array($item) ? array_sum($item) : $item;
+			}, $this->itemsConditionsTotal()));
+		}
+
+		return array_sum($this->itemsConditionsTotal($type));
 	}
 
 }

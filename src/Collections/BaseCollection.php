@@ -141,16 +141,6 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns all the applied and valid conditions.
-	 *
-	 * @return array
-	 */
-	public function conditions()
-	{
-		return $this->conditions;
-	}
-
-	/**
 	 * Clear the conditions.
 	 *
 	 * @return void
@@ -223,7 +213,7 @@ class BaseCollection extends Collection {
 	{
 		$subtotal = 0;
 
-		foreach ($this->conditionsOfType($type) as $condition)
+		foreach ($this->conditions($type) as $condition)
 		{
 			if ($condition->get('target') === $target)
 			{
@@ -350,7 +340,7 @@ class BaseCollection extends Collection {
 	 *
 	 * @return array
 	 */
-	public function conditionsOfType($type = null)
+	public function conditions($type = null)
 	{
 		$conditions = array();
 

@@ -408,16 +408,6 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns all the applied and valid conditions.
-	 *
-	 * @return array
-	 */
-	public function conditions()
-	{
-		return $this->items()->conditions;
-	}
-
-	/**
 	 * Sets a new condition.
 	 *
 	 * @param  \Cartalyst\Conditions\Condition  $condition
@@ -568,6 +558,16 @@ class Cart extends CartCollection {
 	protected function updateCart($cart = null)
 	{
 		$this->storage->put($cart);
+	}
+
+	/**
+	 * Returns all the applied and valid cart conditions.
+	 *
+	 * @return array
+	 */
+	protected function cartConditions()
+	{
+		return $this->items()->conditions;
 	}
 
 	/**

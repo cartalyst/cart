@@ -104,9 +104,9 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item1->total(), 548.625);
 
-		$this->assertEquals(count($item1->conditionsOfType()), 3);
+		$this->assertEquals(count($item1->conditions()), 3);
 
-		$this->assertEquals(count($item1->conditionsOfType('discount')), 1);
+		$this->assertEquals(count($item1->conditions('discount')), 1);
 
 		// Cart
 		$this->assertEquals(count($this->cart->itemsConditions()), 3);
@@ -129,7 +129,9 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->total(), 603.4875);
 
-		$this->assertEquals(count($this->cart->conditionsOfType()), 4);
+		$this->assertEquals(count($this->cart->conditions()), 4);
+
+		$this->assertEquals(count($this->cart->conditions(null, false)), 1);
 
 		// Items conditions
 		$this->assertEquals($this->cart->itemsConditionsTotalSum(), 48.625);
@@ -1362,7 +1364,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->cart->condition($disc10p);
 
-		$discounts = $this->cart->conditionsOfType('discount', false);
+		$discounts = $this->cart->conditions('discount', false);
 
 		$discountCondition = $discounts[0];
 
@@ -1429,7 +1431,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->cart->condition($tax10p);
 
-		$taxes = $this->cart->conditionsOfType('tax', false);
+		$taxes = $this->cart->conditions('tax', false);
 
 		$taxCondition = $taxes[0];
 
@@ -1601,7 +1603,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($condition->get('target'), 'subtotal');
 
 		// Cart conditions
-		$conditions = $this->cart->conditions();
+		$conditions = $this->cart->conditions(null, false);
 
 		$condition = head($conditions);
 
