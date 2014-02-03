@@ -100,7 +100,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Set the conditions order.
+	 * Sets the conditions order.
 	 *
 	 * @param  array  $order
 	 * @return void

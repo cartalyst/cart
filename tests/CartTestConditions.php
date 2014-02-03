@@ -290,6 +290,14 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$item1->setConditionsOrder(array('tax', 'shipping'));
 
 		$this->assertEquals($item1->total(), 577.5);
+
+		$item1->setConditionsOrder(array('tax', 'other', 'discount'));
+
+		$this->assertEquals($item1->total(), 525);
+
+		$this->cart->setItemsConditionsOrder(array('tax', 'shipping'));
+
+		$this->assertEquals($item1->total(), 577.5);
 	}
 
 	public function testItemConditions1()
@@ -1934,6 +1942,9 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals($this->cart->itemsConditionsTotal('tax'), $conditionResults);
+
+		// Non existing condition
+		$this->assertEquals($this->cart->itemsConditionsTotal('nonexisting'), array());
 
 	}
 

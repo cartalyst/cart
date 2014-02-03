@@ -409,6 +409,26 @@ class Cart extends CartCollection {
 	}
 
 	/**
+	 * Sets the items conditions order.
+	 *
+	 * @param  array  $order
+	 * @return array
+	 */
+	public function setItemsConditionsOrder(array $order)
+	{
+		$cart = $this->items();
+
+		foreach ($cart as $key => $item)
+		{
+			$item->setConditionsOrder($order);
+
+			$cart[$key] = $item;
+		}
+
+		$this->updateCart($cart);
+	}
+
+	/**
 	 * Sets a new condition.
 	 *
 	 * @param  mixed  $condition
