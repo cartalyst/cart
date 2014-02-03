@@ -161,11 +161,11 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Apply specific conditions.
+	 * Apply conditions.
 	 *
 	 * @return void
 	 */
-	public function applySpecificConditions($type = null, $target = 'subtotal')
+	public function applyConditions($type = null, $target = 'subtotal')
 	{
 		// Reset the subtotal
 		$this->subtotal = $this->subtotal();
@@ -265,7 +265,7 @@ class BaseCollection extends Collection {
 	 */
 	public function discountsTotal($includeItems = true)
 	{
-		$this->applySpecificConditions();
+		$this->applyConditions();
 
 		$total = 0;
 
@@ -273,7 +273,7 @@ class BaseCollection extends Collection {
 		{
 			foreach ($this->items() as $item)
 			{
-				$item->applySpecificConditions();
+				$item->applyConditions();
 
 				$total += $item->conditionResults['discount']['price'] + $item->conditionResults['discount']['subtotal'];
 			}
@@ -287,7 +287,7 @@ class BaseCollection extends Collection {
 
 		return $total;
 
-		$total = $this->applySpecificConditions('discount') - $this->applySpecificConditions(null, 'price');
+		$total = $this->applyConditions('discount') - $this->applyConditions(null, 'price');
 
 		if ($includeItems)
 		{
@@ -308,7 +308,7 @@ class BaseCollection extends Collection {
 	 */
 	public function taxesTotal($includeItems = true)
 	{
-		$this->applySpecificConditions();
+		$this->applyConditions();
 
 		$total = 0;
 
@@ -316,7 +316,7 @@ class BaseCollection extends Collection {
 		{
 			foreach ($this->items() as $item)
 			{
-				$item->applySpecificConditions();
+				$item->applyConditions();
 
 				$total += $item->conditionResults['tax']['price'] + $item->conditionResults['tax']['subtotal'];
 			}
@@ -330,7 +330,7 @@ class BaseCollection extends Collection {
 
 		return $total;
 
-		$total = $this->applySpecificConditions('tax') - $this->applySpecificConditions(null, 'price');
+		$total = $this->applyConditions('tax') - $this->applyConditions(null, 'price');
 
 		if ($includeItems)
 		{
@@ -347,7 +347,7 @@ class BaseCollection extends Collection {
 	 */
 	public function total()
 	{
-		return $this->applySpecificConditions();
+		return $this->applyConditions();
 	}
 
 	/**

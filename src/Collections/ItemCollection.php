@@ -29,7 +29,7 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function getConditionResults()
 	{
-		$this->applySpecificConditions();
+		$this->applyConditions();
 
 		return $this->totalConditionResults;
 	}

@@ -73,13 +73,13 @@ class CartCollection extends BaseCollection {
 	{
 		$this->totalConditionResults = array();
 
-		$this->applySpecificConditions();
+		$this->applyConditions();
 
 		if ($includeItems)
 		{
 			foreach ($this->items() as $item)
 			{
-				$item->applySpecificConditions();
+				$item->applyConditions();
 
 				$this->totalConditionResults = array_merge_recursive(
 					$item->getConditionResults(),
@@ -198,7 +198,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			$item->applySpecificConditions();
+			$item->applyConditions();
 
 			$this->totalConditionResults = array_merge_recursive(
 				$item->getConditionResults(),

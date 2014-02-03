@@ -94,7 +94,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Item 1
 		$item1 = $this->cart->items()->first();
 
-		$this->assertEquals($item1->applySpecificConditions('discount'), 498.75);
+		$this->assertEquals($item1->applyConditions('discount'), 498.75);
 
 		$this->assertEquals($item1->subtotal(), 500);
 
