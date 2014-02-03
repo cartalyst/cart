@@ -60,12 +60,19 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Returns the condition results by name.
+	 * Returns all the conditions sum grouped by type.
 	 *
+	 * When passing a boolean true as the second parameter,
+	 * it will include the items discounts as well.
+	 *
+	 * @param  string  $type
+	 * @param  bool    $includeItems
 	 * @return array
 	 */
-	public function getConditionResults($includeItems = true)
+	public function conditionsTotal($type = null, $includeItems = true)
 	{
+		$this->totalConditionResults = array();
+
 		$this->applySpecificConditions();
 
 		if ($includeItems)
@@ -81,74 +88,59 @@ class CartCollection extends BaseCollection {
 			}
 		}
 
-		foreach ($this->totalConditionResults as $key => $value)
+		foreach ($this->totalConditionResults as $key => $result)
 		{
-			if (is_array($value))
+			foreach ($result as $name => $value)
 			{
-				$this->totalConditionResults[$key] = array_sum($value);
+				if (is_array($value))
+				{
+					$this->totalConditionResults[$key][$name] = array_sum($value);
+				}
 			}
+		}
+
+		if (isset($this->totalConditionResults[$type]))
+		{
+			return $this->totalConditionResults[$type];
 		}
 
 		return $this->totalConditionResults;
 	}
 
 	/**
-	 * Returns all the conditions sum grouped by type.
+	 * Return sum of item conditions.
 	 *
-	 * When passing a boolean true as the second parameter,
-	 * it will include the items discounts as well.
-	 *
-	 * @param  string  $type
-	 * @param  bool    $includeItems
-	 * @return array
+	 * @param  string $type
+	 * @return float
 	 */
-	public function conditionsTotal($type = '', $includeItems = true)
+	public function itemsConditionsTotalSum($type = null)
 	{
-		$rates = array();
-
-		if ($includeItems)
+		if ( ! $type)
 		{
-			foreach ($this->items() as $item)
-			{
-				foreach($item->conditionsOfType($type) as $condition)
-				{
-					$key = $condition->get('name');
-
-					if (array_key_exists($key, $rates))
-					{
-						$condition->apply($item);
-
-						$rates[$key] += $condition->result();
-					}
-					else
-					{
-						$condition->apply($item);
-
-						$rates[$key] = $condition->result();
-					}
-				}
-			}
+			return array_sum(array_map(function($item) {
+			    return is_array($item) ? array_sum($item) : $item;
+			}, $this->itemsConditionsTotal()));
 		}
 
-		foreach($this->conditionsOfType($type) as $condition)
+		return array_sum($this->itemsConditionsTotal($type));
+	}
+
+	/**
+	 * Return sum of conditions.
+	 *
+	 * @param  string $type
+	 * @return float
+	 */
+	public function conditionsTotalSum($type = null)
+	{
+		if ( ! $type)
 		{
-			$key = $condition->get('name');
-
-			if (array_key_exists($key, $rates))
-			{
-				$condition->apply($this, $this->subtotal());
-
-				$rates[$key] += $condition->result();
-			}
-			else
-			{
-				$condition->apply($this, $this->subtotal());
-
-				$rates[$key] = $condition->result();
-			}
+			return array_sum(array_map(function($item) {
+			    return is_array($item) ? array_sum($item) : $item;
+			}, $this->conditionsTotal()));
 		}
 
-		return $rates;
+		return array_sum($this->conditionsTotal($type));
 	}
 
 	/**
@@ -202,22 +194,35 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsConditionsTotal($type = null)
 	{
-		$rates = 0;
+		$this->totalConditionResults = array();
 
 		foreach ($this->items() as $item)
 		{
-			$item->applySpecificConditions($type);
+			$item->applySpecificConditions();
 
-			foreach ($item->conditionResults as $key => $result)
+			$this->totalConditionResults = array_merge_recursive(
+				$item->getConditionResults(),
+				$this->totalConditionResults
+			);
+		}
+
+		foreach ($this->totalConditionResults as $key => $result)
+		{
+			foreach ($result as $name => $value)
 			{
-				if ( ! $type or $type === $key)
+				if (is_array($value))
 				{
-					$rates += $result['price'] + $result['subtotal'];
+					$this->totalConditionResults[$key][$name] = array_sum($value);
 				}
 			}
 		}
 
-		return $rates;
+		if (isset($this->totalConditionResults[$type]))
+		{
+			return $this->totalConditionResults[$type];
+		}
+
+		return $this->totalConditionResults;
 	}
 
 	/**

@@ -233,7 +233,19 @@ class BaseCollection extends Collection {
 			{
 				$condition->apply($this, $value);
 
-				$this->totalConditionResults[$condition->get('name')] = $condition->result();
+				if (isset($this->totalConditionResults[$condition->get('type')][$condition->get('name')]))
+				{
+					$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
+				}
+				else
+				{
+					if ( ! isset($this->totalConditionResults[$condition->get('type')]))
+					{
+						$this->totalConditionResults[$condition->get('type')] = array();
+					}
+
+					$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
+				}
 
 				$subtotal += $condition->result();
 			}

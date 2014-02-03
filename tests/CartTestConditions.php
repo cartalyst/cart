@@ -105,14 +105,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item1->total(), 548.625);
 
 		// Cart
-		$this->assertEquals($this->cart->itemsConditionsTotal(), 48.625);
-
-		$this->assertEquals($this->cart->itemsConditionsTotal('discount'), -26.25);
-
-		$this->assertEquals($this->cart->itemsConditionsTotal('other'), 25);
-
-		$this->assertEquals($this->cart->itemsConditionsTotal('tax'), 49.875);
-
 		$this->assertEquals(count($this->cart->itemsConditions()), 3);
 
 		$this->assertEquals(count($this->cart->itemsDiscounts()), 1);
@@ -122,7 +114,6 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(count($this->cart->itemsTaxes()), 1);
 
 		$this->assertEquals($this->cart->itemsTaxesTotal(), 49.875);
-
 
 		$this->assertEquals($this->cart->subtotal(), 548.625);
 
@@ -134,9 +125,36 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->total(), 603.4875);
 
+		// Items conditions
+		$this->assertEquals($this->cart->itemsConditionsTotalSum(), 28.625);
+
+		$this->assertEquals($this->cart->itemsConditionsTotalSum('discount'), -26.25);
+
+		$this->assertEquals($this->cart->itemsConditionsTotalSum('other'), 5);
+
+		$this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 49.875);
+
+		// Cart conditions
+		$this->assertEquals($this->cart->conditionsTotalSum(), 83.4875);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('discount'), -26.25);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('other'), 5);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 104.7375);
+
 		$this->cart->condition($disc5Psubtotal);
 
 		$this->assertEquals($this->cart->total(), 573.313125);
+
+		// Cart conditions
+		$this->assertEquals($this->cart->conditionsTotalSum(), 53.313125);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('discount'), -53.68125);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('other'), 5);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 101.994375);
 	}
 
 	public function testItemConditionTotals()
@@ -1472,7 +1490,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'tax5'  => 62.865,
 		);
 
-		$this->assertEquals($this->cart->conditionsTotal('tax'), $conditionsTotal);
+		$this->assertEquals($this->cart->conditionsTotal('tax', false), $conditionsTotal);
 	}
 
 
@@ -1813,12 +1831,16 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->total(), 1455.895);
 
 		$conditionResults = array(
-			'tax10'      => 240.03,
-			'tax5'       => 62.865,
-			'shipping10' => 10.00
+			'tax' => array(
+				'tax10' => 240.03,
+				'tax5'  => 62.865,
+			),
+			'shipping' => array(
+				'shipping10' => 10.00
+			),
 		);
 
-		$this->assertEquals($this->cart->getConditionResults(), $conditionResults);
+		$this->assertEquals($this->cart->conditionsTotal(), $conditionResults);
 
 		// Set custom conditions order
 		$this->cart->setConditionsOrder(array(
@@ -1833,22 +1855,59 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->total(), 1600.4845);
 
 		$conditionResults = array(
-			'tax10'      => 252.603,
-			'tax5'       => 69.1515,
-			'shipping10' => 10.00,
-			'other10'    => 125.73,
+			'tax' => array(
+				'tax10' => 252.603,
+				'tax5'  => 69.1515,
+			),
+			'other' => array(
+				'other10' => 125.73,
+			),
+			'shipping' => array(
+				'shipping10' => 10.00,
+			),
 		);
 
-		$this->assertEquals($this->cart->getConditionResults(), $conditionResults);
+		$this->assertEquals($this->cart->conditionsTotal(), $conditionResults);
 
 		$conditionResults = array(
-			'tax10'      => 138.303,
-			'tax5'       => 69.1515,
-			'shipping10' => 10.00,
-			'other10'    => 125.73,
+			'tax' => array(
+				'tax10' => 138.303,
+				'tax5'  => 69.1515,
+			),
+			'other' => array(
+				'other10' => 125.73,
+			),
+			'shipping' => array(
+				'shipping10' => 10.00,
+			),
 		);
 
-		$this->assertEquals($this->cart->getConditionResults(false), $conditionResults);
+		$this->assertEquals($this->cart->conditionsTotal(null, false), $conditionResults);
+
+		// Cart conditions by type
+		$conditionResults = array(
+			'tax10' => 252.603,
+			'tax5'  => 69.1515,
+		);
+
+		$this->assertEquals($this->cart->conditionsTotal('tax'), $conditionResults);
+
+		// Item conditions results
+		$conditionResults = array(
+			'tax' => array(
+				'tax10' => 114.3,
+			),
+		);
+
+		$this->assertEquals($this->cart->itemsConditionsTotal(), $conditionResults);
+
+		// Item conditions results by type
+		$conditionResults = array(
+			'tax10' => 114.3,
+		);
+
+		$this->assertEquals($this->cart->itemsConditionsTotal('tax'), $conditionResults);
+
 	}
 
 }
