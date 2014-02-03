@@ -12,46 +12,34 @@ History and future capabilities.
 
 #### xx-Jan-14 - v1.0.0
 
-- ```Cart::getIdentity()``` User can return the cart identity.
-- ```Cart::setIdentity($name)``` User can set the cart identity.
-- ```Cart::add($item)``` User can add an item to the cart.
-- ```Cart::add($items)``` User can add multiple items to the cart.
-- ```Cart::remove($rowId)``` User can remove an item from the cart.
-- ```Cart::remove($rowId, $rowId)``` User can remove multiple items from the cart by passing multiple arguments.
-- ```Cart::remove(array($rowId, $rowId))``` User can remove multiple items from the cart by passing array.
-- ```Cart::update($rowId, $data)``` User can update a single item.
-- ```Cart::update($items)``` User can update multiple items.
-- ```Cart::update($rowId, $quantity)``` User can update an items quantity.
-- ```Cart::item($rowId)``` User can return information of the given item.
-- ```Cart::items()``` User can return information of all the items.
-- ```Cart::itemsSubtotal()``` User can return the subtotal of the items without conditions.
-- ```Cart::quantity()``` User can return the total # of items that are in the cart.
-- ```Cart::subtotal()``` User can return the subtotal of the cart.
-- ```Cart::total()``` User can return the cart total.
-- ```Cart::discounts()``` User can return all the applied discounts including item discounts.
-- ```Cart::discounts(false)``` User can return all the applied discounts excluding item discounts.
-- ```Cart::discountsSubtotal()``` User can return the subtotal of applied discounts including item discounts.
-- ```Cart::discountsTotal()``` User can return the total of applied discounts including item discounts.
-- ```Cart::discountsTotal($includeItems)``` User can return the total of applied discounts excluding item discounts.
-- ```Cart::discountedSubtotal()``` User can return the subtotal of the cart with the discounts applied.
-- ```Cart::itemsDiscounts()``` User can return all the discounts applied on items
-- ```Cart::itemsDiscountsTotal()``` User can return the total of discounts applied on items.
-- ```Cart::taxes()``` User can return all the applied tax rates including item taxes.
-- ```Cart::taxes($includeItems)``` User can return all the applied tax rates excluding item taxes.
-- ```Cart::taxesSubtotal()``` User can return the cart tax subtotal including item taxes.
-- ```Cart::taxesTotal()``` User can return the cart tax total including item taxes.
-- ```Cart::taxesTotal(false)``` User can return the cart tax total excluding item taxes.
-- ```Cart::itemsTaxes()``` User can return all the taxes applied on items.
-- ```Cart::itemsTaxesTotal()``` User can return the total of taxes applied on items.
-- ```Cart::weight()``` User can return the total cart weight.
-- ```Cart::clear()``` User can empty the cart.
-- ```Cart::find($data)``` User can search for items that are in the cart.
-- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` User can apply a condition.
-- ```Cart::conditions()``` User can return all the applied conditions.
-- ```Cart::conditionsTotal($type)``` User can return all the conditions total grouped by type.
-- ```Cart::clearConditions()``` User can clear all the applied conditions.
-- ```Cart::itemsConditions()``` User can return all the conditions applied only to items.
-- ```Cart::itemsConditionsTotal($type)``` User can return the items conditions sum grouped by type.
+- ```Cart::getIdentity()``` Return the cart identity.
+- ```Cart::setIdentity($name)``` Set the cart identity.
+- ```Cart::add($item)``` Add an item to the cart.
+- ```Cart::add($items)``` Add multiple items to the cart.
+- ```Cart::remove($rowId)``` Remove an item from the cart.
+- ```Cart::remove($rowId, $rowId)``` Remove multiple items from the cart by passing multiple arguments.
+- ```Cart::remove(array($rowId, $rowId))``` Remove multiple items from the cart by passing array.
+- ```Cart::update($rowId, $data)``` Update a single item.
+- ```Cart::update($items)``` Update multiple items.
+- ```Cart::update($rowId, $quantity)``` Update an items quantity.
+- ```Cart::item($rowId)``` Return information of the given item.
+- ```Cart::items()``` Return information of all items.
+- ```Cart::itemsSubtotal()``` Return the subtotal of the items without conditions.
+- ```Cart::quantity()``` Return the total # of items that are in the cart.
+- ```Cart::subtotal()``` Return the subtotal of the cart.
+- ```Cart::total()``` Return the cart total.
+- ```Cart::weight()``` Return the total cart weight.
+- ```Cart::clear()``` Empty the cart.
+- ```Cart::find($data)``` Search for items that are in the cart.
+- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` Apply a condition.
+- ```Cart::conditions($type|null, bool $includeItems)``` Return all applied conditions.
+- ```Cart::setConditionsOrder($array)``` Set the order in which conditions are applied.
+- ```Cart::conditionsTotal($type, bool $includeItems)``` Return all conditions totals grouped by type.
+- ```Cart::conditionsTotalSum($type|null)``` Return the sum of all or a specific type of conditions.
+- ```Cart::itemsConditions()``` Return all conditions applied only to items.
+- ```Cart::itemsConditionsTotal($type|null)``` Return all or a specific type of items conditions sum grouped by type.
+- ```Cart::itemsConditionsTotalSum($type|null)``` Return the sum of all or a specific type of items conditions.
+- ```Cart::clearConditions()``` Clear all applied conditions.
 
 ## Requirements
 
