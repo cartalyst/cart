@@ -58,7 +58,7 @@ Now you are able to require the `vendor/autoload.php` file to autoload the packa
 	$session = new NativeSession($store, $config['session_key'], $config['instance']);
 
 	// Instantiate the Cart and set the necessary configuration
-	$cart = new Cart($config['instance'], $session, new Dispatcher);
+	$cart = new Cart('cart', $config['instance'], $session, new Dispatcher);
 
 	$cart->setRequiredIndexes($config['requiredIndexes']);
 
