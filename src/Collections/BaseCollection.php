@@ -177,10 +177,6 @@ class BaseCollection extends Collection {
 		{
 			$this->conditionResults[$key]['price'] = 0;
 
-			$this->conditionResults[$key]['price'] = 0;
-
-			$this->conditionResults[$key]['subtotal'] = 0;
-
 			$this->conditionResults[$key]['subtotal'] = 0;
 		}
 
@@ -235,7 +231,14 @@ class BaseCollection extends Collection {
 
 				if (isset($this->totalConditionResults[$condition->get('type')][$condition->get('name')]))
 				{
-					$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
+					if ($target === 'price')
+					{
+						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result() * $this->get('quantity');
+					}
+					else
+					{
+						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
+					}
 				}
 				else
 				{
@@ -244,7 +247,14 @@ class BaseCollection extends Collection {
 						$this->totalConditionResults[$condition->get('type')] = array();
 					}
 
-					$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
+					if ($target === 'price')
+					{
+						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result() * $this->get('quantity');
+					}
+					else
+					{
+						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
+					}
 				}
 
 				$subtotal += $condition->result();
@@ -255,19 +265,20 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns the applied discounts total.
+	 * Returns all the conditions sum grouped by type.
 	 *
 	 * When passing a boolean true as the second parameter,
 	 * it will include the items discounts as well.
 	 *
-	 * @param  bool  $includeItems
-	 * @return float
+	 * @param  string  $type
+	 * @param  bool    $includeItems
+	 * @return array
 	 */
-	public function discountsTotal($includeItems = true)
+	public function conditionsTotal($type = null, $includeItems = true)
 	{
-		$this->applyConditions();
+		$this->totalConditionResults = array();
 
-		$total = 0;
+		$this->applyConditions();
 
 		if ($includeItems)
 		{
@@ -275,69 +286,53 @@ class BaseCollection extends Collection {
 			{
 				$item->applyConditions();
 
-				$total += $item->conditionResults['discount']['price'] + $item->conditionResults['discount']['subtotal'];
+				$this->totalConditionResults = array_merge_recursive(
+					$item->getConditionResults(),
+					$this->totalConditionResults
+				);
 			}
-
-			$total += $this->conditionResults['discount']['price'] + $this->conditionResults['discount']['subtotal'];
 		}
-		else
+
+		if ($type && ! isset($this->totalConditionResults[$type]))
 		{
-			$total += $this->conditionResults['discount']['price'] + $this->conditionResults['discount']['subtotal'];
+			return array();
 		}
 
-		return $total;
-
-		$total = $this->applyConditions('discount') - $this->applyConditions(null, 'price');
-
-		if ($includeItems)
+		foreach ($this->totalConditionResults as $key => $result)
 		{
-			$total += $this->itemsDiscountsTotal();
+			foreach ($result as $name => $value)
+			{
+				if (is_array($value))
+				{
+					$this->totalConditionResults[$key][$name] = array_sum($value);
+				}
+			}
 		}
 
-		return $total;
+		if (isset($this->totalConditionResults[$type]))
+		{
+			return $this->totalConditionResults[$type];
+		}
+
+		return $this->totalConditionResults;
 	}
 
 	/**
-	 * Returns all the applied taxes total.
+	 * Return sum of conditions.
 	 *
-	 * When passing a boolean true as the second parameter,
-	 * it will include the items discounts as well.
-	 *
-	 * @param  bool  $includeItems
+	 * @param  string $type
 	 * @return float
 	 */
-	public function taxesTotal($includeItems = true)
+	public function conditionsTotalSum($type = null, $includeItems = true)
 	{
-		$this->applyConditions();
-
-		$total = 0;
-
-		if ($includeItems)
+		if ( ! $type)
 		{
-			foreach ($this->items() as $item)
-			{
-				$item->applyConditions();
-
-				$total += $item->conditionResults['tax']['price'] + $item->conditionResults['tax']['subtotal'];
-			}
-
-			$total += $this->conditionResults['tax']['price'] + $this->conditionResults['tax']['subtotal'];
-		}
-		else
-		{
-			$total += $this->conditionResults['tax']['price'] + $this->conditionResults['tax']['subtotal'];
+			return array_sum(array_map(function($item) {
+			    return is_array($item) ? array_sum($item) : $item;
+			}, $this->conditionsTotal($type, $includeItems)));
 		}
 
-		return $total;
-
-		$total = $this->applyConditions('tax') - $this->applyConditions(null, 'price');
-
-		if ($includeItems)
-		{
-			$total += $this->itemsDiscountsTotal();
-		}
-
-		return $total;
+		return array_sum($this->conditionsTotal($type, $includeItems));
 	}
 
 	/**
@@ -355,9 +350,19 @@ class BaseCollection extends Collection {
 	 *
 	 * @return array
 	 */
-	protected function conditionsOfType($type = null)
+	public function conditionsOfType($type = null)
 	{
 		$conditions = array();
+
+		if ( ! $type)
+		{
+			foreach ($this->conditions as $condition)
+			{
+				$conditions[] = $condition;
+			}
+
+			return $conditions;
+		}
 
 		foreach ($this->conditions as $condition)
 		{

@@ -83,40 +83,6 @@ class ItemCollection extends BaseCollection {
 	}
 
 	/**
-	 * Returns all the discounts applied on this item.
-	 *
-	 * @return array
-	 */
-	public function discounts()
-	{
-		$discounts = array();
-
-		foreach ($this->conditionsOfType('discount') as $condition)
-		{
-			$discounts[] = $condition;
-		}
-
-		return $discounts;
-	}
-
-	/**
-	 * Returns all the taxes applied on this item.
-	 *
-	 * @return array
-	 */
-	public function taxes()
-	{
-		$taxes = array();
-
-		foreach ($this->conditionsOfType('tax') as $condition)
-		{
-			$taxes[] = $condition;
-		}
-
-		return $taxes;
-	}
-
-	/**
 	 * Returns the total item weight.
 	 *
 	 * @return float
@@ -174,6 +140,17 @@ class ItemCollection extends BaseCollection {
 		}
 
 		return $valid;
+	}
+
+	/**
+	 * Returns all the conditions sum grouped by type.
+	 *
+	 * @param  string  $type
+	 * @return array
+	 */
+	public function conditionsTotal($type = null, $includeItems = false)
+	{
+		return parent::conditionsTotal($type, false);
 	}
 
 }

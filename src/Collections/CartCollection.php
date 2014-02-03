@@ -60,59 +60,6 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Returns all the conditions sum grouped by type.
-	 *
-	 * When passing a boolean true as the second parameter,
-	 * it will include the items discounts as well.
-	 *
-	 * @param  string  $type
-	 * @param  bool    $includeItems
-	 * @return array
-	 */
-	public function conditionsTotal($type = null, $includeItems = true)
-	{
-		$this->totalConditionResults = array();
-
-		$this->applyConditions();
-
-		if ($includeItems)
-		{
-			foreach ($this->items() as $item)
-			{
-				$item->applyConditions();
-
-				$this->totalConditionResults = array_merge_recursive(
-					$item->getConditionResults(),
-					$this->totalConditionResults
-				);
-			}
-		}
-
-		if ($type && ! isset($this->totalConditionResults[$type]))
-		{
-			return array();
-		}
-
-		foreach ($this->totalConditionResults as $key => $result)
-		{
-			foreach ($result as $name => $value)
-			{
-				if (is_array($value))
-				{
-					$this->totalConditionResults[$key][$name] = array_sum($value);
-				}
-			}
-		}
-
-		if (isset($this->totalConditionResults[$type]))
-		{
-			return $this->totalConditionResults[$type];
-		}
-
-		return $this->totalConditionResults;
-	}
-
-	/**
 	 * Return sum of item conditions.
 	 *
 	 * @param  string $type
@@ -131,31 +78,34 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return sum of conditions.
-	 *
-	 * @param  string $type
-	 * @return float
-	 */
-	public function conditionsTotalSum($type = null)
-	{
-		if ( ! $type)
-		{
-			return array_sum(array_map(function($item) {
-			    return is_array($item) ? array_sum($item) : $item;
-			}, $this->conditionsTotal()));
-		}
-
-		return array_sum($this->conditionsTotal($type));
-	}
-
-	/**
 	 * Return conditions by type.
 	 *
 	 * @return array
 	 */
-	protected function conditionsOfType($type = null)
+	public function conditionsOfType($type = null, $includeItems = true)
 	{
 		$conditions = array();
+
+		if ( ! $type)
+		{
+			if ($includeItems)
+			{
+				foreach ($this->items() as $item)
+				{
+					foreach ($item->conditions() as $condition)
+					{
+						$conditions[] = $condition;
+					}
+				}
+			}
+
+			foreach ($this->conditions() as $condition)
+			{
+				$conditions[] = $condition;
+			}
+
+			return $conditions;
+		}
 
 		foreach ($this->items()->conditions as $condition)
 		{
@@ -228,66 +178,6 @@ class CartCollection extends BaseCollection {
 		}
 
 		return $this->totalConditionResults;
-	}
-
-	/**
-	 * Returns all the applied discounts from all the items.
-	 *
-	 * @return array
-	 */
-	public function itemsDiscounts()
-	{
-		$discounts = array();
-
-		foreach ($this->items() as $item)
-		{
-			$discounts[] = $item->discounts();
-		}
-
-		return $discounts;
-	}
-
-	/**
-	 * Returns the sum of all item discounts.
-	 *
-	 * @return float
-	 */
-	public function itemsDiscountsTotal()
-	{
-		return $this->items()->sum(function($item)
-		{
-			return $item->discountsTotal(false);
-		});
-	}
-
-	/**
-	 * Returns all the applied tax rates from all the items.
-	 *
-	 * @return array
-	 */
-	public function itemsTaxes()
-	{
-		$taxes = array();
-
-		foreach ($this->items() as $item)
-		{
-			$taxes[] = $item->taxes();
-		}
-
-		return $taxes;
-	}
-
-	/**
-	 * Returns the sum of all item taxes.
-	 *
-	 * @return float
-	 */
-	public function itemsTaxesTotal()
-	{
-		return $this->items()->sum(function($item)
-		{
-			return $item->taxesTotal(false);
-		});
 	}
 
 }
