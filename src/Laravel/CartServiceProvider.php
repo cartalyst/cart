@@ -25,9 +25,7 @@ use Illuminate\Support\ServiceProvider;
 class CartServiceProvider extends ServiceProvider {
 
 	/**
-	 * Boot the service provider.
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function boot()
 	{
@@ -35,9 +33,7 @@ class CartServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Register the service provider.
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function register()
 	{
