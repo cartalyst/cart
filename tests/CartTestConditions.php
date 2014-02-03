@@ -1715,6 +1715,9 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->cart->condition(array($tax10p, $tax5p, $shipping));
 
 		$this->assertEquals($this->cart->total(), 1455.895);
+
+		// Fetch total of a non existing condition
+		$this->assertEquals($this->cart->conditionsTotal('nonexisting'), array());
 	}
 
 

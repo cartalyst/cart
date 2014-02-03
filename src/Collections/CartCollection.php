@@ -88,6 +88,11 @@ class CartCollection extends BaseCollection {
 			}
 		}
 
+		if ($type && ! isset($this->totalConditionResults[$type]))
+		{
+			return array();
+		}
+
 		foreach ($this->totalConditionResults as $key => $result)
 		{
 			foreach ($result as $name => $value)
