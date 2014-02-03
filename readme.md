@@ -41,7 +41,7 @@ History and future capabilities.
 - ```Cart::itemsConditions()``` Return all conditions applied only to items.
 - ```Cart::itemsConditionsTotal($type|null)``` Return all or a specific type of items conditions sum grouped by type.
 - ```Cart::itemsConditionsTotalSum($type|null)``` Return the sum of all or a specific type of items conditions.
-- ```Cart::clearConditions()``` Clear all applied conditions.
+- ```Cart::clearConditions($type|null)``` Clear all or a specific type of applied conditions.
 
 ## Requirements
 

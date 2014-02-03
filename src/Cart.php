@@ -461,13 +461,27 @@ class Cart extends CartCollection {
 	/**
 	 * Clear the conditions.
 	 *
+	 * @param  string $type
 	 * @return void
 	 */
-	public function clearConditions()
+	public function clearConditions($type = null)
 	{
 		$cart = $this->items();
 
-		$cart->conditions = array();
+		if ($type)
+		{
+			foreach ($cart->conditions as $key => $value)
+			{
+				if ($value['type'] === $type)
+				{
+					unset($cart->conditions[$key]);
+				}
+			}
+		}
+		else
+		{
+			$cart->conditions = array();
+		}
 
 		$this->updateCart($cart);
 	}

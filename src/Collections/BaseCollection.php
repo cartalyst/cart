@@ -143,11 +143,25 @@ class BaseCollection extends Collection {
 	/**
 	 * Clear the conditions.
 	 *
+	 * @param  string $type
 	 * @return void
 	 */
-	public function clearConditions()
+	public function clearConditions($type = null)
 	{
-		$this->conditions = array();
+		if ($type)
+		{
+			foreach ($this->conditions as $key => $value)
+			{
+				if ($value['type'] === $type)
+				{
+					unset($this->conditions[$key]);
+				}
+			}
+		}
+		else
+		{
+			$this->conditions = array();
+		}
 	}
 
 	/**
