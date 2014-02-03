@@ -34,6 +34,7 @@ History and future capabilities.
 - ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` Apply a condition.
 - ```Cart::conditions($type|null, bool $includeItems)``` Return all applied conditions.
 - ```Cart::setConditionsOrder($array)``` Set the order in which conditions are applied.
+- ```Cart::applyConditions($type|null, $target|null)``` Return subtotal after applying upto a specific condition type or null to apply all conditions.
 - ```Cart::conditionsTotal($type, bool $includeItems)``` Return all conditions totals grouped by type.
 - ```Cart::conditionsTotalSum($type|null)``` Return the sum of all or a specific type of conditions.
 - ```Cart::itemsConditions()``` Return all conditions applied only to items.
