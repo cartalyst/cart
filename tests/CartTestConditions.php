@@ -1362,7 +1362,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->cart->condition($disc10p);
 
-		$discounts = $this->cart->discounts();
+		$discounts = $this->cart->conditionsOfType('discount', false);
 
 		$discountCondition = $discounts[0];
 
@@ -1429,7 +1429,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->cart->condition($tax10p);
 
-		$taxes = $this->cart->taxes();
+		$taxes = $this->cart->conditionsOfType('tax', false);
 
 		$taxCondition = $taxes[0];
 
