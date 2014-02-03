@@ -120,6 +120,30 @@ class Cart extends CartCollection {
 	}
 
 	/**
+	 * Returns the conditions order.
+	 *
+	 * @return array
+	 */
+	public function getConditionsOrder()
+	{
+		return $this->items()->getConditionsOrder();
+	}
+
+	/**
+	 * Sets the conditions order.
+	 *
+	 * @return array
+	 */
+	public function setConditionsOrder($order)
+	{
+		$cart = $this->items();
+
+		$cart->conditionsOrder = $order;
+
+		$this->updateCart($cart);
+	}
+
+	/**
 	 * Adds a single or multiple items to the cart.
 	 *
 	 * @param  array  $item

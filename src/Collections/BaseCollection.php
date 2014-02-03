@@ -173,7 +173,7 @@ class BaseCollection extends Collection {
 		// Reset the price
 		$this->setPrice($this->get('price'));
 
-		foreach ($this->conditionsOrder as $key)
+		foreach ($this->getConditionsOrder() as $key)
 		{
 			$this->conditionResults[$key]['price'] = 0;
 
@@ -185,7 +185,7 @@ class BaseCollection extends Collection {
 		}
 
 		// Apply price conditions
-		foreach ($this->conditionsOrder as $conditionType)
+		foreach ($this->getConditionsOrder() as $conditionType)
 		{
 			$oldPrice = $this->price;
 
@@ -200,7 +200,7 @@ class BaseCollection extends Collection {
 		$this->subtotal = $this->subtotal($this->price);
 
 		// Apply subtotal conditions
-		foreach ($this->conditionsOrder as $conditionType)
+		foreach ($this->getConditionsOrder() as $conditionType)
 		{
 			$this->conditionResults[$conditionType]['subtotal'] = $this->applyCondition($conditionType, 'subtotal', $this->subtotal);
 

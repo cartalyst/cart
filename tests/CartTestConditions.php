@@ -239,13 +239,23 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 	public function testItemTaxOnPrice()
 	{
 		$add5price = new Condition(array(
-			'name'   => 'Tax 5% Price',
+			'name'   => 'Add 5% Price',
 			'target' => 'price',
 			'type'   => 'tax',
 		));
 
 		$add5price->setActions(array(
 			'value' => '5.00%',
+		));
+
+		$shipping = new Condition(array(
+			'name'   => 'Shipping 10',
+			'type'   => 'shipping',
+			'target' => 'subtotal',
+		));
+
+		$shipping->setActions(array(
+			'value' => '10.00%',
 		));
 
 		$this->cart->add(
@@ -263,9 +273,15 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Item 1
 		$item1 = $this->cart->items()->first();
 
-		// $this->assertEquals($item1->taxesTotal(false), 25);
+		$this->assertEquals($item1->taxesTotal(false), 25);
 
 		$this->assertEquals($item1->total(), 525);
+
+		$item1->condition($shipping);
+
+		$item1->setConditionsOrder(array('tax', 'shipping'));
+
+		$this->assertEquals($item1->total(), 577.5);
 	}
 
 	public function testItemConditions1()
