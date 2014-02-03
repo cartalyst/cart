@@ -146,6 +146,7 @@ class ItemCollection extends BaseCollection {
 	 * Returns all the conditions sum grouped by type.
 	 *
 	 * @param  string  $type
+	 * @param  bool    $includeItems
 	 * @return array
 	 */
 	public function conditionsTotal($type = null, $includeItems = false)

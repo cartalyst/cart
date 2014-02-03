@@ -21,7 +21,7 @@
 class CartCollection extends BaseCollection {
 
 	/**
-	 * Return the items subtotal with conditions applied.
+	 * Returns the items subtotal with conditions applied.
 	 *
 	 * @return float
 	 */
@@ -34,7 +34,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return the items subtotal without conditions.
+	 * Returns the items subtotal without conditions.
 	 *
 	 * @return float
 	 */
@@ -47,7 +47,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return the total number of items in the cart.
+	 * Returns the total number of items in the cart.
 	 *
 	 * @return int
 	 */
@@ -60,7 +60,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Return conditions by type.
+	 * Returns the conditions by type.
 	 *
 	 * @return array
 	 */
@@ -165,14 +165,15 @@ class CartCollection extends BaseCollection {
 	/**
 	 * Return sum of item conditions.
 	 *
-	 * @param  string $type
+	 * @param  string  $type
 	 * @return float
 	 */
 	public function itemsConditionsTotalSum($type = null)
 	{
 		if ( ! $type)
 		{
-			return array_sum(array_map(function($item) {
+			return array_sum(array_map(function($item)
+			{
 			    return is_array($item) ? array_sum($item) : $item;
 			}, $this->itemsConditionsTotal()));
 		}

@@ -113,7 +113,7 @@ class BaseCollection extends Collection {
 	/**
 	 * Sets a new condition.
 	 *
-	 * @param  \Cartalyst\Conditions\Condition  $condition
+	 * @param  mixed  $condition
 	 * @return void
 	 */
 	public function condition($condition)
@@ -153,6 +153,8 @@ class BaseCollection extends Collection {
 	/**
 	 * Apply conditions.
 	 *
+	 * @param  string  $type
+	 * @param  string  $target
 	 * @return void
 	 */
 	public function applyConditions($type = null, $target = 'subtotal')
@@ -206,7 +208,7 @@ class BaseCollection extends Collection {
 	 *
 	 * @param  string  $type
 	 * @param  string  $target
-	 * @param  integer $value
+	 * @param  int     $value
 	 * @return float
 	 */
 	public function applyCondition($type, $target = 'subtotal', $value = 0)
@@ -310,14 +312,16 @@ class BaseCollection extends Collection {
 	/**
 	 * Return sum of conditions.
 	 *
-	 * @param  string $type
+	 * @param  string  $type
+	 * @param  bool    $includeItems
 	 * @return float
 	 */
 	public function conditionsTotalSum($type = null, $includeItems = true)
 	{
 		if ( ! $type)
 		{
-			return array_sum(array_map(function($item) {
+			return array_sum(array_map(function($item)
+			{
 			    return is_array($item) ? array_sum($item) : $item;
 			}, $this->conditionsTotal($type, $includeItems)));
 		}
@@ -338,25 +342,23 @@ class BaseCollection extends Collection {
 	/**
 	 * Return conditions by type.
 	 *
+	 * @param  string  $type
 	 * @return array
 	 */
 	public function conditions($type = null)
 	{
 		$conditions = array();
 
-		if ( ! $type)
-		{
-			foreach ($this->conditions as $condition)
-			{
-				$conditions[] = $condition;
-			}
-
-			return $conditions;
-		}
-
 		foreach ($this->conditions as $condition)
 		{
-			if ($condition->get('type') === $type)
+			if ($type)
+			{
+				if ($condition->get('type') === $type)
+				{
+					$conditions[] = $condition;
+				}
+			}
+			else
 			{
 				$conditions[] = $condition;
 			}
