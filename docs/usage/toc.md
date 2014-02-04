@@ -19,7 +19,5 @@
 	- [Conditions Types](#conditions-types)
 	- [Conditions Order](#conditions-order)
 	- [Conditions Methods](#conditions-methods)
-- [Discounts]({url}/usage/discounts)
-- [Taxes]({url}/usage/taxes)
 - [Events]({url}/usage/events)
 - [Exceptions]({url}/usage/exceptions)

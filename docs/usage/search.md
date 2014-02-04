@@ -22,5 +22,3 @@ You can use one or multiple properties to search for items in the cart
 			),
 		),
 	));
-
->  **Note:** When searching for `price` or `quantity` make sure that the value is a `float`.
