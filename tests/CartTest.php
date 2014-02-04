@@ -256,7 +256,13 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$item = $this->cart->find(array(
 			'price'    => 85,
 			'quantity' => 2,
-			'weight'   => 21.00,
+			'weight'   => 21,
+			'attributes' => array(
+				'size' => array(
+					'label' => 'Large',
+					'price' => 15
+				)
+			)
 		));
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
