@@ -64,7 +64,7 @@ class BaseCollection extends Collection {
 	/**
 	 * Holds the item subtotal.
 	 *
-	 * @var int
+	 * @var float
 	 */
 	protected $subtotal;
 
@@ -79,7 +79,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Set the item price.
+	 * Sets the item price.
 	 *
 	 * @param  float  $price
 	 * @return void
@@ -168,10 +168,9 @@ class BaseCollection extends Collection {
 	 * Apply conditions.
 	 *
 	 * @param  string  $type
-	 * @param  string  $target
 	 * @return void
 	 */
-	public function applyConditions($type = null, $target = 'subtotal')
+	public function applyConditions($type = null)
 	{
 		// Reset the subtotal
 		$this->subtotal = $this->subtotal();

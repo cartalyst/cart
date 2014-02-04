@@ -397,7 +397,7 @@ class Cart extends CartCollection {
 	 * Sets the conditions order.
 	 *
 	 * @param  array  $order
-	 * @return array
+	 * @return void
 	 */
 	public function setConditionsOrder(array $order)
 	{
@@ -412,7 +412,7 @@ class Cart extends CartCollection {
 	 * Sets the items conditions order.
 	 *
 	 * @param  array  $order
-	 * @return array
+	 * @return void
 	 */
 	public function setItemsConditionsOrder(array $order)
 	{
@@ -531,7 +531,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Set the required indexes.
+	 * Sets the required indexes.
 	 *
 	 * By default we will merge the provided indexes with the current
 	 * indexes, you can change this behavior by setting the second
@@ -561,7 +561,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Set the storage driver.
+	 * Sets the storage driver.
 	 *
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
 	 * @return void
