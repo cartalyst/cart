@@ -493,9 +493,9 @@ class Cart extends CartCollection {
 	 */
 	public function weight()
 	{
-		return $this->items()->sum(function($item)
+		return $this->items()->reduce(function($result, $item)
 		{
-			return $item->weight();
+			return $result += $item->weight();
 		});
 	}
 

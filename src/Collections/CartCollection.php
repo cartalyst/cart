@@ -27,9 +27,9 @@ class CartCollection extends BaseCollection {
 	 */
 	public function subtotal()
 	{
-		return $this->items()->sum(function($item)
+		return $this->items()->reduce(function($result, $item)
 		{
-			return $item->total();
+			return $result += $item->total();
 		});
 	}
 
@@ -40,9 +40,9 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsSubtotal()
 	{
-		return $this->items()->sum(function($item)
+		return $this->items()->reduce(function($result, $item)
 		{
-			return $item->subtotal();
+			return $result += $item->subtotal();
 		});
 	}
 
@@ -53,9 +53,9 @@ class CartCollection extends BaseCollection {
 	 */
 	public function quantity()
 	{
-		return (int) $this->items()->sum(function($item)
+		return $this->items()->reduce(function($result, $item)
 		{
-			return $item->get('quantity');
+			return $result += $item->get('quantity');
 		});
 	}
 
