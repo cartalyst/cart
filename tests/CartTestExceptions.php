@@ -65,7 +65,7 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	public function it_throws_exception_when_missing_a_required_index()
 	{
 		$this->cart->add(array(
-			'name'     => 'abc',
+			'name'     => 'foo',
 			'price'    => 20.00,
 			'quantity' => 5,
 		));
@@ -78,8 +78,8 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	public function it_throws_exception_when_missing_a_required_index_on_attributes()
 	{
 		$this->cart->add(array(
-			'id'         => 'abc',
-			'name'       => 'abc',
+			'id'         => 'foo',
+			'name'       => 'bar',
 			'price'      => 20.00,
 			'quantity'   => 5,
 			'attributes' => array(
@@ -98,9 +98,9 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	{
 		$this->cart->add(array(
 			'id'       => 1,
-			'name'     => 'abc',
+			'name'     => 'foo',
 			'price'    => 20.00,
-			'quantity' => 'dsdas',
+			'quantity' => 'bar',
 		));
 	}
 
@@ -112,8 +112,8 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	{
 		$this->cart->add(array(
 			'id'       => 1,
-			'name'     => 'abc',
-			'price'    => 'dd',
+			'name'     => 'foo',
+			'price'    => 'bar',
 			'quantity' => 5,
 		));
 	}
@@ -126,10 +126,21 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	{
 		$this->cart->add(array(
 			'id'         => 1,
-			'name'       => 'abc',
+			'name'       => 'foo',
 			'price'      => 20.00,
 			'quantity'   => 5,
-			'attributes' => 'abc',
+			'attributes' => 'bar',
+		));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 */
+	public function it_throws_exception_updating_an_item_that_does_not_exist()
+	{
+		$this->cart->update('foo', array(
+			'price' => 20.00,
 		));
 	}
 
@@ -139,18 +150,7 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_removing_an_item_that_does_not_exist()
 	{
-		$this->cart->remove('abc');
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
-	 */
-	public function it_throws_exception_updating_an_item_that_does_not_exist()
-	{
-		$this->cart->update('abc', array(
-			'price' => 20.00
-		));
+		$this->cart->remove('foo');
 	}
 
 	/**
@@ -159,7 +159,7 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_getting_an_item_that_does_not_exist()
 	{
-		$this->cart->item('abc');
+		$this->cart->item('foo');
 	}
 
 }
