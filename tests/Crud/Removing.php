@@ -58,8 +58,10 @@ class Removing extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-
-	public function testDeleteSingleItem()
+	/**
+	 * @test
+	 */
+	public function it_can_remove_a_single_item()
 	{
 		$this->cart->add(array(
 			array(
@@ -89,17 +91,19 @@ class Removing extends PHPUnit_Framework_TestCase {
 		$this->assertEmpty($this->cart->find(array('f53e8bcc3534788e4b4f296c1889cc99')));
 	}
 
-
 	/**
+	 * @test
 	 * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function testDeleteNonExistingItem()
+	public function it_throws_exception_when_deleting_a_non_existing_item()
 	{
 		$this->cart->remove('f53e8bcc3534788e4b4f296c1889cc99');
 	}
 
-
-	public function testDeleteMultipleItemsArray()
+	/**
+	 * @test
+	 */
+	public function it_can_remove_multiple_items()
 	{
 		$this->cart->add(array(
 			array(

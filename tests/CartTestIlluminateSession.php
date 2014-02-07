@@ -59,7 +59,10 @@ class CartTestIlluminateSession extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-	public function testSessionCanBeInstanciatedWithKeyAndInstance()
+	/**
+	 * @test
+	 */
+	public function session_can_be_instantiated_with_key_and_instance()
 	{
 		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
 
@@ -68,7 +71,10 @@ class CartTestIlluminateSession extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($session instanceof IlluminateSession);
 	}
 
-	public function testSessionMethods()
+	/**
+	 * @test
+	 */
+	public function it_can_get_cart_session_key_and_cart_identity()
 	{
 		$this->assertTrue($this->cart->getStorage() instanceof IlluminateSession);
 

@@ -58,116 +58,106 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 */
-	public function testThrowsCartMissingRequiredIndexException()
+	public function it_throws_exception_when_missing_a_required_index()
 	{
-		$this->cart->add(
-			array(
-				'name'     => 'abc',
-				'price'    => 20.00,
-				'quantity' => 5,
-			)
-		);
+		$this->cart->add(array(
+			'name'     => 'abc',
+			'price'    => 20.00,
+			'quantity' => 5,
+		));
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 */
-	public function testThrowsCartMissingRequiredIndexExceptionOnMissingAttribute()
+	public function it_throws_exception_when_missing_a_required_index_on_attributes()
 	{
-		$this->cart->add(
-			array(
-				'id'         => 'abc',
-				'name'       => 'abc',
-				'price'      => 20.00,
-				'quantity'   => 5,
-				'attributes' => array(
-					'print' => array(
-						'label' => 'Bear',
-					),
-				)
-			)
-		);
+		$this->cart->add(array(
+			'id'         => 'abc',
+			'name'       => 'abc',
+			'price'      => 20.00,
+			'quantity'   => 5,
+			'attributes' => array(
+				'print' => array(
+					'label' => 'Bear',
+				),
+			),
+		));
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
 	 */
-	public function testThrowsCartInvalidQuantityException()
+	public function it_throws_exception_when_invalid_quantity_is_passed()
 	{
-		$this->cart->add(
-			array(
-				'id'       => 1,
-				'name'     => 'abc',
-				'price'    => 20.00,
-				'quantity' => 'dsdas',
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 1,
+			'name'     => 'abc',
+			'price'    => 20.00,
+			'quantity' => 'dsdas',
+		));
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartInvalidPriceException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
 	 */
-	public function testThrowsCartInvalidPriceException()
+	public function it_throws_exception_when_invalid_price_is_passed()
 	{
-		$this->cart->add(
-			array(
-				'id'       => 1,
-				'name'     => 'abc',
-				'price'    => 'dd',
-				'quantity' => 5,
-			)
-		);
+		$this->cart->add(array(
+			'id'       => 1,
+			'name'     => 'abc',
+			'price'    => 'dd',
+			'quantity' => 5,
+		));
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartInvalidAttributesException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidAttributesException
 	 */
-	public function testThrowsCartInvalidAttributesException()
+	public function it_throws_exception_when_invalid_attributes_are_passed()
 	{
-		$this->cart->add(
-			array(
-				'id'         => 1,
-				'name'       => 'abc',
-				'price'      => 20.00,
-				'quantity'   => 5,
-				'attributes' => 'abc',
-			)
-		);
+		$this->cart->add(array(
+			'id'         => 1,
+			'name'       => 'abc',
+			'price'      => 20.00,
+			'quantity'   => 5,
+			'attributes' => 'abc',
+		));
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function testThrowsCartItemNotFoundExceptionOnRemove()
+	public function it_throws_exception_when_removing_an_item_that_does_not_exist()
 	{
 		$this->cart->remove('abc');
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function testThrowsCartItemNotFoundExceptionOnUpdate()
+	public function it_throws_exception_updating_an_item_that_does_not_exist()
 	{
 		$this->cart->update('abc', array(
 			'price' => 20.00
 		));
 	}
 
-
 	/**
-	 * @expectedException  \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function testThrowsCartItemNotFoundExceptionOnRetrieve()
+	public function it_throws_exception_when_getting_an_item_that_does_not_exist()
 	{
 		$this->cart->item('abc');
 	}

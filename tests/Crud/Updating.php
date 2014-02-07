@@ -58,8 +58,10 @@ class Updating extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-
-	public function testUpdateItemQuantity()
+	/**
+	 * @test
+	 */
+	public function it_can_update_an_item_quantity()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -77,9 +79,10 @@ class Updating extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item->get('quantity'), 2);
 	}
 
-
-
-	public function testUpdateItemWithNegativeQuantity1()
+	/**
+	 * @test
+	 */
+	public function it_can_remove_an_item_with_negative_quantity_test_1()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -97,8 +100,10 @@ class Updating extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->quantity(), 0);
 	}
 
-
-	public function testUpdateItemWithNegativeQuantity2()
+	/**
+	 * @test
+	 */
+	public function it_can_remove_an_item_with_negative_quantity_test_2()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -118,8 +123,10 @@ class Updating extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->quantity(), 0);
 	}
 
-
-	public function testUpdateItemPropertiesAndAttributes()
+	/**
+	 * @test
+	 */
+	public function it_can_update_an_item_attributes()
 	{
 		$this->cart->add(array(
 			'id'         => 'foobar2',
@@ -162,8 +169,10 @@ class Updating extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item->get('attributes')->first()->get('value'), 'M');
 	}
 
-
-	public function testUpdateMultipleItemsQuantityAndPrice()
+	/**
+	 * @test
+	 */
+	public function it_can_update_multiple_items_quantity_and_prices()
 	{
 		$this->cart->add(array(
 			array(

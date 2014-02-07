@@ -58,8 +58,10 @@ class Reading extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-
-	public function testRetrieveItem()
+	/**
+	 * @test
+	 */
+	public function it_can_get_an_item_information()
 	{
 		$this->cart->add(array(
 			array(
@@ -79,8 +81,10 @@ class Reading extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->item('f53e8bcc3534788e4b4f296c1889cc99')->get('price'), 97);
 	}
 
-
-	public function testItemSubtotal()
+	/**
+	 * @test
+	 */
+	public function it_can_get_an_item_subtotal()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -92,8 +96,10 @@ class Reading extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->items()->first()->subtotal(), 388);
 	}
 
-
-	public function testItemTotal()
+	/**
+	 * @test
+	 */
+	public function it_can_get_an_item_total()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -105,14 +111,18 @@ class Reading extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->items()->first()->total(), 485);
 	}
 
-
+	/**
+	 * @test
+	 */
 	public function testItemDiscountedSubtotal()
 	{
 
 	}
 
-
-	public function testItemQuantity()
+	/**
+	 * @test
+	 */
+	public function it_can_get_an_item_quantity()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -124,9 +134,10 @@ class Reading extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->items()->first()->quantity(), 4);
 	}
 
-
-
-	public function testItemWeight()
+	/**
+	 * @test
+	 */
+	public function it_can_get_an_item_weight()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',

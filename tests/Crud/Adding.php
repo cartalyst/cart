@@ -58,8 +58,10 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-
-	public function testAddItem()
+	/**
+	 * @test
+	 */
+	public function it_can_add_a_single_item()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -73,8 +75,10 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->items()->count(), 1);
 	}
 
-
-	public function testAddItemWithQuantityAsString()
+	/**
+	 * @test
+	 */
+	public function it_can_add_a_single_item_with_quantity_as_string()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -86,8 +90,10 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->quantity(), 2);
 	}
 
-
-	public function testAddItemWithPriceAsString()
+	/**
+	 * @test
+	 */
+	public function it_can_add_a_single_item_with_price_as_string()
 	{
 		$this->cart->add(array(
 			'id'       => 'foobar1',
@@ -101,172 +107,10 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item->get('price'), 10);
 	}
 
-
 	/**
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 * @test
 	 */
-	public function testAddItemWithMissingPrice()
-	{
-		$this->cart->add(array(
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 2,
-		));
-	}
-
-
-	/**
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
-	 */
-	public function testAddItemWithMissingQuantity()
-	{
-		$this->cart->add(array(
-			'id'    => 'foobar1',
-			'name'  => 'Foobar 1',
-			'price' => 10.00,
-		));
-	}
-
-
-	/**
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
-	 */
-	public function testAddItemWithInvalidQuantity()
-	{
-		$this->cart->add(array(
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => -2,
-			'price'    => 125.00,
-		));
-	}
-
-
-	/**
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
-	 */
-	public function testAddItemWithInvalidPrice()
-	{
-		$this->cart->add(array(
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 1,
-			'price'    => 'foo',
-		));
-	}
-
-
-	public function testAddMultipleItems()
-	{
-		$this->cart->add(array(
-			array(
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 3,
-				'price'    => 4,
-			),
-			array(
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 2,
-				'price'    => 21.00,
-			),
-			array(
-				'id'       => 'foobar3',
-				'name'     => 'Foobar 3',
-				'quantity' => 2,
-				'price'    => 120.00,
-			),
-		));
-
-		$this->assertEquals($this->cart->items()->count(), 3);
-
-		$this->assertEquals($this->cart->quantity(), 7);
-
-		$this->assertEquals($this->cart->total(), 294);
-	}
-
-
-	/**
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
-	 */
-	public function testAddMultipleItemsWithOneHavingInvalidQuantity()
-	{
-		$this->cart->add(array(
-			array(
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => '03',
-				'price'    => 4,
-			),
-			array(
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => -5,
-				'price'    => 21.00,
-			),
-			array(
-				'id'       => 'foobar3',
-				'name'     => 'Foobar 3',
-				'quantity' => 2,
-				'price'    => 120.00,
-			),
-		));
-	}
-
-	/**
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
-	 */
-	public function testAddMultipleItemsWithOneHavingInvalidPrice()
-	{
-		$this->cart->add(array(
-			array(
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => '03',
-				'price'    => 4,
-			),
-			array(
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 5,
-				'price'    => 'foo',
-			),
-			array(
-				'id'       => 'foobar3',
-				'name'     => 'Foobar 3',
-				'quantity' => 2,
-				'price'    => 120.00,
-			),
-		));
-	}
-
-
-	public function testAddExistingItemToUpdateTheQuantity()
-	{
-		$this->cart->add(array(
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 3,
-			'price'    => 4,
-		));
-
-		$item = $this->cart->items()->first();
-
-		$this->assertEquals($item->get('quantity'), 3);
-
-		$this->cart->add(array(
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 6,
-			'price'    => 4,
-		));
-
-		$this->assertEquals($item->get('quantity'), 9);
-	}
-
-
-	public function testAddItemWithAttributes()
+	public function it_can_add_a_single_item_with_attributes()
 	{
 		$this->cart->add(array(
 			'id'         => 'foobar1',
@@ -302,8 +146,179 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->total(), 267);
 	}
 
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 */
+	public function it_throws_exception_when_adding_single_item_with_missing_price_index()
+	{
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 2,
+		));
+	}
 
-	public function testAddMultipleItemsWithAttributes()
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+	 */
+	public function it_throws_exception_when_adding_single_item_with_missing_quantity_index()
+	{
+		$this->cart->add(array(
+			'id'    => 'foobar1',
+			'name'  => 'Foobar 1',
+			'price' => 10.00,
+		));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
+	 */
+	public function it_throws_exception_when_adding_single_item_with_invalid_quantity()
+	{
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => -2,
+			'price'    => 125.00,
+		));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
+	 */
+	public function it_throws_exception_when_adding_single_item_with_invalid_price()
+	{
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 1,
+			'price'    => 'foo',
+		));
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_add_multiple_items()
+	{
+		$this->cart->add(array(
+			array(
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'quantity' => 3,
+				'price'    => 4,
+			),
+			array(
+				'id'       => 'foobar2',
+				'name'     => 'Foobar 2',
+				'quantity' => 2,
+				'price'    => 21.00,
+			),
+			array(
+				'id'       => 'foobar3',
+				'name'     => 'Foobar 3',
+				'quantity' => 2,
+				'price'    => 120.00,
+			),
+		));
+
+		$this->assertEquals($this->cart->items()->count(), 3);
+
+		$this->assertEquals($this->cart->quantity(), 7);
+
+		$this->assertEquals($this->cart->total(), 294);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
+	 */
+	public function it_throws_exception_when_adding_multiple_items_with_one_having_invalid_quantity()
+	{
+		$this->cart->add(array(
+			array(
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'quantity' => '03',
+				'price'    => 4,
+			),
+			array(
+				'id'       => 'foobar2',
+				'name'     => 'Foobar 2',
+				'quantity' => -5,
+				'price'    => 21.00,
+			),
+			array(
+				'id'       => 'foobar3',
+				'name'     => 'Foobar 3',
+				'quantity' => 2,
+				'price'    => 120.00,
+			),
+		));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
+	 */
+	public function it_throws_exception_when_adding_multiple_items_with_one_having_invalid_price()
+	{
+		$this->cart->add(array(
+			array(
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'quantity' => '03',
+				'price'    => 4,
+			),
+			array(
+				'id'       => 'foobar2',
+				'name'     => 'Foobar 2',
+				'quantity' => 5,
+				'price'    => 'foo',
+			),
+			array(
+				'id'       => 'foobar3',
+				'name'     => 'Foobar 3',
+				'quantity' => 2,
+				'price'    => 120.00,
+			),
+		));
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_add_existing_item_to_update_its_quantity()
+	{
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 3,
+			'price'    => 4,
+		));
+
+		$item = $this->cart->items()->first();
+
+		$this->assertEquals($item->get('quantity'), 3);
+
+		$this->cart->add(array(
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 6,
+			'price'    => 4,
+		));
+
+		$this->assertEquals($item->get('quantity'), 9);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_add_multiple_items_with_attributes()
 	{
 		$this->cart->add(array(
 			array(
