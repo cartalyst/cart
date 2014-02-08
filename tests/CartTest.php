@@ -333,8 +333,22 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
  	public function cart_can_be_searched_and_returning_empty_results()
 	{
+		$this->cart->add(array(
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 2,
+				'price'      => 200.00,
+			),
+		));
+
 		$item = $this->cart->find(array(
 			'price' => 85,
+			'attributes' => array(
+				'color' => array(
+					'label' => 'red',
+				),
+			),
 		));
 
 		$this->assertEquals(count($item), 0);
