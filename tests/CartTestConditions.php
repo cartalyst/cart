@@ -1979,4 +1979,152 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 	}
 
+
+	public function testInclusiveConditions()
+	{
+		$tax10pInclusive = new Condition(array(
+			'name'   => 'Tax 10%',
+			'type'   => 'tax',
+			'target' => 'subtotal',
+		));
+
+		$tax10pInclusive->setActions(array(
+			'value'     => '10.00%',
+			'inclusive' => true,
+		));
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 5,
+					'price'      => 100.00,
+					'conditions' => $tax10pInclusive,
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 2,
+					'price'      => 200.00,
+					'conditions' => $tax10pInclusive,
+				),
+			)
+		);
+
+		// Item 1
+		$item1 = $this->cart->items()->first();
+
+		$this->assertEquals($item1->subtotal(), 500);
+
+		$this->assertEquals(round($item1->conditionsTotalSum('tax')), 45);
+
+		$this->assertEquals($item1->total(), 500);
+
+		// Item 2
+		$item2 = $this->cart->items()->last();
+
+		$this->assertEquals($item2->subtotal(), 400);
+
+		$this->assertEquals(round($item2->conditionsTotalSum('tax')), 36);
+
+		$this->assertEquals($item2->total(), 400);
+
+		// Cart
+		$this->assertEquals($this->cart->subtotal(), 900);
+
+		$this->assertEquals($this->cart->total(), 900);
+
+		// Apply inclusive condition on cart
+		$this->cart->condition($tax10pInclusive);
+
+		// Inclusive conditions will not affect the total
+		$this->assertEquals($this->cart->total(), 900);
+
+		// Excluding items tax
+		$this->assertEquals(round($this->cart->conditionsTotalSum('tax', false)), 82);
+
+		// Including items tax
+		$this->assertEquals(round($this->cart->conditionsTotalSum('tax')), 164);
+	}
+
+
+	public function testCombinedInclusiveConditions()
+	{
+		$tax10pInclusive = new Condition(array(
+			'name'   => 'Tax 10% Inclusive',
+			'type'   => 'tax',
+			'target' => 'subtotal',
+		));
+
+		$tax10pInclusive->setActions(array(
+			'value'     => '10.00%',
+			'inclusive' => true,
+		));
+
+		$tax10pExclusive = new Condition(array(
+			'name'   => 'Tax 10% Exclusive',
+			'type'   => 'tax',
+			'target' => 'subtotal',
+		));
+
+		$tax10pExclusive->setActions(array(
+			'value' => '10.00%',
+		));
+
+		$this->cart->add(
+			array(
+				array(
+					'id'         => 'foobar1',
+					'name'       => 'Foobar 1',
+					'quantity'   => 5,
+					'price'      => 100.00,
+					'conditions' => array($tax10pInclusive, $tax10pExclusive),
+				),
+				array(
+					'id'         => 'foobar2',
+					'name'       => 'Foobar 2',
+					'quantity'   => 2,
+					'price'      => 200.00,
+					'conditions' => array($tax10pInclusive, $tax10pExclusive),
+				),
+			)
+		);
+
+		// Item 1
+		$item1 = $this->cart->items()->first();
+
+		$this->assertEquals($item1->subtotal(), 500);
+
+		$this->assertEquals(round($item1->conditionsTotalSum('tax')), 95);
+
+		$this->assertEquals($item1->total(), 550);
+
+		// Item 2
+		$item2 = $this->cart->items()->last();
+
+		$this->assertEquals($item2->subtotal(), 400);
+
+		$this->assertEquals(round($item2->conditionsTotalSum('tax')), 76);
+
+		$this->assertEquals($item2->total(), 440);
+
+		// Cart
+		$this->assertEquals($this->cart->subtotal(), 990);
+
+		$this->assertEquals($this->cart->total(), 990);
+
+		// Apply inclusive condition on cart
+		$this->cart->condition($tax10pInclusive);
+
+		// Inclusive conditions will not affect the total
+		$this->assertEquals($this->cart->total(), 990);
+
+		// Excluding items tax
+		$this->assertEquals(round($this->cart->conditionsTotalSum('tax', false)), 90);
+
+		// Including items tax
+		$this->assertEquals(round($this->cart->conditionsTotalSum('tax')), 262);
+	}
+
 }

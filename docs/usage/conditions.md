@@ -92,6 +92,26 @@ Discount conditions must have the type set to discount
 
 The condition above will apply a 5% discount.
 
+#### Inclusive Conditions
+
+Inclusive conditions are not added to the total but allow you to reverse calculate taxes that are already included in your price.
+
+	$condition = new Condition(array(
+		'name'   => 'Tax (5%)',
+		'type'   => 'tax',
+		'target' => 'subtotal'
+	));
+
+	$condition->setActions(array(
+		array(
+			'value'     => '5%',
+			'inclusive' => true,
+		)
+	));
+
+	// This condition will be reverse calculated and will show up on total conditions methods,
+	// but it will not be added to the cart total.
+
 #### Other
 
 Other conditions must have the type set to other
