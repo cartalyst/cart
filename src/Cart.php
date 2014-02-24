@@ -461,7 +461,7 @@ class Cart extends CartCollection {
 	/**
 	 * Clear the conditions.
 	 *
-	 * @param  string $type
+	 * @param  string  $type
 	 * @return void
 	 */
 	public function clearConditions($type = null)
@@ -585,7 +585,7 @@ class Cart extends CartCollection {
 	/**
 	 * Updates the cart.
 	 *
-	 * @param  \Cartalyst\Cart\Collections\CartCollection
+	 * @param  \Cartalyst\Cart\Collections\CartCollection  $cart
 	 * @return void
 	 */
 	protected function updateCart($cart = null)

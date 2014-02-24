@@ -327,7 +327,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return sum of conditions.
+	 * Returns the sum of conditions.
 	 *
 	 * @param  string  $type
 	 * @param  bool    $includeItems
@@ -357,7 +357,7 @@ class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Return conditions by type.
+	 * Returns all the conditions with the given type.
 	 *
 	 * @param  string  $type
 	 * @return array
