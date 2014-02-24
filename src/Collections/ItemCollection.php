@@ -143,12 +143,9 @@ class ItemCollection extends BaseCollection {
 	}
 
 	/**
-	 * Returns all the conditions sum grouped by type.
-	 *
-	 * @param  string  $type
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function conditionsTotal($type = null)
+	public function conditionsTotal($type = null, $includeItems = true)
 	{
 		return parent::conditionsTotal($type, false);
 	}

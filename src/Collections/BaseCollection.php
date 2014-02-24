@@ -221,7 +221,7 @@ class BaseCollection extends Collection {
 	 *
 	 * @param  string  $type
 	 * @param  string  $target
-	 * @param  int     $value
+	 * @param  int  $value
 	 * @return float
 	 */
 	public function applyCondition($type, $target = 'subtotal', $value = 0)
@@ -280,7 +280,7 @@ class BaseCollection extends Collection {
 	 * it will include the items discounts as well.
 	 *
 	 * @param  string  $type
-	 * @param  bool    $includeItems
+	 * @param  bool  $includeItems
 	 * @return array
 	 */
 	public function conditionsTotal($type = null, $includeItems = true)
@@ -330,7 +330,7 @@ class BaseCollection extends Collection {
 	 * Returns the sum of conditions.
 	 *
 	 * @param  string  $type
-	 * @param  bool    $includeItems
+	 * @param  bool  $includeItems
 	 * @return float
 	 */
 	public function conditionsTotalSum($type = null, $includeItems = true)

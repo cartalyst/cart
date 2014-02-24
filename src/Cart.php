@@ -60,8 +60,6 @@ class Cart extends CartCollection {
 	protected $requiredIndexes = array(
 		'id',
 		'name',
-		'price',
-		'quantity',
 	);
 
 	/**
@@ -143,7 +141,7 @@ class Cart extends CartCollection {
 		}
 
 		// Validate the required parameters
-		foreach ($this->requiredIndexes as $parameter)
+		foreach ($this->getRequiredIndexes() as $parameter)
 		{
 			if ( ! isset($item[$parameter]))
 			{
@@ -258,7 +256,7 @@ class Cart extends CartCollection {
 	 * Update a single or multiple items that are on the cart.
 	 *
 	 * @param  string  $rowId
-	 * @param  array   $attributes
+	 * @param  array  $attributes
 	 * @return mixed
 	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
@@ -521,33 +519,27 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns the list of required indexes.
+	 * Returns the list of the required indexes.
 	 *
 	 * @return array
 	 */
 	public function getRequiredIndexes()
 	{
-		return $this->requiredIndexes;
+		return array_unique(array_merge($this->reservedIndexes, $this->requiredIndexes));
 	}
 
 	/**
 	 * Sets the required indexes.
 	 *
-	 * By default we will merge the provided indexes with the current
-	 * indexes, you can change this behavior by setting the second
-	 * parameter as false.
-	 *
 	 * @param  array  $indexes
-	 * @param  bool   $merge
+	 * @param  bool  $merge
 	 * @return void
 	 */
 	public function setRequiredIndexes($indexes = array(), $merge = true)
 	{
-		$currentIndexes = $merge ? $this->getrequiredIndexes() : array();
+		$currentIndexes = $merge ? $this->requiredIndexes : array();
 
-		$reservedIndexes = $this->reservedIndexes;
-
-		$this->requiredIndexes = array_unique(array_merge($currentIndexes, (array) $indexes, $reservedIndexes));
+		$this->requiredIndexes = array_unique(array_merge($currentIndexes, (array) $indexes));
 	}
 
 	/**
@@ -633,7 +625,7 @@ class Cart extends CartCollection {
 	 * Generate a unique identifier based on the item data.
 	 *
 	 * @param  string  $id
-	 * @param  array   $attributes
+	 * @param  array  $attributes
 	 * @return string
 	 */
 	protected function generateRowId($id, $attributes)
