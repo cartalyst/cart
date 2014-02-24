@@ -83,12 +83,10 @@ class CartTestIlluminateSession extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->getStorage()->identify(), 'main');
 
 		$this->cart->add(array(
-			array(
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 4,
-				'price'      => 97.00,
-			)
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 4,
+			'price'    => 97.00,
 		));
 
 		$this->cart->getStorage()->forget();

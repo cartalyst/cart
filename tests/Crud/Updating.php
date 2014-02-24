@@ -135,8 +135,8 @@ class Updating extends PHPUnit_Framework_TestCase {
 			'price'      => 120.00,
 			'attributes' => array(
 				'size' => array(
-					'label' => 'Size',
-					'value' => 'L',
+					'label' => 'Large',
+					'value' => 'l',
 					'price' => 15.00,
 				),
 			),
@@ -148,15 +148,15 @@ class Updating extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item->get('name'), 'Foobar 2');
 
-		$this->assertEquals($item->get('attributes')->first()->get('value'), 'L');
+		$this->assertEquals($item->get('attributes')->first()->get('value'), 'l');
 
-		$this->cart->update('27af518595dfd39ae436c70af8a74561', array(
+		$this->cart->update('bbf24530f06f8f7cfcc6cc843d42b89d', array(
 			'name'       => 'Foo',
 			'quantity'   => 6,
 			'attributes' => array(
 				'size' => array(
-					'label' => 'Size',
-					'value' => 'M',
+					'label' => 'Medium',
+					'value' => 'm',
 					'price' => 15.00,
 				),
 			),
@@ -166,7 +166,7 @@ class Updating extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item->get('name'), 'Foo');
 
-		$this->assertEquals($item->get('attributes')->first()->get('value'), 'M');
+		$this->assertEquals($item->get('attributes')->first()->get('value'), 'm');
 	}
 
 	/**
@@ -182,8 +182,8 @@ class Updating extends PHPUnit_Framework_TestCase {
 				'price'      => 120.00,
 				'attributes' => array(
 					'size' => array(
-						'label' => 'Size',
-						'value' => 'L',
+						'label' => 'Large',
+						'value' => 'l',
 						'price' => 15.00,
 					),
 				),
@@ -195,34 +195,44 @@ class Updating extends PHPUnit_Framework_TestCase {
 				'price'      => 150.00,
 				'attributes' => array(
 					'size' => array(
-						'label' => 'Size',
-						'value' => 'L',
+						'label' => 'Large',
+						'value' => 'l',
 						'price' => 15.00,
 					),
 				),
 			),
 		));
 
-		$this->assertEquals($this->cart->items()->first()->get('quantity'), 7);
+		$item1 = $this->cart->items()->first();
 
-		$this->assertEquals($this->cart->items()->last()->get('quantity'), 3);
+		$item2 = $this->cart->items()->last();
 
-		$this->assertEquals($this->cart->items()->first()->get('price'), 120.00);
+		$this->assertEquals($item1->get('quantity'), 7);
 
-		$this->assertEquals($this->cart->items()->last()->get('price'), 150.00);
+		$this->assertEquals($item2->get('quantity'), 3);
+
+		$this->assertEquals($item1->get('price'), 120.00);
+
+		$this->assertEquals($item2->get('price'), 150.00);
 
 		$this->cart->update(array(
-			'2c64e56be9013bed1a17e9156e53609b' => array('price' => 20.00, 'quantity' => 3),
-			'27af518595dfd39ae436c70af8a74561' => array('price' => 25.00, 'quantity' => 2),
+			'f8e43dd23ee6965c3c5541a54e12c64d' => array(
+				'price'    => 20.00,
+				'quantity' => 3,
+			),
+			'bbf24530f06f8f7cfcc6cc843d42b89d' => array(
+				'price'    => 25.00,
+				'quantity' => 2,
+			),
 		));
 
-		$this->assertEquals($this->cart->items()->first()->get('quantity'), 3);
+		$this->assertEquals($item1->get('quantity'), 3);
 
-		$this->assertEquals($this->cart->items()->last()->get('quantity'), 2);
+		$this->assertEquals($item2->get('quantity'), 2);
 
-		$this->assertEquals($this->cart->items()->first()->get('price'), 20.00);
+		$this->assertEquals($item1->get('price'), 20.00);
 
-		$this->assertEquals($this->cart->items()->last()->get('price'), 25.00);
+		$this->assertEquals($item2->get('price'), 25.00);
 	}
 
 }

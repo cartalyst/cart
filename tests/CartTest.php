@@ -216,22 +216,22 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	{
 		$this->cart->add(array(
 			array(
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 2,
-				'price'      => 97.00,
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'quantity' => 2,
+				'price'    => 97.00,
 			),
 			array(
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 85.00,
+				'id'       => 'foobar2',
+				'name'     => 'Foobar 2',
+				'quantity' => 2,
+				'price'    => 85.00,
 			),
 			array(
-				'id'         => 'foobar3',
-				'name'       => 'Foobar 3',
-				'quantity'   => 5,
-				'price'      => 35.00,
+				'id'       => 'foobar3',
+				'name'     => 'Foobar 3',
+				'quantity' => 5,
+				'price'    => 35.00,
 			),
 		));
 
@@ -258,8 +258,8 @@ class CartTest extends PHPUnit_Framework_TestCase {
 				'price'      => 97.00,
 				'weight'	 => 21.00,
 				'attributes' => array(
-					'size'  => array(
-						'label' => 'Size',
+					'size' => array(
+						'label' => 'Small',
 						'value' => 's',
 					),
 					'color' => array(
@@ -334,19 +334,17 @@ class CartTest extends PHPUnit_Framework_TestCase {
  	public function cart_can_be_searched_and_returning_empty_results()
 	{
 		$this->cart->add(array(
-			array(
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 200.00,
-			),
+			'id'       => 'foobar2',
+			'name'     => 'Foobar 2',
+			'quantity' => 2,
+			'price'    => 200.00,
 		));
 
 		$item = $this->cart->find(array(
 			'price' => 85,
 			'attributes' => array(
 				'color' => array(
-					'label' => 'red',
+					'label' => 'Red',
 				),
 			),
 		));

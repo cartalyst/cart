@@ -82,12 +82,14 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->cart->add(array(
-			array(
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 5,
-				'price'      => 100.00,
-				'conditions' => array($add5price, $disc5Psubtotal, $tax10psubtotal),
+			'id'         => 'foobar1',
+			'name'       => 'Foobar 1',
+			'quantity'   => 5,
+			'price'      => 100.00,
+			'conditions' => array(
+				$add5price,
+				$disc5Psubtotal,
+				$tax10psubtotal,
 			),
 		));
 
@@ -241,12 +243,13 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		));
 
 		$this->cart->add(array(
-			array(
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 5,
-				'price'      => 100.00,
-				'conditions' => array($add5price, $add5pprice),
+			'id'         => 'foobar1',
+			'name'       => 'Foobar 1',
+			'quantity'   => 5,
+			'price'      => 100.00,
+			'conditions' => array(
+				$add5price,
+				$add5pprice,
 			),
 		));
 
@@ -279,17 +282,13 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
-			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 5,
-					'price'      => 100.00,
-					'conditions' => $add5price,
-				),
-			)
-		);
+		$this->cart->add(array(
+			'id'         => 'foobar1',
+			'name'       => 'Foobar 1',
+			'quantity'   => 5,
+			'price'      => 100.00,
+			'conditions' => $add5price,
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -325,17 +324,13 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
-			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 5,
-					'price'      => 100.00,
-					'conditions' => $tax10psubtotal,
-				),
-			)
-		);
+		$this->cart->add(array(
+			'id'         => 'foobar1',
+			'name'       => 'Foobar 1',
+			'quantity'   => 5,
+			'price'      => 100.00,
+			'conditions' => $tax10psubtotal,
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -374,42 +369,40 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '-10.00',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 1,
-					'price'      => 97.00,
-					'conditions' => $condition,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-						),
-						'color' => array(
-							'label' => 'Red',
-							'value' => 'red',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 1,
+				'price'      => 97.00,
+				'conditions' => $condition,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 1,
-					'price'      => 85.00,
-					'conditions' => $condition,
-					'attributes' => array(
-						'size' => array(
-							'label' => 'Blue',
-							'value' => 'blue',
-							'price' => 15.00,
-						),
+			),
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 1,
+				'price'      => 85.00,
+				'conditions' => $condition,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 15.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$this->assertEquals($this->cart->items()->first()->total(), 90);
 
@@ -432,28 +425,26 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 1,
-					'conditions' => $condition,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 1,
+				'conditions' => $condition,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$conditionCart = new Condition(array(
 			'name'   => 'disc 10%',
@@ -496,29 +487,27 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 2,
-					'conditions' => $condition,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 2,
+				'conditions' => $condition,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$item = $this->cart->items()->first();
 
@@ -554,31 +543,29 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			),
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 2,
-					'price'      => 125.00,
-					'conditions' => array(
-						$taxCondition,
-						$discountCondition,
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 2,
+				'price'      => 125.00,
+				'conditions' => array(
+					$taxCondition,
+					$discountCondition,
+				),
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Large',
+						'value' => 'l',
 					),
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$item = $this->cart->items()->first();
 
@@ -629,43 +616,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '-5.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 2,
-					'price'      => 97.00,
-					'conditions' => $tax10p,
-					'weight'	 => 21.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 2,
+				'price'      => 97.00,
+				'conditions' => $tax10p,
+				'weight'	 => 21.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+					),
+					'color' => array(
+						'label' => 'Coolor',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 2,
-					'price'      => 85.00,
-					'conditions' => array($add5, $tax10p, $tax5p, $disc5p),
-					'weight'	 => 21.00,
-					'attributes' => array(
-						'size' => array(
-							'label' => 'Size',
-							'value' => 'L',
-						),
+			),
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 2,
+				'price'      => 85.00,
+				'conditions' => array(
+					$add5,
+					$tax10p,
+					$tax5p,
+					$disc5p,
+				),
+				'weight'	 => 21.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// Items 1 tax check
 		$item1 = $this->cart->items()->first();
@@ -756,44 +746,45 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '5.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 4,
-					'price'      => 100.00,
-					'weight'     => 21.00,
-					'conditions' => $disc10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 4,
+				'price'      => 100.00,
+				'weight'     => 21.00,
+				'conditions' => $disc10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 2,
-					'price'      => 100.00,
-					'weight'     => 45.04,
-					'conditions' => array($add5p, $disc10p),
-					'attributes' => array(
-						'size' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 15.00,
-						),
+			),
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 2,
+				'price'      => 100.00,
+				'weight'     => 45.04,
+				'conditions' => array(
+					$add5p,
+					$disc10p,
+				),
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 15.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// First item
 		$item1 = $this->cart->items()->first();
@@ -847,29 +838,27 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '5.00',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => $condition,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => $condition,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$item = $this->cart->items()->first();
 
@@ -912,29 +901,27 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'price > 200'
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => $condition,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => $condition,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$item = $this->cart->items()->first();
 
@@ -970,49 +957,49 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => array($tax10p, $condition),
-					'price'      => 244.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => array(
+					$tax10p,
+					$condition,
+				),
+				'price'      => 244.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => $condition,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => $condition,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -1060,49 +1047,49 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '-5.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => array($disc5p, $add5ToPrice),
-					'price'      => 244.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => array(
+					$disc5p,
+					$add5ToPrice,
+				),
+				'price'      => 244.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => $add5ToPrice,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => $add5ToPrice,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -1173,49 +1160,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => array($tax10p, $condition),
-					'price'      => 244.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => array($tax10p, $condition),
+				'price'      => 244.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'L',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => $condition,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => $condition,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'L',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -1223,7 +1207,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item1->total(), 841.5);
 
 		$this->cart->update(array(
-			'94c52868c7af27c86c337cf4a026db40' => array(
+			'914192403612d96540bbd1783e0d87a3' => array(
 				'conditions' => $tax10p
 			)
 		));
@@ -1237,7 +1221,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Remove conditions
 		$this->cart->update(array(
-			'194e85f089d754cc4759da6657840f8a' => array(
+			'd6ba63f0d213062c51fd17f1cc7c7f47' => array(
 				'conditions' => null
 			)
 		));
@@ -1246,7 +1230,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Add two conditions
 		$this->cart->update(array(
-			'194e85f089d754cc4759da6657840f8a' => array(
+			'd6ba63f0d213062c51fd17f1cc7c7f47' => array(
 				'conditions' => array($tax10p, $condition)
 			)
 		));
@@ -1255,7 +1239,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Make sure conditions are still assigned after an item is updated
 		$this->cart->update(array(
-			'194e85f089d754cc4759da6657840f8a' => array(
+			'd6ba63f0d213062c51fd17f1cc7c7f47' => array(
 				'weights' => 20.00
 			)
 		));
@@ -1275,48 +1259,45 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'conditions' => $tax10p,
-					'price'      => 244.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'conditions' => $tax10p,
+				'price'      => 244.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 125.00,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 125.00,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$other10p = new Condition(array(
 			'name'   => 'other10',
@@ -1357,49 +1338,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '-10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 244.00,
-					'conditions' => $disc10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 244.00,
+				'conditions' => $disc10p,
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 125.00,
-					'conditions' => $disc10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 125.00,
+				'conditions' => $disc10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$this->cart->condition($disc10p);
 
@@ -1424,49 +1402,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 244.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 244.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 125.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 125.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$this->cart->condition($tax10p);
 
@@ -1502,49 +1477,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '5.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 244.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 244.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 125.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 125.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size'  => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$this->cart->condition(array($tax10p, $tax5p));
 
@@ -1579,49 +1551,47 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '5.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 244.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 244.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
+			),
 
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 125.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 125.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		$this->cart->condition($tax10p);
 
@@ -1684,48 +1654,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 244.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 244.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 125.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 125.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -1810,48 +1778,46 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar4',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 244.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 244.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 3,
-					'price'      => 125.00,
-					'conditions' => $tax10p,
-					'attributes' => array(
-						'size'  => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
-						'color' => array(
-							'label' => 'Size',
-							'value' => 'L',
-							'price' => 3.00,
-						),
+			),
+			array(
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 125.00,
+				'conditions' => $tax10p,
+				'attributes' => array(
+					'size' => array(
+						'label' => 'Large',
+						'value' => 'l',
+						'price' => 3.00,
+					),
+					'color' => array(
+						'label' => 'Red',
+						'value' => 'red',
+						'price' => 3.00,
 					),
 				),
-			)
-		);
+			),
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -1902,7 +1868,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 				'tax5'  => 62.865,
 			),
 			'shipping' => array(
-				'shipping10' => 10.00
+				'shipping10' => 10.00,
 			),
 		);
 
@@ -1993,24 +1959,22 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'inclusive' => true,
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 5,
-					'price'      => 100.00,
-					'conditions' => $tax10pInclusive,
-				),
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 2,
-					'price'      => 200.00,
-					'conditions' => $tax10pInclusive,
-				),
-			)
-		);
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 5,
+				'price'      => 100.00,
+				'conditions' => $tax10pInclusive,
+			),
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 2,
+				'price'      => 200.00,
+				'conditions' => $tax10pInclusive,
+			),
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
@@ -2072,24 +2036,28 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'value' => '10.00%',
 		));
 
-		$this->cart->add(
+		$this->cart->add(array(
 			array(
-				array(
-					'id'         => 'foobar1',
-					'name'       => 'Foobar 1',
-					'quantity'   => 5,
-					'price'      => 100.00,
-					'conditions' => array($tax10pInclusive, $tax10pExclusive),
+				'id'         => 'foobar1',
+				'name'       => 'Foobar 1',
+				'quantity'   => 5,
+				'price'      => 100.00,
+				'conditions' => array(
+					$tax10pInclusive,
+					$tax10pExclusive,
 				),
-				array(
-					'id'         => 'foobar2',
-					'name'       => 'Foobar 2',
-					'quantity'   => 2,
-					'price'      => 200.00,
-					'conditions' => array($tax10pInclusive, $tax10pExclusive),
+			),
+			array(
+				'id'         => 'foobar2',
+				'name'       => 'Foobar 2',
+				'quantity'   => 2,
+				'price'      => 200.00,
+				'conditions' => array(
+					$tax10pInclusive,
+					$tax10pExclusive,
 				),
-			)
-		);
+			),
+		));
 
 		// Item 1
 		$item1 = $this->cart->items()->first();
