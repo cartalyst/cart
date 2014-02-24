@@ -62,6 +62,8 @@ class CartCollection extends BaseCollection {
 	/**
 	 * Returns the conditions by type.
 	 *
+	 * @param  string  $type
+	 * @param  bool    $includeItems
 	 * @return array
 	 */
 	public function conditions($type = null, $includeItems = true)

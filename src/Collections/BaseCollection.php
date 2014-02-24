@@ -143,7 +143,7 @@ class BaseCollection extends Collection {
 	/**
 	 * Clear the conditions.
 	 *
-	 * @param  string $type
+	 * @param  string  $type
 	 * @return void
 	 */
 	public function clearConditions($type = null)
@@ -168,7 +168,7 @@ class BaseCollection extends Collection {
 	 * Apply conditions.
 	 *
 	 * @param  string  $type
-	 * @return void
+	 * @return float
 	 */
 	public function applyConditions($type = null)
 	{
