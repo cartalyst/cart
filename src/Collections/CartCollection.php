@@ -53,7 +53,7 @@ class CartCollection extends BaseCollection {
 	 */
 	public function quantity()
 	{
-		return $this->items()->reduce(function($result, $item)
+		return (int) $this->items()->reduce(function($result, $item)
 		{
 			return $result += $item->get('quantity');
 		});
