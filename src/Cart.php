@@ -179,7 +179,7 @@ class Cart extends CartCollection {
 		$rowId = $this->generateRowId($item['id'], $attributes);
 
 		// Check if the item already exists on the cart
-		if ($this->itemExists($rowId))
+		if ($this->exists($rowId))
 		{
 			// Get the item
 			$row = $this->item($rowId);
@@ -229,7 +229,7 @@ class Cart extends CartCollection {
 		foreach ((array) $items as $rowId)
 		{
 			// Check if the item exists
-			if ( ! $this->itemExists($rowId))
+			if ( ! $this->exists($rowId))
 			{
 				throw new CartItemNotFoundException;
 			}
@@ -274,7 +274,7 @@ class Cart extends CartCollection {
 		}
 
 		// Check if the item exists
-		if ( ! $this->itemExists($rowId))
+		if ( ! $this->exists($rowId))
 		{
 			throw new CartItemNotFoundException;
 		}
@@ -362,7 +362,7 @@ class Cart extends CartCollection {
 	public function item($rowId)
 	{
 		// Check if the item exists
-		if ( ! $this->itemExists($rowId))
+		if ( ! $this->exists($rowId))
 		{
 			throw new CartItemNotFoundException;
 		}
@@ -569,7 +569,7 @@ class Cart extends CartCollection {
 	 * @param  string  $rowId
 	 * @return bool
 	 */
-	protected function itemExists($rowId)
+	public function exists($rowId)
 	{
 		return $this->items()->has($rowId);
 	}

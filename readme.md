@@ -22,6 +22,7 @@ History and future capabilities.
 - ```Cart::update($rowId, $data)``` Update a single item.
 - ```Cart::update($items)``` Update multiple items.
 - ```Cart::update($rowId, $quantity)``` Update an items quantity.
+- ```Cart::exists($rowId)``` Check if the given item exists.
 - ```Cart::item($rowId)``` Return information of the given item.
 - ```Cart::items()``` Return information of all items.
 - ```Cart::itemsSubtotal()``` Return the subtotal of the items without conditions.

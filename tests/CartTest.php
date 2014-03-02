@@ -352,4 +352,27 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(count($item), 0);
 	}
 
+	/**
+	 * @test
+	 */
+	public function see_if_item_exists()
+	{
+		$this->cart->add(array(
+			'id'       => 'foobar2',
+			'name'     => 'Foobar 2',
+			'quantity' => 2,
+			'price'    => 200.00,
+		));
+
+		$this->assertEquals(true, $this->cart->exists('2d2d8cb241842b326ce0e095dbfc4d41'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function see_if_item_does_not_exist()
+	{
+		$this->assertEquals(false, $this->cart->exists('foobar'));
+	}
+
 }
