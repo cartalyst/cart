@@ -263,7 +263,7 @@ class BaseCollection extends Collection {
 				}
 
 				// Add exclusive conditions only
-				if ( ! $inclusive = $condition->get('actions')[0]->get('inclusive'))
+				if ( ! $inclusive = $condition->get('actions')->first()->get('inclusive'))
 				{
 					$subtotal += $condition->result();
 				}
