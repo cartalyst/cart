@@ -28,6 +28,7 @@ use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
 use Cartalyst\Cart\Storage\StorageInterface;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Support\Collection;
 
 class Cart extends CartCollection {
 
@@ -51,6 +52,13 @@ class Cart extends CartCollection {
 	 * @var \Illuminate\Events\Dispatcher
 	 */
 	protected $dispatcher;
+
+	/**
+	 * Flag for weither we should fire events or not.
+	 *
+	 * @var bool
+	 */
+	protected $events = true;
 
 	/**
 	 * Holds all the required indexes.
@@ -212,7 +220,7 @@ class Cart extends CartCollection {
 		$this->updateCart($cart);
 
 		// Fire the 'cartalyst.cart.added' event
-		$this->dispatcher->fire('cartalyst.cart.added', array($this->item($rowId), $this->getIdentity()));
+		$this->fire('added', array($this->item($rowId), $this->getIdentity()));
 
 		return $cart;
 	}
@@ -244,7 +252,7 @@ class Cart extends CartCollection {
 			$cart->forget($rowId);
 
 			// Fire the 'cartalyst.cart.removed' event
-			$this->dispatcher->fire('cartalyst.cart.removed', array($item, $this->getIdentity()));
+			$this->fire('removed', array($item, $this->getIdentity()));
 		}
 
 		$this->updateCart($cart);
@@ -333,7 +341,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 
 			// Fire the 'cartalyst.cart.updated' event
-			$this->dispatcher->fire('cartalyst.cart.updated', array($this->item($rowId), $this->getIdentity()));
+			$this->fire('updated', array($this->item($rowId), $this->getIdentity()));
 		}
 
 		return $cart;
@@ -349,7 +357,26 @@ class Cart extends CartCollection {
 		$this->updateCart();
 
 		// Fire the 'cartalyst.cart.cleared' event
-		$this->dispatcher->fire('cartalyst.cart.cleared', $this->getIdentity());
+		$this->fire('cleared', $this->getIdentity());
+	}
+
+	/**
+	 * Synchronize a collection of data with the cart.
+	 *
+	 * @param  \Illuminate\Support\Collection  $items
+	 * @return bool
+	 */
+	public function sync(Collection $items)
+	{
+		// Turn events off
+		$this->events = false;
+
+		foreach ($items->all() as $item)
+		{
+			$this->add($item);
+		}
+
+		return true;
 	}
 
 	/**
@@ -593,6 +620,22 @@ class Cart extends CartCollection {
 	protected function cartConditions()
 	{
 		return $this->items()->conditions;
+	}
+
+	/**
+	 * Fires the given event.
+	 *
+	 * @param  string  $event
+	 * @param  mixed  $data
+	 * @return void
+	 */
+	protected function fire($event, $data = array())
+	{
+		// Check if we should fire events
+		if ($this->events)
+		{
+			$this->dispatcher->fire("cartalyst.cart.{$event}", $data);
+		}
 	}
 
 	/**

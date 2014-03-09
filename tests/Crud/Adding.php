@@ -24,6 +24,7 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Session\FileSessionHandler;
 use Illuminate\Session\Store;
+use Illuminate\Support\Collection;
 use Mockery as m;
 use PHPUnit_Framework_TestCase;
 
@@ -373,6 +374,33 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->quantity(), 7);
 
 		$this->assertEquals($this->cart->total(), 326.50);
+	}
+
+	/**
+	 * @test
+	 */
+	public function it_can_sync_data_from_a_collection()
+	{
+		$this->assertEquals($this->cart->items()->count(), 0);
+
+		$data = new Collection(array(
+			array(
+				'id'       => 'foobar1',
+				'name'     => 'Foobar 1',
+				'price'    => 50,
+				'quantity' => 1,
+			),
+			array(
+				'id'       => 'foobar2',
+				'name'     => 'Foobar 2',
+				'price'    => 50,
+				'quantity' => 1,
+			),
+		));
+
+		$this->cart->sync($data);
+
+		$this->assertEquals($this->cart->items()->count(), 2);
 	}
 
 }
