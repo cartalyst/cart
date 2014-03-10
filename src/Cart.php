@@ -376,6 +376,9 @@ class Cart extends CartCollection {
 			$this->add($item);
 		}
 
+		// Turn events on
+		$this->events = true;
+
 		return true;
 	}
 
