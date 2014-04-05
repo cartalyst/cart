@@ -1,8 +1,8 @@
 # Conditions
 
-The Cart package utilizes Cartalyst's Conditions package to manage item and cart based conditions.
+The Cart package utilizes the Cartalyst Conditions package to manage item and cart based conditions.
 
-The cart has a default set for three types of conditions, discount, tax and other conditions.
+The Cart has a default set of three condition types: `discount`, `tax` and `other` conditions.
 
 ## Apply Conditions {#apply-conditions}
 
@@ -18,7 +18,11 @@ You can add one or more (array) conditions to the cart.
 	));
 
 	$condition->setActions(array(
-		array('value' => '12.5%')
+
+		array(
+			'value' => '12.5%',
+		),
+
 	));
 
 	Cart::condition($condition);
@@ -31,7 +35,11 @@ You can add one or more (array) conditions to the cart.
 	));
 
 	$conditionTax->setActions(array(
-		array('value' => '12.5%')
+
+		array(
+			'value' => '12.5%',
+		),
+
 	));
 
 	$conditionDiscount = new Condition(array(
@@ -41,7 +49,11 @@ You can add one or more (array) conditions to the cart.
 	));
 
 	$conditionDiscount->setActions(array(
-		array('value' => '-2.5%')
+
+		array(
+			'value' => '-2.5%',
+		),
+
 	));
 
 	Cart::condition(array($conditionTax, $conditionDiscount));
@@ -69,11 +81,15 @@ Tax conditions must have the type set to tax
 	$condition = new Condition(array(
 		'name'   => 'VAT (12.5%)',
 		'type'   => 'tax',
-		'target' => 'subtotal'
+		'target' => 'subtotal',
 	));
 
 	$condition->setActions(array(
-		array('value' => '12.5%')
+
+		array(
+			'value' => '12.5%',
+		),
+
 	));
 
 #### Discount
@@ -83,54 +99,68 @@ Discount conditions must have the type set to discount
 	$condition = new Condition(array(
 		'name'   => 'Discount (5%)',
 		'type'   => 'discount',
-		'target' => 'subtotal'
+		'target' => 'subtotal',
 	));
 
 	$condition->setActions(array(
-		array('value' => '-5%')
+
+		array(
+			'value' => '-5%',
+		),
+
 	));
 
 The condition above will apply a 5% discount.
 
 #### Inclusive Conditions
 
-Inclusive conditions are not added to the total but allow you to reverse calculate taxes that are already included in your price.
+Inclusive conditions are not added to the total but allow you to reverse
+calculate taxes that are already included in your price.
+
+This condition will be reverse calculated and will show up on total
+conditions methods, but it will not be added to the cart total.
 
 	$condition = new Condition(array(
 		'name'   => 'Tax (5%)',
 		'type'   => 'tax',
-		'target' => 'subtotal'
+		'target' => 'subtotal',
 	));
 
 	$condition->setActions(array(
+
 		array(
 			'value'     => '5%',
 			'inclusive' => true,
-		)
-	));
+		),
 
-	// This condition will be reverse calculated and will show up on total conditions methods,
-	// but it will not be added to the cart total.
+	));
 
 #### Other
 
 Other conditions must have the type set to other
 
+The condition below will add 5 to the subtotal after applying discounts (if any)
+assuming conditions order are set to their default order.
+
 	$condition = new Condition(array(
 		'name'   => 'Other (5%)',
 		'type'   => 'other',
-		'target' => 'subtotal'
+		'target' => 'subtotal',
 	));
 
 	$condition->setActions(array(
-		array('value' => '5')
+
+		array(
+			'value' => '5',
+		),
+
 	));
 
-The condition above will add 5 to the subtotal after applying discounts (if any) assuming conditions order are set to their default order.
 
 ### Item Conditions
 
-You can add one or more (array) conditions to an item that will be assigned automatically when adding or updating on the cart.
+You can add one or more (array) conditions to an item that will be assigned
+automatically when adding or updating on the cart.
 
 	$condition = new Condition(array(
 		'name'   => 'VAT (12.5%)',

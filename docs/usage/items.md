@@ -23,18 +23,21 @@ Adding items to the cart is superbly easy.
 ### Adding multiple items into the cart {#multiple-items}
 
 	Cart::add(array(
+
 		array(
 			'id'       => 'foobar1',
 			'name'     => 'Foo Bar 1',
 			'quantity' => 1,
 			'price'    => 12.50,
 		),
+
 		array(
 			'id'       => 'foobar2',
 			'name'     => 'Foo Bar 2',
-			'quantity' => 1,
+			'quantity' => 2,
 			'price'    => 12.00,
 		),
+
 	));
 
 
@@ -55,18 +58,21 @@ You can update items that are on your cart by updating any property on a cart it
 ### Update multiple items
 
 	Cart::update(array(
+
 		'027c91341fd5cf4d2579b49c4b6a90da' => array(
 			'id'       => 'foobar123',
 			'name'     => 'Foo Bar 123',
 			'quantity' => 1,
 			'price'    => 12.50,
 		),
+
 		'56f0ab12a38f8317060d40981f6a4a93' => array(
 			'id'       => 'bazfoo',
 			'name'     => 'Baz Foo',
 			'quantity' => 1,
 			'price'    => 12.00,
 		),
+
 	));
 
 ### Update an item quantity
@@ -109,14 +115,17 @@ a price to each attribute that will reflect on the final item price.
 		'quantity'   => 1,
 		'price'      => 12.50,
 		'attributes' => array(
+
 			'size' => array(
 				'label' => 'L',
 				'value' => 'l',
 				'price' => 5,
 			),
+
 			'color' => array(
 				'label' => 'Red',
 				'value' => 'red',
 			),
+
 		),
 	));

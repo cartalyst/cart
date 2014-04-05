@@ -17,8 +17,10 @@ You can use one or multiple properties to search for items in the cart
 		'id'   => 'foobar',
 		'name' => 'Foo Bar',
 		'attributes' => array(
+
 			'size' => array(
 				'price' => (float) 5,
 			),
+
 		),
 	));

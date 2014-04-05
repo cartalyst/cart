@@ -1,5 +1,8 @@
 {
 	"name" : "Cart",
 	"github" : "cartalyst/cart",
-	"demo" : false
+	"demo" : {
+		"source" : "https://github.com/cartalyst/demo-cart",
+		"online" : false
+	}
 }
