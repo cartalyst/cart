@@ -11,56 +11,56 @@ The Cart has a default set of three condition types: `discount`, `tax` and `othe
 You can add one or more (array) conditions to the cart.
 
 	// Single condition
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'name'   => 'VAT (12.5%)',
 		'type'   => 'tax',
 		'target' => 'subtotal',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 
-		array(
+		[
 			'value' => '12.5%',
-		),
+		],
 
-	));
+	]);
 
 	Cart::condition($condition);
 
 	// Multiple conditions
-	$conditionTax = new Condition(array(
+	$conditionTax = new Condition([
 		'name'   => 'VAT (12.5%)',
 		'type'   => 'tax',
 		'target' => 'subtotal',
-	));
+	]);
 
-	$conditionTax->setActions(array(
+	$conditionTax->setActions([
 
-		array(
+		[
 			'value' => '12.5%',
-		),
+		],
 
-	));
+	]);
 
-	$conditionDiscount = new Condition(array(
+	$conditionDiscount = new Condition([
 		'name'   => 'Discount (2.5%)',
 		'type'   => 'discount',
 		'target' => 'subtotal',
-	));
+	]);
 
-	$conditionDiscount->setActions(array(
+	$conditionDiscount->setActions([
 
-		array(
+		[
 			'value' => '-2.5%',
-		),
+		],
 
-	));
+	]);
 
-	Cart::condition(array($conditionTax, $conditionDiscount));
+	Cart::condition([$conditionTax, $conditionDiscount]);
 
 ## Remove Conditions {#remove-conditions}
 
-	Cart::clearConditions($type); // Removes only conditions of $type
+	Cart::clearConditions($type, $includeItems); // Removes only conditions of $type
 
 	Cart::clearConditions(); // Removes all conditions
 
@@ -78,37 +78,37 @@ Cart handles discount, other and tax types by default.
 
 Tax conditions must have the type set to tax
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'name'   => 'VAT (12.5%)',
 		'type'   => 'tax',
 		'target' => 'subtotal',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 
-		array(
+		[
 			'value' => '12.5%',
-		),
+		],
 
-	));
+	]);
 
 #### Discount
 
 Discount conditions must have the type set to discount
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'name'   => 'Discount (5%)',
 		'type'   => 'discount',
 		'target' => 'subtotal',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 
-		array(
+		[
 			'value' => '-5%',
-		),
+		],
 
-	));
+	]);
 
 The condition above will apply a 5% discount.
 
@@ -120,20 +120,20 @@ calculate taxes that are already included in your price.
 This condition will be reverse calculated and will show up on total
 conditions methods, but it will not be added to the cart total.
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'name'   => 'Tax (5%)',
 		'type'   => 'tax',
 		'target' => 'subtotal',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 
-		array(
+		[
 			'value'     => '5%',
 			'inclusive' => true,
-		),
+		],
 
-	));
+	]);
 
 #### Other
 
@@ -142,19 +142,19 @@ Other conditions must have the type set to other
 The condition below will add 5 to the subtotal after applying discounts (if any)
 assuming conditions order are set to their default order.
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'name'   => 'Other (5%)',
 		'type'   => 'other',
 		'target' => 'subtotal',
-	));
+	]);
 
-	$condition->setActions(array(
+	$condition->setActions([
 
-		array(
+		[
 			'value' => '5',
-		),
+		],
 
-	));
+	]);
 
 
 ### Item Conditions
@@ -162,19 +162,19 @@ assuming conditions order are set to their default order.
 You can add one or more (array) conditions to an item that will be assigned
 automatically when adding or updating on the cart.
 
-	$condition = new Condition(array(
+	$condition = new Condition([
 		'name'   => 'VAT (12.5%)',
 		'type'   => 'tax',
 		'target' => 'subtotal',
-	));
+	]);
 
-	Cart::add(array(
+	Cart::add([
 		'id'         => 'foobar1',
 		'name'       => 'Foo Bar 1',
 		'quantity'   => 1,
 		'price'      => 12.50,
 		'conditions' => $condition,
-	));
+	]);
 
 ## Conditions Order {#conditions-order}
 
@@ -186,21 +186,21 @@ automatically when adding or updating on the cart.
 
 ### Set Cart Conditions Order
 
-	Cart::setConditionsOrder(array(
+	Cart::setConditionsOrder([
 		'discount',
 		'other',
 		'tax',
 		'shipping',
-	));
+	]);
 
 ### Set Items Conditions Order
 
-	Cart::setItemsConditionsOrder(array(
+	Cart::setItemsConditionsOrder([
 		'discount',
 		'other',
 		'tax',
 		'shipping',
-	));
+	]);
 
 ##### Condition targets
 
@@ -225,19 +225,19 @@ Return all applied conditions.
 
 Set the order in which conditions are applied.
 
-	Cart::setConditionsOrder(array(
+	Cart::setConditionsOrder([
 		'discount',
 		'other',
 		'tax',
-	));
+	]);
 
 Set the order in which conditions are applied on items.
 
-	Cart::setItemsConditionsOrder(array(
+	Cart::setItemsConditionsOrder([
 		'discount',
 		'tax',
 		'shipping',
-	));
+	]);
 
 Return subtotal after applying conditions untill a specific condition type or null to apply all conditions.
 
@@ -282,3 +282,9 @@ Clear all or a specific type of applied conditions.
 	Cart::clearConditions($type); // Clears conditions of the type passed
 
 	Cart::clearConditions(); // Clears all conditions
+
+Clear all or a specific type of applied conditions, excluding item conditions.
+
+	Cart::clearConditions($type, false); // Clears conditions of the type passed excluding item conditions
+
+	Cart::clearConditions(null, false); // Clears all conditions excluding item conditions

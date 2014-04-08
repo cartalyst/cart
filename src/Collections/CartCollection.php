@@ -68,7 +68,7 @@ class CartCollection extends BaseCollection {
 	 */
 	public function conditions($type = null, $includeItems = true)
 	{
-		$conditions = array();
+		$conditions = [];
 
 		if ( ! $type)
 		{
@@ -109,7 +109,7 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsConditions()
 	{
-		$conditions = array();
+		$conditions = [];
 
 		foreach ($this->items() as $item)
 		{
@@ -133,7 +133,7 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsConditionsTotal($type = null)
 	{
-		$this->totalConditionResults = array();
+		$this->totalConditionResults = [];
 
 		foreach ($this->items() as $item)
 		{
@@ -147,7 +147,7 @@ class CartCollection extends BaseCollection {
 
 		if ($type && ! isset($this->totalConditionResults[$type]))
 		{
-			return array();
+			return [];
 		}
 
 		foreach ($this->totalConditionResults as $key => $result)

@@ -15,32 +15,32 @@ on how to [Integrate it with Laravel 4]({url}/introduction/laravel-4).
 
 ### Add a single item to the cart
 
-	Cart::add(array(
+	Cart::add([
 		'id'       => 'foobar1',
 		'name'     => 'Foo Bar 1',
 		'quantity' => 1,
 		'price'    => 12.50,
-	));
+	]);
 
 ### Add multiple items to the cart
 
-	Cart::add(array(
+	Cart::add([
 
-		array(
+		[
 			'id'       => 'foobar1',
 			'name'     => 'Foo Bar 1',
 			'quantity' => 1,
 			'price'    => 12.50,
-		),
+		],
 
-		array(
+		[
 			'id'       => 'foobar2',
 			'name'     => 'Foo Bar 2',
 			'quantity' => 2,
 			'price'    => 12.00,
-		),
+		],
 
-	));
+	]);
 
 ### Get all the cart items
 

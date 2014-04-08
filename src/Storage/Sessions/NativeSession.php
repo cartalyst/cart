@@ -33,7 +33,7 @@ class NativeSession extends IlluminateSession implements SessionInterface {
 	 * @param  array   $config
 	 * @return void
 	 */
-	public function __construct(SessionStore $session, $key = null, $instance = null, $config = array())
+	public function __construct(SessionStore $session, $key = null, $instance = null, $config = [])
 	{
 		parent::__construct($session, $key, $instance);
 

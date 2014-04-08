@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,6 +52,6 @@ return array(
 	|
 	*/
 
-	'requiredIndexes' => array(),
+	'requiredIndexes' => [],
 
-);
+];

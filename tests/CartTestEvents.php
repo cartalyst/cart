@@ -74,12 +74,12 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 2,
 			'price'    => 125.00,
-		));
+		]);
 	}
 
 	/**
@@ -91,16 +91,16 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.updated', m::any());
 
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar2',
 			'name'     => 'Foobar 2',
 			'quantity' => 3,
 			'price'    => 120.00,
-		));
+		]);
 
-		$this->cart->update('2d2d8cb241842b326ce0e095dbfc4d41', array(
+		$this->cart->update('2d2d8cb241842b326ce0e095dbfc4d41', [
 			'name' => 'Foo',
-		));
+		]);
 	}
 
 	/**
@@ -112,12 +112,12 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.removed', m::any());
 
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar2',
 			'name'     => 'Foobar 2',
 			'quantity' => 3,
 			'price'    => 120.00,
-		));
+		]);
 
 		$this->cart->remove('2d2d8cb241842b326ce0e095dbfc4d41');
 	}

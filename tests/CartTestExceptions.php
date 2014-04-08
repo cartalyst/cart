@@ -64,11 +64,11 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_missing_a_required_index()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'name'     => 'foo',
 			'price'    => 20.00,
 			'quantity' => 5,
-		));
+		]);
 	}
 
 	/**
@@ -77,17 +77,17 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_missing_a_required_index_on_attributes()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'         => 'foo',
 			'name'       => 'bar',
 			'price'      => 20.00,
 			'quantity'   => 5,
-			'attributes' => array(
-				'print' => array(
+			'attributes' => [
+				'print' => [
 					'label' => 'Bear',
-				),
-			),
-		));
+				],
+			],
+		]);
 	}
 
 	/**
@@ -96,12 +96,12 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_invalid_quantity_is_passed()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 1,
 			'name'     => 'foo',
 			'price'    => 20.00,
 			'quantity' => 'bar',
-		));
+		]);
 	}
 
 	/**
@@ -110,12 +110,12 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_invalid_price_is_passed()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 1,
 			'name'     => 'foo',
 			'price'    => 'bar',
 			'quantity' => 5,
-		));
+		]);
 	}
 
 	/**
@@ -124,13 +124,13 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_invalid_attributes_are_passed()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'         => 1,
 			'name'       => 'foo',
 			'price'      => 20.00,
 			'quantity'   => 5,
 			'attributes' => 'bar',
-		));
+		]);
 	}
 
 	/**
@@ -139,9 +139,9 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_updating_an_item_that_does_not_exist()
 	{
-		$this->cart->update('foo', array(
+		$this->cart->update('foo', [
 			'price' => 20.00,
-		));
+		]);
 	}
 
 	/**

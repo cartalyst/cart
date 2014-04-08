@@ -63,20 +63,20 @@ class Removing extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_remove_a_single_item()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'quantity' => 7,
 				'price'    => 120.00,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 3,
 				'price'    => 120.00,
-			),
-		));
+			],
+		]);
 
 		$this->assertEquals($this->cart->quantity(), 10);
 
@@ -88,7 +88,7 @@ class Removing extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->items()->count(), 1);
 
-		$this->assertEmpty($this->cart->find(array('f53e8bcc3534788e4b4f296c1889cc99')));
+		$this->assertEmpty($this->cart->find(['f53e8bcc3534788e4b4f296c1889cc99']));
 	}
 
 	/**
@@ -105,24 +105,24 @@ class Removing extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_remove_multiple_items()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'quantity' => 7,
 				'price'    => 120.00,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 3,
 				'price'    => 120.00,
-			),
-		));
+			],
+		]);
 
 		$this->assertEquals($this->cart->items()->count(), 2);
 
-		$this->cart->remove(array('f53e8bcc3534788e4b4f296c1889cc99', '2d2d8cb241842b326ce0e095dbfc4d41'));
+		$this->cart->remove(['f53e8bcc3534788e4b4f296c1889cc99', '2d2d8cb241842b326ce0e095dbfc4d41']);
 
 		$this->assertEquals($this->cart->items()->count(), 0);
 	}

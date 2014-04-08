@@ -63,12 +63,12 @@ class Updating extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_update_an_item_quantity()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 5,
 			'price'    => 10.00,
-		));
+		]);
 
 		$item = $this->cart->items()->first();
 
@@ -84,12 +84,12 @@ class Updating extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_remove_an_item_with_negative_quantity_test_1()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 5,
 			'price'    => 10.00,
-		));
+		]);
 
 		$item = $this->cart->items()->first();
 
@@ -105,20 +105,20 @@ class Updating extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_remove_an_item_with_negative_quantity_test_2()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 5,
 			'price'    => 10.00,
-		));
+		]);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 5);
 
-		$this->cart->update('f53e8bcc3534788e4b4f296c1889cc99', array(
+		$this->cart->update('f53e8bcc3534788e4b4f296c1889cc99', [
 			'quantity' => -1,
-		));
+		]);
 
 		$this->assertEquals($this->cart->quantity(), 0);
 	}
@@ -128,19 +128,19 @@ class Updating extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_update_an_item_attributes()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'         => 'foobar2',
 			'name'       => 'Foobar 2',
 			'quantity'   => 3,
 			'price'      => 120.00,
-			'attributes' => array(
-				'size' => array(
+			'attributes' => [
+				'size' => [
 					'label' => 'Large',
 					'value' => 'l',
 					'price' => 15.00,
-				),
-			),
-		));
+				],
+			],
+		]);
 
 		$item = $this->cart->items()->first();
 
@@ -150,17 +150,17 @@ class Updating extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item->get('attributes')->first()->get('value'), 'l');
 
-		$this->cart->update('bbf24530f06f8f7cfcc6cc843d42b89d', array(
+		$this->cart->update('bbf24530f06f8f7cfcc6cc843d42b89d', [
 			'name'       => 'Foo',
 			'quantity'   => 6,
-			'attributes' => array(
-				'size' => array(
+			'attributes' => [
+				'size' => [
 					'label' => 'Medium',
 					'value' => 'm',
 					'price' => 15.00,
-				),
-			),
-		));
+				],
+			],
+		]);
 
 		$this->assertEquals($item->get('quantity'), 6);
 
@@ -174,34 +174,34 @@ class Updating extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_update_multiple_items_quantity_and_prices()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'         => 'foobar1',
 				'name'       => 'Foobar 1',
 				'quantity'   => 7,
 				'price'      => 120.00,
-				'attributes' => array(
-					'size' => array(
+				'attributes' => [
+					'size' => [
 						'label' => 'Large',
 						'value' => 'l',
 						'price' => 15.00,
-					),
-				),
-			),
-			array(
+					],
+				],
+			],
+			[
 				'id'         => 'foobar2',
 				'name'       => 'Foobar 2',
 				'quantity'   => 3,
 				'price'      => 150.00,
-				'attributes' => array(
-					'size' => array(
+				'attributes' => [
+					'size' => [
 						'label' => 'Large',
 						'value' => 'l',
 						'price' => 15.00,
-					),
-				),
-			),
-		));
+					],
+				],
+			],
+		]);
 
 		$item1 = $this->cart->items()->first();
 
@@ -215,16 +215,16 @@ class Updating extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($item2->get('price'), 150.00);
 
-		$this->cart->update(array(
-			'f8e43dd23ee6965c3c5541a54e12c64d' => array(
+		$this->cart->update([
+			'f8e43dd23ee6965c3c5541a54e12c64d' => [
 				'price'    => 20.00,
 				'quantity' => 3,
-			),
-			'bbf24530f06f8f7cfcc6cc843d42b89d' => array(
+			],
+			'bbf24530f06f8f7cfcc6cc843d42b89d' => [
 				'price'    => 25.00,
 				'quantity' => 2,
-			),
-		));
+			],
+		]);
 
 		$this->assertEquals($item1->get('quantity'), 3);
 
