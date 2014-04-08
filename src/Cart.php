@@ -514,19 +514,9 @@ class Cart extends CartCollection {
 
 		if ($includeItems)
 		{
-			if ($type)
+			foreach ($cart as $key => $item)
 			{
-				foreach ($cart as $key => $item)
-				{
-					$cart[$key]->clearConditions($type);
-				}
-			}
-			else
-			{
-				foreach ($cart as $key => $item)
-				{
-					$cart[$key]->clearConditions();
-				}
+				$cart[$key]->clearConditions($type);
 			}
 		}
 
