@@ -1,7 +1,7 @@
 # Collections
 
-Collections are merely a wrapper for an array of objects, but has a bunch of other
-useful methods to help you pluck items out of the array.
+Collections are merely a wrapper for an array of objects, but offers a bunch of
+other useful methods to help you pluck items out of the array.
 
 ## Collection Methods
 
@@ -10,7 +10,7 @@ Laravel [`Collection`](https://github.com/laravel/framework/blob/master/src/Illu
 
 ### first()
 
-The `first() method can be used to retrieve the first element in the collection.
+The `first()` method can be used to retrieve the first element in the collection.
 This will be the first element contained within the collection internal array.
 
 	$item = Cart::items()->first();
@@ -33,7 +33,7 @@ elements within it. It accepts no value and returns a boolean.
 	}
 	else
 	{
-		echo 'Cart is empty';
+		echo 'Cart is empty :(';
 	}
 
 ### count()

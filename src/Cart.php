@@ -220,7 +220,7 @@ class Cart extends CartCollection {
 		$this->updateCart($cart);
 
 		// Fire the 'cartalyst.cart.added' event
-		$this->fire('added', [$this->item($rowId), $this->getIdentity()]);
+		$this->fire('added', [$this->item($rowId), $this]);
 
 		return $cart;
 	}
@@ -252,7 +252,7 @@ class Cart extends CartCollection {
 			$cart->forget($rowId);
 
 			// Fire the 'cartalyst.cart.removed' event
-			$this->fire('removed', [$item, $this->getIdentity()]);
+			$this->fire('removed', [$item, $this]);
 		}
 
 		$this->updateCart($cart);
@@ -341,7 +341,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 
 			// Fire the 'cartalyst.cart.updated' event
-			$this->fire('updated', [$this->item($rowId), $this->getIdentity()]);
+			$this->fire('updated', [$this->item($rowId), $this]);
 		}
 
 		return $cart;
@@ -357,7 +357,7 @@ class Cart extends CartCollection {
 		$this->updateCart();
 
 		// Fire the 'cartalyst.cart.cleared' event
-		$this->fire('cleared', $this->getIdentity());
+		$this->fire('cleared', $this);
 	}
 
 	/**

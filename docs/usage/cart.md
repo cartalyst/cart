@@ -28,6 +28,6 @@
 ## CRUD Operations
 
 Having the ability to add, remove or update items inside a shopping cart is
-crucial job and the Cart got you covered.
+a crucial job and the Cart has you covered.
 
 Please jump into the next section to read about [Items]({url}/usage/items)
