@@ -64,12 +64,12 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_add_a_single_item()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 2,
 			'price'    => 10.00,
-		));
+		]);
 
 		$this->assertEquals($this->cart->quantity(), 2);
 
@@ -81,12 +81,12 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_add_a_single_item_with_quantity_as_string()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => '0000002',
 			'price'    => 10.00,
-		));
+		]);
 
 		$this->assertEquals($this->cart->quantity(), 2);
 	}
@@ -96,12 +96,12 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_add_a_single_item_with_price_as_string()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 2,
 			'price'    => '10.00',
-		));
+		]);
 
 		$item = $this->cart->items()->first();
 
@@ -113,28 +113,28 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_add_a_single_item_with_attributes()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'         => 'foobar1',
 			'name'       => 'Foobar 1',
 			'quantity'   => 2,
 			'price'      => 125.00,
-			'attributes' => array(
-				'size'  => array(
+			'attributes' => [
+				'size'  => [
 					'label' => 'Large',
 					'value' => 'l',
 					'price' => 5.00,
-				),
-				'color' => array(
+				],
+				'color' => [
 					'label' => 'Red',
 					'value' => 'red',
 					'price' => 3.50,
-				),
-				'print' => array(
+				],
+				'print' => [
 					'label' => 'Bear',
 					'value' => 'bear',
-				),
-			),
-		));
+				],
+			],
+		]);
 
 		$item = $this->cart->items()->first();
 
@@ -153,11 +153,11 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_adding_single_item_with_missing_price_index()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 2,
-		));
+		]);
 	}
 
 	/**
@@ -166,11 +166,11 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_adding_single_item_with_missing_quantity_index()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'    => 'foobar1',
 			'name'  => 'Foobar 1',
 			'price' => 10.00,
-		));
+		]);
 	}
 
 	/**
@@ -179,12 +179,12 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_adding_single_item_with_invalid_quantity()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => -2,
 			'price'    => 125.00,
-		));
+		]);
 	}
 
 	/**
@@ -193,12 +193,12 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_adding_single_item_with_invalid_price()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 1,
 			'price'    => 'foo',
-		));
+		]);
 	}
 
 	/**
@@ -206,26 +206,26 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_add_multiple_items()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'quantity' => 3,
 				'price'    => 4,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 2,
 				'price'    => 21.00,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar3',
 				'name'     => 'Foobar 3',
 				'quantity' => 2,
 				'price'    => 120.00,
-			),
-		));
+			],
+		]);
 
 		$this->assertEquals($this->cart->items()->count(), 3);
 
@@ -240,26 +240,26 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_adding_multiple_items_with_one_having_invalid_quantity()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'quantity' => '03',
 				'price'    => 4,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => -5,
 				'price'    => 21.00,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar3',
 				'name'     => 'Foobar 3',
 				'quantity' => 2,
 				'price'    => 120.00,
-			),
-		));
+			],
+		]);
 	}
 
 	/**
@@ -268,26 +268,26 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_throws_exception_when_adding_multiple_items_with_one_having_invalid_price()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'quantity' => '03',
 				'price'    => 4,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 5,
 				'price'    => 'foo',
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar3',
 				'name'     => 'Foobar 3',
 				'quantity' => 2,
 				'price'    => 120.00,
-			),
-		));
+			],
+		]);
 	}
 
 	/**
@@ -295,23 +295,23 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_add_existing_item_to_update_its_quantity()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 3,
 			'price'    => 4,
-		));
+		]);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 3);
 
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 6,
 			'price'    => 4,
-		));
+		]);
 
 		$this->assertEquals($item->get('quantity'), 9);
 	}
@@ -321,45 +321,45 @@ class Adding extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_add_multiple_items_with_attributes()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'         => 'foobar1',
 				'name'       => 'Foobar 1',
 				'quantity'   => '03',
 				'price'      => 4,
-				'attributes' => array(
-					'size'  => array(
+				'attributes' => [
+					'size'  => [
 						'label' => 'Large',
 						'value' => 'l',
 						'price' => 5.00,
-					),
-					'color' => array(
+					],
+					'color' => [
 						'label' => 'Red',
 						'value' => 'red',
 						'price' => 3.50,
-					),
-				),
-			),
-			array(
+					],
+				],
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 2,
 				'price'    => 21.00,
-			),
-			array(
+			],
+			[
 				'id'         => 'foobar3',
 				'name'       => 'Foobar 3',
 				'quantity'   => 2,
 				'price'      => 120.00,
-				'attributes' => array(
-					'color' => array(
+				'attributes' => [
+					'color' => [
 						'label' => 'Blue',
 						'value' => 'blue',
 						'price' => 3.50,
-					),
-				),
-			),
-		));
+					],
+				],
+			],
+		]);
 
 		$firstItem = $this->cart->items()->first();
 
@@ -383,20 +383,20 @@ class Adding extends PHPUnit_Framework_TestCase {
 	{
 		$this->assertEquals($this->cart->items()->count(), 0);
 
-		$data = new Collection(array(
-			array(
+		$data = new Collection([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'price'    => 50,
 				'quantity' => 1,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'price'    => 50,
 				'quantity' => 1,
-			),
-		));
+			],
+		]);
 
 		$this->cart->sync($data);
 

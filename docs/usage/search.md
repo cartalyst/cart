@@ -4,23 +4,23 @@
 
 You can use one or multiple properties to search for items in the cart
 
-	Cart::find(array(
+	Cart::find([
 		'id'    => 'foobar',
 		'name'  => 'Foo Bar',
 		'price' => (float) 5,
-	));
+	]);
 
 
 ## Search for Items with attributes
 
-	Cart::find(array(
+	Cart::find([
 		'id'   => 'foobar',
 		'name' => 'Foo Bar',
-		'attributes' => array(
+		'attributes' => [
 
-			'size' => array(
+			'size' => [
 				'price' => (float) 5,
-			),
+			],
 
-		),
-	));
+		],
+	]);

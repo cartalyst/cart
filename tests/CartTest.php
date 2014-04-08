@@ -75,9 +75,9 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_set_the_required_indexes()
 	{
-		$indexes = array(
+		$indexes = [
 			'price',
-		);
+		];
 
 		$this->cart->setRequiredIndexes($indexes);
 
@@ -127,40 +127,40 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_get_the_total_number_of_items_inside_the_cart()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'         => 'foobar1',
 				'name'       => 'Foobar 1',
 				'quantity'   => 4,
 				'price'      => 97.00,
 				'weight'	 => 21.00,
-				'attributes' => array(
-					'size'  => array(
+				'attributes' => [
+					'size'  => [
 						'label' => 'Large',
 						'value' => 'l',
-					),
-					'color' => array(
+					],
+					'color' => [
 						'label' => 'Red',
 						'value' => 'red',
 						'price' => 3.00,
-					),
-				),
-			),
-			array(
+					],
+				],
+			],
+			[
 				'id'         => 'foobar2',
 				'name'       => 'Foobar 2',
 				'quantity'   => 2,
 				'price'      => 85.00,
 				'weight'	 => 21.00,
-				'attributes' => array(
-					'size' => array(
+				'attributes' => [
+					'size' => [
 						'label' => 'Large',
 						'value' => 'l',
 						'price' => 15.00,
-					),
-				),
-			),
-		));
+					],
+				],
+			],
+		]);
 
 		$this->assertEquals($this->cart->quantity(), 6);
 	}
@@ -170,22 +170,22 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function it_can_get_the_total_cart_weight()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'quantity' => 4,
 				'price'    => 97.00,
 				'weight'   => 21.00,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 2,
 				'price'    => 85.00,
 				'weight'   => 21.00,
-			),
-		));
+			],
+		]);
 
 		$this->assertEquals($this->cart->weight(), 126);
 	}
@@ -195,12 +195,12 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function cart_can_be_cleared()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar1',
 			'name'     => 'Foobar 1',
 			'quantity' => 4,
 			'price'    => 97.00,
-		));
+		]);
 
 		$this->assertEquals($this->cart->quantity(), 4);
 
@@ -214,31 +214,31 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function cart_can_be_searched()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'       => 'foobar1',
 				'name'     => 'Foobar 1',
 				'quantity' => 2,
 				'price'    => 97.00,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 2,
 				'price'    => 85.00,
-			),
-			array(
+			],
+			[
 				'id'       => 'foobar3',
 				'name'     => 'Foobar 3',
 				'quantity' => 5,
 				'price'    => 35.00,
-			),
-		));
+			],
+		]);
 
-		$items = $this->cart->find(array(
+		$items = $this->cart->find([
 			'price'    => 85,
 			'quantity' => 2,
-		));
+		]);
 
 		$this->assertEquals($items[0]->get('id'), 'foobar2');
 
@@ -250,76 +250,76 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function cart_can_be_searched_by_items_attributes()
 	{
-		$this->cart->add(array(
-			array(
+		$this->cart->add([
+			[
 				'id'         => 'foobar1',
 				'name'       => 'Foobar 1',
 				'quantity'   => 2,
 				'price'      => 97.00,
 				'weight'	 => 21.00,
-				'attributes' => array(
-					'size' => array(
+				'attributes' => [
+					'size' => [
 						'label' => 'Small',
 						'value' => 's',
-					),
-					'color' => array(
+					],
+					'color' => [
 						'label' => 'Red',
 						'value' => 'red',
 						'price' => 3.00,
-					),
-				),
-			),
-			array(
+					],
+				],
+			],
+			[
 				'id'         => 'foobar2',
 				'name'       => 'Foobar 2',
 				'quantity'   => 2,
 				'price'      => 85.00,
 				'weight'	 => 21.00,
-				'attributes' => array(
-					'size' => array(
+				'attributes' => [
+					'size' => [
 						'label' => 'Large',
 						'value' => 'l',
 						'price' => 15.00,
-					),
-				),
-			),
-			array(
+					],
+				],
+			],
+			[
 				'id'         => 'foobar3',
 				'name'       => 'Foobar 3',
 				'quantity'   => 5,
 				'price'      => 35.00,
 				'weight'	 => 21.00,
-				'attributes' => array(
-					'size' => array(
+				'attributes' => [
+					'size' => [
 						'label' => 'Large',
 						'value' => 'l',
 						'price' => 5.00,
-					),
-				),
-			),
-		));
+					],
+				],
+			],
+		]);
 
-		$item = $this->cart->find(array(
+		$item = $this->cart->find([
 			'price'    => 85,
 			'quantity' => 2,
 			'weight'   => 21,
-			'attributes' => array(
-				'size' => array(
+			'attributes' => [
+				'size' => [
 					'label' => 'Large',
 					'price' => 15,
-				),
-			),
-		));
+				],
+			],
+		]);
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
 
-		$items = $this->cart->find(array(
-			'attributes' => array(
-				'size' => array(
+		$items = $this->cart->find([
+			'attributes' => [
+				'size' => [
 					'value' => 'l',
-				),
-			),
-		));
+				],
+			],
+		]);
 
 		$this->assertEquals(count($items), 2);
 
@@ -333,21 +333,21 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
  	public function cart_can_be_searched_and_returning_empty_results()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar2',
 			'name'     => 'Foobar 2',
 			'quantity' => 2,
 			'price'    => 200.00,
-		));
+		]);
 
-		$item = $this->cart->find(array(
+		$item = $this->cart->find([
 			'price' => 85,
-			'attributes' => array(
-				'color' => array(
+			'attributes' => [
+				'color' => [
 					'label' => 'Red',
-				),
-			),
-		));
+				],
+			],
+		]);
 
 		$this->assertEquals(count($item), 0);
 	}
@@ -357,12 +357,12 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function see_if_item_exists()
 	{
-		$this->cart->add(array(
+		$this->cart->add([
 			'id'       => 'foobar2',
 			'name'     => 'Foobar 2',
 			'quantity' => 2,
 			'price'    => 200.00,
-		));
+		]);
 
 		$this->assertEquals(true, $this->cart->exists('2d2d8cb241842b326ce0e095dbfc4d41'));
 	}

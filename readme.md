@@ -18,7 +18,7 @@ History and future capabilities.
 - ```Cart::add($items)``` Add multiple items to the cart.
 - ```Cart::remove($rowId)``` Remove an item from the cart.
 - ```Cart::remove($rowId, $rowId)``` Remove multiple items from the cart by passing multiple arguments.
-- ```Cart::remove(array($rowId, $rowId))``` Remove multiple items from the cart by passing array.
+- ```Cart::remove([$rowId, $rowId])``` Remove multiple items from the cart by passing array.
 - ```Cart::update($rowId, $data)``` Update a single item.
 - ```Cart::update($items)``` Update multiple items.
 - ```Cart::update($rowId, $quantity)``` Update an items quantity.
