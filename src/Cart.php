@@ -490,9 +490,10 @@ class Cart extends CartCollection {
 	 * Clear the conditions.
 	 *
 	 * @param  string  $type
+	 * @param  bool    $includeItems
 	 * @return void
 	 */
-	public function clearConditions($type = null)
+	public function clearConditions($type = null, $includeItems = true)
 	{
 		$cart = $this->items();
 
@@ -509,6 +510,24 @@ class Cart extends CartCollection {
 		else
 		{
 			$cart->conditions = array();
+		}
+
+		if ($includeItems)
+		{
+			if ($type)
+			{
+				foreach ($cart as $key => $item)
+				{
+					$cart[$key]->clearConditions($type);
+				}
+			}
+			else
+			{
+				foreach ($cart as $key => $item)
+				{
+					$cart[$key]->clearConditions();
+				}
+			}
 		}
 
 		$this->updateCart($cart);

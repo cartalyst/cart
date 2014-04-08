@@ -48,7 +48,7 @@ You can add one or more (array) conditions to the cart.
 
 ## Remove Conditions {#remove-conditions}
 
-	Cart::clearConditions($type); // Removes only conditions of $type
+	Cart::clearConditions($type, $includeItems); // Removes only conditions of $type
 
 	Cart::clearConditions(); // Removes all conditions
 
@@ -252,3 +252,9 @@ Clear all or a specific type of applied conditions.
 	Cart::clearConditions($type); // Clears conditions of the type passed
 
 	Cart::clearConditions(); // Clears all conditions
+
+Clear all or a specific type of applied conditions, excluding item conditions.
+
+	Cart::clearConditions($type, false); // Clears conditions of the type passed excluding item conditions
+
+	Cart::clearConditions(null, false); // Clears all conditions excluding item conditions

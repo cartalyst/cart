@@ -172,6 +172,9 @@ class BaseCollection extends Collection {
 	 */
 	public function applyConditions($type = null)
 	{
+		// Reset calculated conditions
+		$this->totalConditionResults = array();
+
 		// Reset the subtotal
 		$this->subtotal = $this->subtotal();
 

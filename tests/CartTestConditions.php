@@ -1317,13 +1317,100 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->total(), 1473.78);
 
-		$this->cart->clearConditions('tax');
+		$this->cart->clearConditions('tax', false);
 
 		$this->assertEquals($this->cart->total(), 1339.8);
 
-		$this->cart->clearConditions();
+		$this->cart->clearConditions(null, false);
 
 		$this->assertEquals($this->cart->total(), 1218);
+	}
+
+	public function testRemoveConditions()
+	{
+		$tax10pItem = new Condition(array(
+			'name'   => 'tax10',
+			'type'   => 'tax',
+			'target' => 'price',
+		));
+
+		$tax10pItem->setActions(array(
+			'value' => '10.00',
+		));
+
+		$tax5pItem = new Condition(array(
+			'name'   => 'tax5',
+			'type'   => 'tax',
+			'target' => 'price',
+		));
+
+		$tax5pItem->setActions(array(
+			'value' => '5.00',
+		));
+
+		$tax10p = new Condition(array(
+			'name'   => 'tax10',
+			'type'   => 'tax',
+			'target' => 'subtotal',
+		));
+
+		$tax10p->setActions(array(
+			'value' => '10.00%',
+		));
+
+		$this->cart->add(array(
+			array(
+				'id'         => 'foobar4',
+				'name'       => 'Foobar 1',
+				'quantity'   => 3,
+				'price'      => 100.00,
+				'conditions' => array($tax10pItem, $tax5pItem),
+			),
+		));
+
+		// Item 1
+		$item1 = $this->cart->items()->first();
+
+		$this->assertEquals($item1->total(), 345);
+
+		// Cart
+		$this->assertEquals($this->cart->total(), 345);
+
+		$this->assertEquals($this->cart->subtotal(), 345);
+
+		$this->cart->condition($tax10p);
+
+		$this->assertEquals($this->cart->subtotal(), 345);
+
+		$this->assertEquals($this->cart->total(), 379.5);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 79.5);
+
+		$this->cart->clearConditions('tax', false);
+
+		$this->assertEquals($this->cart->subtotal(), 345);
+
+		$this->assertEquals($this->cart->total(), 345);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 45);
+
+		$this->cart->clearConditions('tax');
+
+		$this->assertEquals($this->cart->subtotal(), 300);
+
+		$this->assertEquals($this->cart->total(), 300);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
+
+		$this->cart->condition($tax10p);
+
+		$this->cart->clearConditions();
+
+		$this->assertEquals($this->cart->subtotal(), 300);
+
+		$this->assertEquals($this->cart->total(), 300);
+
+		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
 	}
 
 	public function testRetrieveDiscounts()
