@@ -65,27 +65,27 @@ class Cart extends CartCollection {
 	 *
 	 * @var array
 	 */
-	protected $requiredIndexes = array(
+	protected $requiredIndexes = [
 		'id',
 		'name',
-	);
+	];
 
 	/**
 	 * Holds all the reserved indexes.
 	 *
 	 * @var array
 	 */
-	protected $reservedIndexes = array(
+	protected $reservedIndexes = [
 		'price',
 		'quantity',
-	);
+	];
 
 	/**
 	 * Holds all the cart conditions.
 	 *
 	 * @var array
 	 */
-	protected $conditions = array();
+	protected $conditions = [];
 
 	/**
 	 * Constructor.
@@ -175,7 +175,7 @@ class Cart extends CartCollection {
 		}
 
 		// Get this item attributes
-		$attributes = array_get($item, 'attributes', array());
+		$attributes = array_get($item, 'attributes', []);
 
 		// Validate the attributes
 		if ( ! is_array($attributes))
@@ -205,7 +205,7 @@ class Cart extends CartCollection {
 		}
 
 		// Assign item conditions
-		$row->condition(array_get($item, 'conditions', array()));
+		$row->condition(array_get($item, 'conditions', []));
 
 		// Set the item price
 		$row->setPrice($price);
@@ -220,7 +220,7 @@ class Cart extends CartCollection {
 		$this->updateCart($cart);
 
 		// Fire the 'cartalyst.cart.added' event
-		$this->fire('added', array($this->item($rowId), $this->getIdentity()));
+		$this->fire('added', [$this->item($rowId), $this->getIdentity()]);
 
 		return $cart;
 	}
@@ -252,7 +252,7 @@ class Cart extends CartCollection {
 			$cart->forget($rowId);
 
 			// Fire the 'cartalyst.cart.removed' event
-			$this->fire('removed', array($item, $this->getIdentity()));
+			$this->fire('removed', [$item, $this->getIdentity()]);
 		}
 
 		$this->updateCart($cart);
@@ -341,7 +341,7 @@ class Cart extends CartCollection {
 			$cart->put($rowId, $row);
 
 			// Fire the 'cartalyst.cart.updated' event
-			$this->fire('updated', array($this->item($rowId), $this->getIdentity()));
+			$this->fire('updated', [$this->item($rowId), $this->getIdentity()]);
 		}
 
 		return $cart;
@@ -509,7 +509,7 @@ class Cart extends CartCollection {
 		}
 		else
 		{
-			$cart->conditions = array();
+			$cart->conditions = [];
 		}
 
 		if ($includeItems)
@@ -554,7 +554,7 @@ class Cart extends CartCollection {
 	 */
 	public function find($data)
 	{
-		$rows = array();
+		$rows = [];
 
 		foreach ($this->items() as $item)
 		{
@@ -584,9 +584,9 @@ class Cart extends CartCollection {
 	 * @param  bool  $merge
 	 * @return void
 	 */
-	public function setRequiredIndexes($indexes = array(), $merge = true)
+	public function setRequiredIndexes($indexes = [], $merge = true)
 	{
-		$currentIndexes = $merge ? $this->requiredIndexes : array();
+		$currentIndexes = $merge ? $this->requiredIndexes : [];
 
 		$this->requiredIndexes = array_unique(array_merge($currentIndexes, (array) $indexes));
 	}
@@ -651,7 +651,7 @@ class Cart extends CartCollection {
 	 * @param  mixed  $data
 	 * @return void
 	 */
-	protected function fire($event, $data = array())
+	protected function fire($event, $data = [])
 	{
 		// Check if we should fire events
 		if ($this->events)

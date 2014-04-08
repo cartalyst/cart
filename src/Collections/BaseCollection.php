@@ -27,32 +27,32 @@ class BaseCollection extends Collection {
 	 *
 	 * @var array
 	 */
-	protected $conditions = array();
+	protected $conditions = [];
 
 	/**
 	 * Holds conditions results.
 	 *
 	 * @var array
 	 */
-	protected $conditionResults = array();
+	protected $conditionResults = [];
 
 	/**
 	 * Holds conditions results grouped by name.
 	 *
 	 * @var array
 	 */
-	protected $totalConditionResults = array();
+	protected $totalConditionResults = [];
 
 	/**
 	 * Holds the order in which conditions apply.
 	 *
 	 * @var array
 	 */
-	protected $conditionsOrder = array(
+	protected $conditionsOrder = [
 		'discount',
 		'other',
 		'tax',
-	);
+	];
 
 	/**
 	 * Holds the item price.
@@ -160,7 +160,7 @@ class BaseCollection extends Collection {
 		}
 		else
 		{
-			$this->conditions = array();
+			$this->conditions = [];
 		}
 	}
 
@@ -173,7 +173,7 @@ class BaseCollection extends Collection {
 	public function applyConditions($type = null)
 	{
 		// Reset calculated conditions
-		$this->totalConditionResults = array();
+		$this->totalConditionResults = [];
 
 		// Reset the subtotal
 		$this->subtotal = $this->subtotal();
@@ -252,7 +252,7 @@ class BaseCollection extends Collection {
 				{
 					if ( ! isset($this->totalConditionResults[$condition->get('type')]))
 					{
-						$this->totalConditionResults[$condition->get('type')] = array();
+						$this->totalConditionResults[$condition->get('type')] = [];
 					}
 
 					if ($target === 'price')
@@ -288,7 +288,7 @@ class BaseCollection extends Collection {
 	 */
 	public function conditionsTotal($type = null, $includeItems = true)
 	{
-		$this->totalConditionResults = array();
+		$this->totalConditionResults = [];
 
 		$this->applyConditions();
 
@@ -307,7 +307,7 @@ class BaseCollection extends Collection {
 
 		if ($type && ! isset($this->totalConditionResults[$type]))
 		{
-			return array();
+			return [];
 		}
 
 		foreach ($this->totalConditionResults as $key => $result)
@@ -367,7 +367,7 @@ class BaseCollection extends Collection {
 	 */
 	public function conditions($type = null)
 	{
-		$conditions = array();
+		$conditions = [];
 
 		foreach ($this->conditions as $condition)
 		{
