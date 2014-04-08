@@ -239,14 +239,7 @@ class BaseCollection extends Collection {
 
 				if (isset($this->totalConditionResults[$condition->get('type')][$condition->get('name')]))
 				{
-					if ($target === 'price')
-					{
-						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result() * $this->get('quantity');
-					}
-					else
-					{
-						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
-					}
+					$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
 				}
 				else
 				{
