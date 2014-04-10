@@ -67,9 +67,7 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, $this->dispatcher);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function can_listen_to_the_added_event()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
@@ -82,9 +80,7 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 		]);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function can_listen_to_the_updated_event()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
@@ -103,9 +99,7 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 		]);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function can_listen_to_the_removed_event()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
@@ -122,9 +116,7 @@ class CartTestEvents extends PHPUnit_Framework_TestCase {
 		$this->cart->remove('2d2d8cb241842b326ce0e095dbfc4d41');
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function can_listen_to_the_cleared_event()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.cleared', m::any());

@@ -59,9 +59,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_add_a_single_item()
 	{
 		$this->cart->add([
@@ -76,9 +74,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->items()->count(), 1);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_add_a_single_item_with_quantity_as_string()
 	{
 		$this->cart->add([
@@ -91,9 +87,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->quantity(), 2);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_add_a_single_item_with_price_as_string()
 	{
 		$this->cart->add([
@@ -108,9 +102,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item->get('price'), 10);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_add_a_single_item_with_attributes()
 	{
 		$this->cart->add([
@@ -201,9 +193,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		]);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_add_multiple_items()
 	{
 		$this->cart->add([
@@ -290,9 +280,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		]);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_add_existing_item_to_update_its_quantity()
 	{
 		$this->cart->add([
@@ -316,9 +304,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item->get('quantity'), 9);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_add_multiple_items_with_attributes()
 	{
 		$this->cart->add([
@@ -376,9 +362,7 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->total(), 326.50);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_sync_data_from_a_collection()
 	{
 		$this->assertEquals($this->cart->items()->count(), 0);

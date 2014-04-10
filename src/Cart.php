@@ -54,11 +54,11 @@ class Cart extends CartCollection {
 	protected $dispatcher;
 
 	/**
-	 * Flag for weither we should fire events or not.
+	 * Flag for whether we should fire events or not.
 	 *
 	 * @var bool
 	 */
-	protected $events = true;
+	protected $fireEvents = true;
 
 	/**
 	 * Holds all the required indexes.
@@ -348,38 +348,14 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Empties the cart.
+	 * Check if the item exists in the cart.
 	 *
-	 * @return void
-	 */
-	public function clear()
-	{
-		$this->updateCart();
-
-		// Fire the 'cartalyst.cart.cleared' event
-		$this->fire('cleared', $this);
-	}
-
-	/**
-	 * Synchronize a collection of data with the cart.
-	 *
-	 * @param  \Illuminate\Support\Collection  $items
+	 * @param  string  $rowId
 	 * @return bool
 	 */
-	public function sync(Collection $items)
+	public function exists($rowId)
 	{
-		// Turn events off
-		$this->events = false;
-
-		foreach ($items->all() as $item)
-		{
-			$this->add($item);
-		}
-
-		// Turn events on
-		$this->events = true;
-
-		return true;
+		return $this->items()->has($rowId);
 	}
 
 	/**
@@ -409,6 +385,41 @@ class Cart extends CartCollection {
 	public function items()
 	{
 		return $this->storage->has() ? $this->storage->get() : new CartCollection;
+	}
+
+	/**
+	 * Empties the cart.
+	 *
+	 * @return void
+	 */
+	public function clear()
+	{
+		$this->updateCart();
+
+		// Fire the 'cartalyst.cart.cleared' event
+		$this->fire('cleared', $this);
+	}
+
+	/**
+	 * Synchronize a collection of data with the cart.
+	 *
+	 * @param  \Illuminate\Support\Collection  $items
+	 * @return bool
+	 */
+	public function sync(Collection $items)
+	{
+		// Turn events off
+		$this->fireEvents = false;
+
+		foreach ($items->all() as $item)
+		{
+			$this->add($item);
+		}
+
+		// Turn events on
+		$this->fireEvents = true;
+
+		return true;
 	}
 
 	/**
@@ -490,37 +501,37 @@ class Cart extends CartCollection {
 	 * Clear the conditions.
 	 *
 	 * @param  string  $type
-	 * @param  bool    $includeItems
+	 * @param  bool  $includeItems
 	 * @return void
 	 */
 	public function clearConditions($type = null, $includeItems = true)
 	{
-		$cart = $this->items();
+		$items = $this->items();
 
 		if ($type)
 		{
-			foreach ($cart->conditions as $key => $value)
+			foreach ($items->conditions as $key => $value)
 			{
 				if ($value['type'] === $type)
 				{
-					unset($cart->conditions[$key]);
+					unset($items->conditions[$key]);
 				}
 			}
 		}
 		else
 		{
-			$cart->conditions = [];
+			$items->conditions = [];
 		}
 
 		if ($includeItems)
 		{
-			foreach ($cart as $key => $item)
+			foreach ($items as $key => $item)
 			{
-				$cart[$key]->clearConditions($type);
+				$items[$key]->clearConditions($type);
 			}
 		}
 
-		$this->updateCart($cart);
+		$this->updateCart($items);
 	}
 
 	/**
@@ -530,9 +541,9 @@ class Cart extends CartCollection {
 	 */
 	public function weight()
 	{
-		return $this->items()->reduce(function($result, $item)
+		return $this->items()->sum(function($item)
 		{
-			return $result += $item->weight();
+			return $item->weight();
 		});
 	}
 
@@ -603,14 +614,24 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Check if an item exists in the cart.
+	 * Returns the events dispatcher instance.
 	 *
-	 * @param  string  $rowId
-	 * @return bool
+	 * @return mixed
 	 */
-	public function exists($rowId)
+	public function getDispatcher()
 	{
-		return $this->items()->has($rowId);
+		return $this->dispatcher;
+	}
+
+	/**
+	 * Sets the events dispatcher event.
+	 *
+	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
+	 * @return void
+	 */
+	public function setDispatcher(Dispatcher $dispatcher)
+	{
+		$this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -644,7 +665,7 @@ class Cart extends CartCollection {
 	protected function fire($event, $data = [])
 	{
 		// Check if we should fire events
-		if ($this->events)
+		if ($this->fireEvents)
 		{
 			$this->dispatcher->fire("cartalyst.cart.{$event}", $data);
 		}
@@ -696,9 +717,7 @@ class Cart extends CartCollection {
 	 */
 	protected function isMulti($array)
 	{
-		$array = array_shift($array);
-
-		return is_array($array);
+		return is_array(array_shift($array));
 	}
 
 }

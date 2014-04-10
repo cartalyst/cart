@@ -14,14 +14,13 @@ History and future capabilities.
 
 - ```Cart::getIdentity()``` Return the cart identity.
 - ```Cart::setIdentity($name)``` Set the cart identity.
-- ```Cart::add($item)``` Add an item to the cart.
+- ```Cart::add($item)``` Add a single item to the cart.
 - ```Cart::add($items)``` Add multiple items to the cart.
 - ```Cart::remove($rowId)``` Remove an item from the cart.
-- ```Cart::remove($rowId, $rowId)``` Remove multiple items from the cart by passing multiple arguments.
 - ```Cart::remove([$rowId, $rowId])``` Remove multiple items from the cart by passing array.
 - ```Cart::update($rowId, $data)``` Update a single item.
 - ```Cart::update($items)``` Update multiple items.
-- ```Cart::update($rowId, $quantity)``` Update an items quantity.
+- ```Cart::update($rowId, $quantity)``` Update an item quantity.
 - ```Cart::exists($rowId)``` Check if the given item exists.
 - ```Cart::item($rowId)``` Return information of the given item.
 - ```Cart::items()``` Return information of all items.
@@ -31,6 +30,7 @@ History and future capabilities.
 - ```Cart::total()``` Return the cart total.
 - ```Cart::weight()``` Return the total cart weight.
 - ```Cart::clear()``` Empty the cart.
+- ```Cart::sync(Collection $items)``` Synchronizes a collection of data with the cart.
 - ```Cart::find($data)``` Search for items that are in the cart.
 - ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` Apply a condition.
 - ```Cart::conditions($type|null, bool $includeItems)``` Return all applied conditions.

@@ -58,9 +58,7 @@ class Removing extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_remove_a_single_item()
 	{
 		$this->cart->add([
@@ -100,9 +98,7 @@ class Removing extends PHPUnit_Framework_TestCase {
 		$this->cart->remove('f53e8bcc3534788e4b4f296c1889cc99');
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_remove_multiple_items()
 	{
 		$this->cart->add([

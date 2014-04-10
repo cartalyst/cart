@@ -29,9 +29,9 @@ class ItemAttributesCollection extends Collection {
 	 */
 	public function getTotal()
 	{
-		return $this->reduce(function($result, $option)
+		return $this->sum(function($option)
 		{
-			return $result += $option->get('price');
+			return $option->get('price');
 		});
 	}
 

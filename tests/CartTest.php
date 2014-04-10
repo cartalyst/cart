@@ -58,9 +58,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function cart_can_be_instantiated()
 	{
 		$storage = m::mock('Cartalyst\Cart\Storage\Sessions\IlluminateSession');
@@ -70,9 +68,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		new Cart('cart', $storage, $dispatcher);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_set_the_required_indexes()
 	{
 		$indexes = [
@@ -84,17 +80,13 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(in_array('price', $this->cart->getRequiredIndexes()));
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_get_the_cart_identity()
 	{
 		$this->assertEquals($this->cart->getIdentity(), 'cart');
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_set_the_cart_identity()
 	{
 		$this->cart->setIdentity('testCart');
@@ -102,17 +94,13 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->getIdentity(), 'testCart');
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_get_the_cart_storage()
 	{
 		$this->assertTrue($this->cart->getStorage() instanceof \Cartalyst\Cart\Storage\StorageInterface);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_set_the_cart_storage()
 	{
 		$storage = m::mock('\Cartalyst\Cart\Storage\StorageInterface');
@@ -122,9 +110,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->cart->getStorage() instanceof \Cartalyst\Cart\Storage\StorageInterface);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_get_the_total_number_of_items_inside_the_cart()
 	{
 		$this->cart->add([
@@ -165,9 +151,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->quantity(), 6);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function it_can_get_the_total_cart_weight()
 	{
 		$this->cart->add([
@@ -190,9 +174,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->weight(), 126);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function cart_can_be_cleared()
 	{
 		$this->cart->add([
@@ -209,9 +191,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEmpty($this->cart->items()->toArray());
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function cart_can_be_searched()
 	{
 		$this->cart->add([
@@ -245,9 +225,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(count($items), 1);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function cart_can_be_searched_by_items_attributes()
 	{
 		$this->cart->add([
@@ -328,9 +306,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($items[1]->get('id'), 'foobar3');
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
  	public function cart_can_be_searched_and_returning_empty_results()
 	{
 		$this->cart->add([
@@ -352,9 +328,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(count($item), 0);
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function see_if_item_exists()
 	{
 		$this->cart->add([
@@ -367,9 +341,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(true, $this->cart->exists('2d2d8cb241842b326ce0e095dbfc4d41'));
 	}
 
-	/**
-	 * @test
-	 */
+	/** @test */
 	public function see_if_item_does_not_exist()
 	{
 		$this->assertEquals(false, $this->cart->exists('foobar'));
