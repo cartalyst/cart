@@ -111,6 +111,22 @@ class CartTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/** @test */
+	public function it_can_get_the_cart_dispatcher()
+	{
+		$this->assertTrue($this->cart->getDispatcher() instanceof \Illuminate\Events\Dispatcher);
+	}
+
+	/** @test */
+	public function it_can_set_the_cart_dispatcher()
+	{
+		$dispatcher = m::mock('\Illuminate\Events\Dispatcher');
+
+		$this->cart->setDispatcher($dispatcher);
+
+		$this->assertTrue($this->cart->getDispatcher() instanceof \Illuminate\Events\Dispatcher);
+	}
+
+	/** @test */
 	public function it_can_get_the_total_number_of_items_inside_the_cart()
 	{
 		$this->cart->add([
