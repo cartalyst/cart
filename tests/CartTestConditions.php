@@ -38,6 +38,101 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 	protected $cart;
 
 	/**
+	 * Creates an item.
+	 *
+	 * @param  [type] $name [description]
+	 * @return [type]       [description]
+	 */
+	protected function createItem($name = 'Foobar', $price = 0, $quantity = 1, $conditions = [], $attrPrices = [0, 0])
+	{
+		return [
+			'id'         => strtolower(str_replace(' ', '', $name)),
+			'name'       => $name,
+			'quantity'   => $quantity,
+			'conditions' => $conditions,
+			'price'      => $price,
+			'attributes' => [
+				'size' => [
+					'label' => 'Large',
+					'value' => 'l',
+					'price' => $attrPrices[0],
+				],
+				'color' => [
+					'label' => 'Red',
+					'value' => 'red',
+					'price' => $attrPrices[1],
+				],
+			],
+		];
+	}
+
+	/**
+	 * Creates a condition.
+	 *
+	 * @param  string  $name
+	 * @param  string  $type
+	 * @param  int  $value
+	 * @param  string  $target
+	 * @param  array  $rules
+	 * @param  boolean $inclusive
+	 * @return \Cartalyst\Conditions\Condition
+	 */
+	protected function createCondition(
+		$name,
+		$type,
+		$value,
+		$target = 'subtotal',
+		$rules = null,
+		$inclusive = false
+	)
+	{
+		$condition = new Condition([
+			'name'   => $name,
+			'type'   =>	$type,
+			'target' => $target,
+		]);
+
+		if (is_array($value))
+		{
+			$actions = [];
+
+			foreach ($value as $val)
+			{
+				$actions[]['value'] = $val;
+			}
+
+			if ($inclusive)
+			{
+				$actions[]['inclusive'] = true;
+			}
+		}
+		else if ($inclusive)
+		{
+			$actions = [
+				'value'     => $value,
+				'inclusive' => true,
+			];
+		}
+		else
+		{
+			$actions = [
+				'value' => $value
+			];
+		}
+
+		$condition->setActions($actions);
+
+		if ($rules)
+		{
+			$condition->setRules([
+				$rules,
+			]);
+		}
+
+		return $condition;
+	}
+
+	/**
 	 * Setup resources and dependencies
 	 */
 	public function setUp()
@@ -49,1179 +144,408 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->cart = new Cart('cart', $session, new Dispatcher);
 	}
 
-	public function testItemConditionAllTypes()
+	/** @test */
+	public function it_can_handle_all_defined_types()
 	{
-		$add5price = new Condition([
-			'name'   => 'Add 5 to price',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$discount = $this->createCondition('Discount 5%', 'discount', '-5.00%');
+		$other    = $this->createCondition('Other 5', 'other', 5, 'price');
+		$tax      = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$add5price->setActions([
-			'value' => '5.00',
-		]);
+		$item = $this->createItem('Foobar 1', 100, 5, [$discount, $other, $tax]);
 
-		$disc5Psubtotal = new Condition([
-			'name'   => 'Discount',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add($item);
 
-		$disc5Psubtotal->setActions([
-			'value' => '-5.00%',
-		]);
+		$item = $this->cart->items()->first();
 
-		$tax10psubtotal = new Condition([
-			'name'   => 'Tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
-
-		$tax10psubtotal->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->add([
-			'id'         => 'foobar1',
-			'name'       => 'Foobar 1',
-			'quantity'   => 5,
-			'price'      => 100.00,
-			'conditions' => [
-				$add5price,
-				$disc5Psubtotal,
-				$tax10psubtotal,
-			],
-		]);
-
-		// Item 1
-		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->applyConditions('discount'), 498.75);
-
-		$this->assertEquals($item1->subtotal(), 500);
-
-		$this->assertEquals($item1->conditionsTotalSum('discount'), -26.25);
-
-		$this->assertEquals($item1->conditionsTotalSum('tax'), 49.875);
-
-		$this->assertEquals($item1->total(), 548.625);
-
-		$this->assertEquals(count($item1->conditions()), 3);
-
-		$this->assertEquals(count($item1->conditions('discount')), 1);
+		$this->assertEquals($item->applyConditions('discount'), 498.75);
+		$this->assertEquals($item->subtotal(), 500);
+		$this->assertEquals($item->conditionsTotalSum('discount'), -26.25);
+		$this->assertEquals($item->conditionsTotalSum('tax'), 49.875);
+		$this->assertEquals($item->total(), 548.625);
+		$this->assertEquals(count($item->conditions()), 3);
+		$this->assertEquals(count($item->conditions('discount')), 1);
 
 		// Cart
 		$this->assertEquals(count($this->cart->itemsConditions()), 3);
-
 		$this->assertEquals(count($this->cart->itemsConditionsTotalSum('discount')), 1);
-
 		$this->assertEquals($this->cart->itemsConditionsTotalSum('discount', false), -26.25);
-
 		$this->assertEquals(count($this->cart->itemsConditionsTotalSum('tax')), 1);
-
 		$this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 49.875);
-
 		$this->assertEquals($this->cart->subtotal(), 548.625);
-
 		$this->assertEquals($this->cart->itemsSubtotal(), 500);
-
 		$this->assertEquals($this->cart->total(), 548.625);
 
-		$this->cart->condition($tax10psubtotal);
+		$this->cart->condition($tax);
 
 		$this->assertEquals($this->cart->total(), 603.4875);
-
 		$this->assertEquals(count($this->cart->conditions()), 4);
-
 		$this->assertEquals(count($this->cart->conditions(null, false)), 1);
 
 		// Items conditions
 		$this->assertEquals($this->cart->itemsConditionsTotalSum(), 48.625);
-
 		$this->assertEquals($this->cart->itemsConditionsTotalSum('discount'), -26.25);
-
 		$this->assertEquals($this->cart->itemsConditionsTotalSum('other'), 25);
-
 		$this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 49.875);
 
 		// Cart conditions
 		$this->assertEquals($this->cart->conditionsTotalSum(), 103.4875);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('discount'), -26.25);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('other'), 25);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 104.7375);
 
-		$this->cart->condition($disc5Psubtotal);
-
-		$this->assertEquals($this->cart->total(), 573.313125);
+		$this->cart->condition($discount);
 
 		// Cart conditions
 		$this->assertEquals($this->cart->conditionsTotalSum(), 73.313125);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('discount'), -53.68125);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('other'), 25);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 101.994375);
 
 		// Clear Item Conditions
-		$item1 = $this->cart->items()->first();
+		$item->clearConditions('tax');
 
-		$this->assertEquals($item1->total(), 548.625);
+		$this->assertEquals($item->total(), 498.75);
 
-		$item1->clearConditions('tax');
+		$item->clearConditions();
 
-		$this->assertEquals($item1->total(), 498.75);
-
-		$item1->clearConditions();
-
-		$this->assertEquals($item1->total(), 500);
+		$this->assertEquals($item->total(), 500);
 	}
 
+	/** @test */
 	public function testItemConditionTotals()
 	{
-		$add5price = new Condition([
-			'name'   => 'Add 5 to price',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$discount = $this->createCondition('Discount 5%', 'discount', '-5%');
+		$other1   = $this->createCondition('Add5', 'other', 5, 'price');
+		$other2   = $this->createCondition('Add5%', 'other', '5%', 'price');
+		$other3   = $this->createCondition('Other 10%', 'other', '10%');
+		$tax      = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$add5price->setActions([
-			'value' => '5.00',
-		]);
+		$item = $this->createItem('Foobar', 100, 5, [$other1, $other2]);
 
-		$add5pprice = new Condition([
-			'name'   => 'Add 5% to price',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$this->cart->add($item);
 
-		$add5pprice->setActions([
-			'value' => '5.00%',
-		]);
-
-		$other10p = new Condition([
-			'name'   => 'After 10%',
-			'type'   => 'other',
-			'target' => 'subtotal',
-		]);
-
-		$other10p->setActions([
-			'value' => '10.00%',
-		]);
-
-		$disc5Psubtotal = new Condition([
-			'name'   => 'Discount',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
-
-		$disc5Psubtotal->setActions([
-			'value' => '-5.00%',
-		]);
-
-		$disc5Psubtotal1 = new Condition([
-			'name'   => 'Discount1',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
-
-		$disc5Psubtotal1->setActions([
-			'value' => '-5.00%',
-		]);
-
-		$tax10psubtotal = new Condition([
-			'name'   => 'Tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
-
-		$tax10psubtotal->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->add([
-			'id'         => 'foobar1',
-			'name'       => 'Foobar 1',
-			'quantity'   => 5,
-			'price'      => 100.00,
-			'conditions' => [
-				$add5price,
-				$add5pprice,
-			],
-		]);
-
-		$this->cart->condition($disc5Psubtotal);
-		$this->cart->condition($other10p);
-		$this->cart->condition($tax10psubtotal);
+		$this->cart->condition([$discount, $other3, $tax]);
 
 		$this->assertEquals($this->cart->total(), 632.225);
 	}
 
+	/** @test */
 	public function testItemTaxOnPrice()
 	{
-		$add5price = new Condition([
-			'name'   => 'Add 5% Price',
-			'target' => 'price',
-			'type'   => 'tax',
-		]);
+		$tax      = $this->createCondition('Tax 5%', 'tax', '5%', 'price');
+		$shipping = $this->createCondition('Shipping', 'shipping', '10%');
 
-		$add5price->setActions([
-			'value' => '5.00%',
-		]);
+		$item = $this->createItem('Foobar', 100, 5, $tax);
 
-		$shipping = new Condition([
-			'name'   => 'Shipping 10',
-			'type'   => 'shipping',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add($item);
 
-		$shipping->setActions([
-			'value' => '10.00%',
-		]);
+		$item = $this->cart->items()->first();
 
-		$this->cart->add([
-			'id'         => 'foobar1',
-			'name'       => 'Foobar 1',
-			'quantity'   => 5,
-			'price'      => 100.00,
-			'conditions' => $add5price,
-		]);
+		$this->assertEquals($item->conditionsTotalSum('tax'), 25);
+		$this->assertEquals($item->total(), 525);
 
-		// Item 1
-		$item1 = $this->cart->items()->first();
+		$item->condition($shipping);
 
-		$this->assertEquals($item1->conditionsTotalSum('tax'), 25);
+		$item->setConditionsOrder(['tax', 'shipping']);
 
-		$this->assertEquals($item1->total(), 525);
+		$this->assertEquals($item->total(), 577.5);
 
-		$item1->condition($shipping);
+		$item->setConditionsOrder(['tax', 'other', 'discount']);
 
-		$item1->setConditionsOrder(['tax', 'shipping']);
-
-		$this->assertEquals($item1->total(), 577.5);
-
-		$item1->setConditionsOrder(['tax', 'other', 'discount']);
-
-		$this->assertEquals($item1->total(), 525);
+		$this->assertEquals($item->total(), 525);
 
 		$this->cart->setItemsConditionsOrder(['tax', 'shipping']);
 
-		$this->assertEquals($item1->total(), 577.5);
+		$this->assertEquals($item->total(), 577.5);
 	}
 
+	/** @test */
 	public function testItemConditions1()
 	{
-		$tax10psubtotal = new Condition([
-			'name'   => 'Tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$tax10psubtotal->setActions([
-			'value' => '10.00%',
-		]);
+		$item = $this->createItem('Foobar', 100, 5, $tax);
 
-		$this->cart->add([
-			'id'         => 'foobar1',
-			'name'       => 'Foobar 1',
-			'quantity'   => 5,
-			'price'      => 100.00,
-			'conditions' => $tax10psubtotal,
-		]);
+		$this->cart->add($item);
 
-		// Item 1
-		$item1 = $this->cart->items()->first();
+		$item = $this->cart->items()->first();
 
-		$this->assertEquals($item1->subtotal(), 500);
-
-		$this->assertEquals($item1->conditionsTotalSum('discount'), 0);
-
-		$this->assertEquals($item1->conditionsTotalSum('tax'), 50);
-
-		$this->assertEquals($item1->total(), 550);
-
-		// Cart
+		$this->assertEquals($item->subtotal(), 500);
+		$this->assertEquals($item->conditionsTotalSum('discount'), 0);
+		$this->assertEquals($item->conditionsTotalSum('tax'), 50);
+		$this->assertEquals($item->total(), 550);
 		$this->assertEquals($this->cart->subtotal(), 550);
-
 		$this->assertEquals($this->cart->total(), 550);
 
-		$this->cart->condition($tax10psubtotal);
+		$this->cart->condition($tax);
 
 		$this->assertEquals($this->cart->total(), 605);
 	}
 
+	/** @test */
 	public function testItemConditions()
 	{
-		$condition = new Condition([
-			'name'   => 'Discount',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
+		$discount = $this->createCondition('Discount 10%', 'discount', '-10', 'subtotal', 'price <= 125');
 
-		$condition->setRules([
-			'price <= 125.00',
-		]);
+		$item1 = $this->createItem('Foobar 1', 97, 1, $discount, [0, 3]);
+		$item2 = $this->createItem('Foobar 2', 85, 1, $discount, [15, 0]);
 
-		$condition->setActions([
-			'value' => '-10.00',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 1,
-				'price'      => 97.00,
-				'conditions' => $condition,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 1,
-				'price'      => 85.00,
-				'conditions' => $condition,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 15.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add([$item1, $item2]);
 
 		$this->assertEquals($this->cart->items()->first()->total(), 90);
-
 		$this->assertEquals($this->cart->items()->last()->total(), 90);
-
 		$this->assertEquals($this->cart->itemsSubtotal(), 200);
-
 		$this->assertEquals($this->cart->total(), 180.00);
 	}
 
+	/** @test */
 	public function testCartCondition()
 	{
-		$condition = new Condition([
-			'name'   => 'tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$discount = $this->createCondition('Discount 10%', 'discount', '-10%');
+		$tax1  = $this->createCondition('Tax 10%', 'tax', '10%');
+		$tax2  = $this->createCondition('Tax 12%', 'tax', '12%');
 
-		$condition->setActions([
-			'value' => '10.00%',
-		]);
+		$item = $this->createItem('Foobar', 125, 1, $tax1, [0, 3]);
 
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 1,
-				'conditions' => $condition,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add($item);
 
-		$conditionCart = new Condition([
-			'name'   => 'disc 10%',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
-
-		$conditionCart->setActions([
-			'value' => '-10.00%',
-		]);
-
-		$this->cart->condition($conditionCart);
-
-		$conditionTax = new Condition([
-			'name'   => 'tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
-
-		$conditionTax->setActions([
-			'value' => '12.00%',
-		]);
-
-		$this->cart->condition($conditionTax);
+		$this->cart->condition([$discount, $tax2]);
 
 		$this->assertEquals($this->cart->total(), 141.9264);
-
 		$this->assertEquals($this->cart->subtotal(), 140.8);
 	}
 
+	/** @test */
 	public function testGetItemTotal()
 	{
-		$condition = new Condition([
-			'name'   => 'tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$condition->setActions([
-			'value' => '10.00%',
-		]);
+		$item = $this->createItem('Foobar', 125, 2, $tax, [3, 3]);
 
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 2,
-				'conditions' => $condition,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->subtotal(), 262);
-
 		$this->assertEquals($item->total(), 288.2);
 	}
 
+	/** @test */
 	public function testApplyMultipleConditionsOnItem()
 	{
-		$taxCondition = new Condition([
-			'name'   => 'tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$discount = $this->createCondition('Discount 5% + 2', 'discount', ['-5%', '-2']);
+		$tax      = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$taxCondition->setActions([
-			'value' => '10.00%',
-		]);
+		$item = $this->createItem('Foobar', 125, 2, [$tax, $discount], [0, 3]);
 
-		$discountCondition = new Condition([
-			'name'   => 'discount 5%',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
-
-		$discountCondition->setActions([
-			[
-				'value' => '-5.00%',
-			],
-			[
-				'value' => '-2.00',
-			],
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 2,
-				'price'      => 125.00,
-				'conditions' => [
-					$taxCondition,
-					$discountCondition,
-				],
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->subtotal(), 256);
-
 		$this->assertEquals($item->total(), 265.32);
 	}
 
+	/** @test */
 	public function testTaxes()
 	{
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$discount = $this->createCondition('Discount 5%', 'discount', '-5%');
+		$other    = $this->createCondition('Other 5', 'other', '5', 'price');
+		$tax1     = $this->createCondition('Tax 10%', 'tax', '10%');
+		$tax2     = $this->createCondition('Tax 5%', 'tax', '5%');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 97, 2, $tax1, [0, 3]);
+		$item2 = $this->createItem('Foobar 2', 85, 2, [$discount, $other, $tax1, $tax2]);
 
-		$add5 = new Condition([
-			'name'   => 'Add 5',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$add5->setActions([
-			'value'  => '5.00',
-		]);
-
-		$tax5p = new Condition([
-			'name'   => 'tax5',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
-
-		$tax5p->setActions([
-			'value' => '5.00%',
-		]);
-
-		$disc5p = new Condition([
-			'name'   => 'Discount 5%',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
-
-		$disc5p->setActions([
-			'value' => '-5.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 2,
-				'price'      => 97.00,
-				'conditions' => $tax10p,
-				'weight'	 => 21.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-					],
-					'color' => [
-						'label' => 'Coolor',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 85.00,
-				'conditions' => [
-					$add5,
-					$tax10p,
-					$tax5p,
-					$disc5p,
-				],
-				'weight'	 => 21.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-					],
-				],
-			],
-		]);
-
-		// Items 1 tax check
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->subtotal(), 200);
-
-		$this->assertEquals($item1->conditionsTotalSum('tax'), 20);
-
-		$this->assertEquals($item1->conditionsTotalSum('discount'), 0);
-
-		$this->assertEquals($item1->total(), 220);
-
-		// Items 2 tax check
 		$item2 = $this->cart->items()->last();
 
+		$this->assertEquals($item1->subtotal(), 200);
+		$this->assertEquals($item1->conditionsTotalSum('tax'), 20);
+		$this->assertEquals($item1->conditionsTotalSum('discount'), 0);
+		$this->assertEquals($item1->total(), 220);
+
 		$this->assertEquals($item2->subtotal(), 170);
-
 		$this->assertEquals($item2->conditionsTotalSum('tax'), 25.65);
-
 		$this->assertEquals($item2->conditionsTotalSum('discount'), -9);
-
 		$this->assertEquals($item2->total(), 196.65);
 
-		// Apply 5% Global Tax
-		$this->cart->condition($tax5p);
+		$this->cart->condition($tax2);
 
-		// Cart sub total
 		$this->assertEquals($this->cart->subtotal(), 416.65);
-
-		// Items subtotal
 		$this->assertEquals($this->cart->itemsSubtotal(), 370);
-
-		// Cart total
 		$this->assertEquals($this->cart->total(), 437.4825);
-
-		// Cart tax without items
 		$this->assertEquals($this->cart->conditionsTotalSum('tax', false), 20.8325);
-
-		// Cart tax with items
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 66.4825);
-
-		// Cart discount with items
 		$this->assertEquals($this->cart->conditionsTotalSum('discount'), -9);
-
-		// All item taxes
 		$this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 45.65);
 	}
 
+	/** @test */
 	public function testCombinedConditionsOnItemsAndCart()
 	{
-		$tax10p = new Condition([
-			'target' => 'subtotal',
-			'name'   => 'tax10',
-			'type'   => 'tax'
-		]);
+		$discount = $this->createCondition('Discount 10%', 'discount', '-10%', 'price');
+		$other1   = $this->createCondition('Other 5', 'other', '5%', 'price');
+		$other2   = $this->createCondition('Other 5', 'other', '5%');
+		$tax      = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 100, 4, $discount, [0, 3]);
+		$item2 = $this->createItem('Foobar 2', 100, 2, [$discount, $other1], [15, 0]);
 
-		$disc10p = new Condition([
-			'name'   => 'disc',
-			'type'   => 'discount',
-			'target' => 'price',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$disc10p->setActions([
-			'value' => '-10.00%',
-		]);
-
-		$add5p = new Condition([
-			'name'   => 'other5',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
-
-		$add5p->setActions([
-			'value' => '5.00%',
-		]);
-
-		$add5pCart = new Condition([
-			'name'   => 'add5cart',
-			'type'   => 'other',
-			'target' => 'subtotal',
-		]);
-
-		$add5pCart->setActions([
-			'value' => '5.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 4,
-				'price'      => 100.00,
-				'weight'     => 21.00,
-				'conditions' => $disc10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 100.00,
-				'weight'     => 45.04,
-				'conditions' => [
-					$add5p,
-					$disc10p,
-				],
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 15.00,
-					],
-				],
-			],
-		]);
-
-		// First item
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->subtotal(), 412);
-
-		$this->assertEquals($item1->conditionsTotalSum('discount'), -40);
-
-		$this->assertEquals($item1->total(), 372);
-
-		// Second item
 		$item2 = $this->cart->items()->last();
 
-		$this->assertEquals($item2->subtotal(), 230);
+		$this->assertEquals($item1->subtotal(), 412);
+		$this->assertEquals($item1->conditionsTotalSum('discount'), -40);
+		$this->assertEquals($item1->total(), 372);
 
+		$this->assertEquals($item2->subtotal(), 230);
+		$this->assertEquals($item2->conditionsTotalSum('discount'), -20);
 		$this->assertEquals($item2->total(), 219);
 
-		// Cart sub total
 		$this->assertEquals($this->cart->subtotal(), 591);
-
-		// Items subtotal
 		$this->assertEquals($this->cart->itemsSubtotal(), 642);
-
-		// Cart total ( No conditions applied yet )
 		$this->assertEquals($this->cart->total(), 591);
 
-		// Apply 10% Tax
-		$this->cart->condition($tax10p);
+		$this->cart->condition($tax);
 
 		$this->assertEquals($this->cart->subtotal(), 591);
-
 		$this->assertEquals($this->cart->total(), 650.1);
 
-		// Apply +5% charge other condition ( not tax or discount )
-		$this->cart->condition($add5pCart);
+		$this->cart->condition($other2);
 
 		$this->assertEquals($this->cart->subtotal(), 591);
-
 		$this->assertEquals($this->cart->total(), 682.605);
 	}
 
+	/** @test */
 	public function testConditionOnItemPrice()
 	{
-		$condition = new Condition([
-			'name'   => 'add5price',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$other = $this->createCondition('Other 5', 'other', '5', 'price');
+		$tax   = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$condition->setActions([
-			'value' => '5.00',
-		]);
+		$item = $this->createItem('Foobar', 125, 3, $other, [3, 3]);
 
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => $condition,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->subtotal(), 393);
-
 		$this->assertEquals($item->total(), 408);
-
 		$this->assertEquals($this->cart->subtotal(), 408);
-
 		$this->assertEquals($this->cart->total(), 408);
-
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
-
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->condition($tax10p);
+		$this->cart->condition($tax);
 
 		$this->assertEquals($this->cart->subtotal(), 408);
-
 		$this->assertEquals($this->cart->total(), 448.8);
 	}
 
+	/** @test */
 	public function testConditionOnItemNoMatchingRules()
 	{
-		$condition = new Condition([
-			'target' => 'price',
-		]);
+		$other = $this->createCondition('Other 5', 'other', '5', 'price', 'price > 200');
 
-		$condition->setActions([
-			'value' => '5.00',
-		]);
+		$item = $this->createItem('Foobar', 125, 3, $other, [3, 3]);
 
-		$condition->setRules([
-			'price > 200'
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => $condition,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->subtotal(), 393);
-
 		$this->assertEquals($item->total(), 393);
 	}
 
+	/** @test */
 	public function testMultipleConditionsWithRulesOnItems()
 	{
-		$condition = new Condition([
-			'name'   => 'add5price',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$other = $this->createCondition('Other 5', 'other', '5', 'price', 'price > 200');
+		$tax   = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$condition->setActions([
-			'value' => '5.00',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, [$tax, $other], [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $other, [3,3]);
 
-		$condition->setRules([
-			'price > 200'
-		]);
+		$this->cart->add([$item1, $item2]);
 
-
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
-
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => [
-					$tax10p,
-					$condition,
-				],
-				'price'      => 244.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => $condition,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
-
-		// Item 1
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->subtotal(), 750);
-
-		$this->assertEquals($item1->total(), 841.5);
-
-		// Item 2
 		$item2 = $this->cart->items()->last();
 
-		$this->assertEquals($item2->subtotal(), 393);
+		$this->assertEquals($item1->subtotal(), 750);
+		$this->assertEquals($item1->total(), 841.5);
 
+		$this->assertEquals($item2->subtotal(), 393);
 		$this->assertEquals($item2->total(), 393);
 
-		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1234.5);
-
 		$this->assertEquals($this->cart->total(), 1234.5);
 	}
 
+	/** @test */
 	public function testMultipleConditionsWithDiscounts()
 	{
-		$add5ToPrice = new Condition([
-			'name'   => 'add5price',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$discount1 = $this->createCondition('Discount 5%', 'discount', '-5%');
+		$discount2 = $this->createCondition('Discount 10%', 'discount', '-10%');
+		$other     = $this->createCondition('Other 5', 'other', '5', 'price', 'price > 200');
 
-		$add5ToPrice->setActions([
-			'value' => '5.00',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, [$discount1, $other], [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $other, [3,3]);
 
-		$add5ToPrice->setRules([
-			'price > 200'
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$disc5p = new Condition([
-			'name'   => 'disc5p',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
-
-		$disc5p->setActions([
-			'value' => '-5.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => [
-					$disc5p,
-					$add5ToPrice,
-				],
-				'price'      => 244.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => $add5ToPrice,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
-
-		// Item 1
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->subtotal(), 750);
-
-		$this->assertEquals($item1->conditionsTotalSum('discount'), -38.25);
-
-		$this->assertEquals($item1->total(), 726.75);
-
-		// Item 2
 		$item2 = $this->cart->items()->last();
 
-		$this->assertEquals($item2->subtotal(), 393);
+		$this->assertEquals($item1->subtotal(), 750);
+		$this->assertEquals($item1->conditionsTotalSum('discount'), -38.25);
+		$this->assertEquals($item1->total(), 726.75);
 
+		$this->assertEquals($item2->subtotal(), 393);
+		$this->assertEquals($item2->conditionsTotalSum('other'), 0);
 		$this->assertEquals($item2->total(), 393);
 
-		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1119.75);
-
 		$this->assertEquals($this->cart->itemsSubtotal(), 1143);
-
 		$this->assertEquals($this->cart->total(), 1119.75);
 
-		$discount10p = new Condition([
-			'name'   => 'discount10',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
+		$this->cart->condition($discount2);
 
-		$discount10p->setActions([
-			'value' => '-10.00%',
-		]);
-
-		$this->cart->condition($discount10p);
-
-		// Cart
 		$this->assertEquals($this->cart->subtotal(), 1119.75);
-
 		$this->assertEquals($this->cart->total(), 1007.775);
-
-		// Cart discount
 		$this->assertEquals($this->cart->conditionsTotalSum('discount', false), -111.975);
-
-		// Cart discount with items
 		$this->assertEquals($this->cart->conditionsTotalSum('discount'), -150.225);
 	}
 
+	/** @test */
 	public function testAddRemoveConditionsItems()
 	{
-		$condition = new Condition([
-			'name'   => 'add5price',
-			'type'   => 'other',
-			'target' => 'price',
-		]);
+		$tax   = $this->createCondition('Tax 10%', 'tax', '10%');
+		$other = $this->createCondition('Other 5', 'other', '5', 'price');
 
-		$condition->setActions([
-			'value' => '5.00',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, [$tax, $other], [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $other, [3,3]);
 
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => [$tax10p, $condition],
-				'price'      => 244.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'L',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => $condition,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'L',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
-
-		// Item 1
 		$item1 = $this->cart->items()->first();
+		$item2 = $this->cart->items()->last();
 
 		$this->assertEquals($item1->total(), 841.5);
+		$this->assertEquals($item2->total(), 408);
 
 		$this->cart->update([
-			'914192403612d96540bbd1783e0d87a3' => [
-				'conditions' => $tax10p
+			'b972ee677339f2d22f0009c1c158c703' => [
+				'conditions' => $tax
 			]
 		]);
 
 		$this->assertEquals($item1->total(), 825);
 
-		// Item 2
-		$item2 = $this->cart->items()->last();
-
-		$this->assertEquals($item2->total(), 408);
-
 		// Remove conditions
 		$this->cart->update([
-			'd6ba63f0d213062c51fd17f1cc7c7f47' => [
+			'6999396ebcc0a76802ca13b36d640f58' => [
 				'conditions' => null
 			]
 		]);
@@ -1230,8 +554,8 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Add two conditions
 		$this->cart->update([
-			'd6ba63f0d213062c51fd17f1cc7c7f47' => [
-				'conditions' => [$tax10p, $condition]
+			'6999396ebcc0a76802ca13b36d640f58' => [
+				'conditions' => [$tax, $other]
 			]
 		]);
 
@@ -1239,7 +563,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Make sure conditions are still assigned after an item is updated
 		$this->cart->update([
-			'd6ba63f0d213062c51fd17f1cc7c7f47' => [
+			'6999396ebcc0a76802ca13b36d640f58' => [
 				'weights' => 20.00
 			]
 		]);
@@ -1247,554 +571,191 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item2->total(), 448.8);
 	}
 
+	/** @test */
 	public function testAddRemoveConditionsCart()
 	{
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax   = $this->createCondition('Tax 10%', 'tax', '10%');
+		$other = $this->createCondition('Other 10%', 'other', '10%');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, $tax, [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, null, [3,3]);
 
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'conditions' => $tax10p,
-				'price'      => 244.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 125.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$other10p = new Condition([
-			'name'   => 'other10',
-			'type'   => 'other',
-			'target' => 'subtotal',
-		]);
-
-		$other10p->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->condition($tax10p);
+		$this->cart->condition($tax);
 
 		$this->assertEquals($this->cart->total(), 1339.8);
-
-		$this->cart->condition([$tax10p, $other10p]);
+		$this->cart->condition([$tax, $other]);
 
 		$this->assertEquals($this->cart->total(), 1473.78);
-
 		$this->cart->clearConditions('tax', false);
 
 		$this->assertEquals($this->cart->total(), 1339.8);
-
 		$this->cart->clearConditions(null, false);
 
 		$this->assertEquals($this->cart->total(), 1218);
 	}
 
+	/** @test */
 	public function testRemoveConditions()
 	{
-		$tax10pItem = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'price',
-		]);
+		$tax1 = $this->createCondition('Tax 10%', 'tax', '10%');
+		$tax2 = $this->createCondition('Item Tax 5%', 'tax', '5%', 'price');
+		$tax3 = $this->createCondition('Item Tax 10%', 'tax', '10%', 'price');
 
-		$tax10pItem->setActions([
-			'value' => '10.00',
-		]);
+		$item = $this->createItem('Foobar 1', 100, 3, [$tax2, $tax3]);
 
-		$tax5pItem = new Condition([
-			'name'   => 'tax5',
-			'type'   => 'tax',
-			'target' => 'price',
-		]);
+		$this->cart->add($item);
 
-		$tax5pItem->setActions([
-			'value' => '5.00',
-		]);
-
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
-
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 100.00,
-				'conditions' => [$tax10pItem, $tax5pItem],
-			],
-		]);
-
-		// Item 1
 		$item1 = $this->cart->items()->first();
 
 		$this->assertEquals($item1->total(), 345);
-
-		// Cart
 		$this->assertEquals($this->cart->total(), 345);
-
 		$this->assertEquals($this->cart->subtotal(), 345);
 
-		$this->cart->condition($tax10p);
+		$this->cart->condition($tax1);
 
 		$this->assertEquals($this->cart->subtotal(), 345);
-
 		$this->assertEquals($this->cart->total(), 379.5);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 79.5);
 
 		$this->cart->clearConditions('tax', false);
 
 		$this->assertEquals($this->cart->subtotal(), 345);
-
 		$this->assertEquals($this->cart->total(), 345);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 45);
 
 		$this->cart->clearConditions('tax');
 
 		$this->assertEquals($this->cart->subtotal(), 300);
-
 		$this->assertEquals($this->cart->total(), 300);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
-
-		$this->cart->condition($tax10p);
 
 		$this->cart->clearConditions();
 
 		$this->assertEquals($this->cart->subtotal(), 300);
-
 		$this->assertEquals($this->cart->total(), 300);
-
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
 	}
 
+	/** @test */
 	public function testRetrieveDiscounts()
 	{
-		$disc10p = new Condition([
-			'name'   => 'disc10',
-			'type'   => 'discount',
-			'target' => 'subtotal',
-		]);
+		$discount = $this->createCondition('Discount 10%', 'discount', '-10%');
 
-		$disc10p->setActions([
-			'value' => '-10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, $discount, [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $discount, [3,3]);
 
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 244.00,
-				'conditions' => $disc10p,
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 125.00,
-				'conditions' => $disc10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$this->cart->condition($disc10p);
+		$this->cart->condition($discount);
 
 		$discounts = $this->cart->conditions('discount', false);
 
 		$discountCondition = $discounts[0];
 
-		$this->assertEquals($discountCondition->get('name'), 'disc10');
+		$this->assertEquals($discountCondition->get('name'), 'Discount 10%');
 		$this->assertEquals($discountCondition->get('type'), 'discount');
 		$this->assertEquals($discountCondition->get('target'), 'subtotal');
 	}
 
+	/** @test */
 	public function testRetrieveTaxes()
 	{
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, $tax, [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $tax, [3,3]);
 
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 244.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 125.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$this->cart->condition($tax10p);
+		$this->cart->condition($tax);
 
 		$taxes = $this->cart->conditions('tax', false);
 
 		$taxCondition = $taxes[0];
 
-		$this->assertEquals($taxCondition->get('name'), 'tax10');
+		$this->assertEquals($taxCondition->get('name'), 'Tax 10%');
 		$this->assertEquals($taxCondition->get('type'), 'tax');
 		$this->assertEquals($taxCondition->get('target'), 'subtotal');
 	}
 
-
+	/** @test */
 	public function testRetrieveConditionsTotal()
 	{
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax1 = $this->createCondition('Tax 5%', 'tax', '5%');
+		$tax2 = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, $tax2, [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $tax2, [3,3]);
 
-		$tax5p = new Condition([
-			'name'   => 'tax5',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$tax5p->setActions([
-			'value' => '5.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 244.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 125.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
-
-		$this->cart->condition([$tax10p, $tax5p]);
+		$this->cart->condition([$tax1, $tax2]);
 
 		$conditionsTotal = [
-			'tax10' => 125.73,
-			'tax5'  => 62.865,
+			'Tax 10%' => 125.73,
+			'Tax 5%'    => 62.865,
 		];
 
 		$this->assertEquals($this->cart->conditionsTotal('tax', false), $conditionsTotal);
 	}
 
-
+	/** @test */
 	public function testRetrieveConditions()
 	{
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax1 = $this->createCondition('Tax 5%', 'tax', '5%');
+		$tax2 = $this->createCondition('Tax 10%', 'tax', '10%');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, $tax2, [3, 3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $tax2, [3,3]);
 
-		$tax5p = new Condition([
-			'name'   => 'tax5',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$tax5p->setActions([
-			'value' => '5.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 244.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 125.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
-
-		$this->cart->condition($tax10p);
-
-		$this->cart->condition($tax5p);
+		$this->cart->condition([$tax1, $tax2]);
 
 		$conditionsTotal = [
-			'tax10' => 125.73,
-			'tax5'  => 62.865,
+			'Tax 5%'  => 62.865,
+			'Tax 10%' => 125.73,
 		];
 
 		// Item conditions
 		$conditions = $this->cart->items()->first()->conditions();
+		$condition  = head($conditions);
 
-		$condition = head($conditions);
-
-		$this->assertEquals($condition->get('name'), 'tax10');
+		$this->assertEquals($condition->get('name'), 'Tax 10%');
 		$this->assertEquals($condition->get('type'), 'tax');
 		$this->assertEquals($condition->get('target'), 'subtotal');
 
 		// Cart conditions
 		$conditions = $this->cart->conditions(null, false);
+		$condition  = head($conditions);
 
-		$condition = head($conditions);
-
-		$this->assertEquals($condition->get('name'), 'tax10');
+		$this->assertEquals($condition->get('name'), 'Tax 5%');
 		$this->assertEquals($condition->get('type'), 'tax');
 		$this->assertEquals($condition->get('target'), 'subtotal');
 	}
 
-
+	/** @test */
 	public function testApplyDifferentConditions()
 	{
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax1     = $this->createCondition('Tax 5%', 'tax', '5%');
+		$tax2     = $this->createCondition('Tax 10%', 'tax', '10%');
+		$shipping = $this->createCondition('Shipping', 'shipping', '10');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, $tax2, [3,3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $tax2, [3,3]);
 
-		$tax5p = new Condition([
-			'name'   => 'tax5',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$tax5p->setActions([
-			'value' => '5.00%',
-		]);
-
-		$shipping = new Condition([
-			'name'   => 'shipping10',
-			'type'   => 'shipping',
-			'target' => 'subtotal',
-		]);
-
-		$shipping->setActions([
-			'value' => '10.00',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 244.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 125.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
-
-		// Item 1
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->total(), 825);
-
-		// Item 2
 		$item2 = $this->cart->items()->last();
 
+		$this->assertEquals($item1->total(), 825);
 		$this->assertEquals($item2->total(), 432.3);
 
 		// Cart
 		$this->assertEquals($this->cart->total(), 1257.3);
-
 		$this->assertEquals($this->cart->subtotal(), 1257.3);
 
 		// Set custom conditions order
@@ -1803,7 +764,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'tax',
 		]);
 
-		$this->cart->condition([$tax10p, $tax5p, $shipping]);
+		$this->cart->condition([$tax2, $tax1, $shipping]);
 
 		$this->assertEquals($this->cart->total(), 1445.895);
 
@@ -1814,7 +775,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'shipping',
 		]);
 
-		$this->cart->condition([$tax10p, $tax5p, $shipping]);
+		$this->cart->condition([$tax2, $tax1, $shipping]);
 
 		$this->assertEquals($this->cart->total(), 1455.895);
 
@@ -1822,103 +783,26 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->cart->conditionsTotal('nonexisting'), []);
 	}
 
-
+	/** @test */
 	public function testRetrieveConditionsByName()
 	{
-		$tax10p = new Condition([
-			'name'   => 'tax10',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax1     = $this->createCondition('Tax 5%', 'tax', '5%');
+		$tax2     = $this->createCondition('Tax 10%', 'tax', '10%');
+		$other    = $this->createCondition('Other 10%', 'other', '10%');
+		$shipping = $this->createCondition('Shipping', 'shipping', '10');
 
-		$tax10p->setActions([
-			'value' => '10.00%',
-		]);
+		$item1 = $this->createItem('Foobar 1', 244, 3, $tax2, [3,3]);
+		$item2 = $this->createItem('Foobar 2', 125, 3, $tax2, [3,3]);
 
-		$tax5p = new Condition([
-			'name'   => 'tax5',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$tax5p->setActions([
-			'value' => '5.00%',
-		]);
-
-		$other10p = new Condition([
-			'name'   => 'other10',
-			'type'   => 'other',
-			'target' => 'subtotal',
-		]);
-
-		$other10p->setActions([
-			'value' => '10.00%',
-		]);
-
-		$shipping = new Condition([
-			'name'   => 'shipping10',
-			'type'   => 'shipping',
-			'target' => 'subtotal',
-		]);
-
-		$shipping->setActions([
-			'value' => '10.00',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar4',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 244.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 3,
-				'price'      => 125.00,
-				'conditions' => $tax10p,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 3.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-		]);
-
-		// Item 1
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->total(), 825);
-
-		// Item 2
 		$item2 = $this->cart->items()->last();
 
+		$this->assertEquals($item1->total(), 825);
 		$this->assertEquals($item2->total(), 432.3);
 
-		// Cart
 		$this->assertEquals($this->cart->total(), 1257.3);
-
 		$this->assertEquals($this->cart->subtotal(), 1257.3);
 
 		// Set custom conditions order
@@ -1927,7 +811,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'tax',
 		]);
 
-		$this->cart->condition([$tax10p, $tax5p, $shipping]);
+		$this->cart->condition([$tax2, $tax1, $shipping]);
 
 		$this->assertEquals($this->cart->total(), 1445.895);
 
@@ -1945,17 +829,16 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'shipping',
 		]);
 
-		$this->cart->condition([$tax10p, $tax5p, $shipping]);
+		$this->cart->condition([$tax2, $tax1, $shipping]);
 
 		$this->assertEquals($this->cart->total(), 1455.895);
-
 		$conditionResults = [
 			'tax' => [
-				'tax10' => 240.03,
-				'tax5'  => 62.865,
+				'Tax 10%' => 240.03,
+				'Tax 5%'    => 62.865,
 			],
 			'shipping' => [
-				'shipping10' => 10.00,
+				'Shipping' => 10.00,
 			],
 		];
 
@@ -1969,35 +852,33 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 			'shipping',
 		]);
 
-		$this->cart->condition([$tax10p, $tax5p, $shipping, $other10p]);
+		$this->cart->condition([$tax2, $tax1, $shipping, $other]);
 
 		$this->assertEquals($this->cart->total(), 1600.4845);
-
 		$conditionResults = [
 			'tax' => [
-				'tax10' => 252.603,
-				'tax5'  => 69.1515,
+				'Tax 10%' => 252.603,
+				'Tax 5%'    => 69.1515,
 			],
 			'other' => [
-				'other10' => 125.73,
+				'Other 10%' => 125.73,
 			],
 			'shipping' => [
-				'shipping10' => 10.00,
+				'Shipping' => 10.00,
 			],
 		];
 
 		$this->assertEquals($this->cart->conditionsTotal(), $conditionResults);
-
 		$conditionResults = [
 			'tax' => [
-				'tax10' => 138.303,
-				'tax5'  => 69.1515,
+				'Tax 10%' => 138.303,
+				'Tax 5%'    => 69.1515,
 			],
 			'other' => [
-				'other10' => 125.73,
+				'Other 10%' => 125.73,
 			],
 			'shipping' => [
-				'shipping10' => 10.00,
+				'Shipping' => 10.00,
 			],
 		];
 
@@ -2005,8 +886,8 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Cart conditions by type
 		$conditionResults = [
-			'tax10' => 252.603,
-			'tax5'  => 69.1515,
+			'Tax 10%' => 252.603,
+			'Tax 5%'    => 69.1515,
 		];
 
 		$this->assertEquals($this->cart->conditionsTotal('tax'), $conditionResults);
@@ -2014,7 +895,7 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		// Item conditions results
 		$conditionResults = [
 			'tax' => [
-				'tax10' => 114.3,
+				'Tax 10%' => 114.3,
 			],
 		];
 
@@ -2022,72 +903,40 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 
 		// Item conditions results by type
 		$conditionResults = [
-			'tax10' => 114.3,
+			'Tax 10%' => 114.3,
 		];
 
 		$this->assertEquals($this->cart->itemsConditionsTotal('tax'), $conditionResults);
 
 		// Non existing condition
 		$this->assertEquals($this->cart->itemsConditionsTotal('nonexisting'), []);
-
 	}
 
-
+	/** @test */
 	public function testInclusiveConditions()
 	{
-		$tax10pInclusive = new Condition([
-			'name'   => 'Tax 10%',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$tax = $this->createCondition('Tax 10%', 'tax', '10%', 'subtotal', null, true);
 
-		$tax10pInclusive->setActions([
-			'value'     => '10.00%',
-			'inclusive' => true,
-		]);
+		$item1 = $this->createItem('Foobar 1', 100, 5, $tax);
+		$item2 = $this->createItem('Foobar 2', 200, 2, $tax);
 
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 5,
-				'price'      => 100.00,
-				'conditions' => $tax10pInclusive,
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 200.00,
-				'conditions' => $tax10pInclusive,
-			],
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		// Item 1
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->subtotal(), 500);
-
-		$this->assertEquals(round($item1->conditionsTotalSum('tax')), 45);
-
-		$this->assertEquals($item1->total(), 500);
-
-		// Item 2
 		$item2 = $this->cart->items()->last();
 
+		$this->assertEquals($item1->subtotal(), 500);
+		$this->assertEquals(round($item1->conditionsTotalSum('tax')), 45);
+		$this->assertEquals($item1->total(), 500);
+
 		$this->assertEquals($item2->subtotal(), 400);
-
 		$this->assertEquals(round($item2->conditionsTotalSum('tax')), 36);
-
 		$this->assertEquals($item2->total(), 400);
 
-		// Cart
 		$this->assertEquals($this->cart->subtotal(), 900);
-
 		$this->assertEquals($this->cart->total(), 900);
 
-		// Apply inclusive condition on cart
-		$this->cart->condition($tax10pInclusive);
+		$this->cart->condition($tax);
 
 		// Inclusive conditions will not affect the total
 		$this->assertEquals($this->cart->total(), 900);
@@ -2099,78 +948,32 @@ class CartTestConditions extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(round($this->cart->conditionsTotalSum('tax')), 164);
 	}
 
-
+	/** @test */
 	public function testCombinedInclusiveConditions()
 	{
-		$tax10pInclusive = new Condition([
-			'name'   => 'Tax 10% Inclusive',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$taxInc = $this->createCondition('Tax 10% Inc', 'tax', '10%', 'subtotal', null, true);
+		$taxExc = $this->createCondition('Tax 10% Exc', 'tax', '10%');
 
-		$tax10pInclusive->setActions([
-			'value'     => '10.00%',
-			'inclusive' => true,
-		]);
+		$item1 = $this->createItem('Foobar 1', 100, 5, [$taxInc, $taxExc]);
+		$item2 = $this->createItem('Foobar 2', 200, 2, [$taxInc, $taxExc]);
 
-		$tax10pExclusive = new Condition([
-			'name'   => 'Tax 10% Exclusive',
-			'type'   => 'tax',
-			'target' => 'subtotal',
-		]);
+		$this->cart->add([$item1, $item2]);
 
-		$tax10pExclusive->setActions([
-			'value' => '10.00%',
-		]);
-
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 5,
-				'price'      => 100.00,
-				'conditions' => [
-					$tax10pInclusive,
-					$tax10pExclusive,
-				],
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 200.00,
-				'conditions' => [
-					$tax10pInclusive,
-					$tax10pExclusive,
-				],
-			],
-		]);
-
-		// Item 1
 		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->subtotal(), 500);
-
-		$this->assertEquals(round($item1->conditionsTotalSum('tax')), 95);
-
-		$this->assertEquals($item1->total(), 550);
-
-		// Item 2
 		$item2 = $this->cart->items()->last();
 
+		$this->assertEquals($item1->subtotal(), 500);
+		$this->assertEquals(round($item1->conditionsTotalSum('tax')), 95);
+		$this->assertEquals($item1->total(), 550);
+
 		$this->assertEquals($item2->subtotal(), 400);
-
 		$this->assertEquals(round($item2->conditionsTotalSum('tax')), 76);
-
 		$this->assertEquals($item2->total(), 440);
 
-		// Cart
 		$this->assertEquals($this->cart->subtotal(), 990);
-
 		$this->assertEquals($this->cart->total(), 990);
 
-		// Apply inclusive condition on cart
-		$this->cart->condition($tax10pInclusive);
+		$this->cart->condition($taxInc);
 
 		// Inclusive conditions will not affect the total
 		$this->assertEquals($this->cart->total(), 990);
