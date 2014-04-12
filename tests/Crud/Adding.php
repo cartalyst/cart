@@ -18,46 +18,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\FileSessionHandler;
-use Illuminate\Session\Store;
+use Cartalyst\Cart\Tests\CartTestCase;
 use Illuminate\Support\Collection;
-use Mockery as m;
-use PHPUnit_Framework_TestCase;
 
-class Adding extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the Cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
-
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
-
-	/**
-	 * Setup resources and dependencies
-	 */
-	public function setUp()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__ . '/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
-
-		$this->cart = new Cart('cart', $session, new Dispatcher);
-	}
+class Adding extends CartTestCase {
 
 	/** @test */
 	public function it_can_add_a_single_item()
@@ -133,64 +97,8 @@ class Adding extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($item->attributes()->count(), 3);
 
 		$this->assertEquals($this->cart->items()->count(), 1);
-
 		$this->assertEquals($this->cart->quantity(), 2);
-
 		$this->assertEquals($this->cart->total(), 267);
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
-	 */
-	public function it_throws_exception_when_adding_single_item_with_missing_price_index()
-	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 2,
-		]);
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
-	 */
-	public function it_throws_exception_when_adding_single_item_with_missing_quantity_index()
-	{
-		$this->cart->add([
-			'id'    => 'foobar1',
-			'name'  => 'Foobar 1',
-			'price' => 10.00,
-		]);
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
-	 */
-	public function it_throws_exception_when_adding_single_item_with_invalid_quantity()
-	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => -2,
-			'price'    => 125.00,
-		]);
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
-	 */
-	public function it_throws_exception_when_adding_single_item_with_invalid_price()
-	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 1,
-			'price'    => 'foo',
-		]);
 	}
 
 	/** @test */
@@ -218,66 +126,8 @@ class Adding extends PHPUnit_Framework_TestCase {
 		]);
 
 		$this->assertEquals($this->cart->items()->count(), 3);
-
 		$this->assertEquals($this->cart->quantity(), 7);
-
 		$this->assertEquals($this->cart->total(), 294);
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
-	 */
-	public function it_throws_exception_when_adding_multiple_items_with_one_having_invalid_quantity()
-	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => '03',
-				'price'    => 4,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => -5,
-				'price'    => 21.00,
-			],
-			[
-				'id'       => 'foobar3',
-				'name'     => 'Foobar 3',
-				'quantity' => 2,
-				'price'    => 120.00,
-			],
-		]);
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
-	 */
-	public function it_throws_exception_when_adding_multiple_items_with_one_having_invalid_price()
-	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => '03',
-				'price'    => 4,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 5,
-				'price'    => 'foo',
-			],
-			[
-				'id'       => 'foobar3',
-				'name'     => 'Foobar 3',
-				'quantity' => 2,
-				'price'    => 120.00,
-			],
-		]);
 	}
 
 	/** @test */
@@ -348,17 +198,13 @@ class Adding extends PHPUnit_Framework_TestCase {
 		]);
 
 		$firstItem = $this->cart->items()->first();
-
-		$lastItem = $this->cart->items()->last();
+		$lastItem  = $this->cart->items()->last();
 
 		$this->assertEquals($firstItem->attributes()->count(), 2);
-
 		$this->assertEquals($lastItem->attributes()->count(), 1);
 
 		$this->assertEquals($this->cart->items()->count(), 3);
-
 		$this->assertEquals($this->cart->quantity(), 7);
-
 		$this->assertEquals($this->cart->total(), 326.50);
 	}
 

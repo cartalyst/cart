@@ -18,45 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\FileSessionHandler;
-use Illuminate\Session\Store;
-use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use Cartalyst\Cart\Tests\CartTestCase;
 
-class Removing extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
-
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
-
-	/**
-	 * Setup resources and dependencies
-	 */
-	public function setUp()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__ . '/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
-
-		$this->cart = new Cart('cart', $session, new Dispatcher);
-	}
+class Removing extends CartTestCase {
 
 	/** @test */
 	public function it_can_remove_a_single_item()
@@ -77,25 +41,13 @@ class Removing extends PHPUnit_Framework_TestCase {
 		]);
 
 		$this->assertEquals($this->cart->quantity(), 10);
-
 		$this->assertEquals($this->cart->items()->count(), 2);
 
 		$this->cart->remove('f53e8bcc3534788e4b4f296c1889cc99');
 
 		$this->assertEquals($this->cart->quantity(), 3);
-
 		$this->assertEquals($this->cart->items()->count(), 1);
-
 		$this->assertEmpty($this->cart->find(['f53e8bcc3534788e4b4f296c1889cc99']));
-	}
-
-	/**
-	 * @test
-	 * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
-	 */
-	public function it_throws_exception_when_deleting_a_non_existing_item()
-	{
-		$this->cart->remove('f53e8bcc3534788e4b4f296c1889cc99');
 	}
 
 	/** @test */

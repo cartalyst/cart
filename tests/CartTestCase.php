@@ -1,0 +1,146 @@
+<?php namespace Cartalyst\Cart\Tests;
+/**
+ * Part of the Cart package.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the 3-clause BSD License.
+ *
+ * This source file is subject to the 3-clause BSD License that is
+ * bundled with this package in the LICENSE file.  It is also available at
+ * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
+ *
+ * @package    Cart
+ * @version    1.0.0
+ * @author     Cartalyst LLC
+ * @license    BSD License (3-clause)
+ * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
+
+use Cartalyst\Cart\Cart;
+use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
+use Cartalyst\Conditions\Condition;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Session\FileSessionHandler;
+use Illuminate\Session\Store;
+use PHPUnit_Framework_TestCase;
+
+abstract class CartTestCase extends PHPUnit_Framework_TestCase {
+
+	/**
+	 * Holds the cart instance.
+	 *
+	 * @var \Cartalyst\Cart\Cart
+	 */
+	protected $cart;
+
+	/**
+	 * Setup resources and dependencies
+	 */
+	public function setUp()
+	{
+		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
+
+		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
+
+		$this->cart = new Cart('cart', $session, new Dispatcher);
+	}
+
+	/**
+	 * Creates an item.
+	 *
+	 * @param  [type] $name [description]
+	 * @return [type]       [description]
+	 */
+	protected function createItem($name = 'Foobar', $price = 0, $quantity = 1, $conditions = [], $attrPrices = [0, 0])
+	{
+		return [
+			'id'         => strtolower(str_replace(' ', '', $name)),
+			'name'       => $name,
+			'quantity'   => $quantity,
+			'conditions' => $conditions,
+			'price'      => $price,
+			'attributes' => [
+				'size' => [
+					'label' => 'Large',
+					'value' => 'l',
+					'price' => $attrPrices[0],
+				],
+				'color' => [
+					'label' => 'Red',
+					'value' => 'red',
+					'price' => $attrPrices[1],
+				],
+			],
+		];
+	}
+
+	/**
+	 * Creates a condition.
+	 *
+	 * @param  string  $name
+	 * @param  string  $type
+	 * @param  int  $value
+	 * @param  string  $target
+	 * @param  array  $rules
+	 * @param  boolean $inclusive
+	 * @return \Cartalyst\Conditions\Condition
+	 */
+	protected function createCondition(
+		$name,
+		$type,
+		$value,
+		$target = 'subtotal',
+		$rules = null,
+		$inclusive = false
+	)
+	{
+		$condition = new Condition([
+			'name'   => $name,
+			'type'   =>	$type,
+			'target' => $target,
+		]);
+
+		if (is_array($value))
+		{
+			$actions = [];
+
+			foreach ($value as $val)
+			{
+				$actions[]['value'] = $val;
+			}
+
+			if ($inclusive)
+			{
+				$actions[]['inclusive'] = true;
+			}
+		}
+		else if ($inclusive)
+		{
+			$actions = [
+				'value'     => $value,
+				'inclusive' => true,
+			];
+		}
+		else
+		{
+			$actions = [
+				'value' => $value
+			];
+		}
+
+		$condition->setActions($actions);
+
+		if ($rules)
+		{
+			$condition->setRules([
+				$rules,
+			]);
+		}
+
+		return $condition;
+	}
+
+}

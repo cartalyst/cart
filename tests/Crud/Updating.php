@@ -18,45 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\FileSessionHandler;
-use Illuminate\Session\Store;
-use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use Cartalyst\Cart\Tests\CartTestCase;
 
-class Updating extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
-
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
-
-	/**
-	 * Setup resources and dependencies
-	 */
-	public function setUp()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__ . '/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
-
-		$this->cart = new Cart('cart', $session, new Dispatcher);
-	}
+class Updating extends CartTestCase {
 
 	/** @test */
 	public function it_can_update_an_item_quantity()
@@ -137,9 +101,7 @@ class Updating extends PHPUnit_Framework_TestCase {
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 3);
-
 		$this->assertEquals($item->get('name'), 'Foobar 2');
-
 		$this->assertEquals($item->get('attributes')->first()->get('value'), 'l');
 
 		$this->cart->update('bbf24530f06f8f7cfcc6cc843d42b89d', [
@@ -155,9 +117,7 @@ class Updating extends PHPUnit_Framework_TestCase {
 		]);
 
 		$this->assertEquals($item->get('quantity'), 6);
-
 		$this->assertEquals($item->get('name'), 'Foo');
-
 		$this->assertEquals($item->get('attributes')->first()->get('value'), 'm');
 	}
 
@@ -194,7 +154,6 @@ class Updating extends PHPUnit_Framework_TestCase {
 		]);
 
 		$item1 = $this->cart->items()->first();
-
 		$item2 = $this->cart->items()->last();
 
 		$this->assertEquals($item1->get('quantity'), 7);

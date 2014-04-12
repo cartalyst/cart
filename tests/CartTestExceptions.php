@@ -18,45 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\FileSessionHandler;
-use Illuminate\Session\Store;
-use Mockery as m;
-use PHPUnit_Framework_TestCase;
-
-class CartTestExceptions extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
-
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
-
-	/**
-	 * Setup resources and dependencies
-	 */
-	public function setUp()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
-
-		$this->cart = new Cart('cart', $session, new Dispatcher);
-	}
+class CartTestExceptions extends CartTestCase {
 
 	/**
 	 * @test
@@ -87,6 +49,34 @@ class CartTestExceptions extends PHPUnit_Framework_TestCase {
 					'label' => 'Bear',
 				],
 			],
+		]);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
+	 */
+	public function it_throws_exception_when_adding_single_item_with_invalid_quantity()
+	{
+		$this->cart->add([
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => -2,
+			'price'    => 125.00,
+		]);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
+	 */
+	public function it_throws_exception_when_adding_single_item_with_invalid_price()
+	{
+		$this->cart->add([
+			'id'       => 'foobar1',
+			'name'     => 'Foobar 1',
+			'quantity' => 1,
+			'price'    => 'foo',
 		]);
 	}
 

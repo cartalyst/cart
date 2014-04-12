@@ -20,28 +20,12 @@
 
 use Cartalyst\Cart\Cart;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
-use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Session\FileSessionHandler;
 use Illuminate\Session\Store;
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
 
-class CartTestEvents extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
-
-	/**
-	 * Holds the dispatcher instance.
-	 *
-	 * @var \Illuminate\Events\Dipstacher
-	 */
-	protected $dispatcher;
+class CartTestEvents extends CartTestCase {
 
 	/**
 	 * Close mockery.

@@ -25,16 +25,8 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Session\FileSessionHandler;
 use Illuminate\Session\Store;
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
 
-class CartTest extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
+class CartTest extends CartTestCase {
 
 	/**
 	 * Close mockery.
@@ -316,9 +308,7 @@ class CartTest extends PHPUnit_Framework_TestCase {
 		]);
 
 		$this->assertEquals(count($items), 2);
-
 		$this->assertEquals($items[0]->get('id'), 'foobar2');
-
 		$this->assertEquals($items[1]->get('id'), 'foobar3');
 	}
 

@@ -18,45 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\FileSessionHandler;
-use Illuminate\Session\Store;
-use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use Cartalyst\Cart\Tests\CartTestCase;
 
-class Reading extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the Cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
-
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
-
-	/**
-	 * Setup resources and dependencies
-	 */
-	public function setUp()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__ . '/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
-
-		$this->cart = new Cart('cart', $session, new Dispatcher);
-	}
+class Reading extends CartTestCase {
 
 	/** @test */
 	public function it_can_get_an_item_information()
@@ -137,6 +101,5 @@ class Reading extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($this->cart->items()->first()->weight(), 84);
 	}
-
 
 }

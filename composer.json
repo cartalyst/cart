@@ -56,7 +56,8 @@
 	},
 	"autoload": {
 		"files": [
-			"src/Exceptions.php"
+			"src/Exceptions.php",
+			"tests/CartTestCase.php"
 		],
 		"psr-4": {
 			"Cartalyst\\Cart\\": "src/"

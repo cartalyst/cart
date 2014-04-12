@@ -18,24 +18,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Cart;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
-use Cartalyst\Conditions\Condition;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\FileSessionHandler;
-use Illuminate\Session\Store;
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
 
-class CartTestIlluminateSession extends PHPUnit_Framework_TestCase {
-
-	/**
-	 * Holds the cart instance.
-	 *
-	 * @var \Cartalyst\Cart\Cart
-	 */
-	protected $cart;
+class CartTestIlluminateSession extends CartTestCase {
 
 	/**
 	 * Close mockery.
@@ -47,35 +33,11 @@ class CartTestIlluminateSession extends PHPUnit_Framework_TestCase {
 		m::close();
 	}
 
-	/**
-	 * Setup resources and dependencies
-	 */
-	public function setUp()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
-
-		$this->cart = new Cart('cart', $session, new Dispatcher);
-	}
-
-	/** @test */
-	public function session_can_be_instantiated_with_key_and_instance()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler), 'cart_session', 'main');
-
-		$this->assertTrue($session instanceof IlluminateSession);
-	}
-
 	/** @test */
 	public function it_can_get_cart_session_key_and_cart_identity()
 	{
 		$this->assertTrue($this->cart->getStorage() instanceof IlluminateSession);
-
 		$this->assertEquals($this->cart->getStorage()->getKey(), 'cartalyst_cart');
-
 		$this->assertEquals($this->cart->getStorage()->identify(), 'main');
 
 		$this->cart->add([
@@ -85,9 +47,20 @@ class CartTestIlluminateSession extends PHPUnit_Framework_TestCase {
 			'price'    => 97.00,
 		]);
 
+		$this->assertEquals($this->cart->items()->count(), 1);
+
 		$this->cart->getStorage()->forget();
 
 		$this->assertEquals($this->cart->items()->count(), 0);
+	}
+
+	/** @test */
+	public function it_can_set_cart_session_key_and_cart_identity_on_initialization()
+	{
+		$session = new IlluminateSession(m::mock('Illuminate\Session\Store'), 'cart', 'instance');
+
+		$this->assertEquals($session->getKey(), 'cart');
+		$this->assertEquals($session->identify(), 'instance');
 	}
 
 }
