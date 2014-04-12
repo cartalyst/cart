@@ -46,7 +46,7 @@ History and future capabilities.
 
 ## Requirements
 
-- PHP >=5.3
+- PHP >=5.4
 
 ## Installation
 
