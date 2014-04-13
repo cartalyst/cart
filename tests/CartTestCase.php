@@ -85,7 +85,7 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 	 * @param  int  $value
 	 * @param  string  $target
 	 * @param  array  $rules
-	 * @param  boolean $inclusive
+	 * @param  bool  $inclusive
 	 * @return \Cartalyst\Conditions\Condition
 	 */
 	protected function createCondition(
@@ -97,11 +97,7 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 		$inclusive = false
 	)
 	{
-		$condition = new Condition([
-			'name'   => $name,
-			'type'   =>	$type,
-			'target' => $target,
-		]);
+		$condition = new Condition(compact('name', 'type', 'target'));
 
 		if (is_array($value))
 		{
@@ -112,23 +108,11 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 				$actions[]['value'] = $val;
 			}
 
-			if ($inclusive)
-			{
-				$actions[]['inclusive'] = true;
-			}
-		}
-		else if ($inclusive)
-		{
-			$actions = [
-				'value'     => $value,
-				'inclusive' => true,
-			];
+			$actions[]['inclusive'] = (bool) $inclusive;
 		}
 		else
 		{
-			$actions = [
-				'value' => $value
-			];
+			$actions = compact('value', 'inclusive');
 		}
 
 		$condition->setActions($actions);
