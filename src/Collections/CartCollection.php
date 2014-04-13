@@ -76,17 +76,11 @@ class CartCollection extends BaseCollection {
 			{
 				foreach ($this->items() as $item)
 				{
-					foreach ($item->conditions() as $condition)
-					{
-						$conditions[] = $condition;
-					}
+					$conditions = array_merge($conditions, $item->conditions());
 				}
 			}
 
-			foreach ($this->cartConditions() as $condition)
-			{
-				$conditions[] = $condition;
-			}
+			$conditions = array_merge($conditions, $this->items()->conditions);
 
 			return $conditions;
 		}
@@ -113,13 +107,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			if ($_conditions = $item->get('conditions'))
-			{
-				foreach ($_conditions as $condition)
-				{
-					$conditions[] = $condition;
-				}
-			}
+			$conditions = array_merge($conditions, $item->get('conditions'));
 		}
 
 		return $conditions;
@@ -140,7 +128,7 @@ class CartCollection extends BaseCollection {
 			$item->applyConditions();
 
 			$this->totalConditionResults = array_merge_recursive(
-				$item->getConditionResults(),
+				$item->totalConditionResults(),
 				$this->totalConditionResults
 			);
 		}

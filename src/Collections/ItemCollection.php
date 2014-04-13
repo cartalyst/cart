@@ -23,18 +23,6 @@ use Cartalyst\Conditions\Condition;
 class ItemCollection extends BaseCollection {
 
 	/**
-	 * Returns the condition results grouped by name.
-	 *
-	 * @return array
-	 */
-	public function getConditionResults()
-	{
-		$this->applyConditions();
-
-		return $this->totalConditionResults;
-	}
-
-	/**
 	 * Returns this item attributes.
 	 *
 	 * @return \Illuminate\Support\Collection
@@ -89,7 +77,7 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function weight()
 	{
-		return (float) $this->get('weight') * $this->quantity();
+		return $this->get('weight') * $this->quantity();
 	}
 
 	/**

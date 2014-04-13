@@ -81,13 +81,6 @@ class Cart extends CartCollection {
 	];
 
 	/**
-	 * Holds all the cart conditions.
-	 *
-	 * @var array
-	 */
-	protected $conditions = [];
-
-	/**
 	 * Constructor.
 	 *
 	 * @param  mixed  $id
@@ -468,36 +461,6 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Sets a new condition.
-	 *
-	 * @param  mixed  $condition
-	 * @return void
-	 */
-	public function condition($condition)
-	{
-		if (empty($condition)) return;
-
-		if (is_array($condition))
-		{
-			foreach ($condition as $_condition)
-			{
-				$this->condition($_condition);
-			}
-
-			return;
-		}
-
-		$cart = $this->items();
-
-		if ($condition->validate($this))
-		{
-			$cart->conditions[$condition->get('name')] = $condition;
-		}
-
-		$this->updateCart($cart);
-	}
-
-	/**
 	 * Clear the conditions.
 	 *
 	 * @param  string  $type
@@ -643,16 +606,6 @@ class Cart extends CartCollection {
 	protected function updateCart($cart = null)
 	{
 		$this->storage->put($cart);
-	}
-
-	/**
-	 * Returns all the applied and valid cart conditions.
-	 *
-	 * @return array
-	 */
-	protected function cartConditions()
-	{
-		return $this->items()->conditions;
 	}
 
 	/**

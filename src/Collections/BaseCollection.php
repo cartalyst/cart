@@ -18,9 +18,10 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Cart\Cart;
 use Illuminate\Support\Collection;
 
-class BaseCollection extends Collection {
+abstract class BaseCollection extends Collection {
 
 	/**
 	 * Holds all conditions.
@@ -118,26 +119,29 @@ class BaseCollection extends Collection {
 	 */
 	public function condition($condition)
 	{
+		$base = $this instanceof Cart ? $this->items() : $this;
+
 		if (empty($condition)) return;
 
 		if (is_array($condition))
 		{
 			foreach ($condition as $c)
 			{
-				$this->condition($c);
+				$base->condition($c);
 			}
 
 			return;
 		}
 
-		if ($condition->validate($this))
+		if ($condition->validate($base))
 		{
-			$this->conditions[] = $condition;
+			$base->conditions[$condition->get('name')] = $condition;
 		}
 
-		$this->conditionResults[$condition->get('type')]['price'] = 0;
-
-		$this->conditionResults[$condition->get('type')]['subtotal'] = 0;
+		if ($this instanceof Cart)
+		{
+			$this->updateCart($base);
+		}
 	}
 
 	/**
@@ -162,6 +166,16 @@ class BaseCollection extends Collection {
 		{
 			$this->conditions = [];
 		}
+	}
+
+	/**
+	 * Returns the condition results grouped by name.
+	 *
+	 * @return array
+	 */
+	public function totalConditionResults()
+	{
+		return $this->totalConditionResults;
 	}
 
 	/**
@@ -292,7 +306,7 @@ class BaseCollection extends Collection {
 				$item->applyConditions();
 
 				$this->totalConditionResults = array_merge_recursive(
-					$item->getConditionResults(),
+					$item->totalConditionResults(),
 					$this->totalConditionResults
 				);
 			}
