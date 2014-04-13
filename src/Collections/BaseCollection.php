@@ -314,12 +314,7 @@ class BaseCollection extends Collection {
 			}
 		}
 
-		if (isset($this->totalConditionResults[$type]))
-		{
-			return $this->totalConditionResults[$type];
-		}
-
-		return $this->totalConditionResults;
+		return array_get($this->totalConditionResults, $type, $this->totalConditionResults);
 	}
 
 	/**
