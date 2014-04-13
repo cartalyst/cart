@@ -108,7 +108,7 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 				$actions[]['value'] = $val;
 			}
 
-			$actions[]['inclusive'] = (bool) $inclusive;
+			$actions[]['inclusive'] = $inclusive;
 		}
 		else
 		{

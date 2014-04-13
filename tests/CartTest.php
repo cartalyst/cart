@@ -168,18 +168,18 @@ class CartTest extends CartTestCase {
 				'name'     => 'Foobar 1',
 				'quantity' => 4,
 				'price'    => 97.00,
-				'weight'   => 21.00,
+				'weight'   => 21.49,
 			],
 			[
 				'id'       => 'foobar2',
 				'name'     => 'Foobar 2',
 				'quantity' => 2,
 				'price'    => 85.00,
-				'weight'   => 21.00,
+				'weight'   => 21.32,
 			],
 		]);
 
-		$this->assertEquals($this->cart->weight(), 126);
+		$this->assertEquals($this->cart->weight(), 128.60);
 	}
 
 	/** @test */
