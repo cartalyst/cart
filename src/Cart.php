@@ -200,6 +200,9 @@ class Cart extends CartCollection {
 		// Assign item conditions
 		$row->condition(array_get($item, 'conditions', []));
 
+		// Set items conditions order
+		$row->setConditionsOrder($this->getItemsConditionsOrder());
+
 		// Set the item price
 		$row->setPrice($price);
 
@@ -441,6 +444,16 @@ class Cart extends CartCollection {
 	}
 
 	/**
+	 * Returns the items conditions order.
+	 *
+	 * @return array
+	 */
+	public function getItemsConditionsOrder()
+	{
+		return $this->items()->getItemsConditionsOrder();
+	}
+
+	/**
 	 * Sets the items conditions order.
 	 *
 	 * @param  array  $order
@@ -450,12 +463,7 @@ class Cart extends CartCollection {
 	{
 		$cart = $this->items();
 
-		foreach ($cart as $key => $item)
-		{
-			$item->setConditionsOrder($order);
-
-			$cart[$key] = $item;
-		}
+		$cart->setItemsConditionsOrder($order);
 
 		$this->updateCart($cart);
 	}
@@ -488,7 +496,7 @@ class Cart extends CartCollection {
 
 		if ($includeItems)
 		{
-			foreach ($items as $key => $item)
+			foreach (array_keys($items->toArray()) as $key)
 			{
 				$items[$key]->clearConditions($type);
 			}

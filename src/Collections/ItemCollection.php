@@ -23,6 +23,17 @@ use Cartalyst\Conditions\Condition;
 class ItemCollection extends BaseCollection {
 
 	/**
+	 * Sets the item price.
+	 *
+	 * @param  float  $price
+	 * @return void
+	 */
+	public function setPrice($price)
+	{
+		$this->price = $price;
+	}
+
+	/**
 	 * Returns this item attributes.
 	 *
 	 * @return \Illuminate\Support\Collection
@@ -128,6 +139,16 @@ class ItemCollection extends BaseCollection {
 		}
 
 		return $valid;
+	}
+
+	/**
+	 * Returns the condition results grouped by name.
+	 *
+	 * @return array
+	 */
+	public function conditionResults()
+	{
+		return $this->conditionResults;
 	}
 
 	/**

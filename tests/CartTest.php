@@ -298,6 +298,7 @@ class CartTest extends CartTestCase {
 		]);
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
+		$this->assertEquals($item[0]->price(), 85);
 
 		$items = $this->cart->find([
 			'attributes' => [

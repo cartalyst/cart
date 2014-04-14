@@ -38,24 +38,6 @@ abstract class BaseCollection extends Collection {
 	protected $conditionResults = [];
 
 	/**
-	 * Holds conditions results grouped by name.
-	 *
-	 * @var array
-	 */
-	protected $totalConditionResults = [];
-
-	/**
-	 * Holds the order in which conditions apply.
-	 *
-	 * @var array
-	 */
-	protected $conditionsOrder = [
-		'discount',
-		'other',
-		'tax',
-	];
-
-	/**
 	 * Holds the item price.
 	 *
 	 * @var float
@@ -68,27 +50,6 @@ abstract class BaseCollection extends Collection {
 	 * @var float
 	 */
 	protected $subtotal;
-
-	/**
-	 * Returns the item price.
-	 *
-	 * @return float
-	 */
-	public function getPrice()
-	{
-		return $this->price;
-	}
-
-	/**
-	 * Sets the item price.
-	 *
-	 * @param  float  $price
-	 * @return void
-	 */
-	public function setPrice($price)
-	{
-		$this->price = $price;
-	}
 
 	/**
 	 * Returns the conditions order.
@@ -169,62 +130,33 @@ abstract class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns the condition results grouped by name.
-	 *
-	 * @return array
-	 */
-	public function totalConditionResults()
-	{
-		return $this->totalConditionResults;
-	}
-
-	/**
-	 * Apply conditions.
+	 * Returns the total.
 	 *
 	 * @param  string  $type
 	 * @return float
 	 */
-	public function applyConditions($type = null)
+	public function total($conditionType = null)
 	{
-		// Reset calculated conditions
-		$this->totalConditionResults = [];
+		$this->conditionResults = [];
 
-		// Reset the subtotal
 		$this->subtotal = $this->subtotal();
 
-		// Reset the price
-		$this->setPrice($this->get('price'));
+		$this->price = $this->get('price');
 
-		foreach ($this->getConditionsOrder() as $key)
+		// Price conditions
+		foreach ($this->getConditionsOrder() as $type)
 		{
-			$this->conditionResults[$key]['price'] = 0;
-
-			$this->conditionResults[$key]['subtotal'] = 0;
-		}
-
-		// Apply price conditions
-		foreach ($this->getConditionsOrder() as $conditionType)
-		{
-			$oldPrice = $this->price;
-
-			$this->price += $this->applyCondition($conditionType, 'price', $this->getPrice());
-
-			if ($oldPrice != $this->price)
-			{
-				$this->conditionResults[$conditionType]['price'] = $this->subtotal($this->price) - $this->subtotal;
-			}
+			$this->price += $this->applyCondition($type, 'price', $this->price);
 		}
 
 		$this->subtotal = $this->subtotal($this->price);
 
-		// Apply subtotal conditions
-		foreach ($this->getConditionsOrder() as $conditionType)
+		// Subtotal conditions
+		foreach ($this->getConditionsOrder() as $type)
 		{
-			$this->conditionResults[$conditionType]['subtotal'] = $this->applyCondition($conditionType, 'subtotal', $this->subtotal);
+			$this->subtotal += $this->applyCondition($type, 'subtotal', $this->subtotal);
 
-			$this->subtotal += $this->applyCondition($conditionType, 'subtotal', $this->subtotal);
-
-			if ($type === $conditionType)
+			if ($conditionType === $type)
 			{
 				break;
 			}
@@ -236,46 +168,43 @@ abstract class BaseCollection extends Collection {
 	/**
 	 * Apply a condition.
 	 *
-	 * @param  string  $type
+	 * @param  string  $conditionType
 	 * @param  string  $target
 	 * @param  int  $value
 	 * @return float
 	 */
-	public function applyCondition($type, $target = 'subtotal', $value = 0)
+	public function applyCondition($conditionType, $target = 'subtotal', $value = 0)
 	{
 		$subtotal = 0;
 
-		foreach ($this->conditions($type) as $condition)
+		foreach ($this->conditions($conditionType) as $condition)
 		{
 			if ($condition->get('target') === $target)
 			{
 				$condition->apply($this, $value);
 
-				if (isset($this->totalConditionResults[$condition->get('type')][$condition->get('name')]))
+				$name   = $condition->get('name');
+				$type   = $condition->get('type');
+				$result = $condition->result();
+
+				if ( ! isset($this->conditionResults[$type]))
 				{
-					$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
+					$this->conditionResults[$type] = [];
+				}
+
+				if ($target === 'price')
+				{
+					$this->conditionResults[$type][$name] = $result * $this->get('quantity');
 				}
 				else
 				{
-					if ( ! isset($this->totalConditionResults[$condition->get('type')]))
-					{
-						$this->totalConditionResults[$condition->get('type')] = [];
-					}
-
-					if ($target === 'price')
-					{
-						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result() * $this->get('quantity');
-					}
-					else
-					{
-						$this->totalConditionResults[$condition->get('type')][$condition->get('name')] = $condition->result();
-					}
+					$this->conditionResults[$type][$name] = $result;
 				}
 
 				// Add exclusive conditions only
-				if ( ! $inclusive = head($condition->get('actions'))->get('inclusive'))
+				if ( ! head($condition->get('actions'))->get('inclusive'))
 				{
-					$subtotal += $condition->result();
+					$subtotal += $result;
 				}
 			}
 		}
@@ -295,40 +224,38 @@ abstract class BaseCollection extends Collection {
 	 */
 	public function conditionsTotal($type = null, $includeItems = true)
 	{
-		$this->totalConditionResults = [];
+		$this->conditionResults = [];
 
-		$this->applyConditions();
+		$this->total();
 
 		if ($includeItems)
 		{
 			foreach ($this->items() as $item)
 			{
-				$item->applyConditions();
-
-				$this->totalConditionResults = array_merge_recursive(
-					$item->totalConditionResults(),
-					$this->totalConditionResults
+				$this->conditionResults = array_merge_recursive(
+					$item->conditionResults(),
+					$this->conditionResults
 				);
 			}
 		}
 
-		if ($type && ! isset($this->totalConditionResults[$type]))
+		if ($type && ! isset($this->conditionResults[$type]))
 		{
 			return [];
 		}
 
-		foreach ($this->totalConditionResults as $key => $result)
+		foreach ($this->conditionResults as $key => $result)
 		{
 			foreach ($result as $name => $value)
 			{
 				if (is_array($value))
 				{
-					$this->totalConditionResults[$key][$name] = array_sum($value);
+					$this->conditionResults[$key][$name] = array_sum($value);
 				}
 			}
 		}
 
-		return array_get($this->totalConditionResults, $type, $this->totalConditionResults);
+		return array_get($this->conditionResults, $type, $this->conditionResults);
 	}
 
 	/**
@@ -352,16 +279,6 @@ abstract class BaseCollection extends Collection {
 	}
 
 	/**
-	 * Returns the cart total.
-	 *
-	 * @return float
-	 */
-	public function total()
-	{
-		return $this->applyConditions();
-	}
-
-	/**
 	 * Returns all the conditions with the given type.
 	 *
 	 * @param  string  $type
@@ -375,7 +292,7 @@ abstract class BaseCollection extends Collection {
 		{
 			if ($type)
 			{
-				if ($condition->get('type') === $type)
+				if ($type === $condition->get('type'))
 				{
 					$conditions[] = $condition;
 				}

@@ -21,6 +21,28 @@
 class CartCollection extends BaseCollection {
 
 	/**
+	 * Holds the order in which conditions apply.
+	 *
+	 * @var array
+	 */
+	protected $conditionsOrder = [
+		'discount',
+		'other',
+		'tax',
+	];
+
+	/**
+	 * Holds the order in which items conditions apply.
+	 *
+	 * @var array
+	 */
+	protected $itemsConditionsOrder = [
+		'discount',
+		'other',
+		'tax',
+	];
+
+	/**
 	 * Returns the items subtotal with conditions applied.
 	 *
 	 * @return float
@@ -121,40 +143,43 @@ class CartCollection extends BaseCollection {
 	 */
 	public function itemsConditionsTotal($type = null)
 	{
-		$this->totalConditionResults = [];
+		$this->conditionResults = [];
 
 		foreach ($this->items() as $item)
 		{
-			$item->applyConditions();
+			if ( ! $item->conditionResults())
+			{
+				$item->total();
+			}
 
-			$this->totalConditionResults = array_merge_recursive(
-				$item->totalConditionResults(),
-				$this->totalConditionResults
+			$this->conditionResults = array_merge_recursive(
+				$item->conditionResults(),
+				$this->conditionResults
 			);
 		}
 
-		if ($type && ! isset($this->totalConditionResults[$type]))
+		if ($type && ! isset($this->conditionResults[$type]))
 		{
 			return [];
 		}
 
-		foreach ($this->totalConditionResults as $key => $result)
+		foreach ($this->conditionResults as $key => $result)
 		{
 			foreach ($result as $name => $value)
 			{
 				if (is_array($value))
 				{
-					$this->totalConditionResults[$key][$name] = array_sum($value);
+					$this->conditionResults[$key][$name] = array_sum($value);
 				}
 			}
 		}
 
-		if (isset($this->totalConditionResults[$type]))
+		if (isset($this->conditionResults[$type]))
 		{
-			return $this->totalConditionResults[$type];
+			return $this->conditionResults[$type];
 		}
 
-		return $this->totalConditionResults;
+		return $this->conditionResults;
 	}
 
 	/**
@@ -174,6 +199,27 @@ class CartCollection extends BaseCollection {
 		}
 
 		return array_sum($this->itemsConditionsTotal($type));
+	}
+
+	/**
+	 * Returns the items conditions order.
+	 *
+	 * @return array
+	 */
+	public function getItemsConditionsOrder()
+	{
+		return $this->itemsConditionsOrder;
+	}
+
+	/**
+	 * Sets the items conditions order.
+	 *
+	 * @param  array  $order
+	 * @return void
+	 */
+	public function setItemsConditionsOrder(array $order)
+	{
+		$this->itemsConditionsOrder = $order;
 	}
 
 }

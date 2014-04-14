@@ -33,7 +33,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->cart->items()->first();
 
-		$this->assertEquals($item->applyConditions('discount'), 498.75);
+		$this->assertEquals($item->total('discount'), 498.75);
 		$this->assertEquals($item->subtotal(), 500);
 		$this->assertEquals($item->conditionsTotalSum('discount'), -26.25);
 		$this->assertEquals($item->conditionsTotalSum('tax'), 49.875);
@@ -118,17 +118,20 @@ class CartTestConditions extends CartTestCase {
 
 		$item->condition($shipping);
 
-		$item->setConditionsOrder(['tax', 'shipping']);
+		$item->setConditionsOrder([
+			'tax',
+			'shipping'
+		]);
 
 		$this->assertEquals($item->total(), 577.5);
 
-		$item->setConditionsOrder(['tax', 'other', 'discount']);
+		$item->setConditionsOrder([
+			'tax',
+			'other',
+			'discount'
+		]);
 
 		$this->assertEquals($item->total(), 525);
-
-		$this->cart->setItemsConditionsOrder(['tax', 'shipping']);
-
-		$this->assertEquals($item->total(), 577.5);
 	}
 
 	/** @test */
@@ -549,6 +552,11 @@ class CartTestConditions extends CartTestCase {
 			'Tax 5%'    => 62.865,
 		];
 
+		$conditionResults = [
+			'Tax 10%' => 114.3,
+		];
+
+		$this->assertEquals($this->cart->itemsConditionsTotal('tax'), $conditionResults);
 		$this->assertEquals($this->cart->conditionsTotal('tax', false), $conditionsTotal);
 	}
 
@@ -770,6 +778,85 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($this->cart->total(), 990);
 		$this->assertEquals(round($this->cart->conditionsTotalSum('tax', false)), 90);
 		$this->assertEquals(round($this->cart->conditionsTotalSum('tax')), 262);
+	}
+
+	/** @test */
+	public function cart_calculates_total_till_condition_type()
+	{
+		$discount = $this->createCondition('Discount 5%', 'discount', '-5.00%');
+		$other    = $this->createCondition('Other 5', 'other', 5);
+		$tax      = $this->createCondition('Tax 10%', 'tax', '10%');
+		$shipping = $this->createCondition('Shipping', 'shipping', '10');
+
+		$this->cart->setItemsConditionsOrder([
+			'discount',
+			'other',
+			'tax',
+			'shipping',
+		]);
+
+		$item = $this->createItem('Foobar 1', 100, 5, [$discount, $shipping, $other, $tax]);
+
+		$this->cart->add($item);
+
+		$item = $this->cart->items()->first();
+
+		$this->assertEquals($item->total('discount'), 475);
+		$this->assertEquals($item->total('other'), 480);
+		$this->assertEquals($item->total('tax'), 528);
+		$this->assertEquals($item->total('shipping'), 538);
+	}
+
+	/** @test */
+	public function cart_calculates_total_till_condition_type_per_item()
+	{
+		$discount = $this->createCondition('Discount 5%', 'discount', '-5.00%');
+		$other    = $this->createCondition('Other 5', 'other', 5);
+		$tax      = $this->createCondition('Tax 10%', 'tax', '10%');
+		$shipping = $this->createCondition('Shipping', 'shipping', '10');
+
+		$this->cart->setItemsConditionsOrder([
+			'discount',
+			'other',
+			'tax',
+			'shipping',
+		]);
+
+		$this->cart->setConditionsOrder([
+			'discount',
+			'other',
+			'tax',
+			'shipping',
+		]);
+
+		$item1 = $this->createItem('Foobar 1', 100, 5, [$discount, $shipping, $other, $tax]);
+		$item2 = $this->createItem('Foobar 2', 100, 5, [$discount, $shipping, $other, $tax]);
+
+		$this->cart->add([$item1, $item2]);
+
+		$item1 = $this->cart->items()->first();
+		$item2 = $this->cart->items()->last();
+
+		$item1->setConditionsOrder([
+			'discount',
+		]);
+
+		$this->assertEquals($item1->total('discount'), 475);
+		$this->assertEquals($item1->total('other'), 475);
+		$this->assertEquals($item1->total('tax'), 475);
+		$this->assertEquals($item1->total('shipping'), 475);
+
+		$this->assertEquals($item2->total('discount'), 475);
+		$this->assertEquals($item2->total('other'), 480);
+		$this->assertEquals($item2->total('tax'), 528);
+		$this->assertEquals($item2->total('shipping'), 538);
+
+		$this->cart->condition([$discount, $shipping, $other, $tax]);
+
+		$this->assertEquals($this->cart->total('discount'), 962.35);
+		$this->assertEquals($this->cart->total('other'), 967.35);
+		$this->assertEquals($this->cart->total('tax'), 1064.085);
+		$this->assertEquals($this->cart->total('shipping'), 1074.085);
 	}
 
 }
