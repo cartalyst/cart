@@ -166,6 +166,10 @@ class Cart extends CartCollection {
 		{
 			throw new CartInvalidPriceException;
 		}
+		else
+		{
+			$price = (float) $price;
+		}
 
 		// Get this item attributes
 		$attributes = array_get($item, 'attributes', []);
@@ -177,7 +181,7 @@ class Cart extends CartCollection {
 		}
 
 		// Generate the unique row id
-		$rowId = $this->generateRowId($item['id'], $attributes);
+		$rowId = $this->generateRowId($item['id'], array_except($item, ['price', 'quantity']));
 
 		// Check if the item already exists on the cart
 		if ($this->exists($rowId))
@@ -662,12 +666,12 @@ class Cart extends CartCollection {
 	 * Generate a unique identifier based on the item data.
 	 *
 	 * @param  string  $id
-	 * @param  array  $attributes
+	 * @param  array  $item
 	 * @return string
 	 */
-	protected function generateRowId($id, $attributes)
+	protected function generateRowId($id, $item)
 	{
-		return md5($id.serialize($attributes));
+		return md5($id.serialize($item));
 	}
 
 	/**
