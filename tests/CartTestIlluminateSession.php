@@ -40,12 +40,9 @@ class CartTestIlluminateSession extends CartTestCase {
 		$this->assertEquals($this->cart->getStorage()->getKey(), 'cartalyst_cart');
 		$this->assertEquals($this->cart->getStorage()->identify(), 'main');
 
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 4,
-			'price'    => 97.00,
-		]);
+		$item = $this->createItem('Foobar 1', 125, 2);
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->items()->count(), 1);
 

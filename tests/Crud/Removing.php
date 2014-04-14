@@ -25,52 +25,30 @@ class Removing extends CartTestCase {
 	/** @test */
 	public function it_can_remove_a_single_item()
 	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 7,
-				'price'    => 120.00,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 3,
-				'price'    => 120.00,
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 120, 7);
+		$item2 = $this->createItem('Foobar 2', 120, 3);
+
+		$this->cart->add([$item1, $item2]);
 
 		$this->assertEquals($this->cart->quantity(), 10);
 		$this->assertEquals($this->cart->items()->count(), 2);
 
-		$this->cart->remove('f53e8bcc3534788e4b4f296c1889cc99');
+		$this->cart->remove('b37f673e46a33038305c1dc411215c07');
 
 		$this->assertEquals($this->cart->quantity(), 3);
 		$this->assertEquals($this->cart->items()->count(), 1);
-		$this->assertEmpty($this->cart->find(['f53e8bcc3534788e4b4f296c1889cc99']));
+		$this->assertEmpty($this->cart->find(['b37f673e46a33038305c1dc411215c07']));
 	}
 
 	/** @test */
 	public function it_can_remove_multiple_items()
 	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 7,
-				'price'    => 120.00,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 3,
-				'price'    => 120.00,
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 120, 7);
+		$item2 = $this->createItem('Foobar 2', 120, 3);
 
-		$this->assertEquals($this->cart->items()->count(), 2);
+		$this->cart->add([$item1, $item2]);
 
-		$this->cart->remove(['f53e8bcc3534788e4b4f296c1889cc99', '2d2d8cb241842b326ce0e095dbfc4d41']);
+		$this->cart->remove(['b37f673e46a33038305c1dc411215c07', '07d732dbcc3ce0752ac74870d6fa2194']);
 
 		$this->assertEquals($this->cart->items()->count(), 0);
 	}

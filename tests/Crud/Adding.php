@@ -26,12 +26,9 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_a_single_item()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 2,
-			'price'    => 10.00,
-		]);
+		$item = $this->createItem('Foobar 1', 10.00, 2);
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->quantity(), 2);
 
@@ -41,12 +38,9 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_a_single_item_with_quantity_as_string()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => '0000002',
-			'price'    => 10.00,
-		]);
+		$item = $this->createItem('Foobar 1', 10.00, '0000002');
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->quantity(), 2);
 	}
@@ -54,12 +48,9 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_a_single_item_with_price_as_string()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 2,
-			'price'    => '10.00',
-		]);
+		$item = $this->createItem('Foobar 1', '10.00', 2);
+
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
@@ -69,32 +60,13 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_a_single_item_with_attributes()
 	{
-		$this->cart->add([
-			'id'         => 'foobar1',
-			'name'       => 'Foobar 1',
-			'quantity'   => 2,
-			'price'      => 125.00,
-			'attributes' => [
-				'size'  => [
-					'label' => 'Large',
-					'value' => 'l',
-					'price' => 5.00,
-				],
-				'color' => [
-					'label' => 'Red',
-					'value' => 'red',
-					'price' => 3.50,
-				],
-				'print' => [
-					'label' => 'Bear',
-					'value' => 'bear',
-				],
-			],
-		]);
+		$item = $this->createItem('Foobar 1', 125, 2, null, [5, 3.5]);
+
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
-		$this->assertEquals($item->attributes()->count(), 3);
+		$this->assertEquals($item->attributes()->count(), 2);
 
 		$this->assertEquals($this->cart->items()->count(), 1);
 		$this->assertEquals($this->cart->quantity(), 2);
@@ -104,26 +76,11 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_multiple_items()
 	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 3,
-				'price'    => 4,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 2,
-				'price'    => 21.00,
-			],
-			[
-				'id'       => 'foobar3',
-				'name'     => 'Foobar 3',
-				'quantity' => 2,
-				'price'    => 120.00,
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 4, 3);
+		$item2 = $this->createItem('Foobar 2', 21, 2);
+		$item3 = $this->createItem('Foobar 3', 120, 2);
+
+		$this->cart->add([$item1, $item2, $item3]);
 
 		$this->assertEquals($this->cart->items()->count(), 3);
 		$this->assertEquals($this->cart->quantity(), 7);
@@ -133,23 +90,19 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_existing_item_to_update_its_quantity()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 3,
-			'price'    => 4,
-		]);
+		$item = $this->createItem('Foobar 1', 4, 3);
+
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 3);
 
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 6,
-			'price'    => 4,
-		]);
+		$item = $this->createItem('Foobar 1', 4, 6);
+
+		$this->cart->add($item);
+
+		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 9);
 	}
@@ -157,45 +110,22 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_multiple_items_with_attributes()
 	{
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => '03',
-				'price'      => 4,
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 5.00,
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.50,
-					],
+		$item1 = $this->createItem('Foobar 1', 4, 03, null, [5, 3.50]);
+		$item2 = [
+			'id'         => 'foobar3',
+			'name'       => 'Foobar 3',
+			'quantity'   => 4,
+			'price'      => 120.00,
+			'attributes' => [
+				'color' => [
+					'label' => 'Blue',
+					'value' => 'blue',
+					'price' => 3.50,
 				],
 			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 2,
-				'price'    => 21.00,
-			],
-			[
-				'id'         => 'foobar3',
-				'name'       => 'Foobar 3',
-				'quantity'   => 2,
-				'price'      => 120.00,
-				'attributes' => [
-					'color' => [
-						'label' => 'Blue',
-						'value' => 'blue',
-						'price' => 3.50,
-					],
-				],
-			],
-		]);
+		];
+
+		$this->cart->add([$item1, $item2]);
 
 		$firstItem = $this->cart->items()->first();
 		$lastItem  = $this->cart->items()->last();
@@ -203,30 +133,20 @@ class Adding extends CartTestCase {
 		$this->assertEquals($firstItem->attributes()->count(), 2);
 		$this->assertEquals($lastItem->attributes()->count(), 1);
 
-		$this->assertEquals($this->cart->items()->count(), 3);
+		$this->assertEquals($this->cart->items()->count(), 2);
 		$this->assertEquals($this->cart->quantity(), 7);
-		$this->assertEquals($this->cart->total(), 326.50);
+		$this->assertEquals($this->cart->total(), 531.5);
 	}
 
 	/** @test */
 	public function it_can_sync_data_from_a_collection()
 	{
+		$item1 = $this->createItem('Foobar 1', 50, 1);
+		$item2 = $this->createItem('Foobar 2', 50, 1);
+
 		$this->assertEquals($this->cart->items()->count(), 0);
 
-		$data = new Collection([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'price'    => 50,
-				'quantity' => 1,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'price'    => 50,
-				'quantity' => 1,
-			],
-		]);
+		$data = new Collection([$item1, $item2]);
 
 		$this->cart->sync($data);
 

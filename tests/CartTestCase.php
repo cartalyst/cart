@@ -54,7 +54,7 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 	 * @param  [type] $name [description]
 	 * @return [type]       [description]
 	 */
-	protected function createItem($name = 'Foobar', $price = 0, $quantity = 1, $conditions = [], $attrPrices = [0, 0])
+	protected function createItem($name = 'Foobar', $price = 0, $quantity = 1, $conditions = [], $attrPrices = [0, 0], $weight = 0)
 	{
 		return [
 			'id'         => strtolower(str_replace(' ', '', $name)),
@@ -62,6 +62,7 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 			'quantity'   => $quantity,
 			'conditions' => $conditions,
 			'price'      => $price,
+			'weight'     => $weight,
 			'attributes' => [
 				'size' => [
 					'label' => 'Large',

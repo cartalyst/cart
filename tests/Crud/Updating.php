@@ -25,18 +25,15 @@ class Updating extends CartTestCase {
 	/** @test */
 	public function it_can_update_an_item_quantity()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 5,
-			'price'    => 10.00,
-		]);
+		$item = $this->createItem('Foobar 1', 10, 5);
+
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 5);
 
-		$this->cart->update('f53e8bcc3534788e4b4f296c1889cc99', 2);
+		$this->cart->update('b37f673e46a33038305c1dc411215c07', 2);
 
 		$this->assertEquals($item->get('quantity'), 2);
 	}
@@ -44,18 +41,15 @@ class Updating extends CartTestCase {
 	/** @test */
 	public function it_can_remove_an_item_with_negative_quantity_test_1()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 5,
-			'price'    => 10.00,
-		]);
+		$item = $this->createItem('Foobar 1', 10, 5);
+
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 5);
 
-		$this->cart->update('f53e8bcc3534788e4b4f296c1889cc99', -1);
+		$this->cart->update('b37f673e46a33038305c1dc411215c07', -1);
 
 		$this->assertEquals($this->cart->quantity(), 0);
 	}
@@ -63,18 +57,15 @@ class Updating extends CartTestCase {
 	/** @test */
 	public function it_can_remove_an_item_with_negative_quantity_test_2()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 5,
-			'price'    => 10.00,
-		]);
+		$item = $this->createItem('Foobar 1', 10, 5);
+
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 5);
 
-		$this->cart->update('f53e8bcc3534788e4b4f296c1889cc99', [
+		$this->cart->update('b37f673e46a33038305c1dc411215c07', [
 			'quantity' => -1,
 		]);
 
@@ -84,27 +75,17 @@ class Updating extends CartTestCase {
 	/** @test */
 	public function it_can_update_an_item_attributes()
 	{
-		$this->cart->add([
-			'id'         => 'foobar2',
-			'name'       => 'Foobar 2',
-			'quantity'   => 3,
-			'price'      => 120.00,
-			'attributes' => [
-				'size' => [
-					'label' => 'Large',
-					'value' => 'l',
-					'price' => 15.00,
-				],
-			],
-		]);
+		$item = $this->createItem('Foobar 1', 120, 3, null, [15.00, 0]);
+
+		$this->cart->add($item);
 
 		$item = $this->cart->items()->first();
 
 		$this->assertEquals($item->get('quantity'), 3);
-		$this->assertEquals($item->get('name'), 'Foobar 2');
+		$this->assertEquals($item->get('name'), 'Foobar 1');
 		$this->assertEquals($item->get('attributes')->first()->get('value'), 'l');
 
-		$this->cart->update('bbf24530f06f8f7cfcc6cc843d42b89d', [
+		$this->cart->update('1fd8cf79422961bc6ef110eea0d47edc', [
 			'name'       => 'Foo',
 			'quantity'   => 6,
 			'attributes' => [
@@ -124,52 +105,28 @@ class Updating extends CartTestCase {
 	/** @test */
 	public function it_can_update_multiple_items_quantity_prices_and_attributes()
 	{
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 7,
-				'price'      => 120.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Small',
-						'value' => 's',
-						'price' => 15.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 3,
-				'price'      => 150.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 15.00,
-					],
-				],
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 120, 7, null, [15.00, 0]);
+		$item2 = $this->createItem('Foobar 2', 150, 3, null, [15.00, 0]);
+
+		$this->cart->add([$item1, $item2]);
 
 		$item1 = $this->cart->items()->first();
 		$item2 = $this->cart->items()->last();
 
 		$this->assertEquals($item1->get('quantity'), 7);
 		$this->assertEquals($item1->get('price'), 120.00);
-		$this->assertEquals($item1->get('attributes')->first()->get('label'), 'Small');
+		$this->assertEquals($item1->get('attributes')->first()->get('label'), 'Large');
 
 		$this->assertEquals($item2->get('price'), 150.00);
 		$this->assertEquals($item2->get('quantity'), 3);
-		$this->assertEquals($item2->get('attributes')->first()->get('label'), 'Large');
+		$this->assertEquals($item2->get('attributes')->last()->get('label'), 'Red');
 
 		$this->cart->update([
-			'f9676e6d527253cfe7147e1cae051dec' => [
+			'1fd8cf79422961bc6ef110eea0d47edc' => [
 				'price'    => 20.00,
 				'quantity' => 3,
 			],
-			'bbf24530f06f8f7cfcc6cc843d42b89d' => [
+			'44fd12480508f49e6642c1b49d57d702' => [
 				'price'    => 25.00,
 				'quantity' => 2,
 				'attributes' => [
@@ -184,7 +141,7 @@ class Updating extends CartTestCase {
 
 		$this->assertEquals($item1->get('quantity'), 3);
 		$this->assertEquals($item1->get('price'), 20.00);
-		$this->assertEquals($item1->get('attributes')->first()->get('label'), 'Small');
+		$this->assertEquals($item1->get('attributes')->first()->get('label'), 'Large');
 
 		$this->assertEquals($item2->get('price'), 25.00);
 		$this->assertEquals($item2->get('quantity'), 2);

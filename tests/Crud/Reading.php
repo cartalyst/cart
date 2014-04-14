@@ -25,33 +25,20 @@ class Reading extends CartTestCase {
 	/** @test */
 	public function it_can_get_an_item_information()
 	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 4,
-				'price'    => 97.00,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 2,
-				'price'    => 21.00,
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 97, 4);
+		$item2 = $this->createItem('Foobar 2', 21, 2);
 
-		$this->assertEquals($this->cart->item('f53e8bcc3534788e4b4f296c1889cc99')->get('price'), 97);
+		$this->cart->add([$item1, $item2]);
+
+		$this->assertEquals($this->cart->item('b37f673e46a33038305c1dc411215c07')->get('price'), 97);
 	}
 
 	/** @test */
 	public function it_can_get_an_item_subtotal()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 4,
-			'price'    => 97.00,
-		]);
+		$item = $this->createItem('Foobar 1', 97, 4);
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->items()->first()->subtotal(), 388);
 	}
@@ -59,31 +46,19 @@ class Reading extends CartTestCase {
 	/** @test */
 	public function it_can_get_an_item_total()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 5,
-			'price'    => 97.00,
-		]);
+		$item = $this->createItem('Foobar 1', 97, 5);
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->items()->first()->total(), 485);
 	}
 
 	/** @test */
-	public function testItemDiscountedSubtotal()
-	{
-
-	}
-
-	/** @test */
 	public function it_can_get_an_item_quantity()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 4,
-			'price'    => 97.00,
-		]);
+		$item = $this->createItem('Foobar 1', 97, 4);
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->items()->first()->quantity(), 4);
 	}
@@ -91,13 +66,9 @@ class Reading extends CartTestCase {
 	/** @test */
 	public function it_can_get_an_item_weight()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 4,
-			'price'    => 97.00,
-			'weight'   => 21.00,
-		]);
+		$item = $this->createItem('Foobar 1', 97, 4, null, null, 21.00);
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->items()->first()->weight(), 84);
 	}

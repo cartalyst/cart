@@ -56,12 +56,9 @@ class CartTestEvents extends CartTestCase {
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 2,
-			'price'    => 125.00,
-		]);
+		$item = $this->createItem('Foobar 1', 125, 2);
+
+		$this->cart->add($item);
 	}
 
 	/** @test */
@@ -71,14 +68,11 @@ class CartTestEvents extends CartTestCase {
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.updated', m::any());
 
-		$this->cart->add([
-			'id'       => 'foobar2',
-			'name'     => 'Foobar 2',
-			'quantity' => 3,
-			'price'    => 120.00,
-		]);
+		$item = $this->createItem('Foobar 1', 125, 2);
 
-		$this->cart->update('2d2d8cb241842b326ce0e095dbfc4d41', [
+		$this->cart->add($item);
+
+		$this->cart->update('b37f673e46a33038305c1dc411215c07', [
 			'name' => 'Foo',
 		]);
 	}
@@ -90,14 +84,11 @@ class CartTestEvents extends CartTestCase {
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.removed', m::any());
 
-		$this->cart->add([
-			'id'       => 'foobar2',
-			'name'     => 'Foobar 2',
-			'quantity' => 3,
-			'price'    => 120.00,
-		]);
+		$item = $this->createItem('Foobar 1', 125, 2);
 
-		$this->cart->remove('2d2d8cb241842b326ce0e095dbfc4d41');
+		$this->cart->add($item);
+
+		$this->cart->remove('b37f673e46a33038305c1dc411215c07');
 	}
 
 	/** @test */

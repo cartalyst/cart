@@ -389,7 +389,7 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($item2->total(), 408);
 
 		$this->cart->update([
-			'b972ee677339f2d22f0009c1c158c703' => [
+			'a896e105d07288f2a938c2847f27f0bb' => [
 				'conditions' => $tax
 			]
 		]);
@@ -397,7 +397,7 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($item1->total(), 825);
 
 		$this->cart->update([
-			'6999396ebcc0a76802ca13b36d640f58' => [
+			'ecf0709640806284f597bb548a5a9924' => [
 				'conditions' => null
 			]
 		]);
@@ -405,7 +405,7 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($item2->total(), 393);
 
 		$this->cart->update([
-			'6999396ebcc0a76802ca13b36d640f58' => [
+			'ecf0709640806284f597bb548a5a9924' => [
 				'conditions' => [$tax, $other]
 			]
 		]);
@@ -413,7 +413,7 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($item2->total(), 448.8);
 
 		$this->cart->update([
-			'6999396ebcc0a76802ca13b36d640f58' => [
+			'ecf0709640806284f597bb548a5a9924' => [
 				'weights' => 20.00
 			]
 		]);

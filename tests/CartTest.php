@@ -121,40 +121,10 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function it_can_get_the_total_number_of_items_inside_the_cart()
 	{
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 4,
-				'price'      => 97.00,
-				'weight'	 => 21.00,
-				'attributes' => [
-					'size'  => [
-						'label' => 'Large',
-						'value' => 'l',
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 85.00,
-				'weight'	 => 21.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 15.00,
-					],
-				],
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 97, 4);
+		$item2 = $this->createItem('Foobar 2', 85, 2);
+
+		$this->cart->add([$item1, $item2]);
 
 		$this->assertEquals($this->cart->quantity(), 6);
 	}
@@ -162,22 +132,10 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function it_can_get_the_total_cart_weight()
 	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 4,
-				'price'    => 97.00,
-				'weight'   => 21.49,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 2,
-				'price'    => 85.00,
-				'weight'   => 21.32,
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 97, 4, null, null, 21.49);
+		$item2 = $this->createItem('Foobar 2', 85, 2, null, null, 21.32);
+
+		$this->cart->add([$item1, $item2]);
 
 		$this->assertEquals($this->cart->weight(), 128.60);
 	}
@@ -185,12 +143,9 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function cart_can_be_cleared()
 	{
-		$this->cart->add([
-			'id'       => 'foobar1',
-			'name'     => 'Foobar 1',
-			'quantity' => 4,
-			'price'    => 97.00,
-		]);
+		$item = $this->createItem('Foobar 1', 97, 4, null, null, 21.49);
+
+		$this->cart->add($item);
 
 		$this->assertEquals($this->cart->quantity(), 4);
 
@@ -202,26 +157,11 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function cart_can_be_searched()
 	{
-		$this->cart->add([
-			[
-				'id'       => 'foobar1',
-				'name'     => 'Foobar 1',
-				'quantity' => 2,
-				'price'    => 97.00,
-			],
-			[
-				'id'       => 'foobar2',
-				'name'     => 'Foobar 2',
-				'quantity' => 2,
-				'price'    => 85.00,
-			],
-			[
-				'id'       => 'foobar3',
-				'name'     => 'Foobar 3',
-				'quantity' => 5,
-				'price'    => 35.00,
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00);
+		$item2 = $this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00);
+		$item3 = $this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00);
+
+		$this->cart->add([$item1, $item2, $item3]);
 
 		$items = $this->cart->find([
 			'price'    => 85,
@@ -236,65 +176,16 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function cart_can_be_searched_by_items_attributes()
 	{
-		$this->cart->add([
-			[
-				'id'         => 'foobar1',
-				'name'       => 'Foobar 1',
-				'quantity'   => 2,
-				'price'      => 97.00,
-				'weight'	 => 21.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Small',
-						'value' => 's',
-					],
-					'color' => [
-						'label' => 'Red',
-						'value' => 'red',
-						'price' => 3.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar2',
-				'name'       => 'Foobar 2',
-				'quantity'   => 2,
-				'price'      => 85.00,
-				'weight'	 => 21.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 15.00,
-					],
-				],
-			],
-			[
-				'id'         => 'foobar3',
-				'name'       => 'Foobar 3',
-				'quantity'   => 5,
-				'price'      => 35.00,
-				'weight'	 => 21.00,
-				'attributes' => [
-					'size' => [
-						'label' => 'Large',
-						'value' => 'l',
-						'price' => 5.00,
-					],
-				],
-			],
-		]);
+		$item1 = $this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00);
+		$item2 = $this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00);
+		$item3 = $this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00);
+
+		$this->cart->add([$item1, $item2, $item3]);
 
 		$item = $this->cart->find([
 			'price'    => 85,
 			'quantity' => 2,
 			'weight'   => 21,
-			'attributes' => [
-				'size' => [
-					'label' => 'Large',
-					'price' => 15,
-				],
-			],
 		]);
 
 		$this->assertEquals($item[0]->get('id'), 'foobar2');
@@ -302,26 +193,28 @@ class CartTest extends CartTestCase {
 
 		$items = $this->cart->find([
 			'attributes' => [
-				'size' => [
-					'value' => 'l',
+				'color' => [
+					'price' => 17,
 				],
 			],
 		]);
 
 		$this->assertEquals(count($items), 2);
-		$this->assertEquals($items[0]->get('id'), 'foobar2');
+		$this->assertEquals($items[0]->get('id'), 'foobar1');
 		$this->assertEquals($items[1]->get('id'), 'foobar3');
 	}
 
 	/** @test */
  	public function cart_can_be_searched_and_returning_empty_results()
 	{
-		$this->cart->add([
+		$item = [
 			'id'       => 'foobar2',
 			'name'     => 'Foobar 2',
 			'quantity' => 2,
 			'price'    => 200.00,
-		]);
+		];
+
+		$this->cart->add($item);
 
 		$item = $this->cart->find([
 			'price' => 85,
@@ -338,14 +231,11 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function see_if_item_exists()
 	{
-		$this->cart->add([
-			'id'       => 'foobar2',
-			'name'     => 'Foobar 2',
-			'quantity' => 2,
-			'price'    => 200.00,
-		]);
+		$item = $this->createItem('Foobar 1', 200, 2);
 
-		$this->assertEquals(true, $this->cart->exists('2d2d8cb241842b326ce0e095dbfc4d41'));
+		$this->cart->add($item);
+
+		$this->assertEquals(true, $this->cart->exists('b37f673e46a33038305c1dc411215c07'));
 	}
 
 	/** @test */
