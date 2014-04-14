@@ -20,3 +20,8 @@ Price is invalid.
 `Cartalyst\Cart\Exceptions\CartInvalidAttributesException`
 
 The provided attributes array is invalid or malformed.
+
+
+`Cartalyst\Cart\Exceptions\CartItemNotFoundException`
+
+The exception is thrown whenever an item is not found.

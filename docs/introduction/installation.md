@@ -1,6 +1,6 @@
 # Installation
 
-The best and easy way to install the Cart package is with [Composer](http://getcomposer.org).
+The best and easiest way to install the Cart package is with [Composer](http://getcomposer.org).
 
 ## Preparation
 
@@ -17,10 +17,7 @@ Add the following lines after the `require` array on your `composer.json` file:
 		}
 	]
 
-> **Note 1:** Change the `"minimum-stability"` flag to `"dev"` `"minimum-stability" : "dev"` as at
-this point the package is not marked as stable.
-
-> **Note 2:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
+> **Note:** Make sure your `composer.json` file is in a valid JSON format after the required changes.
 
 ## Install the dependencies
 
@@ -65,9 +62,9 @@ Now you are able to require the `vendor/autoload.php` file to autoload the packa
 	// Get all the items from the cart
 	$items = $cart->items();
 
-> **Note 1:** Please make sure that the `storage/sessions` folder exists and has write access by the web server. This can be changed to other folder structure if required.
+> **Note 1:** Please make sure that the `storage/sessions` folder exists and has write access by the web server. This can be changed to another folder if required.
 
-> **Note 2:** To setup garbage collection, call the gc method on the FileSessionHandler `$fileSessionHandler->gc($seconds);`, You can also setup a function that randomizes calls to this function rather than calling it on every request.
+> **Note 2:** To setup garbage collection, call the gc method on the FileSessionHandler `$fileSessionHandler->gc($lifetime);`, You can also setup a function that randomizes calls to this function rather than calling it on every request.
 
 The package also has optional Laravel 4 support. The integration into the framework is done in seconds.
 

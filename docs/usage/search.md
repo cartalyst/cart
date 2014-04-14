@@ -10,7 +10,6 @@ You can use one or multiple properties to search for items in the cart
 		'price' => (float) 5,
 	]);
 
-
 ## Search for Items with attributes
 
 	Cart::find([

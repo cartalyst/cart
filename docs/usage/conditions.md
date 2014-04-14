@@ -112,6 +112,27 @@ Discount conditions must have the type set to discount
 
 The condition above will apply a 5% discount.
 
+#### Other
+
+Other conditions must have the type set to other
+
+The condition below will add 5 to the subtotal after applying discounts (if any)
+assuming conditions order are set to their default order.
+
+	$condition = new Condition([
+		'name'   => 'Other (5%)',
+		'type'   => 'other',
+		'target' => 'subtotal',
+	]);
+
+	$condition->setActions([
+
+		[
+			'value' => '5',
+		],
+
+	]);
+
 #### Inclusive Conditions
 
 Inclusive conditions are not added to the total but allow you to reverse
@@ -135,32 +156,10 @@ conditions methods, but it will not be added to the cart total.
 
 	]);
 
-#### Other
-
-Other conditions must have the type set to other
-
-The condition below will add 5 to the subtotal after applying discounts (if any)
-assuming conditions order are set to their default order.
-
-	$condition = new Condition([
-		'name'   => 'Other (5%)',
-		'type'   => 'other',
-		'target' => 'subtotal',
-	]);
-
-	$condition->setActions([
-
-		[
-			'value' => '5',
-		],
-
-	]);
-
-
 ### Item Conditions
 
 You can add one or more (array) conditions to an item that will be assigned
-automatically when adding or updating on the cart.
+automatically when adding or updating items on the cart.
 
 	$condition = new Condition([
 		'name'   => 'VAT (12.5%)',
@@ -202,6 +201,8 @@ automatically when adding or updating on the cart.
 		'shipping',
 	]);
 
+> **Note:** Make sure you set Item conditions before adding or updating.
+
 ##### Condition targets
 
 You can apply item conditions either on the item price or subtotal.
@@ -239,11 +240,11 @@ Set the order in which conditions are applied on items.
 		'shipping',
 	]);
 
-Return subtotal after applying conditions untill a specific condition type or null to apply all conditions.
+Return subtotal after applying conditions untill a specific condition type or null to apply all conditions and return the total.
 
-	Cart::applyConditions($type); // Returns the subtotal after applying all condition types from the order stack untill it reaches the type passed
+	Cart::total($type); // Returns the subtotal after applying all condition types from the order stack untill it reaches the type passed
 
-	Cart::applyConditions(); // Returns the subtotal after applying all condition types from the order stack untill it reaches the type passed
+	Cart::total(); // Returns the total after applying all condition types from the order stack.
 
 Return all conditions totals grouped by type.
 
@@ -279,7 +280,9 @@ Return the sum of all or a specific type of items conditions.
 
 Clear all or a specific type of applied conditions.
 
-	Cart::clearConditions($type); // Clears conditions of the type passed
+	Cart::clearConditions($type); // Clears item and cart based conditions of the type passed
+
+	Cart::clearConditions($type, false); // Clears conditions of the type passed excluding item conditions
 
 	Cart::clearConditions(); // Clears all conditions
 

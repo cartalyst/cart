@@ -1,19 +1,8 @@
 # Instances
 
-Cart supports multiple cart instances, so that you can have as many shopping carts instances on the same page as you want without any conflicts.
+Cart supports multiple cart instances, so that you can have as many shopping cart instances on the same page as you want without any conflicts.
 
-<!--
-In order for you to understand the usage of instances, we recommend you
-to have a read on [Facades](http://laravel.com/docs/facades) and
-[Service Providers](http://laravel.com/docs/ioc#service-providers) first so
-that you can have a better understanding on how it really works.
--->
-
-
-You have two ways of accomplishing this, one is by creating a service provider dedicated to your wishlist or if
-required, to register all your other carts, the second method, which is easier, is to bind the new "cart" directly
-into the IoC.
-
+You have two ways of accomplishing this, one is by creating a service provider dedicated to your wishlist to register all your other cart instances, the second method, which is easier, is to bind the new cart instances directly into the IoC.
 
 ## Example
 
@@ -34,7 +23,6 @@ into the IoC.
 
 		return new Cart('wishlist', $storage, $app['events']);
 	});
-
 
 ### Create your Service Provider
 
@@ -90,7 +78,6 @@ into the IoC.
 
 	}
 
-
 ### Create your Facade
 
 `app/facades/Wishlist.php`
@@ -108,11 +95,25 @@ into the IoC.
 
 	}
 
+### Register your Service Provider and Facade
 
-### Register your Service Provider
+Open your Laravel config file `app/config/app.php` and add the following lines.
 
+In the `$providers` array add the following service provider for this package.
 
-### Register your Facade
+	'Path\To\Your\CartServiceProvider',
 
+In the `$aliases` array add the following facade for this package.
+
+	'Wishlist' => 'Path\To\Your\Wishlist',
 
 ### Usage
+
+Usage is identical to the cart.
+
+	Wishlist::add([
+			'id'       => 'foobar1',
+			'name'     => 'Foo Bar 1',
+			'quantity' => 1,
+			'price'    => 12.50,
+	]);

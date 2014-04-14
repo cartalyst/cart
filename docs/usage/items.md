@@ -40,8 +40,6 @@ Adding items to the cart is superbly easy.
 
 	]);
 
-
-
 ## Updating items {#updating}
 
 You can update items that are on your cart by updating any property on a cart item.
@@ -79,7 +77,6 @@ You can update items that are on your cart by updating any property on a cart it
 
 	Cart::update('027c91341fd5cf4d2579b49c4b6a90da', 2);
 
-
 ## Removing items {#removing}
 
 ### Remove a single item
@@ -100,9 +97,7 @@ row id's that you wish to remove.
 
 	$item = Cart::item('027c91341fd5cf4d2579b49c4b6a90da');
 
-
 ## Attributes
-
 
 ### Applying attributes to an item
 
