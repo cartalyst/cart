@@ -1,4 +1,4 @@
-# Cart v1.0.0
+# Cart
 
 A framework agnostic shopping cart package featuring multiple cart instances, item attributes and [Conditions](http://www.cartalyst.com/manual/conditions).
 
@@ -12,37 +12,37 @@ History and future capabilities.
 
 #### xx-Jan-14 - v1.0.0
 
-- ```Cart::getIdentity()``` Return the cart identity.
+- ```Cart::getIdentity()``` Returns the cart identity.
 - ```Cart::setIdentity($name)``` Set the cart identity.
-- ```Cart::add($item)``` Add a single item to the cart.
-- ```Cart::add($items)``` Add multiple items to the cart.
-- ```Cart::remove($rowId)``` Remove an item from the cart.
-- ```Cart::remove([$rowId, $rowId])``` Remove multiple items from the cart by passing array.
-- ```Cart::update($rowId, $data)``` Update a single item.
-- ```Cart::update($items)``` Update multiple items.
-- ```Cart::update($rowId, $quantity)``` Update an item quantity.
+- ```Cart::add($item)``` Adds a single item to the cart.
+- ```Cart::add($items)``` Adds multiple items to the cart.
+- ```Cart::remove($rowId)``` Removes an item from the cart.
+- ```Cart::remove([$rowId, $rowId])``` Removes multiple items from the cart by passing array.
+- ```Cart::update($rowId, $data)``` Updates a single item.
+- ```Cart::update($items)``` Updates multiple items.
+- ```Cart::update($rowId, $quantity)``` Updates an item quantity.
 - ```Cart::exists($rowId)``` Check if the given item exists.
-- ```Cart::item($rowId)``` Return information of the given item.
-- ```Cart::items()``` Return information of all items.
-- ```Cart::itemsSubtotal()``` Return the subtotal of the items without conditions.
-- ```Cart::quantity()``` Return the total # of items that are in the cart.
-- ```Cart::subtotal()``` Return the subtotal of the cart.
-- ```Cart::total($type|null)``` Return subtotal after applying upto a specific condition type or null to calculate total.
-- ```Cart::weight()``` Return the total cart weight.
+- ```Cart::item($rowId)``` Returns information of the given item.
+- ```Cart::items()``` Returns information of all items.
+- ```Cart::itemsSubtotal()``` Returns the subtotal of the items without conditions.
+- ```Cart::quantity()``` Returns the total # of items that are in the cart.
+- ```Cart::subtotal()``` Returns the subtotal of the cart.
+- ```Cart::total($type|null)``` Returns subtotal after applying upto a specific condition type or null to calculate total.
+- ```Cart::weight()``` Returns the total cart weight.
 - ```Cart::clear()``` Empty the cart.
 - ```Cart::sync(Collection $items)``` Synchronizes a collection of data with the cart.
 - ```Cart::find($data)``` Search for items that are in the cart.
 - ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` Apply a condition.
-- ```Cart::conditions($type|null, bool $includeItems)``` Return all applied conditions.
-- ```Cart::setConditionsOrder($array)``` Set the order in which conditions are applied.
-- ```Cart::setItemsConditionsOrder($array)``` Set the order in which conditions are applied on items.
-- ```Cart::conditionsTotal($type|null, bool $includeItems)``` Return all conditions totals grouped by type.
-- ```Cart::conditionsTotalSum($type|null)``` Return the sum of all or a specific type of conditions.
-- ```Cart::itemsConditions()``` Return all conditions applied only to items.
-- ```Cart::itemsConditionsTotal($type|null)``` Return all or a specific type of items conditions sum grouped by type.
-- ```Cart::itemsConditionsTotalSum($type|null)``` Return the sum of all or a specific type of items conditions.
-- ```Cart::removeCondition($name, bool $includeItems)``` Remove an applied condition by name.
-- ```Cart::removeConditions($type|null, bool $includeItems)``` Remove all or a specific type of applied conditions.
+- ```Cart::conditions($type|null, bool $includeItems)``` Returns all applied conditions.
+- ```Cart::setConditionsOrder($array)``` Sets the order in which conditions are applied.
+- ```Cart::setItemsConditionsOrder($array)``` Sets the order in which conditions are applied on items.
+- ```Cart::conditionsTotal($type|null, bool $includeItems)``` Returns all conditions totals grouped by type.
+- ```Cart::conditionsTotalSum($type|null)``` Returns the sum of all or a specific type of conditions.
+- ```Cart::itemsConditions()``` Returns all conditions applied only to items.
+- ```Cart::itemsConditionsTotal($type|null)``` Returns all or a specific type of items conditions sum grouped by type.
+- ```Cart::itemsConditionsTotalSum($type|null)``` Returns the sum of all or a specific type of items conditions.
+- ```Cart::removeCondition($name, bool $includeItems)``` Removes an applied condition by name.
+- ```Cart::removeConditions($type|null, bool $includeItems)``` Removes all or a specific type of applied conditions.
 
 ## Requirements
 
