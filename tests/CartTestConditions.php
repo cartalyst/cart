@@ -462,7 +462,7 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($this->cart->total(), 379.5);
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 79.5);
 
-		$this->cart->clearConditions('tax', false);
+		$this->cart->clearCondition('Tax 10%');
 
 		$this->assertEquals($this->cart->subtotal(), 345);
 		$this->assertEquals($this->cart->total(), 345);

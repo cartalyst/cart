@@ -472,21 +472,32 @@ class Cart extends CartCollection {
 	}
 
 	/**
+	 * Remove condition by name.
+	 *
+	 * @param  string $name
+	 * @return  void
+	 */
+	public function clearCondition($name, $includeItems = true)
+	{
+		$this->clearConditions($name, $includeItems, 'name');
+	}
+
+	/**
 	 * Clear the conditions.
 	 *
-	 * @param  string  $type
+	 * @param  string  $id
 	 * @param  bool  $includeItems
 	 * @return void
 	 */
-	public function clearConditions($type = null, $includeItems = true)
+	public function clearConditions($id = null, $includeItems = true, $target = 'type')
 	{
 		$items = $this->items();
 
-		if ($type)
+		if ($id)
 		{
 			foreach ($items->conditions as $key => $value)
 			{
-				if ($value['type'] === $type)
+				if ($value[$target] === $id)
 				{
 					unset($items->conditions[$key]);
 				}
@@ -501,7 +512,7 @@ class Cart extends CartCollection {
 		{
 			foreach (array_keys($items->toArray()) as $key)
 			{
-				$items[$key]->clearConditions($type);
+				$items[$key]->clearConditions($id, false, $target);
 			}
 		}
 
