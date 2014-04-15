@@ -51,10 +51,22 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 	/**
 	 * Creates an item.
 	 *
-	 * @param  [type] $name [description]
-	 * @return [type]       [description]
+	 * @param  string  $name
+	 * @param  float  $price
+	 * @param  int  $quantity
+	 * @param  array  $conditions
+	 * @param  array  $attrPrices
+	 * @param  int  $weight
+	 * @return array
 	 */
-	protected function createItem($name = 'Foobar', $price = 0, $quantity = 1, $conditions = [], $attrPrices = [0, 0], $weight = 0)
+	protected function createItem(
+		$name = 'Foobar',
+		$price = 0,
+		$quantity = 1,
+		$conditions = [],
+		$attrPrices = [0, 0],
+		$weight = 0
+	)
 	{
 		return [
 			'id'         => strtolower(str_replace(' ', '', $name)),

@@ -80,9 +80,9 @@ abstract class BaseCollection extends Collection {
 	 */
 	public function condition($condition)
 	{
-		$base = $this instanceof Cart ? $this->items() : $this;
-
 		if (empty($condition)) return;
+
+		$base = $this instanceof Cart ? $this->items() : $this;
 
 		if (is_array($condition))
 		{
@@ -132,7 +132,7 @@ abstract class BaseCollection extends Collection {
 	/**
 	 * Returns the total.
 	 *
-	 * @param  string  $type
+	 * @param  string  $conditionType
 	 * @return float
 	 */
 	public function total($conditionType = null)
@@ -187,7 +187,7 @@ abstract class BaseCollection extends Collection {
 				$type   = $condition->get('type');
 				$result = $condition->result();
 
-				if ( ! isset($this->conditionResults[$type]))
+				if (empty($this->conditionResults[$type]))
 				{
 					$this->conditionResults[$type] = [];
 				}
@@ -239,7 +239,7 @@ abstract class BaseCollection extends Collection {
 			}
 		}
 
-		if ($type && ! isset($this->conditionResults[$type]))
+		if ($type && empty($this->conditionResults[$type]))
 		{
 			return [];
 		}

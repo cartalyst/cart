@@ -158,7 +158,7 @@ class CartCollection extends BaseCollection {
 			);
 		}
 
-		if ($type && ! isset($this->conditionResults[$type]))
+		if ($type && empty($this->conditionResults[$type]))
 		{
 			return [];
 		}
@@ -174,16 +174,11 @@ class CartCollection extends BaseCollection {
 			}
 		}
 
-		if (isset($this->conditionResults[$type]))
-		{
-			return $this->conditionResults[$type];
-		}
-
-		return $this->conditionResults;
+		return array_get($this->conditionResults, $type, $this->conditionResults);
 	}
 
 	/**
-	 * Return sum of item conditions.
+	 * Returns the sum of item conditions.
 	 *
 	 * @param  string  $type
 	 * @return float

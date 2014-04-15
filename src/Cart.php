@@ -141,12 +141,12 @@ class Cart extends CartCollection {
 			return true;
 		}
 
-		// Validate the required parameters
-		foreach ($this->getRequiredIndexes() as $parameter)
+		// Validate the required indexes
+		foreach ($this->getRequiredIndexes() as $index)
 		{
-			if ( ! isset($item[$parameter]))
+			if (empty($item[$index]))
 			{
-				throw new CartMissingRequiredIndexException($parameter);
+				throw new CartMissingRequiredIndexException($index);
 			}
 		}
 
@@ -154,27 +154,24 @@ class Cart extends CartCollection {
 		$quantity = (int) $item['quantity'];
 
 		// Check if the quantity value is correct
-		if ( ! is_numeric($quantity) or $quantity < 1)
+		if ( ! is_numeric($quantity) || $quantity < 1)
 		{
 			throw new CartInvalidQuantityException;
 		}
 
+		// Make sure we have a proper price value
 		$price = $item['price'];
 
-		// Check if the price value is correct
 		if ( ! is_numeric($price))
 		{
 			throw new CartInvalidPriceException;
 		}
-		else
-		{
-			$price = (float) $price;
-		}
 
-		// Get this item attributes
+		$price = (float) $price;
+
+		// Make sure we have proper and valid item attributes
 		$attributes = array_get($item, 'attributes', []);
 
-		// Validate the attributes
 		if ( ! is_array($attributes))
 		{
 			throw new CartInvalidAttributesException;
@@ -321,15 +318,6 @@ class Cart extends CartCollection {
 			$row->put('quantity', (int) $attributes);
 		}
 
-		// Reset the item conditions
-		$row->clearConditions();
-
-		// Assign conditions to the item
-		$row->condition(array_get($row, 'conditions'));
-
-		// Set the item price
-		$row->setPrice($row->get('price'));
-
 		// Remove the item if the quantity is less than one
 		if ($row->get('quantity') < 1)
 		{
@@ -337,6 +325,15 @@ class Cart extends CartCollection {
 		}
 		else
 		{
+			// Reset the item conditions
+			$row->clearConditions();
+
+			// Assign conditions to the item
+			$row->condition(array_get($row, 'conditions'));
+
+			// Set the item price
+			$row->setPrice($row->get('price'));
+
 			// Update the item
 			$cart->put($rowId, $row);
 
@@ -544,7 +541,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns the list of the required indexes.
+	 * Returns the list of required indexes.
 	 *
 	 * @return array
 	 */
@@ -591,7 +588,7 @@ class Cart extends CartCollection {
 	/**
 	 * Returns the events dispatcher instance.
 	 *
-	 * @return mixed
+	 * @return \Illuminate\Events\Dispatcher
 	 */
 	public function getDispatcher()
 	{
@@ -675,7 +672,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Checks if the provided array is a multidimensional array.
+	 * Checks if the given array is a multidimensional array.
 	 *
 	 * @param  array  $array
 	 * @return bool

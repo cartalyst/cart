@@ -38,18 +38,6 @@ class CartTest extends CartTestCase {
 		m::close();
 	}
 
-	/**
-	 * Setup resources and dependencies
-	 */
-	public function setUp()
-	{
-		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
-
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
-
-		$this->cart = new Cart('cart', $session, new Dispatcher);
-	}
-
 	/** @test */
 	public function cart_can_be_instantiated()
 	{
