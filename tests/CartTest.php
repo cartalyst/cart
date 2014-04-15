@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+require 'CartTestCase.php';
+
 use Cartalyst\Cart\Cart;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 use Illuminate\Events\Dispatcher;
