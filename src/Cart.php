@@ -225,7 +225,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Remove a single or multiple items from the cart.
+	 * Removes a single or multiple items from the cart.
 	 *
 	 * @param  mixed  $items
 	 * @return bool
@@ -260,7 +260,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Update a single or multiple items that are on the cart.
+	 * Updates a single or multiple items that are on the cart.
 	 *
 	 * @param  string  $rowId
 	 * @param  array  $attributes
