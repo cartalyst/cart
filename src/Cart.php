@@ -487,6 +487,7 @@ class Cart extends CartCollection {
 	 *
 	 * @param  string  $id
 	 * @param  bool  $includeItems
+	 * @param  string  $target
 	 * @return void
 	 */
 	public function removeConditions($id = null, $includeItems = true, $target = 'type')
