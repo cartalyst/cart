@@ -88,7 +88,12 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function weight()
 	{
-		return $this->get('weight') * $this->quantity();
+		$attributeWeights = $this->get('attributes')->sum(function($option)
+		{
+			return $option->get('weight');
+		});
+
+		return ($this->get('weight') + $attributeWeights) * $this->quantity();
 	}
 
 	/**

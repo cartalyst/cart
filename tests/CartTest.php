@@ -122,10 +122,29 @@ class CartTest extends CartTestCase {
 	{
 		$item1 = $this->createItem('Foobar 1', 97, 4, null, null, 21.49);
 		$item2 = $this->createItem('Foobar 2', 85, 2, null, null, 21.32);
+		$item3 = [
+			'id'         => 'foobar2',
+			'name'       => 'Foobar 2',
+			'quantity'   => 2,
+			'price'      => 200.00,
+			'weight'     => 20.00,
+			'attributes' => [
+				'size' => [
+					'label' => 'Large',
+					'value' => 'l',
+					'weight' => 1.5,
+				],
+				'shape' => [
+					'label' => 'Circle',
+					'value' => 'c',
+					'weight' => 10.00,
+				],
+			],
+		];
 
-		$this->cart->add([$item1, $item2]);
+		$this->cart->add([$item1, $item2, $item3]);
 
-		$this->assertEquals($this->cart->weight(), 128.60);
+		$this->assertEquals($this->cart->weight(), 191.6);
 	}
 
 	/** @test */
