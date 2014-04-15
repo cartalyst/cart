@@ -111,7 +111,7 @@ abstract class BaseCollection extends Collection {
 	 * @param  string  $type
 	 * @return void
 	 */
-	public function clearConditions($type = null)
+	public function removeConditions($type = null)
 	{
 		if ($type)
 		{

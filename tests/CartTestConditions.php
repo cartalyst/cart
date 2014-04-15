@@ -72,11 +72,11 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($this->cart->conditionsTotalSum('other'), 25);
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 101.994375);
 
-		$item->clearConditions('tax');
+		$item->removeConditions('tax');
 
 		$this->assertEquals($item->total(), 498.75);
 
-		$item->clearConditions();
+		$item->removeConditions();
 
 		$this->assertEquals($item->total(), 500);
 	}
@@ -431,11 +431,11 @@ class CartTestConditions extends CartTestCase {
 
 		$this->assertEquals($this->cart->total(), 1473.78);
 
-		$this->cart->clearConditions('tax', false);
+		$this->cart->removeConditions('tax', false);
 
 		$this->assertEquals($this->cart->total(), 1339.8);
 
-		$this->cart->clearConditions(null, false);
+		$this->cart->removeConditions(null, false);
 
 		$this->assertEquals($this->cart->total(), 1218);
 	}
@@ -462,19 +462,19 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($this->cart->total(), 379.5);
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 79.5);
 
-		$this->cart->clearCondition('Tax 10%');
+		$this->cart->removeCondition('Tax 10%');
 
 		$this->assertEquals($this->cart->subtotal(), 345);
 		$this->assertEquals($this->cart->total(), 345);
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 45);
 
-		$this->cart->clearConditions('tax');
+		$this->cart->removeConditions('tax');
 
 		$this->assertEquals($this->cart->subtotal(), 300);
 		$this->assertEquals($this->cart->total(), 300);
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
 
-		$this->cart->clearConditions();
+		$this->cart->removeConditions();
 
 		$this->assertEquals($this->cart->subtotal(), 300);
 		$this->assertEquals($this->cart->total(), 300);

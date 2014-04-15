@@ -328,7 +328,7 @@ class Cart extends CartCollection {
 		else
 		{
 			// Reset the item conditions
-			$row->clearConditions();
+			$row->removeConditions();
 
 			// Assign conditions to the item
 			$row->condition(array_get($row, 'conditions'));
@@ -477,19 +477,19 @@ class Cart extends CartCollection {
 	 * @param  string $name
 	 * @return  void
 	 */
-	public function clearCondition($name, $includeItems = true)
+	public function removeCondition($name, $includeItems = true)
 	{
-		$this->clearConditions($name, $includeItems, 'name');
+		$this->removeConditions($name, $includeItems, 'name');
 	}
 
 	/**
-	 * Clear the conditions.
+	 * Remove conditions.
 	 *
 	 * @param  string  $id
 	 * @param  bool  $includeItems
 	 * @return void
 	 */
-	public function clearConditions($id = null, $includeItems = true, $target = 'type')
+	public function removeConditions($id = null, $includeItems = true, $target = 'type')
 	{
 		$items = $this->items();
 
@@ -512,7 +512,7 @@ class Cart extends CartCollection {
 		{
 			foreach (array_keys($items->toArray()) as $key)
 			{
-				$items[$key]->clearConditions($id, false, $target);
+				$items[$key]->removeConditions($id, false, $target);
 			}
 		}
 
