@@ -37,40 +37,36 @@ class Reading extends CartTestCase {
 	public function it_can_get_an_item_subtotal()
 	{
 		$item = $this->createItem('Foobar 1', 97, 4);
+		$item = $this->cart->add($item);
 
-		$this->cart->add($item);
-
-		$this->assertEquals($this->cart->items()->first()->subtotal(), 388);
+		$this->assertEquals($item->subtotal(), 388);
 	}
 
 	/** @test */
 	public function it_can_get_an_item_total()
 	{
 		$item = $this->createItem('Foobar 1', 97, 5);
+		$item = $this->cart->add($item);
 
-		$this->cart->add($item);
-
-		$this->assertEquals($this->cart->items()->first()->total(), 485);
+		$this->assertEquals($item->total(), 485);
 	}
 
 	/** @test */
 	public function it_can_get_an_item_quantity()
 	{
 		$item = $this->createItem('Foobar 1', 97, 4);
+		$item = $this->cart->add($item);
 
-		$this->cart->add($item);
-
-		$this->assertEquals($this->cart->items()->first()->quantity(), 4);
+		$this->assertEquals($item->quantity(), 4);
 	}
 
 	/** @test */
 	public function it_can_get_an_item_weight()
 	{
 		$item = $this->createItem('Foobar 1', 97, 4, null, null, 21.00);
+		$item = $this->cart->add($item);
 
-		$this->cart->add($item);
-
-		$this->assertEquals($this->cart->items()->first()->weight(), 84);
+		$this->assertEquals($item->weight(), 84);
 	}
 
 }

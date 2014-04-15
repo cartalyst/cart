@@ -27,9 +27,7 @@ class Updating extends CartTestCase {
 	{
 		$item = $this->createItem('Foobar 1', 10, 5);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->get('quantity'), 5);
 
@@ -43,9 +41,7 @@ class Updating extends CartTestCase {
 	{
 		$item = $this->createItem('Foobar 1', 10, 5);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->get('quantity'), 5);
 
@@ -59,9 +55,7 @@ class Updating extends CartTestCase {
 	{
 		$item = $this->createItem('Foobar 1', 10, 5);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->get('quantity'), 5);
 
@@ -77,9 +71,7 @@ class Updating extends CartTestCase {
 	{
 		$item = $this->createItem('Foobar 1', 120, 3, null, [15.00, 0]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->get('quantity'), 3);
 		$this->assertEquals($item->get('name'), 'Foobar 1');
@@ -108,10 +100,10 @@ class Updating extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 120, 7, null, [15.00, 0]);
 		$item2 = $this->createItem('Foobar 2', 150, 3, null, [15.00, 0]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->get('quantity'), 7);
 		$this->assertEquals($item1->get('price'), 120.00);

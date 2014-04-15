@@ -29,9 +29,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar 1', 100, 5, [$discount, $other, $tax]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->total('discount'), 498.75);
 		$this->assertEquals($item->subtotal(), 500);
@@ -109,9 +107,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar', 100, 5, $tax);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->conditionsTotalSum('tax'), 25);
 		$this->assertEquals($item->total(), 525);
@@ -142,10 +138,13 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 97, 1, $discount, [0, 3]);
 		$item2 = $this->createItem('Foobar 2', 85, 1, $discount, [15, 0]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$this->assertEquals($this->cart->items()->first()->total(), 90);
-		$this->assertEquals($this->cart->items()->last()->total(), 90);
+		$item1 = $items[0];
+		$item2 = $items[1];
+
+		$this->assertEquals($item1->total(), 90);
+		$this->assertEquals($item2->total(), 90);
 		$this->assertEquals($this->cart->itemsSubtotal(), 200);
 		$this->assertEquals($this->cart->total(), 180.00);
 	}
@@ -174,9 +173,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar', 125, 2, $tax, [3, 3]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->subtotal(), 262);
 		$this->assertEquals($item->total(), 288.2);
@@ -190,9 +187,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar', 125, 2, [$tax, $discount], [0, 3]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->subtotal(), 256);
 		$this->assertEquals($item->total(), 265.32);
@@ -209,10 +204,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 97, 2, $tax1, [0, 3]);
 		$item2 = $this->createItem('Foobar 2', 85, 2, [$discount, $other, $tax1, $tax2]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->subtotal(), 200);
 		$this->assertEquals($item1->conditionsTotalSum('tax'), 20);
@@ -246,10 +241,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 100, 4, $discount, [0, 3]);
 		$item2 = $this->createItem('Foobar 2', 100, 2, [$discount, $other1], [15, 0]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->subtotal(), 412);
 		$this->assertEquals($item1->conditionsTotalSum('discount'), -40);
@@ -282,9 +277,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar', 125, 3, $other, [3, 3]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->subtotal(), 393);
 		$this->assertEquals($item->total(), 408);
@@ -304,9 +297,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar', 125, 3, $other, [3, 3]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->subtotal(), 393);
 		$this->assertEquals($item->total(), 393);
@@ -321,10 +312,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, [$tax, $other], [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $other, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->subtotal(), 750);
 		$this->assertEquals($item1->total(), 841.5);
@@ -346,10 +337,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, [$discount1, $other], [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $other, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->subtotal(), 750);
 		$this->assertEquals($item1->conditionsTotalSum('discount'), -38.25);
@@ -380,10 +371,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, [$tax, $other], [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $other, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->total(), 841.5);
 		$this->assertEquals($item2->total(), 408);
@@ -430,7 +421,7 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, $tax, [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, null, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
 		$this->cart->condition($tax);
 
@@ -458,11 +449,9 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar 1', 100, 3, [$tax2, $tax3]);
 
-		$this->cart->add($item);
+		$item = $this->cart->add($item);
 
-		$item1 = $this->cart->items()->first();
-
-		$this->assertEquals($item1->total(), 345);
+		$this->assertEquals($item->total(), 345);
 
 		$this->assertEquals($this->cart->total(), 345);
 		$this->assertEquals($this->cart->subtotal(), 345);
@@ -500,7 +489,7 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, $discount, [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $discount, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
 		$this->cart->condition($discount);
 
@@ -521,7 +510,7 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, $tax, [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $tax, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
 		$this->cart->condition($tax);
 
@@ -543,7 +532,7 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, $tax2, [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $tax2, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
 		$this->cart->condition([$tax1, $tax2]);
 
@@ -569,7 +558,7 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, $tax2, [3, 3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $tax2, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
 		$this->cart->condition([$tax1, $tax2]);
 
@@ -578,7 +567,7 @@ class CartTestConditions extends CartTestCase {
 			'Tax 10%' => 125.73,
 		];
 
-		$conditions = $this->cart->items()->first()->conditions();
+		$conditions = $items[0]->conditions();
 		$condition  = head($conditions);
 
 		$this->assertEquals($condition->get('name'), 'Tax 10%');
@@ -604,10 +593,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 244, 3, $tax2, [3,3]);
 		$item2 = $this->createItem('Foobar 2', 125, 3, $tax2, [3,3]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->total(), 825);
 		$this->assertEquals($item2->total(), 432.3);
@@ -725,10 +714,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 100, 5, $tax);
 		$item2 = $this->createItem('Foobar 2', 200, 2, $tax);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->subtotal(), 500);
 		$this->assertEquals($item1->total(), 500);
@@ -757,10 +746,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 100, 5, [$taxInc, $taxExc]);
 		$item2 = $this->createItem('Foobar 2', 200, 2, [$taxInc, $taxExc]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$this->assertEquals($item1->subtotal(), 500);
 		$this->assertEquals($item1->total(), 550);
@@ -797,9 +786,7 @@ class CartTestConditions extends CartTestCase {
 
 		$item = $this->createItem('Foobar 1', 100, 5, [$discount, $shipping, $other, $tax]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->total('discount'), 475);
 		$this->assertEquals($item->total('other'), 480);
@@ -832,10 +819,10 @@ class CartTestConditions extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 100, 5, [$discount, $shipping, $other, $tax]);
 		$item2 = $this->createItem('Foobar 2', 100, 5, [$discount, $shipping, $other, $tax]);
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$item1 = $this->cart->items()->first();
-		$item2 = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
 		$item1->setConditionsOrder([
 			'discount',

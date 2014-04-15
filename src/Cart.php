@@ -133,12 +133,14 @@ class Cart extends CartCollection {
 		// Do we have multiple items?
 		if ($this->isMulti($item))
 		{
+			$items = [];
+
 			foreach ($item as $_item)
 			{
-				$this->add($_item);
+				$items[] = $this->add($_item);
 			}
 
-			return true;
+			return $items;
 		}
 
 		// Validate the required indexes
@@ -219,7 +221,7 @@ class Cart extends CartCollection {
 		// Fire the 'cartalyst.cart.added' event
 		$this->fire('added', [$this->item($rowId), $this]);
 
-		return $cart;
+		return $row;
 	}
 
 	/**

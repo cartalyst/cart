@@ -50,9 +50,7 @@ class Adding extends CartTestCase {
 	{
 		$item = $this->createItem('Foobar 1', '10.00', 2);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->get('price'), 10);
 	}
@@ -62,9 +60,7 @@ class Adding extends CartTestCase {
 	{
 		$item = $this->createItem('Foobar 1', 125, 2, null, [5, 3.5]);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->attributes()->count(), 2);
 
@@ -92,17 +88,13 @@ class Adding extends CartTestCase {
 	{
 		$item = $this->createItem('Foobar 1', 4, 3);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->get('quantity'), 3);
 
 		$item = $this->createItem('Foobar 1', 4, 6);
 
-		$this->cart->add($item);
-
-		$item = $this->cart->items()->first();
+		$item = $this->cart->add($item);
 
 		$this->assertEquals($item->get('quantity'), 9);
 	}
@@ -125,13 +117,13 @@ class Adding extends CartTestCase {
 			],
 		];
 
-		$this->cart->add([$item1, $item2]);
+		$items = $this->cart->add([$item1, $item2]);
 
-		$firstItem = $this->cart->items()->first();
-		$lastItem  = $this->cart->items()->last();
+		$item1 = $items[0];
+		$item2 = $items[1];
 
-		$this->assertEquals($firstItem->attributes()->count(), 2);
-		$this->assertEquals($lastItem->attributes()->count(), 1);
+		$this->assertEquals($item1->attributes()->count(), 2);
+		$this->assertEquals($item2->attributes()->count(), 1);
 
 		$this->assertEquals($this->cart->items()->count(), 2);
 		$this->assertEquals($this->cart->quantity(), 7);
