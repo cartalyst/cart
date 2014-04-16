@@ -7,7 +7,7 @@ You can use one or multiple properties to search for items in the cart
 	Cart::find([
 		'id'    => 'foobar',
 		'name'  => 'Foo Bar',
-		'price' => (float) 5,
+		'price' => 5,
 	]);
 
 ## Search for Items with attributes
@@ -18,7 +18,7 @@ You can use one or multiple properties to search for items in the cart
 		'attributes' => [
 
 			'size' => [
-				'price' => (float) 5,
+				'price' => 5,
 			],
 
 		],

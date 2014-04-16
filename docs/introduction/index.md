@@ -1,6 +1,6 @@
 # Introduction
 
-A framework agnostic shopping cart package featuring multiple cart instances and item attributes.
+A framework agnostic shopping cart package featuring multiple cart instances, item attributes and [Conditions](http://www.cartalyst.com/manual/conditions).
 
 The package follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
 
