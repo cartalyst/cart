@@ -19,7 +19,7 @@
  */
 
 use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
+use Cartalyst\Cart\Storage\IlluminateSession;
 use Illuminate\Support\ServiceProvider;
 
 class CartServiceProvider extends ServiceProvider {
