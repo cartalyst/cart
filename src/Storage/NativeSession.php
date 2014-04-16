@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Cart\Storage\Sessions;
+<?php namespace Cartalyst\Cart\Storage;
 /**
  * Part of the Cart package.
  *
@@ -18,11 +18,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Storage\Sessions\SessionInterface;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Session\Store as SessionStore;
 
-class NativeSession extends IlluminateSession implements SessionInterface {
+class NativeSession extends IlluminateSession implements StorageInterface {
 
 	/**
 	 * Creates a new Native Session driver for Cart.

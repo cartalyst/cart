@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Cart\Storage\Sessions;
+<?php namespace Cartalyst\Cart\Storage;
 /**
  * Part of the Cart package.
  *
@@ -18,10 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Storage\Sessions\SessionInterface;
 use Illuminate\Session\Store as SessionStore;
 
-class IlluminateSession implements SessionInterface {
+class IlluminateSession implements StorageInterface {
 
 	/**
 	 * The key used in the Session.

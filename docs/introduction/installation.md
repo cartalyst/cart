@@ -38,7 +38,7 @@ Now you are able to require the `vendor/autoload.php` file to autoload the packa
 
 	// Import the necessary classes
 	use Cartalyst\Cart\Cart;
-	use Cartalyst\Cart\Storage\Sessions\NativeSession;
+	use Cartalyst\Cart\Storage\NativeSession;
 	use Illuminate\Events\Dispatcher;
 	use Illuminate\Filesystem\Filesystem;
 	use Illuminate\Session\FileSessionHandler;

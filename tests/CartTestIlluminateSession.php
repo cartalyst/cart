@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
+use Cartalyst\Cart\Storage\IlluminateSession;
 use Mockery as m;
 
 class CartTestIlluminateSession extends CartTestCase {

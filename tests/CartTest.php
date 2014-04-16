@@ -21,7 +21,7 @@
 require 'CartTestCase.php';
 
 use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
+use Cartalyst\Cart\Storage\IlluminateSession;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Session\FileSessionHandler;
@@ -43,7 +43,7 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function cart_can_be_instantiated()
 	{
-		$storage = m::mock('Cartalyst\Cart\Storage\Sessions\IlluminateSession');
+		$storage = m::mock('Cartalyst\Cart\Storage\IlluminateSession');
 
 		$dispatcher = m::mock('Illuminate\Events\Dispatcher');
 
