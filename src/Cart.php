@@ -343,7 +343,7 @@ class Cart extends CartCollection {
 			$this->fire('updated', [$this->item($rowId), $this]);
 		}
 
-		return $cart;
+		return $row;
 	}
 
 	/**
@@ -403,7 +403,7 @@ class Cart extends CartCollection {
 	 * Synchronize a collection of data with the cart.
 	 *
 	 * @param  \Illuminate\Support\Collection  $items
-	 * @return bool
+	 * @return void
 	 */
 	public function sync(Collection $items)
 	{
@@ -417,8 +417,6 @@ class Cart extends CartCollection {
 
 		// Turn events on
 		$this->fireEvents = true;
-
-		return true;
 	}
 
 	/**
@@ -472,10 +470,11 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Remove condition by name.
+	 * Removes a condition by its name.
 	 *
-	 * @param  string $name
-	 * @return  void
+	 * @param  string  $name
+	 * @param  bool  $includeItems
+	 * @return void
 	 */
 	public function removeCondition($name, $includeItems = true)
 	{
@@ -600,7 +599,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns the events dispatcher instance.
+	 * Returns the event dispatcher instance.
 	 *
 	 * @return \Illuminate\Events\Dispatcher
 	 */
@@ -610,7 +609,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Sets the events dispatcher event.
+	 * Sets the event dispatcher instance.
 	 *
 	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
 	 * @return void
@@ -638,7 +637,7 @@ class Cart extends CartCollection {
 	 * @param  mixed  $data
 	 * @return void
 	 */
-	protected function fire($event, $data = [])
+	protected function fire($event, $data)
 	{
 		// Check if we should fire events
 		if ($this->fireEvents)
