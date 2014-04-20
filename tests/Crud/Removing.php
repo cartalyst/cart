@@ -31,12 +31,12 @@ class Removing extends CartTestCase {
 		$this->cart->add([$item1, $item2]);
 
 		$this->assertEquals($this->cart->quantity(), 10);
-		$this->assertEquals($this->cart->items()->count(), 2);
+		$this->assertCount(2, $this->cart->items());
 
 		$this->cart->remove('b37f673e46a33038305c1dc411215c07');
 
 		$this->assertEquals($this->cart->quantity(), 3);
-		$this->assertEquals($this->cart->items()->count(), 1);
+		$this->assertCount(1, $this->cart->items());
 		$this->assertEmpty($this->cart->find(['b37f673e46a33038305c1dc411215c07']));
 	}
 
@@ -50,7 +50,7 @@ class Removing extends CartTestCase {
 
 		$this->cart->remove(['b37f673e46a33038305c1dc411215c07', '07d732dbcc3ce0752ac74870d6fa2194']);
 
-		$this->assertEquals($this->cart->items()->count(), 0);
+		$this->assertEmpty($this->cart->items());
 	}
 
 }

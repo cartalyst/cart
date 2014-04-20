@@ -179,7 +179,7 @@ class CartTest extends CartTestCase {
 
 		$this->assertEquals($items[0]->get('id'), 'foobar2');
 
-		$this->assertEquals(count($items), 1);
+		$this->assertCount(1, $items);
 	}
 
 	/** @test */
@@ -208,7 +208,7 @@ class CartTest extends CartTestCase {
 			],
 		]);
 
-		$this->assertEquals(count($items), 2);
+		$this->assertCount(2, $items);
 		$this->assertEquals($items[0]->get('id'), 'foobar1');
 		$this->assertEquals($items[1]->get('id'), 'foobar3');
 	}
@@ -234,7 +234,7 @@ class CartTest extends CartTestCase {
 			],
 		]);
 
-		$this->assertEquals(count($item), 0);
+		$this->assertEmpty($item);
 	}
 
 	/** @test */

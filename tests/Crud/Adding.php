@@ -32,7 +32,7 @@ class Adding extends CartTestCase {
 
 		$this->assertEquals($this->cart->quantity(), 2);
 
-		$this->assertEquals($this->cart->items()->count(), 1);
+		$this->assertCount(1, $this->cart->items());
 	}
 
 	/** @test */
@@ -62,9 +62,9 @@ class Adding extends CartTestCase {
 
 		$item = $this->cart->add($item);
 
-		$this->assertEquals($item->attributes()->count(), 2);
+		$this->assertCount(2, $item->attributes());
 
-		$this->assertEquals($this->cart->items()->count(), 1);
+		$this->assertCount(1, $this->cart->items());
 		$this->assertEquals($this->cart->quantity(), 2);
 		$this->assertEquals($this->cart->total(), 267);
 	}
@@ -78,7 +78,7 @@ class Adding extends CartTestCase {
 
 		$this->cart->add([$item1, $item2, $item3]);
 
-		$this->assertEquals($this->cart->items()->count(), 3);
+		$this->assertCount(3, $this->cart->items());
 		$this->assertEquals($this->cart->quantity(), 7);
 		$this->assertEquals($this->cart->total(), 294);
 	}
@@ -122,10 +122,10 @@ class Adding extends CartTestCase {
 		$item1 = $items[0];
 		$item2 = $items[1];
 
-		$this->assertEquals($item1->attributes()->count(), 2);
-		$this->assertEquals($item2->attributes()->count(), 1);
+		$this->assertCount(2, $item1->attributes());
+		$this->assertCount(1, $item2->attributes());
 
-		$this->assertEquals($this->cart->items()->count(), 2);
+		$this->assertCount(2, $this->cart->items());
 		$this->assertEquals($this->cart->quantity(), 7);
 		$this->assertEquals($this->cart->total(), 531.5);
 	}
@@ -136,13 +136,13 @@ class Adding extends CartTestCase {
 		$item1 = $this->createItem('Foobar 1', 50, 1);
 		$item2 = $this->createItem('Foobar 2', 50, 1);
 
-		$this->assertEquals($this->cart->items()->count(), 0);
+		$this->assertEmpty($this->cart->items());
 
 		$data = new Collection([$item1, $item2]);
 
 		$this->cart->sync($data);
 
-		$this->assertEquals($this->cart->items()->count(), 2);
+		$this->assertCount(2, $this->cart->items());
 	}
 
 }

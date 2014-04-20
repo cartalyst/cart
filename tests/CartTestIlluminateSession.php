@@ -44,11 +44,11 @@ class CartTestIlluminateSession extends CartTestCase {
 
 		$this->cart->add($item);
 
-		$this->assertEquals($this->cart->items()->count(), 1);
+		$this->assertCount(1, $this->cart->items());
 
 		$this->cart->getStorage()->forget();
 
-		$this->assertEquals($this->cart->items()->count(), 0);
+		$this->assertEmpty($this->cart->items());
 	}
 
 	/** @test */
