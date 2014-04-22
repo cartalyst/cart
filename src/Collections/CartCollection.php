@@ -43,6 +43,64 @@ class CartCollection extends BaseCollection {
 	];
 
 	/**
+	 * Holds meta data.
+	 *
+	 * @var array
+	 */
+	protected $metaData = [];
+
+	/**
+	 * Returns meta data.
+	 *
+	 * @param  string  $key
+	 * @return mixed
+	 */
+	public function getMetaData($key = null)
+	{
+		return $key ? array_get($this->items()->metaData, $key) : $this->items()->metaData;
+	}
+
+	/**
+	 * Sets meta data.
+	 *
+	 * @param  array  $data
+	 * @return void
+	 */
+	public function setMetaData($data)
+	{
+		$cart = $this->items();
+
+		foreach ($data as $key => $value)
+		{
+			$cart->metaData[$key] = $value;
+		}
+
+		$this->updateCart($cart);
+	}
+
+	/**
+	 * Removes meta data.
+	 *
+	 * @param  string  $key
+	 * @return void
+	 */
+	public function removeMetaData($key = null)
+	{
+		$cart = $this->items();
+
+		if ( ! $key)
+		{
+			$cart->metaData = [];
+		}
+		else
+		{
+			array_forget($cart->metaData, $key);
+		}
+
+		$this->updateCart($cart);
+	}
+
+	/**
 	 * Returns the items subtotal with conditions applied.
 	 *
 	 * @return float

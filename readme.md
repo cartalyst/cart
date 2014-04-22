@@ -43,6 +43,9 @@ History and future capabilities.
 - ```Cart::itemsConditionsTotalSum($type|null)``` Returns the sum of all or a specific type of items conditions.
 - ```Cart::removeCondition($name, bool $includeItems)``` Removes an applied condition by name.
 - ```Cart::removeConditions($type|null, bool $includeItems)``` Removes all or a specific type of applied conditions.
+- ```Cart::setMetaData($array)``` Set meta data on the cart.
+- ```Cart::getMetaData($key|null)``` Returns all or a specific key of meta data.
+- ```Cart::removeMetaData($key|null)``` Removes all or a specific key of meta data.
 
 ## Requirements
 

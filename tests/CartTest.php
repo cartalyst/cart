@@ -253,4 +253,56 @@ class CartTest extends CartTestCase {
 		$this->assertEquals(false, $this->cart->exists('foobar'));
 	}
 
+	/** @test */
+	public function it_can_set_meta_data()
+	{
+		$this->cart->setMetaData(['abc' => 'aaa']);
+	}
+
+	/** @test */
+	public function it_can_retrieve_meta_data()
+	{
+		$this->cart->setMetaData([
+			'shipping_info' => [
+				'personal_details' => [
+					'name' => 'John Doe',
+				],
+				'billing_address' => [
+					'house'  => 123,
+					'street' => '123 Street.',
+				],
+			]
+		]);
+
+		$this->assertEquals($this->cart->getMetaData('shipping_info.personal_details.name'), 'John Doe');
+	}
+
+	/** @test */
+	public function it_can_remove_meta_data()
+	{
+		$this->cart->setMetaData([
+			'shipping_info' => [
+				'personal_details' => [
+					'name' => 'John Doe',
+				],
+				'billing_address' => [
+					'house'  => 123,
+					'street' => '123 Street.',
+				],
+			]
+		]);
+
+		$this->assertEquals($this->cart->getMetaData('shipping_info.personal_details.name'), 'John Doe');
+
+		$this->cart->removeMetaData('shipping_info.personal_details');
+
+		$this->assertEmpty($this->cart->getMetaData('shipping_info.personal_details'));
+		$this->assertEquals($this->cart->getMetaData('shipping_info.billing_address.house'), 123);
+
+		$this->cart->removeMetaData();
+
+		$this->assertEmpty($this->cart->getMetaData('shipping_info.personal_details'));
+		$this->assertEmpty($this->cart->getMetaData('shipping_info.billing_address'));
+	}
+
 }
