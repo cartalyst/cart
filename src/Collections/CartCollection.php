@@ -43,7 +43,7 @@ class CartCollection extends BaseCollection {
 	];
 
 	/**
-	 * Holds meta data.
+	 * Holds the meta data.
 	 *
 	 * @var array
 	 */
@@ -79,7 +79,7 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
-	 * Removes meta data.
+	 * Removes the meta data.
 	 *
 	 * @param  string  $key
 	 * @return void
