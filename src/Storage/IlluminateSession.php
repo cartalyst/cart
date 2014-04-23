@@ -67,9 +67,7 @@ class IlluminateSession implements StorageInterface {
 	}
 
 	/**
-	 * Returns the session key.
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getKey()
 	{
@@ -77,9 +75,7 @@ class IlluminateSession implements StorageInterface {
 	}
 
 	/**
-	 * Return the session instance.
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function identify()
 	{
@@ -87,23 +83,7 @@ class IlluminateSession implements StorageInterface {
 	}
 
 	/**
-	 * Returns both session key and session instance.
-	 *
-	 * @return string
-	 */
-	public function getSessionKey()
-	{
-		$key = $this->getKey();
-
-		$instance = $this->identify();
-
-		return "{$key}.{$instance}";
-	}
-
-	/**
-	 * Get the session value.
-	 *
-	 * @return mixed
+	 * {@inheritDoc}
 	 */
 	public function get()
 	{
@@ -111,10 +91,7 @@ class IlluminateSession implements StorageInterface {
 	}
 
 	/**
-	 * Put a value in the session.
-	 *
-	 * @param  mixed  $value
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function put($value)
 	{
@@ -122,9 +99,7 @@ class IlluminateSession implements StorageInterface {
 	}
 
 	/**
-	 * Checks if an attribute is defined.
-	 *
-	 * @return bool
+	 * {@inheritDoc}
 	 */
 	public function has()
 	{
@@ -132,13 +107,21 @@ class IlluminateSession implements StorageInterface {
 	}
 
 	/**
-	 * Remove the Cart session.
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function forget()
 	{
 		$this->session->forget($this->getSessionKey());
+	}
+
+	/**
+	 * Returns both session key and session instance.
+	 *
+	 * @return string
+	 */
+	protected function getSessionKey()
+	{
+		return "{$this->getKey()}.{$this->identify()}";
 	}
 
 }
