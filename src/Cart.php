@@ -476,13 +476,25 @@ class Cart extends CartCollection {
 	 * @param  bool  $includeItems
 	 * @return void
 	 */
-	public function removeCondition($name, $includeItems = true)
+	public function removeConditionByName($name, $includeItems = true)
 	{
 		$this->removeConditions($name, $includeItems, 'name');
 	}
 
 	/**
-	 * Remove conditions.
+	 * Removes a condition by its type.
+	 *
+	 * @param  string  $type
+	 * @param  bool  $includeItems
+	 * @return void
+	 */
+	public function removeConditionByType($type, $includeItems = true)
+	{
+		$this->removeConditions($type, $includeItems, 'type');
+	}
+
+	/**
+	 * Removes conditions.
 	 *
 	 * @param  string  $id
 	 * @param  bool  $includeItems
