@@ -263,18 +263,18 @@ class Cart extends CartCollection {
 	 * Updates a single or multiple items that are on the cart.
 	 *
 	 * @param  string  $rowId
-	 * @param  array  $attributes
+	 * @param  array  $data
 	 * @return mixed
 	 * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
 	 */
-	public function update($rowId, $attributes = null)
+	public function update($rowId, $data = null)
 	{
 		// Do we have an array of items to be updated?
 		if (is_array($rowId))
 		{
-			foreach ($rowId as $item => $attributes)
+			foreach ($rowId as $item => $data)
 			{
-				$this->update($item, $attributes);
+				$this->update($item, $data);
 			}
 
 			return true;
@@ -292,10 +292,10 @@ class Cart extends CartCollection {
 		// Get the item we want to update
 		$row = $cart->get($rowId);
 
-		// Do we have multiple item attributes?
-		if (is_array($attributes))
+		// Do we have multiple item data?
+		if (is_array($data))
 		{
-			foreach ($attributes as $key => $value)
+			foreach ($data as $key => $value)
 			{
 				if ($key === 'price')
 				{
@@ -317,7 +317,7 @@ class Cart extends CartCollection {
 		// We are probably updating the item quantity
 		else
 		{
-			$row->put('quantity', (int) $attributes);
+			$row->put('quantity', (int) $data);
 		}
 
 		// Remove the item if the quantity is less than one
