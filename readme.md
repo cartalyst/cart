@@ -1,6 +1,6 @@
 # Cart
 
-A framework agnostic shopping cart package featuring multiple cart instances, item attributes and [Conditions](http://www.cartalyst.com/manual/conditions).
+A framework agnostic shopping cart package featuring multiple cart instances, item attributes and [Conditions](https://cartalyst.com/manual/conditions).
 
 Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
@@ -47,21 +47,25 @@ History and future capabilities.
 - ```Cart::getMetaData($key|null)``` Returns all or a specific key of meta data.
 - ```Cart::removeMetaData($key|null)``` Removes all or a specific key of meta data.
 
+
 ## Requirements
 
 - PHP >=5.4
+
 
 ## Installation
 
 Cart is installable with Composer. Read further information on how to install.
 
-[Installation Guide](http://cartalyst.com/manual/cart/introduction/installation)
+[Installation Guide](https://cartalyst.com/manual/cart#installation)
+
 
 ## Documentation
 
 Refer to the following guide on how to use the Cart package.
 
-[Documentation](http://cartalyst.com/manual/cart)
+[Documentation](https://cartalyst.com/manual/cart)
+
 
 ## Versioning
 
@@ -76,6 +80,12 @@ And constructed with the following guidelines:
 * Breaking backward compatibility bumps the major (and resets the minor and patch)
 * New additions without breaking backward compatibility bumps the minor (and resets the patch)
 * Bug fixes and misc changes bumps the patch
+
+
+## Contributing
+
+Please read the [Contributing](CONTRIBUTING.md) guidelines.
+
 
 ## Support
 
