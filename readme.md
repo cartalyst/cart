@@ -4,6 +4,7 @@ A framework agnostic shopping cart package featuring multiple cart instances, it
 
 Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
+
 ## Package Story
 
 History and future capabilities.
@@ -52,20 +53,17 @@ History and future capabilities.
 
 - PHP >=5.4
 
-
 ## Installation
 
 Cart is installable with Composer. Read further information on how to install.
 
 [Installation Guide](https://cartalyst.com/manual/cart#installation)
 
-
 ## Documentation
 
 Refer to the following guide on how to use the Cart package.
 
 [Documentation](https://cartalyst.com/manual/cart)
-
 
 ## Versioning
 
@@ -81,11 +79,9 @@ And constructed with the following guidelines:
 * New additions without breaking backward compatibility bumps the minor (and resets the patch)
 * Bug fixes and misc changes bumps the patch
 
-
 ## Contributing
 
 Please read the [Contributing](CONTRIBUTING.md) guidelines.
-
 
 ## Support
 
