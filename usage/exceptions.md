@@ -1,9 +1,8 @@
 ## Exceptions
 
-On this list we provide all the exceptions that are thrown by the cart.
+On this section we provide a list of all the exceptions that are thrown by the cart.
 
 The exceptions are thrown in the `Cartalyst\Cart\Exceptions` namespace.
-
 
 Exception                         | Description
 --------------------------------- | -------------------------------------------

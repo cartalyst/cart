@@ -147,7 +147,7 @@ $items = $cart-&gt;items();
 <p><strong>Note 2:</strong> To setup garbage collection, call the <code>gc()</code> method on the FileSessionHandler <code>$fileSessionHandler-&gt;gc($lifetime);</code>, You can also setup a function that randomizes calls to this function rather than calling it on every request.</p>
 </blockquote><h1>Usage</h1>
 
-<p>In this section we'll show how to manage your shopping cart.</p>
+<p>In this section we'll show how you can manage your shopping cart.</p>
 
 <h2>Add Item</h2>
 
@@ -418,7 +418,7 @@ $items = $cart-&gt;items();
 ]);
 </code></pre>
 
-<h2>Read Item</h2>
+<h2>Items</h2>
 
 <p>Need to show the items that are inside your shopping cart? We've you covered!</p>
 
@@ -427,6 +427,21 @@ $items = $cart-&gt;items();
 <h4>Get all the items</h4>
 
 <pre class="prettyprint lang-php"><code>$items = Cart::items();
+
+foreach ($items as $item)
+{
+    echo $item-&gt;price();
+}
+</code></pre>
+
+<h4>Check if an item exists</h4>
+
+<p>This method is most useful when deleting cart items, you can check if the item still exists on the cart before deleting it.</p>
+
+<pre class="prettyprint lang-php"><code>if (Cart::exists('c14c437bc9ae7d35a7c18ee151c6acc0'))
+{
+    Cart::remove('c14c437bc9ae7d35a7c18ee151c6acc0');
+}
 </code></pre>
 
 <h4>Get a single item</h4>
@@ -434,18 +449,29 @@ $items = $cart-&gt;items();
 <pre class="prettyprint lang-php"><code>$item = Cart::item('c14c437bc9ae7d35a7c18ee151c6acc0');
 </code></pre>
 
-<h4>Check if an items exists</h4>
+<h4>Get the item price</h4>
 
-<p>This method is useful when deleting cart items.</p>
+<pre class="prettyprint lang-php"><code>$item-&gt;price();
+</code></pre>
 
-<pre class="prettyprint lang-php"><code>if (Cart::exists('c14c437bc9ae7d35a7c18ee151c6acc0'))
-{
-    echo 'Item exists on the cart!';
-}
-else
-{
-    echo 'Item does not exist on the cart!';
-}
+<h4>Get the item quantity</h4>
+
+<pre class="prettyprint lang-php"><code>$item-&gt;quantity();
+</code></pre>
+
+<h4>Get the item subtotal</h4>
+
+<pre class="prettyprint lang-php"><code>$item-&gt;subtotal();
+</code></pre>
+
+<h4>Get the item weight</h4>
+
+<pre class="prettyprint lang-php"><code>$item-&gt;weight();
+</code></pre>
+
+<h4>Get the item attributes</h4>
+
+<pre class="prettyprint lang-php"><code>$item-&gt;attributes();
 </code></pre>
 
 <h2>Other Methods</h2>
@@ -496,7 +522,32 @@ else
 
 <h3>Cart::sync()</h3>
 
-<p>Synchronize a collection of data with the cart.</p><h2>Search</h2>
+<p>This method is very useful when you want to synchronize a shopping cart that is stored on the database for example.</p>
+
+<p>In this quick example, we're using a static array.</p>
+
+<pre class="prettyprint lang-php"><code>$items = [
+
+    [
+        'id'       =&gt; 'tshirt',
+        'name'     =&gt; 'T-Shirt',
+        'quantity' =&gt; 1,
+        'price'    =&gt; 12.50,
+    ],
+
+    [
+        'id'       =&gt; 'sweatshirt',
+        'name'     =&gt; 'Sweatshirt',
+        'quantity' =&gt; 1,
+        'price'    =&gt; 98.32,
+    ],
+
+];
+
+$collection = new Collection($items);
+
+Cart::sync($collection);
+</code></pre><h2>Search</h2>
 
 <p>If you ever need to search the shopping cart, we've, once again, you covered!</p>
 
@@ -673,9 +724,7 @@ else
 
 <h4>IoC Binding</h4>
 
-<pre><code>&lt;?php
-
-use Cartalyst\Cart\Cart;
+<pre class="prettyprint lang-php"><code>use Cartalyst\Cart\Cart;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 
 $app = app();
@@ -694,9 +743,7 @@ $app['wishlist'] = $app-&gt;share(function($app)
 
 <p><code>app/services/WishlistServiceProvider.php</code></p>
 
-<pre><code>&lt;?php
-
-use Cartalyst\Cart\Cart;
+<pre class="prettyprint lang-php"><code>use Cartalyst\Cart\Cart;
 use Cartalyst\Cart\Storage\Sessions\IlluminateSession;
 use Illuminate\Support\ServiceProvider;
 
@@ -749,9 +796,7 @@ class WishlistServiceProvider extends ServiceProvider {
 
 <p><code>app/facades/Wishlist.php</code></p>
 
-<pre><code>&lt;?php
-
-use Illuminate\Support\Facades\Facade;
+<pre class="prettyprint lang-php"><code>use Illuminate\Support\Facades\Facade;
 
 class Wishlist extends Facade {
 
@@ -769,7 +814,7 @@ class Wishlist extends Facade {
 
 <p>In the <code>$providers</code> array add the following service provider for this package.</p>
 
-<pre><code>'Path\To\Your\CartServiceProvider',
+<pre><code>'Path\To\Your\WishlistServiceProvider',
 </code></pre>
 
 <p>In the <code>$aliases</code> array add the following facade for this package.</p>
@@ -781,34 +826,13 @@ class Wishlist extends Facade {
 
 <p>Usage is identical to the cart.</p>
 
-<pre><code>Wishlist::add([
-        'id'       =&gt; 'foobar1',
-        'name'     =&gt; 'Foo Bar 1',
+<pre class="prettyprint lang-php"><code>Wishlist::add([
+        'id'       =&gt; 'tshirt',
+        'name'     =&gt; 'T-Shirt',
         'quantity' =&gt; 1,
         'price'    =&gt; 12.50,
 ]);
-</code></pre><!--
-### Cart::getConditionsOrder()
-
-Returns the conditions order.
-
-
-### Cart::setConditionsOrder($order)
-
-Sets the conditions order.
-
-
-### Cart::getItemsConditionsOrder()
-
-Returns the items conditions order.
-
-
-### Cart::setItemsConditionsOrder($order)
-
-Sets the items conditions order.
--->
-
-<h2>Conditions</h2>
+</code></pre><h2>Conditions</h2>
 
 <p>The Cart package utilizes the Cartalyst Conditions package to manage item and cart based conditions.</p>
 
@@ -872,11 +896,24 @@ $conditionDiscount-&gt;setActions([
 Cart::condition([$conditionTax, $conditionDiscount]);
 </code></pre>
 
-<!--
-#### Item Conditions
+<h4>Item Conditions</h4>
 
-Applying conditions on cart items...
--->
+<p>You can add one or more (array) conditions to an item that will be assigned automatically when adding or updating items on the cart.</p>
+
+<pre class="prettyprint lang-php"><code>$condition = new Condition([
+    'name'   =&gt; 'VAT (12.5%)',
+    'type'   =&gt; 'tax',
+    'target' =&gt; 'subtotal',
+]);
+
+Cart::add([
+    'id'         =&gt; 'tshirt',
+    'name'       =&gt; 'T-Shirt',
+    'quantity'   =&gt; 1,
+    'price'      =&gt; 12.50,
+    'conditions' =&gt; $condition,
+]);
+</code></pre>
 
 <h3>Removing Conditions</h3>
 
@@ -1011,13 +1048,11 @@ Applying conditions on cart items...
 <p><strong>Note:</strong> If you need to define custom condition types, make sure you set the conditions order using <code>Cart::setConditionsOrder($types)</code> by passing it an array of types that should be handled by the cart, otherwise only default condition types will be applied.</p>
 </blockquote>
 
-<h4>Examples</h4>
-
-<h5>Tax</h5>
+<h4>Tax</h4>
 
 <p>Tax conditions must have the type set to tax</p>
 
-<pre><code>$condition = new Condition([
+<pre class="prettyprint lang-php"><code>$condition = new Condition([
     'name'   =&gt; 'VAT (12.5%)',
     'type'   =&gt; 'tax',
     'target' =&gt; 'subtotal',
@@ -1032,11 +1067,11 @@ $condition-&gt;setActions([
 ]);
 </code></pre>
 
-<h5>Discount</h5>
+<h4>Discount</h4>
 
 <p>Discount conditions must have the type set to discount</p>
 
-<pre><code>$condition = new Condition([
+<pre class="prettyprint lang-php"><code>$condition = new Condition([
     'name'   =&gt; 'Discount (5%)',
     'type'   =&gt; 'discount',
     'target' =&gt; 'subtotal',
@@ -1053,14 +1088,14 @@ $condition-&gt;setActions([
 
 <p>The condition above will apply a 5% discount.</p>
 
-<h5>Other</h5>
+<h4>Other</h4>
 
 <p>Other conditions must have the type set to other</p>
 
 <p>The condition below will add 5 to the subtotal after applying discounts (if any)<br>
 assuming conditions order are set to their default order.</p>
 
-<pre><code>$condition = new Condition([
+<pre class="prettyprint lang-php"><code>$condition = new Condition([
     'name'   =&gt; 'Other (5%)',
     'type'   =&gt; 'other',
     'target' =&gt; 'subtotal',
@@ -1075,7 +1110,7 @@ $condition-&gt;setActions([
 ]);
 </code></pre>
 
-<h5>Inclusive Conditions</h5>
+<h3>Inclusive Conditions</h3>
 
 <p>Inclusive conditions are not added to the total but allow you to reverse<br>
 calculate taxes that are already included in your price.</p>
@@ -1083,7 +1118,7 @@ calculate taxes that are already included in your price.</p>
 <p>This condition will be reverse calculated and will show up on total<br>
 conditions methods, but it will not be added to the cart total.</p>
 
-<pre><code>$condition = new Condition([
+<pre class="prettyprint lang-php"><code>$condition = new Condition([
     'name'   =&gt; 'Tax (5%)',
     'type'   =&gt; 'tax',
     'target' =&gt; 'subtotal',
@@ -1099,26 +1134,6 @@ $condition-&gt;setActions([
 ]);
 </code></pre>
 
-<h4>Item Conditions</h4>
-
-<p>You can add one or more (array) conditions to an item that will be assigned<br>
-automatically when adding or updating items on the cart.</p>
-
-<pre><code>$condition = new Condition([
-    'name'   =&gt; 'VAT (12.5%)',
-    'type'   =&gt; 'tax',
-    'target' =&gt; 'subtotal',
-]);
-
-Cart::add([
-    'id'         =&gt; 'foobar1',
-    'name'       =&gt; 'Foo Bar 1',
-    'quantity'   =&gt; 1,
-    'price'      =&gt; 12.50,
-    'conditions' =&gt; $condition,
-]);
-</code></pre>
-
 <h3>Conditions Order</h3>
 
 <h4>Default Order</h4>
@@ -1129,9 +1144,14 @@ Cart::add([
 <li>tax</li>
 </ul>
 
+<h4>Get Cart Conditions Order</h4>
+
+<pre class="prettyprint lang-php"><code>$order = Cart::getConditionsOrder();
+</code></pre>
+
 <h4>Set Cart Conditions Order</h4>
 
-<pre><code>Cart::setConditionsOrder([
+<pre class="prettyprint lang-php"><code>Cart::setConditionsOrder([
     'discount',
     'other',
     'tax',
@@ -1141,7 +1161,7 @@ Cart::add([
 
 <h4>Set Items Conditions Order</h4>
 
-<pre><code>Cart::setItemsConditionsOrder([
+<pre class="prettyprint lang-php"><code>Cart::setItemsConditionsOrder([
     'discount',
     'other',
     'tax',
@@ -1172,17 +1192,17 @@ Cart::add([
 
 <p>Apply a condition.</p>
 
-<pre><code>Cart::condition(Cartalyst\Conditions\Condition $condition);
+<pre class="prettyprint lang-php"><code>Cart::condition(Cartalyst\Conditions\Condition $condition);
 </code></pre>
 
 <p>Return all applied conditions.</p>
 
-<pre><code>Cart::conditions($type|null, bool $includeItems);
+<pre class="prettyprint lang-php"><code>Cart::conditions($type|null, bool $includeItems);
 </code></pre>
 
 <p>Set the order in which conditions are applied.</p>
 
-<pre><code>Cart::setConditionsOrder([
+<pre class="prettyprint lang-php"><code>Cart::setConditionsOrder([
     'discount',
     'other',
     'tax',
@@ -1191,7 +1211,7 @@ Cart::add([
 
 <p>Set the order in which conditions are applied on items.</p>
 
-<pre><code>Cart::setItemsConditionsOrder([
+<pre class="prettyprint lang-php"><code>Cart::setItemsConditionsOrder([
     'discount',
     'tax',
     'shipping',
@@ -1235,7 +1255,7 @@ Cart::itemsConditionsTotal(); // Returns an array of results of all applied cond
 Cart::itemsConditionsTotalSum(); // Returns the sum of all conditions
 </code></pre><h2>Events</h2>
 
-<p>The cart fires events that you can listen for.</p>
+<p>On this section we have a list of all the events fired by the cart that you can listen for.</p>
 
 <table>
 <thead>
@@ -1273,7 +1293,7 @@ Cart::itemsConditionsTotalSum(); // Returns the sum of all conditions
 
 <p>Whenever an item is added to the shopping cart.</p>
 
-<pre><code>Event::listen('cartalyst.cart.added', function($item, $cart)
+<pre class="prettyprint lang-php"><code>Event::listen('cartalyst.cart.added', function($item, $cart)
 {
     // Apply your own logic here
 });
@@ -1281,7 +1301,7 @@ Cart::itemsConditionsTotalSum(); // Returns the sum of all conditions
 
 <p>Whenever an item is removed from the shopping cart.</p>
 
-<pre><code>Event::listen('cartalyst.cart.removed', function($item, $cart)
+<pre class="prettyprint lang-php"><code>Event::listen('cartalyst.cart.removed', function($item, $cart)
 {
     // Apply your own logic here
 });
@@ -1289,7 +1309,7 @@ Cart::itemsConditionsTotalSum(); // Returns the sum of all conditions
 
 <p>Whenever an item is updated on the shopping cart.</p>
 
-<pre><code>Event::listen('cartalyst.cart.updated', function($item, $cart)
+<pre class="prettyprint lang-php"><code>Event::listen('cartalyst.cart.updated', function($item, $cart)
 {
     // Apply your own logic here
 });
@@ -1297,13 +1317,13 @@ Cart::itemsConditionsTotalSum(); // Returns the sum of all conditions
 
 <p>Whenever the shopping cart is cleared.</p>
 
-<pre><code>Event::listen('cartalyst.cart.cleared', function($cart)
+<pre class="prettyprint lang-php"><code>Event::listen('cartalyst.cart.cleared', function($cart)
 {
     // Apply your own logic here
 });
 </code></pre><h2>Exceptions</h2>
 
-<p>On this list we provide all the exceptions that are thrown by the cart.</p>
+<p>On this section we provide a list of all the exceptions that are thrown by the cart.</p>
 
 <p>The exceptions are thrown in the <code>Cartalyst\Cart\Exceptions</code> namespace.</p>
 

@@ -1,6 +1,6 @@
 # Usage
 
-In this section we'll show how to manage your shopping cart.
+In this section we'll show how you can manage your shopping cart.
 
 ## Add Item
 
@@ -26,7 +26,6 @@ weight     | false    | float  | The item weight.
 Param   | Required | Type   | Description
 ------- | -------- | ------ | -------------------------------------------------
 $item   | true     | array  | A single or multidimensional array that respects the list of [indexes](#indexes) above.
-
 
 #### Add a single item
 
@@ -116,7 +115,6 @@ Cart::add([
 
 Updating items is as simple as adding them.
 
-
 ### Cart::update()
 
 Param   | Required | Type   | Description
@@ -173,7 +171,6 @@ Param  | Required  | Type  | Description
 ------ | --------- | ----- | --------------------------------------------------
 $items | true      | mixed | This can be either a string or an array containing item row ids.
 
-
 #### Remove a single item
 
 ```php
@@ -189,8 +186,7 @@ Cart::remove([
 ]);
 ```
 
-
-## Read Item
+## Items
 
 Need to show the items that are inside your shopping cart? We've you covered!
 
@@ -200,6 +196,22 @@ You can list all the items or grab individual items using their row ids.
 
 ```php
 $items = Cart::items();
+
+foreach ($items as $item)
+{
+	echo $item->price();
+}
+```
+
+#### Check if an item exists
+
+This method is most useful when deleting cart items, you can check if the item still exists on the cart before deleting it.
+
+```php
+if (Cart::exists('c14c437bc9ae7d35a7c18ee151c6acc0'))
+{
+	Cart::remove('c14c437bc9ae7d35a7c18ee151c6acc0');
+}
 ```
 
 #### Get a single item
@@ -208,19 +220,34 @@ $items = Cart::items();
 $item = Cart::item('c14c437bc9ae7d35a7c18ee151c6acc0');
 ```
 
-#### Check if an items exists
-
-This method is useful when deleting cart items.
+#### Get the item price
 
 ```php
-if (Cart::exists('c14c437bc9ae7d35a7c18ee151c6acc0'))
-{
-	echo 'Item exists on the cart!';
-}
-else
-{
-	echo 'Item does not exist on the cart!';
-}
+$item->price();
+```
+
+#### Get the item quantity
+
+```php
+$item->quantity();
+```
+
+#### Get the item subtotal
+
+```php
+$item->subtotal();
+```
+
+#### Get the item weight
+
+```php
+$item->weight();
+```
+
+#### Get the item attributes
+
+```php
+$item->attributes();
 ```
 
 ## Other Methods
@@ -235,7 +262,6 @@ Returns the cart total.
 echo Cart::total();
 ```
 
-
 ### Cart::subtotal()
 
 Returns the cart subtotal.
@@ -243,7 +269,6 @@ Returns the cart subtotal.
 ```php
 echo Cart::subtotal();
 ```
-
 
 ### Cart::quantity()
 
@@ -253,7 +278,6 @@ Returns the total number of items that are in the cart.
 echo Cart::quantity();
 ```
 
-
 ### Cart::weight()
 
 Returns the total cart weight.
@@ -261,7 +285,6 @@ Returns the total cart weight.
 ```php
 echo Cart::weight();
 ```
-
 
 ### Cart::itemsSubtotal()
 
@@ -271,7 +294,6 @@ Get the subtotal of the items in the Cart
 echo Cart::itemsSubtotal();
 ```
 
-
 ### Cart::clear()
 
 Empty the Cart
@@ -280,7 +302,32 @@ Empty the Cart
 Cart::clear();
 ```
 
-
 ### Cart::sync()
 
-Synchronize a collection of data with the cart.
+This method is very useful when you want to synchronize a shopping cart that is stored on the database for example.
+
+In this quick example, we're using a static array.
+
+```php
+$items = [
+
+	[
+		'id'       => 'tshirt',
+		'name'     => 'T-Shirt',
+		'quantity' => 1,
+		'price'    => 12.50,
+	],
+
+	[
+		'id'       => 'sweatshirt',
+		'name'     => 'Sweatshirt',
+		'quantity' => 1,
+		'price'    => 98.32,
+	],
+
+];
+
+$collection = new Collection($items);
+
+Cart::sync($collection);
+```
