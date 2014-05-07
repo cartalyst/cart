@@ -81,7 +81,7 @@ And constructed with the following guidelines:
 
 ## Contributing
 
-Please read the [Contributing](CONTRIBUTING.md) guidelines.
+Please read the [Contributing](contributing.md) guidelines.
 
 ## Support
 
