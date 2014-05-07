@@ -1,0 +1,286 @@
+# Usage
+
+In this section we'll show how to manage your shopping cart.
+
+## Add Item
+
+Having the ability to add items to the shopping cart is crucial and we've made it incredible simple to do it.
+
+You can pass a simple or a multidimensional array and to help you get started, we have listed below all the default `indexes` that you can pass when adding or updating a cart item.
+
+<a id="indexes"></a>
+
+Key        | Required | Type   | Description
+---------- | -------- | ------ | ----------------------------------------------
+id         | true     | mixed  | The item unique identifier, can be a numeric id, an sku, etc..
+name       | true     | string | The item name.
+price      | true     | float  | The item price.
+quantity   | true     | int    | The quantity, needs to be an integer and can't be a negative value.
+attributes | false    | array  | The item [attributes](#attributes) like size, color, fabric, etc..
+weight     | false    | float  | The item weight.
+
+> **Note:** You can pass custom `key`/`value` pairs into the array when adding or updating an item, please check the examples below.
+
+### Cart::add()
+
+Param   | Required | Type   | Description
+------- | -------- | ------ | -------------------------------------------------
+$item   | true     | array  | A single or multidimensional array that respects the list of [indexes](#indexes) above.
+
+
+#### Add a single item
+
+```php
+Cart::add([
+	'id'       => 'tshirt',
+	'name'     => 'T-Shirt',
+	'quantity' => 1,
+	'price'    => 12.50,
+]);
+```
+
+#### Add a single item with a custom `index`
+
+```php
+Cart::add([
+	'id'       => 'tshirt',
+	'name'     => 'T-Shirt',
+	'quantity' => 1,
+	'price'    => 12.50,
+	'sku'      => 'tshirt-custom',
+]);
+```
+
+#### Add a single item with `attributes` and a custom `index`
+
+```php
+Cart::add([
+	'id'         => 'tshirt',
+	'name'       => 'T-Shirt',
+	'quantity'   => 1,
+	'price'      => 12.50,
+	'sku'        => 'tshirt-red-large',
+	'attributes' => [
+
+		'color' => [
+			'label' => 'Red',
+			'value' => 'red',
+		],
+
+		'size' => [
+			'label' => 'Large',
+			'value' => 'l',
+		],
+
+	],
+]);
+```
+
+#### Adding multiple items
+
+```php
+Cart::add([
+
+	[
+		'id'         => 'tshirt',
+		'name'       => 'T-Shirt',
+		'quantity'   => 1,
+		'price'      => 12.50,
+		'sku'        => 'tshirt-red-large',
+		'attributes' => [
+
+			'color' => [
+				'label' => 'Red',
+				'value' => 'red',
+			],
+
+			'size' => [
+				'label' => 'Large',
+				'value' => 'l',
+			],
+
+		],
+	],
+
+	[
+		'id'       => 'sweatshirt',
+		'name'     => 'Sweatshirt',
+		'quantity' => 1,
+		'price'    => 98.32,
+	],
+
+]);
+```
+
+## Update Item
+
+Updating items is as simple as adding them.
+
+
+### Cart::update()
+
+Param   | Required | Type   | Description
+------- | -------- | ------ | -------------------------------------------------
+$rowId  | true     | string | The item row id.
+$data   | true     | mixed  | This can be either an array or an integer, if an integer, it'll update the item quantity.
+
+> **Note:** If the `$data` is an array, it doesn't require you to pass all the `indexes`, just the ones you wish to update, like `name`, `price`, `quantity`, `attributes`, etc..
+
+#### Update an item quantity
+
+```php
+Cart::update('c14c437bc9ae7d35a7c18ee151c6acc0', 2);
+```
+
+#### Update a single item
+
+```php
+Cart::update('c14c437bc9ae7d35a7c18ee151c6acc0', [
+	'quantity' => 1,
+	'price'    => 12.50,
+]);
+```
+
+#### Update multiple items
+
+```php
+Cart::update([
+
+	'c14c437bc9ae7d35a7c18ee151c6acc0' => [
+		'id'       => 'tshirt',
+		'name'     => 'T-Shirt',
+		'quantity' => 1,
+		'price'    => 12.50,
+	],
+
+	'63e2d7033fe95b9134a5737503d10ba5' => [
+		'id'       => 'sweatshirt',
+		'name'     => 'Sweatshirt',
+		'quantity' => 2,
+		'price'    => 98.32,
+	],
+
+]);
+```
+
+## Remove Item
+
+Removing items from the cart is easy, you can remove one item at a time or multiple by providing an array containing the row ids that you wish to remove.
+
+### Cart::remove()
+
+Param  | Required  | Type  | Description
+------ | --------- | ----- | --------------------------------------------------
+$items | true      | mixed | This can be either a string or an array containing item row ids.
+
+
+#### Remove a single item
+
+```php
+Cart::remove('c14c437bc9ae7d35a7c18ee151c6acc0');
+```
+
+#### Remove multiple items
+
+```php
+Cart::remove([
+	'c14c437bc9ae7d35a7c18ee151c6acc0',
+	'63e2d7033fe95b9134a5737503d10ba5',
+]);
+```
+
+
+## Read Item
+
+Need to show the items that are inside your shopping cart? We've you covered!
+
+You can list all the items or grab individual items using their row ids.
+
+#### Get all the items
+
+```php
+$items = Cart::items();
+```
+
+#### Get a single item
+
+```php
+$item = Cart::item('c14c437bc9ae7d35a7c18ee151c6acc0');
+```
+
+#### Check if an items exists
+
+This method is useful when deleting cart items.
+
+```php
+if (Cart::exists('c14c437bc9ae7d35a7c18ee151c6acc0'))
+{
+	echo 'Item exists on the cart!';
+}
+else
+{
+	echo 'Item does not exist on the cart!';
+}
+```
+
+## Other Methods
+
+In this section we're covering all the other methods that didn't fit in on the previous sections.
+
+### Cart::total()
+
+Returns the cart total.
+
+```php
+echo Cart::total();
+```
+
+
+### Cart::subtotal()
+
+Returns the cart subtotal.
+
+```php
+echo Cart::subtotal();
+```
+
+
+### Cart::quantity()
+
+Returns the total number of items that are in the cart.
+
+```php
+echo Cart::quantity();
+```
+
+
+### Cart::weight()
+
+Returns the total cart weight.
+
+```php
+echo Cart::weight();
+```
+
+
+### Cart::itemsSubtotal()
+
+Get the subtotal of the items in the Cart
+
+```php
+echo Cart::itemsSubtotal();
+```
+
+
+### Cart::clear()
+
+Empty the Cart
+
+```php
+Cart::clear();
+```
+
+
+### Cart::sync()
+
+Synchronize a collection of data with the cart.
