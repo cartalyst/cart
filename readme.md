@@ -2,7 +2,7 @@
 
 A framework agnostic shopping cart package featuring multiple cart instances, item attributes and [Conditions](https://cartalyst.com/manual/conditions).
 
-Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
+Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
 
 ## Package Story
 
