@@ -83,9 +83,7 @@ Please read the [Contributing](contributing.md) guidelines.
 
 ## Support
 
-Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
-
-https://github.com/cartalyst/cart/issues
+Have a bug? Please create an [issue](https://github.com/cartalyst/cart/issues) here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
 
 Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
 
@@ -93,3 +91,5 @@ Join us for a chat on IRC.
 
 Server: irc.freenode.net
 Channel: #cartalyst
+
+Email: help@cartalyst.com
