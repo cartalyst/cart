@@ -8,14 +8,12 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 ## Package Story
 
-History and future capabilities.
-
-### Complete
+Package history and capabilities.
 
 #### xx-Jan-14 - v1.0.0
 
 - ```Cart::getIdentity()``` Returns the cart identity.
-- ```Cart::setIdentity($name)``` Set the cart identity.
+- ```Cart::setIdentity($name)``` Sets the cart identity.
 - ```Cart::add($item)``` Adds a single item to the cart.
 - ```Cart::add($items)``` Adds multiple items to the cart.
 - ```Cart::remove($rowId)``` Removes an item from the cart.
@@ -34,10 +32,12 @@ History and future capabilities.
 - ```Cart::clear()``` Empty the cart.
 - ```Cart::sync(Collection $items)``` Synchronizes a collection of data with the cart.
 - ```Cart::find($data)``` Search for items that are in the cart.
-- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` Apply a condition.
-- ```Cart::conditions($type|null, bool $includeItems)``` Returns all applied conditions.
-- ```Cart::setConditionsOrder($array)``` Sets the order in which conditions are applied.
-- ```Cart::setItemsConditionsOrder($array)``` Sets the order in which conditions are applied on items.
+- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` Applies a condition on the cart.
+- ```Cart::conditions($type|null, bool $includeItems)``` Returns all the applied conditions.
+- ```Cart::getConditionsOrder()``` Returns the order in which the conditions are applied.
+- ```Cart::setConditionsOrder($array)``` Sets the order in which the conditions are applied.
+- ```Cart::getItemsConditionsOrder()``` Returns the order in which the conditions are applied on items.
+- ```Cart::setItemsConditionsOrder($array)``` Sets the order in which the conditions are applied on items.
 - ```Cart::conditionsTotal($type|null, bool $includeItems)``` Returns all conditions totals grouped by type.
 - ```Cart::conditionsTotalSum($type|null)``` Returns the sum of all or a specific type of conditions.
 - ```Cart::itemsConditions()``` Returns all conditions applied only to items.
@@ -46,9 +46,11 @@ History and future capabilities.
 - ```Cart::removeConditionByName($name, bool $includeItems)``` Removes an applied condition by name.
 - ```Cart::removeConditionByType($name, bool $includeItems)``` Removes an applied condition by type.
 - ```Cart::removeConditions($id, bool $includeItems)``` Removes all or a specific type of applied conditions.
-- ```Cart::setMetaData($array)``` Set the meta data on the cart.
+- ```Cart::setMetaData($array)``` Sets the meta data on the cart.
 - ```Cart::getMetaData($key|null)``` Returns all or a specific key of meta data.
 - ```Cart::removeMetaData($key|null)``` Removes all or a specific key of meta data.
+- ```Cart::getRequiredIndexes()``` Returns the required indexes.
+- ```Cart::setRequiredIndexes(array $indexes, bool $merge)``` Sets the required indexes.
 
 ## Requirements
 
