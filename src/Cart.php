@@ -531,19 +531,6 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Returns the total cart weight.
-	 *
-	 * @return float
-	 */
-	public function weight()
-	{
-		return $this->items()->sum(function($item)
-		{
-			return $item->weight();
-		});
-	}
-
-	/**
 	 * Search for items with the given criteria.
 	 *
 	 * @param  array  $data
@@ -642,7 +629,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Fires the given event.
+	 * Fires an event.
 	 *
 	 * @param  string  $event
 	 * @param  mixed  $data
@@ -658,7 +645,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Prepare the item attributes.
+	 * Prepares the item attributes.
 	 *
 	 * @param  array  $attributes
 	 * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
@@ -682,9 +669,9 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Generate a unique identifier based on the item data.
+	 * Generates a unique identifier based on the item data.
 	 *
-	 * @param  string  $id
+	 * @param  mixed  $id
 	 * @param  array  $item
 	 * @return string
 	 */

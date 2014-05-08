@@ -139,6 +139,19 @@ class CartCollection extends BaseCollection {
 	}
 
 	/**
+	 * Returns the total cart weight.
+	 *
+	 * @return float
+	 */
+	public function weight()
+	{
+		return $this->items()->sum(function($item)
+		{
+			return $item->weight();
+		});
+	}
+
+	/**
 	 * Returns the conditions by type.
 	 *
 	 * @param  string  $type

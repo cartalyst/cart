@@ -23,7 +23,7 @@ use Illuminate\Support\Collection;
 abstract class BaseCollection extends Collection {
 
 	/**
-	 * Holds all conditions.
+	 * Holds all the conditions.
 	 *
 	 * @var array
 	 */
