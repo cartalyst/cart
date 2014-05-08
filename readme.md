@@ -4,7 +4,6 @@ A framework agnostic shopping cart package featuring multiple cart instances, it
 
 Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
-
 ## Package Story
 
 History and future capabilities.
@@ -47,7 +46,6 @@ History and future capabilities.
 - ```Cart::setMetaData($array)``` Set the meta data on the cart.
 - ```Cart::getMetaData($key|null)``` Returns all or a specific key of meta data.
 - ```Cart::removeMetaData($key|null)``` Removes all or a specific key of meta data.
-
 
 ## Requirements
 
