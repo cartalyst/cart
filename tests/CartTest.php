@@ -20,11 +20,7 @@
 require 'CartTestCase.php';
 
 use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Storage\IlluminateSession;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Session\FileSessionHandler;
-use Illuminate\Session\Store;
 use Mockery as m;
 
 class CartTest extends CartTestCase {

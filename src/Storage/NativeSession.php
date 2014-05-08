@@ -28,7 +28,7 @@ class NativeSession extends IlluminateSession implements StorageInterface {
 	 * @param  \Illuminate\Session\Store  $session
 	 * @param  string  $key
 	 * @param  string  $instance
-	 * @param  array   $config
+	 * @param  array  $config
 	 * @return void
 	 */
 	public function __construct(SessionStore $session, $key = null, $instance = null, $config = [])

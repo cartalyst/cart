@@ -193,7 +193,7 @@ class Cart extends CartCollection {
 		else
 		{
 			// Prepare the attributes
-			$attributes = $this->prepareAttributes($attributes);
+			$attributes = $this->prepareItemAttributes($attributes);
 
 			// Create a new item
 			$row = new ItemCollection(array_merge($item, compact('rowId', 'quantity', 'price', 'attributes')));
@@ -306,7 +306,7 @@ class Cart extends CartCollection {
 				}
 				elseif ($key === 'attributes')
 				{
-					$value = $this->prepareAttributes($value);
+					$value = $this->prepareItemAttributes($value);
 				}
 
 				$row->put($key, $value);
@@ -399,7 +399,7 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Synchronize a collection of data with the cart.
+	 * Synchronizes a collection of data with the cart.
 	 *
 	 * @param  \Illuminate\Support\Collection  $items
 	 * @return void
@@ -658,18 +658,16 @@ class Cart extends CartCollection {
 	}
 
 	/**
-	 * Prepare the attributes.
+	 * Prepare the item attributes.
 	 *
 	 * @param  array  $attributes
 	 * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
 	 * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
 	 */
-	protected function prepareAttributes(array $attributes)
+	protected function prepareItemAttributes(array $attributes)
 	{
-		// Create a new attributes collection for this item
-		$attributesCollection = new ItemAttributesCollection;
+		$data = [];
 
-		// Store each option on the collection
 		foreach ($attributes as $index => $option)
 		{
 			if (empty($option['value']))
@@ -677,10 +675,10 @@ class Cart extends CartCollection {
 				throw new CartMissingRequiredIndexException('value');
 			}
 
-			$attributesCollection->put($index, new ItemCollection($option));
+			$data[$index] = new ItemCollection($option);
 		}
 
-		return $attributesCollection;
+		return new ItemAttributesCollection($data);
 	}
 
 	/**

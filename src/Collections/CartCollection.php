@@ -56,7 +56,7 @@ class CartCollection extends BaseCollection {
 	 */
 	public function getMetaData($key = null)
 	{
-		return $key ? array_get($this->items()->metaData, $key) : $this->items()->metaData;
+		return array_get($this->items()->metaData, $key);
 	}
 
 	/**
@@ -159,9 +159,7 @@ class CartCollection extends BaseCollection {
 				}
 			}
 
-			$conditions = array_merge($conditions, $this->items()->conditions);
-
-			return $conditions;
+			return array_merge($conditions, $this->items()->conditions);
 		}
 
 		foreach ($this->items()->conditions as $condition)

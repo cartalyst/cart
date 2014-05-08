@@ -30,7 +30,7 @@ abstract class BaseCollection extends Collection {
 	protected $conditions = [];
 
 	/**
-	 * Holds conditions results.
+	 * Holds the conditions results.
 	 *
 	 * @var array
 	 */
@@ -85,9 +85,9 @@ abstract class BaseCollection extends Collection {
 
 		if (is_array($condition))
 		{
-			foreach ($condition as $c)
+			foreach ($condition as $_condition)
 			{
-				$base->condition($c);
+				$base->condition($_condition);
 			}
 
 			return;
@@ -182,8 +182,10 @@ abstract class BaseCollection extends Collection {
 			{
 				$condition->apply($this, $value);
 
-				$name   = $condition->get('name');
-				$type   = $condition->get('type');
+				$name = $condition->get('name');
+
+				$type = $condition->get('type');
+
 				$result = $condition->result();
 
 				if (empty($this->conditionResults[$type]))
@@ -200,7 +202,6 @@ abstract class BaseCollection extends Collection {
 					$this->conditionResults[$type][$name] = $result;
 				}
 
-				// Add exclusive conditions only
 				if ( ! head($condition->get('actions'))->get('inclusive'))
 				{
 					$subtotal += $result;

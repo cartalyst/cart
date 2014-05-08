@@ -48,7 +48,7 @@ class CartServiceProvider extends ServiceProvider {
 	 */
 	protected function registerSession()
 	{
-		$this->app['cart.storage'] = $this->app->share(function($app)
+		$this->app['cart.session'] = $this->app->share(function($app)
 		{
 			$config = $app['config']->get('cartalyst/cart::config');
 
@@ -67,7 +67,7 @@ class CartServiceProvider extends ServiceProvider {
 		{
 			$config = $app['config']->get('cartalyst/cart::config');
 
-			$cart = new Cart($config['instance'], $app['cart.storage'], $app['events']);
+			$cart = new Cart($config['instance'], $app['cart.session'], $app['events']);
 
 			$cart->setRequiredIndexes($config['requiredIndexes']);
 

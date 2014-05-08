@@ -29,7 +29,7 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function setPrice($price)
 	{
-		$this->price = $price;
+		$this->price = (float) $price;
 	}
 
 	/**
@@ -75,9 +75,7 @@ class ItemCollection extends BaseCollection {
 
 		$attributesTotal = $this->attributes()->getTotal();
 
-		$total = $this->quantity() * ($price + $attributesTotal);
-
-		return $total;
+		return $this->quantity() * ($price + $attributesTotal);
 	}
 
 	/**
@@ -123,20 +121,13 @@ class ItemCollection extends BaseCollection {
 
 				return $valid;
 			}
-
-			if ($key === 'price')
+			elseif ($key === 'price' || $key == 'weight')
 			{
 				$value = (float) $value;
 			}
-
-			if ($key === 'quantity')
+			elseif ($key === 'quantity')
 			{
 				$value = (int) $value;
-			}
-
-			if ($key === 'weight')
-			{
-				$value = (float) $value;
 			}
 
 			$valid = $valid && $this->get($key) === $value;
