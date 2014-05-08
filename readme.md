@@ -17,13 +17,13 @@ History and future capabilities.
 - ```Cart::add($item)``` Adds a single item to the cart.
 - ```Cart::add($items)``` Adds multiple items to the cart.
 - ```Cart::remove($rowId)``` Removes an item from the cart.
-- ```Cart::remove([$rowId, $rowId])``` Removes multiple items from the cart by passing array.
+- ```Cart::remove([$rowId, $rowId])``` Removes multiple items from the cart by passing an array.
 - ```Cart::update($rowId, $data)``` Updates a single item.
 - ```Cart::update($items)``` Updates multiple items.
 - ```Cart::update($rowId, $quantity)``` Updates an item quantity.
 - ```Cart::exists($rowId)``` Check if the given item exists.
 - ```Cart::item($rowId)``` Returns information of the given item.
-- ```Cart::items()``` Returns information of all items.
+- ```Cart::items()``` Returns all items.
 - ```Cart::itemsSubtotal()``` Returns the subtotal of the items without conditions.
 - ```Cart::quantity()``` Returns the total # of items that are in the cart.
 - ```Cart::subtotal()``` Returns the subtotal of the cart.
@@ -41,8 +41,9 @@ History and future capabilities.
 - ```Cart::itemsConditions()``` Returns all conditions applied only to items.
 - ```Cart::itemsConditionsTotal($type|null)``` Returns all or a specific type of items conditions sum grouped by type.
 - ```Cart::itemsConditionsTotalSum($type|null)``` Returns the sum of all or a specific type of items conditions.
-- ```Cart::removeCondition($name, bool $includeItems)``` Removes an applied condition by name.
-- ```Cart::removeConditions($type|null, bool $includeItems)``` Removes all or a specific type of applied conditions.
+- ```Cart::removeConditionByName($name, bool $includeItems)``` Removes an applied condition by name.
+- ```Cart::removeConditionByType($name, bool $includeItems)``` Removes an applied condition by type.
+- ```Cart::removeConditions($id, bool $includeItems)``` Removes all or a specific type of applied conditions.
 - ```Cart::setMetaData($array)``` Set the meta data on the cart.
 - ```Cart::getMetaData($key|null)``` Returns all or a specific key of meta data.
 - ```Cart::removeMetaData($key|null)``` Removes all or a specific key of meta data.
