@@ -53,7 +53,11 @@ $session = new NativeSession($store, $config['session_key'], $config['instance']
 $cart = new Cart('cart', $session, new Dispatcher);
 
 $cart->setRequiredIndexes($config['requiredIndexes']);
+```
 
+The integration is done and you can now use all the available methods, here's an example:
+
+```php
 // Get all the items from the cart
 $items = $cart->items();
 ```

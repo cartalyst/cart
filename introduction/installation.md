@@ -17,8 +17,7 @@ Add the following lines after the `require` array on your `composer.json` file:
 		}
 	]
 
-> **Note:** Make sure your `composer.json` file is in a valid JSON format after applying the required changes.<br>
-*You can use the [JSONLint](http://jsonlint.com/) online tool to validate your `composer.json` file.*
+> **Note:** Make sure that after the required changes your `composer.json` file is valid by running `composer validate`.
 
 ## Install the dependencies
 
