@@ -302,6 +302,22 @@ Empty the Cart
 Cart::clear();
 ```
 
+### Cart::getIdentity()
+
+Returns the cart identifier.
+
+```php
+Cart::getIdentity();
+```
+
+### Cart::setIdentity()
+
+Sets the cart identifier.
+
+```php
+Cart::setIdentity('my-new-cart-name');
+```
+
 ### Cart::sync()
 
 This method is very useful when you want to synchronize a shopping cart that is stored on the database for example.
@@ -330,4 +346,73 @@ $items = [
 $collection = new Collection($items);
 
 Cart::sync($collection);
+```
+
+## Metadata
+
+Managing metadata inside the cart like shipping or billing information is very easy.
+
+### Cart::setMetadata()
+
+Setting metadata is very easy, just provide an array with a `key`/`value` pair and you're done.
+
+Param | Required | Type  | Description
+----- | -------- | ----- | ----------------------------------------------------
+$data | true     | array | Array containing the data you want to attach.
+
+```php
+$data = [
+	'shipping_information' => [
+		'full_name' => 'John Doe',
+		'address'   => 'Example Street',
+	],
+];
+
+Cart::setMetadata($data);
+```
+
+### Cart::getMetadata()
+
+Returning the metadata that you've set is simple.
+
+Param | Required | Type  | Description
+----- | -------- | ----- | ----------------------------------------------------
+$key  | false    | mixed | The metadata key to return.
+
+**To return all the available metadata**
+
+```php
+$metadata = Cart::getMetadata();
+```
+
+**To return metadata by keys**
+
+```php
+$metadata = Cart::getMetadata('shipping_information');
+```
+
+```php
+$metadata = Cart::getMetadata('shipping_information.full_name');
+```
+
+### Cart::removeMetadata()
+
+Param | Required | Type  | Description
+----- | -------- | ----- | ----------------------------------------------------
+$key  | false    | mixed | The metadata key to remove.
+
+**To remove all the metadata**
+
+```php
+Cart::removeMetadata();
+```
+
+**To remove metadata by keys**
+
+```php
+Cart::removeMetadata('shipping_information.full_name');
+```
+
+```php
+Cart::removeMetadata('shipping_information');
 ```
