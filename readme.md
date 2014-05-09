@@ -10,7 +10,7 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
-#### xx-Jan-14 - v1.0.0
+#### 09-May-14 - v1.0.0
 
 - ```Cart::getIdentity()``` Returns the cart identity.
 - ```Cart::setIdentity($name)``` Sets the cart identity.
