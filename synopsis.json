@@ -2,6 +2,6 @@
 	"github" : "cartalyst/cart",
 	"demo" : {
 		"source" : "https://github.com/cartalyst/demo-cart",
-		"online" : false
+		"online" : "http://demo.cartalyst.com/cart"
 	}
 }
