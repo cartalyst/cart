@@ -49,7 +49,7 @@ class CartCollection extends BaseCollection {
 	protected $metaData = [];
 
 	/**
-	 * Returns meta data.
+	 * Returns the meta data.
 	 *
 	 * @param  string  $key
 	 * @return mixed
@@ -71,7 +71,9 @@ class CartCollection extends BaseCollection {
 
 		foreach ($data as $key => $value)
 		{
-			$cart->metaData[$key] = $value;
+			$value = array_merge(array_get($cart->metaData, $key, []), (array) $value);
+
+			array_set($cart->metaData, $key, $value);
 		}
 
 		$this->updateCart($cart);
