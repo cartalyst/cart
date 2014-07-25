@@ -1,6 +1,6 @@
-# Integration
+## Integration
 
-## Laravel 4
+### Laravel 4
 
 The Cart package has optional support for Laravel 4 and it comes bundled with a Service Provider and a Facade for easy integration.
 
@@ -14,7 +14,7 @@ In the `$aliases` array add the following facade for this package.
 
 	'Cart' => 'Cartalyst\Cart\Laravel\Facades\Cart',
 
-### Configuration
+#### Configuration
 
 After installing, you can publish the package configuration file into your application by running the following command on your terminal:
 
@@ -23,7 +23,7 @@ After installing, you can publish the package configuration file into your appli
 This will publish the config file to `app/config/packages/cartalyst/cart/config.php` where you can modify the package configuration.
 
 
-## Native
+### Native
 
 Integrating the package outside of a framework is incredible easy, just follow the example below.
 

@@ -1,4 +1,4 @@
-## Events
+### Events
 
 On this section we have a list of all the events fired by the cart that you can listen for.
 
@@ -9,7 +9,7 @@ cartalyst.cart.removed  | $item, $cart      | Event fired when an item is remove
 cartalyst.cart.update   | $item, $cart      | Event fired when an item is updated.
 cartalyst.cart.cleared  | $cart             | Event fired when the cart is cleared.
 
-### Examples
+#### Examples
 
 Whenever an item is added to the shopping cart.
 

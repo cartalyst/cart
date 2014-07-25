@@ -1,8 +1,8 @@
-# Usage
+## Usage
 
 In this section we'll show how you can manage your shopping cart.
 
-## Add Item
+#### Add Item
 
 Having the ability to add items to the shopping cart is crucial and we've made it incredible simple to do it.
 
@@ -21,7 +21,7 @@ weight     | false    | float  | The item weight.
 
 > **Note:** You can pass custom `key`/`value` pairs into the array when adding or updating an item, please check the examples below.
 
-### Cart::add()
+#### Cart::add()
 
 Param   | Required | Type   | Description
 ------- | -------- | ------ | -------------------------------------------------
@@ -111,11 +111,11 @@ Cart::add([
 ]);
 ```
 
-## Update Item
+### Update Item
 
 Updating items is as simple as adding them.
 
-### Cart::update()
+#### Cart::update()
 
 Param   | Required | Type   | Description
 ------- | -------- | ------ | -------------------------------------------------
@@ -161,11 +161,11 @@ Cart::update([
 ]);
 ```
 
-## Remove Item
+### Remove Item
 
 Removing items from the cart is easy, you can remove one item at a time or multiple by providing an array containing the row ids that you wish to remove.
 
-### Cart::remove()
+#### Cart::remove()
 
 Param  | Required  | Type  | Description
 ------ | --------- | ----- | --------------------------------------------------
@@ -186,7 +186,7 @@ Cart::remove([
 ]);
 ```
 
-## Items
+### Items
 
 Need to show the items that are inside your shopping cart? We've you covered!
 
@@ -250,11 +250,11 @@ $item->weight();
 $item->attributes();
 ```
 
-## Other Methods
+### Other Methods
 
 In this section we're covering all the other methods that didn't fit in on the previous sections.
 
-### Cart::total()
+#### Cart::total()
 
 Returns the cart total.
 
@@ -262,7 +262,7 @@ Returns the cart total.
 echo Cart::total();
 ```
 
-### Cart::subtotal()
+#### Cart::subtotal()
 
 Returns the cart subtotal.
 
@@ -270,7 +270,7 @@ Returns the cart subtotal.
 echo Cart::subtotal();
 ```
 
-### Cart::quantity()
+#### Cart::quantity()
 
 Returns the total number of items that are in the cart.
 
@@ -278,7 +278,7 @@ Returns the total number of items that are in the cart.
 echo Cart::quantity();
 ```
 
-### Cart::weight()
+#### Cart::weight()
 
 Returns the total cart weight.
 
@@ -286,7 +286,7 @@ Returns the total cart weight.
 echo Cart::weight();
 ```
 
-### Cart::itemsSubtotal()
+#### Cart::itemsSubtotal()
 
 Get the subtotal of the items in the Cart
 
@@ -294,7 +294,7 @@ Get the subtotal of the items in the Cart
 echo Cart::itemsSubtotal();
 ```
 
-### Cart::clear()
+#### Cart::clear()
 
 Empty the Cart
 
@@ -302,7 +302,7 @@ Empty the Cart
 Cart::clear();
 ```
 
-### Cart::getIdentity()
+#### Cart::getIdentity()
 
 Returns the cart identifier.
 
@@ -310,7 +310,7 @@ Returns the cart identifier.
 Cart::getIdentity();
 ```
 
-### Cart::setIdentity()
+#### Cart::setIdentity()
 
 Sets the cart identifier.
 
@@ -318,7 +318,7 @@ Sets the cart identifier.
 Cart::setIdentity('my-new-cart-name');
 ```
 
-### Cart::sync()
+#### Cart::sync()
 
 This method is very useful when you want to synchronize a shopping cart that is stored on the database for example.
 
@@ -348,11 +348,11 @@ $collection = new Collection($items);
 Cart::sync($collection);
 ```
 
-## Metadata
+### Metadata
 
 Managing metadata inside the cart like shipping or billing information is very easy.
 
-### Cart::setMetadata()
+#### Cart::setMetadata()
 
 Setting metadata is very easy, just provide an array with a `key`/`value` pair and you're done.
 
@@ -371,7 +371,7 @@ $data = [
 Cart::setMetadata($data);
 ```
 
-### Cart::getMetadata()
+#### Cart::getMetadata()
 
 Returning the metadata that you've set is simple.
 
@@ -395,7 +395,7 @@ $metadata = Cart::getMetadata('shipping_information');
 $metadata = Cart::getMetadata('shipping_information.full_name');
 ```
 
-### Cart::removeMetadata()
+#### Cart::removeMetadata()
 
 Param | Required | Type  | Description
 ----- | -------- | ----- | ----------------------------------------------------

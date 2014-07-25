@@ -1,12 +1,10 @@
-## Instances
+### Instances
 
 Cart supports multiple cart instances, so that you can have as many shopping cart instances on the same page as you want without any conflicts.
 
 You have two ways of accomplishing this, one is by creating a service provider dedicated to your wishlist to register all your other cart instances, the second method, which is easier, is to bind the new cart instances directly into the IoC.
 
-### Example
-
-#### IoC Binding
+###### IoC Binding
 
 ```php
 use Cartalyst\Cart\Cart;
@@ -24,7 +22,7 @@ $app['wishlist'] = $app->share(function($app)
 });
 ```
 
-#### Create your Service Provider
+###### Create your Service Provider
 
 `app/services/WishlistServiceProvider.php`
 
@@ -78,7 +76,7 @@ class WishlistServiceProvider extends ServiceProvider {
 }
 ```
 
-#### Create your Facade
+###### Create your Facade
 
 `app/facades/Wishlist.php`
 
@@ -95,7 +93,7 @@ class Wishlist extends Facade {
 }
 ```
 
-#### Register your Service Provider and Facade
+###### Register your Service Provider and Facade
 
 Open your Laravel config file `app/config/app.php` and add the following lines.
 
@@ -107,7 +105,7 @@ In the `$aliases` array add the following facade for this package.
 
 	'Wishlist' => 'Path\To\Your\Wishlist',
 
-#### Usage
+###### Usage
 
 Usage is identical to the cart.
 

@@ -1,4 +1,4 @@
-## Attributes
+### Attributes
 
 Each item can have different attributes like size, color and you can even add a price to each attribute that will reflect on the final item price.
 

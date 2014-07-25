@@ -1,12 +1,12 @@
-## Conditions
+### Conditions
 
 The Cart package utilizes the Cartalyst Conditions package to manage item and cart based conditions.
 
 The Cart has a default set of three condition types: `discount`, `tax` and `other` conditions.
 
-### Applying Conditions
+#### Applying Conditions
 
-#### Cart Conditions
+##### Cart Conditions
 
 You can pass an array containing one or multiple conditions to the cart.
 
@@ -64,7 +64,7 @@ $conditionDiscount->setActions([
 Cart::condition([$conditionTax, $conditionDiscount]);
 ```
 
-#### Item Conditions
+##### Item Conditions
 
 You can add one or more (array) conditions to an item that will be assigned automatically when adding or updating items on the cart.
 
@@ -84,11 +84,11 @@ Cart::add([
 ]);
 ```
 
-### Removing Conditions
+#### Removing Conditions
 
 There will be times you'll need to remove conditions, in this section we'll cover how to remove specific conditions or all the conditions at once.
 
-### Cart::removeConditionByName()
+#### Cart::removeConditionByName()
 
 Removes a condition by its name.
 
@@ -101,7 +101,7 @@ $includeItems | false    | boolean | true    | Flag to either remove the conditi
 Cart::removeConditionByName('Tax 10%');
 ```
 
-### Cart::removeConditionByType()
+#### Cart::removeConditionByType()
 
 Removes a condition by its type.
 
@@ -114,7 +114,7 @@ $includeItems | false    | boolean | true    | Flag to either remove the conditi
 Cart::removeConditionByType('tax');
 ```
 
-### Cart::removeConditions()
+#### Cart::removeConditions()
 
 Removes all conditions with the given identifier.
 
@@ -136,7 +136,7 @@ Cart::removeConditions('tax');
 Cart::removeConditions();
 ```
 
-### Conditions Types
+#### Conditions Types
 
 Conditions types are defined by the type property on conditions.
 
@@ -144,7 +144,7 @@ Cart handles discount, other and tax types by default.
 
 > **Note:** If you need to define custom condition types, make sure you set the conditions order using ```Cart::setConditionsOrder($types)``` by passing it an array of types that should be handled by the cart, otherwise only default condition types will be applied.
 
-#### Tax
+##### Tax
 
 Tax conditions must have the type set to tax
 
@@ -164,7 +164,7 @@ $condition->setActions([
 ]);
 ```
 
-#### Discount
+##### Discount
 
 Discount conditions must have the type set to discount
 
@@ -186,7 +186,7 @@ $condition->setActions([
 
 The condition above will apply a 5% discount.
 
-#### Other
+##### Other
 
 Other conditions must have the type set to other
 
@@ -209,7 +209,7 @@ $condition->setActions([
 ]);
 ```
 
-### Inclusive Conditions
+#### Inclusive Conditions
 
 Inclusive conditions are not added to the total but allow you to reverse
 calculate taxes that are already included in your price.
@@ -234,21 +234,21 @@ $condition->setActions([
 ]);
 ```
 
-### Conditions Order
+#### Conditions Order
 
-#### Default Order
+##### Default Order
 
 - discount
 - other
 - tax
 
-#### Get Cart Conditions Order
+##### Get Cart Conditions Order
 
 ```php
 $order = Cart::getConditionsOrder();
 ```
 
-#### Set Cart Conditions Order
+##### Set Cart Conditions Order
 
 ```php
 Cart::setConditionsOrder([
@@ -259,7 +259,7 @@ Cart::setConditionsOrder([
 ]);
 ```
 
-#### Set Items Conditions Order
+##### Set Items Conditions Order
 
 ```php
 Cart::setItemsConditionsOrder([
@@ -272,7 +272,7 @@ Cart::setItemsConditionsOrder([
 
 > **Note:** Make sure you set Item conditions before adding or updating.
 
-###### Condition targets
+####### Condition targets
 
 You can apply item conditions either on the item price or subtotal.
 
@@ -283,7 +283,7 @@ You can apply item conditions either on the item price or subtotal.
 
 > **Note 2:** Price-based item conditions are always applied prior to subtotal-based conditions.
 
-### Conditions Methods
+#### Conditions Methods
 
 Apply a condition.
 

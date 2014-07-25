@@ -1,4 +1,4 @@
-## Exceptions
+### Exceptions
 
 On this section we provide a list of all the exceptions that are thrown by the cart.
 
@@ -12,7 +12,7 @@ CartInvalidPriceException         | This exception will be thrown when the provi
 CartInvalidAttributesException    | This exception will be thrown whenever the provided attributes are invalid or malformed.
 CartItemNotFoundException         | This exception will be thrown whenever you request an item that does not exist.
 
-### Examples
+#### Examples
 
 Catch the exception when adding an item into the cart with a missing required index.
 

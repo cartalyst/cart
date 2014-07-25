@@ -1,23 +1,23 @@
-## Collections
+### Collections
 
 Collections are merely a wrapper for an array of objects, but offers a bunch of other useful methods to help you pluck items out of the array.
 
 Below we'll reference a few of the many useful methods available within the Laravel [`Collection`](https://github.com/laravel/framework/blob/master/src/Illuminate/Support/Collection.php) class.
 
-#### first()
+##### first()
 
 The `first()` method can be used to retrieve the first element in the collection.
 This will be the first element contained within the collection internal array.
 
 	$item = Cart::items()->first();
 
-#### last()
+##### last()
 
 The `last()` method does the opposite of the `first()` method and returns the last element contained within the collection internal array.
 
 	$item = Cart::items()->last();
 
-#### isEmpty()
+##### isEmpty()
 
 The `isEmpty()` method can be used to check whether or not the collection has elements within it. It accepts no value and returns a boolean.
 
@@ -30,7 +30,7 @@ The `isEmpty()` method can be used to check whether or not the collection has el
 		echo 'Cart is empty :(';
 	}
 
-#### count()
+##### count()
 
 The `count()` method counts the number of items in the collection.
 
