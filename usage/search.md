@@ -1,8 +1,6 @@
 ### Search
 
-If you ever need to search the shopping cart, we've, once again, you covered!
-
-You can use one or multiple properties to search for items in the cart
+You can use one or multiple properties to search for items in the cart.
 
 #### Cart::find()
 
