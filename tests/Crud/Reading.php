@@ -32,6 +32,15 @@ class Reading extends CartTestCase {
 		$this->assertEquals($this->cart->item('b37f673e46a33038305c1dc411215c07')->get('price'), 97);
 	}
 
+    /** @test */
+    public function it_can_get_an_item_subprice()
+    {
+        $item = $this->createItem('Foobar 1', 100, 1,[],[10,20]);
+        $item = $this->cart->add($item);
+
+        $this->assertEquals($item->subprice(), 130);
+    }
+
 	/** @test */
 	public function it_can_get_an_item_subtotal()
 	{
