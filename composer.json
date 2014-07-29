@@ -1,5 +1,5 @@
 {
-	"name": "cartalyst/cart",
+	"name": "cjonstrup/cart",
 	"description": "Shopping cart package featuring multiple cart instances, item attributes and Conditions.",
 	"keywords": [
 		"php",
