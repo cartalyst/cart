@@ -38,7 +38,7 @@ class Reading extends CartTestCase {
         $item = $this->createItem('Foobar 1', 100, 1,[],[10,20]);
         $item = $this->cart->add($item);
 
-        $this->assertEquals($item->subtotal(), 130);
+        $this->assertEquals($item->subprice(), 130);
     }
 
 	/** @test */
