@@ -12,6 +12,10 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
+#### 24-Jul-14 - v1.0.1
+
+- Improved the setMetadata() method to allow old values to be merged when setting new values on an existing key.
+
 #### 09-May-14 - v1.0.0
 
 - ```Cart::getIdentity()``` Returns the cart identity.
