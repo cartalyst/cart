@@ -53,6 +53,8 @@ class CartTestEvents extends CartTestCase {
 	/** @test */
 	public function can_listen_to_the_added_event()
 	{
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
 		$item = $this->createItem('Foobar 1', 125, 2);
@@ -63,6 +65,8 @@ class CartTestEvents extends CartTestCase {
 	/** @test */
 	public function can_listen_to_the_updated_event()
 	{
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.updated', m::any());
@@ -79,6 +83,8 @@ class CartTestEvents extends CartTestCase {
 	/** @test */
 	public function can_listen_to_the_removed_event()
 	{
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.removed', m::any());
