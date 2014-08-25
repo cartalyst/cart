@@ -382,7 +382,17 @@ class Cart extends CartCollection {
 	 */
 	public function items()
 	{
-		return $this->storage->has() ? $this->storage->get() : new CartCollection;
+		if ($this->storage->has())
+		{
+			return $this->storage->get();
+		}
+
+		$this->updateCart($cart = new CartCollection);
+
+		// Fire the 'cartalyst.cart.created' event
+		$this->fire('created', $cart);
+
+		return $cart;
 	}
 
 	/**
