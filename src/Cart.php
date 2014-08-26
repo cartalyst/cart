@@ -429,6 +429,18 @@ class Cart extends CartCollection {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function condition($conditions)
+	{
+		$cart = $this->items();
+
+		$cart->condition($conditions);
+
+		$this->updateCart($cart);
+	}
+
+	/**
 	 * Returns the conditions order.
 	 *
 	 * @return array

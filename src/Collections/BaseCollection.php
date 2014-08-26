@@ -74,33 +74,21 @@ abstract class BaseCollection extends Collection {
 	/**
 	 * Sets a new condition.
 	 *
-	 * @param  mixed  $condition
+	 * @param  mixed  $conditions
 	 * @return void
 	 */
-	public function condition($condition)
+	public function condition($conditions)
 	{
-		if (empty($condition)) return;
+		if (empty($conditions)) return;
 
-		$base = $this instanceof Cart ? $this->items() : $this;
-
-		if (is_array($condition))
+		if ( ! is_array($conditions))
 		{
-			foreach ($condition as $_condition)
-			{
-				$base->condition($_condition);
-			}
-
-			return;
+			$conditions = [$conditions];
 		}
 
-		if ($condition->validate($base))
+		foreach ($conditions as $condition)
 		{
-			$base->conditions[$condition->get('name')] = $condition;
-		}
-
-		if ($this instanceof Cart)
-		{
-			$this->updateCart($base);
+			$this->conditions[$condition->get('name')] = $condition;
 		}
 	}
 
