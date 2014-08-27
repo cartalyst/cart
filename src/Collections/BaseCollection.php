@@ -51,6 +51,19 @@ abstract class BaseCollection extends Collection {
 	protected $subtotal;
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function get($key, $default = null)
+	{
+		if ($key === 'subtotal')
+		{
+			return $this->subtotal();
+		}
+
+		return parent::get($key, $default);
+	}
+
+	/**
 	 * Returns the conditions order.
 	 *
 	 * @return array

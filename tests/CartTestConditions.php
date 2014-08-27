@@ -324,6 +324,22 @@ class CartTestConditions extends CartTestCase {
 	}
 
 	/** @test */
+	public function cart_handles_condition_rules_on_subtotal()
+	{
+		$condition = $this->createCondition('Subtotal', 'other', '-5', 'subtotal', 'subtotal > 50');
+
+		$item = $this->createItem('Foobar 1', 20, 3, [$condition]);
+
+		$item = $this->cart->add($item);
+
+		$this->assertEquals($item->subtotal(), 60);
+		$this->assertEquals($item->total(), 55);
+
+		$this->assertEquals($this->cart->subtotal(), 55);
+		$this->assertEquals($this->cart->total(), 55);
+	}
+
+	/** @test */
 	public function cart_applies_multiple_conditions_on_items_and_cart()
 	{
 		$discount1 = $this->createCondition('Discount 5%', 'discount', '-5%');
