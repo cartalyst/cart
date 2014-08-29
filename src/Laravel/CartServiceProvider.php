@@ -73,6 +73,8 @@ class CartServiceProvider extends ServiceProvider {
 
 			return $cart;
 		});
+
+		$this->app->alias('cart', 'Cartalyst\Cart\Cart');
 	}
 
 }
