@@ -214,9 +214,6 @@ class Cart extends CartCollection {
 		// Add the item to the cart
 		$cart->put($rowId, $row);
 
-		// Update the cart contents
-		$this->updateCart($cart);
-
 		// Fire the 'cartalyst.cart.added' event
 		$this->fire('added', [$this->item($rowId), $this]);
 
@@ -252,8 +249,6 @@ class Cart extends CartCollection {
 			// Fire the 'cartalyst.cart.removed' event
 			$this->fire('removed', [$item, $this]);
 		}
-
-		$this->updateCart($cart);
 
 		return true;
 	}
@@ -387,7 +382,7 @@ class Cart extends CartCollection {
 			return $this->storage->get();
 		}
 
-		$this->updateCart($cart = new CartCollection);
+		$this->storage->put($cart = new CartCollection);
 
 		// Fire the 'cartalyst.cart.created' event
 		$this->fire('created', $cart);
@@ -402,7 +397,7 @@ class Cart extends CartCollection {
 	 */
 	public function clear()
 	{
-		$this->updateCart();
+		$this->storage->put(null);
 
 		// Fire the 'cartalyst.cart.cleared' event
 		$this->fire('cleared', $this);
@@ -433,11 +428,7 @@ class Cart extends CartCollection {
 	 */
 	public function condition($conditions)
 	{
-		$cart = $this->items();
-
-		$cart->condition($conditions);
-
-		$this->updateCart($cart);
+		$this->items()->condition($conditions);
 	}
 
 	/**
@@ -458,11 +449,7 @@ class Cart extends CartCollection {
 	 */
 	public function setConditionsOrder(array $order)
 	{
-		$cart = $this->items();
-
-		$cart->conditionsOrder = $order;
-
-		$this->updateCart($cart);
+		$this->items()->conditionsOrder = $order;
 	}
 
 	/**
@@ -483,11 +470,7 @@ class Cart extends CartCollection {
 	 */
 	public function setItemsConditionsOrder(array $order)
 	{
-		$cart = $this->items();
-
-		$cart->setItemsConditionsOrder($order);
-
-		$this->updateCart($cart);
+		$this->items()->setItemsConditionsOrder($order);
 	}
 
 	/**
@@ -548,8 +531,6 @@ class Cart extends CartCollection {
 				$items[$key]->removeConditions($id, false, $target);
 			}
 		}
-
-		$this->updateCart($items);
 	}
 
 	/**
@@ -637,17 +618,6 @@ class Cart extends CartCollection {
 	public function setDispatcher(Dispatcher $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
-	}
-
-	/**
-	 * Updates the cart.
-	 *
-	 * @param  \Cartalyst\Cart\Collections\CartCollection  $cart
-	 * @return void
-	 */
-	protected function updateCart($cart = null)
-	{
-		$this->storage->put($cart);
 	}
 
 	/**
