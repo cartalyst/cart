@@ -216,7 +216,7 @@ abstract class BaseCollection extends Collection {
 
 		if ($includeItems)
 		{
-			foreach ($this->items() as $item)
+			foreach ($this->items as $item)
 			{
 				$this->conditionResults = array_merge_recursive(
 					$item->conditionResults(),

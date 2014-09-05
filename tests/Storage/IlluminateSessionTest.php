@@ -46,7 +46,7 @@ class IlluminateSessionTest extends CartTestCase {
 
 		$this->cart->getStorage()->forget();
 
-		$this->assertEmpty($this->cart->items());
+		$this->assertNull($this->cart->getStorage()->get());
 	}
 
 	/** @test */
