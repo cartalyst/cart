@@ -75,8 +75,6 @@ class CartCollection extends BaseCollection {
 
 			array_set($cart->metaData, $key, $value);
 		}
-
-		$this->updateCart($cart);
 	}
 
 	/**
@@ -97,8 +95,6 @@ class CartCollection extends BaseCollection {
 		{
 			array_forget($cart->metaData, $key);
 		}
-
-		$this->updateCart($cart);
 	}
 
 	/**
