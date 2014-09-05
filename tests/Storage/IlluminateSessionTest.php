@@ -1,4 +1,4 @@
-<?php namespace Cartalyst\Cart\Tests;
+<?php namespace Cartalyst\Cart\Tests\Storage;
 /**
  * Part of the Cart package.
  *
@@ -17,10 +17,11 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Cart\Tests\CartTestCase;
 use Cartalyst\Cart\Storage\IlluminateSession;
 use Mockery as m;
 
-class CartTestIlluminateSession extends CartTestCase {
+class IlluminateSessionTest extends CartTestCase {
 
 	/**
 	 * Close mockery.
@@ -35,13 +36,11 @@ class CartTestIlluminateSession extends CartTestCase {
 	/** @test */
 	public function it_can_get_cart_session_key_and_cart_identity()
 	{
-		$this->assertTrue($this->cart->getStorage() instanceof IlluminateSession);
-		$this->assertEquals($this->cart->getStorage()->getKey(), 'cartalyst_cart');
 		$this->assertEquals($this->cart->getStorage()->identify(), 'main');
+		$this->assertEquals($this->cart->getStorage()->getKey(), 'cartalyst_cart');
+		$this->assertInstanceOf('Cartalyst\Cart\Storage\IlluminateSession', $this->cart->getStorage());
 
-		$item = $this->createItem('Foobar 1', 125, 2);
-
-		$this->cart->add($item);
+		$this->cart->add($this->createItem('Foobar 1', 125, 2));
 
 		$this->assertCount(1, $this->cart->items());
 

@@ -42,6 +42,17 @@ class CartServiceProvider extends ServiceProvider {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function provides()
+	{
+		return [
+			'cart',
+			'cart.session',
+		];
+	}
+
+	/**
 	 * Register the session driver used by the Cart.
 	 *
 	 * @return void

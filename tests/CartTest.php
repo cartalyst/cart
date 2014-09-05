@@ -48,11 +48,9 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function it_can_set_the_required_indexes()
 	{
-		$indexes = [
+		$this->cart->setRequiredIndexes([
 			'price',
-		];
-
-		$this->cart->setRequiredIndexes($indexes);
+		]);
 
 		$this->assertTrue(in_array('price', $this->cart->getRequiredIndexes()));
 	}
@@ -74,42 +72,40 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function it_can_get_the_cart_storage()
 	{
-		$this->assertTrue($this->cart->getStorage() instanceof \Cartalyst\Cart\Storage\StorageInterface);
+		$this->assertInstanceOf('Cartalyst\Cart\Storage\StorageInterface', $this->cart->getStorage());
 	}
 
 	/** @test */
 	public function it_can_set_the_cart_storage()
 	{
-		$storage = m::mock('\Cartalyst\Cart\Storage\StorageInterface');
+		$this->cart->setStorage(
+			m::mock('Cartalyst\Cart\Storage\StorageInterface')
+		);
 
-		$this->cart->setStorage($storage);
-
-		$this->assertTrue($this->cart->getStorage() instanceof \Cartalyst\Cart\Storage\StorageInterface);
+		$this->assertInstanceOf('Cartalyst\Cart\Storage\StorageInterface', $this->cart->getStorage());
 	}
 
 	/** @test */
 	public function it_can_get_the_cart_dispatcher()
 	{
-		$this->assertTrue($this->cart->getDispatcher() instanceof \Illuminate\Events\Dispatcher);
+		$this->assertInstanceOf('Illuminate\Events\Dispatcher', $this->cart->getDispatcher());
 	}
 
 	/** @test */
 	public function it_can_set_the_cart_dispatcher()
 	{
-		$dispatcher = m::mock('\Illuminate\Events\Dispatcher');
+		$this->cart->setDispatcher(m::mock('Illuminate\Events\Dispatcher'));
 
-		$this->cart->setDispatcher($dispatcher);
-
-		$this->assertTrue($this->cart->getDispatcher() instanceof \Illuminate\Events\Dispatcher);
+		$this->assertInstanceOf('Illuminate\Events\Dispatcher', $this->cart->getDispatcher());
 	}
 
 	/** @test */
 	public function it_can_get_the_total_number_of_items_inside_the_cart()
 	{
-		$item1 = $this->createItem('Foobar 1', 97, 4);
-		$item2 = $this->createItem('Foobar 2', 85, 2);
-
-		$this->cart->add([$item1, $item2]);
+		$this->cart->add([
+			$this->createItem('Foobar 1', 97, 4),
+			$this->createItem('Foobar 2', 85, 2),
+		]);
 
 		$this->assertEquals($this->cart->quantity(), 6);
 	}
@@ -147,25 +143,26 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function cart_can_be_cleared()
 	{
-		$item = $this->createItem('Foobar 1', 97, 4, null, null, 21.49);
-
-		$this->cart->add($item);
+		$this->cart->add(
+			$this->createItem('Foobar 1', 97, 4, null, null, 21.49)
+		);
 
 		$this->assertEquals($this->cart->quantity(), 4);
 
 		$this->cart->clear();
 
-		$this->assertEmpty($this->cart->items()->toArray());
+		$this->assertEquals($this->cart->quantity(), 0);
+		$this->assertTrue($this->cart->items()->isEmpty());
 	}
 
 	/** @test */
 	public function cart_can_be_searched()
 	{
-		$item1 = $this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00);
-		$item2 = $this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00);
-		$item3 = $this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00);
-
-		$this->cart->add([$item1, $item2, $item3]);
+		$this->cart->add([
+			$this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00),
+			$this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00),
+			$this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00),
+		]);
 
 		$items = $this->cart->find([
 			'price'    => 85,
@@ -180,11 +177,11 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function cart_can_be_searched_by_items_attributes()
 	{
-		$item1 = $this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00);
-		$item2 = $this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00);
-		$item3 = $this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00);
-
-		$this->cart->add([$item1, $item2, $item3]);
+		$this->cart->add([
+			$this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00),
+			$this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00),
+			$this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00),
+		]);
 
 		$item = $this->cart->find([
 			'price'    => 85,
@@ -211,14 +208,12 @@ class CartTest extends CartTestCase {
 	/** @test */
  	public function cart_can_be_searched_and_returning_empty_results()
 	{
-		$item = [
+		$this->cart->add([
 			'id'       => 'foobar2',
 			'name'     => 'Foobar 2',
 			'quantity' => 2,
 			'price'    => 200.00,
-		];
-
-		$this->cart->add($item);
+		]);
 
 		$item = $this->cart->find([
 			'price' => 85,
@@ -235,17 +230,17 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function see_if_item_exists()
 	{
-		$item = $this->createItem('Foobar 1', 200, 2);
+		$item = $this->cart->add(
+			$this->createItem('Foobar 1', 200, 2)
+		);
 
-		$this->cart->add($item);
-
-		$this->assertEquals(true, $this->cart->exists('b37f673e46a33038305c1dc411215c07'));
+		$this->assertTrue($this->cart->exists($item['rowId']));
 	}
 
 	/** @test */
 	public function see_if_item_does_not_exist()
 	{
-		$this->assertEquals(false, $this->cart->exists('foobar'));
+		$this->assertFalse($this->cart->exists('foobar'));
 	}
 
 	/** @test */
@@ -303,7 +298,6 @@ class CartTest extends CartTestCase {
 		$this->assertEquals($this->cart->getMetaData('foo.bat'), 'baz');
 	}
 
-
 	/** @test */
 	public function it_can_retrieve_meta_data()
 	{
@@ -316,10 +310,11 @@ class CartTest extends CartTestCase {
 					'house'  => 123,
 					'street' => '123 Street.',
 				],
-			]
+			],
 		]);
 
 		$this->assertEquals($this->cart->getMetaData('shipping_info.personal_details.name'), 'John Doe');
+		$this->assertEquals($this->cart->getMetaData('shipping_info.billing_address.street'), '123 Street.');
 	}
 
 	/** @test */
@@ -334,7 +329,7 @@ class CartTest extends CartTestCase {
 					'house'  => 123,
 					'street' => '123 Street.',
 				],
-			]
+			],
 		]);
 
 		$this->assertEquals($this->cart->getMetaData('shipping_info.personal_details.name'), 'John Doe');
