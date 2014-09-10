@@ -10,6 +10,12 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
+#### 05-Sep-14 - v1.0.2
+
+- Added an IoC Container alias for the Cart class.
+- Added the provides() method to the Service Provider.
+- Unit tests improvements.
+
 #### 24-Jul-14 - v1.0.1
 
 - Improved the setMetadata() method to allow old values to be merged when setting new values on an existing key.
