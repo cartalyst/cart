@@ -160,6 +160,23 @@ class CartTestConditions extends CartTestCase {
 	}
 
 	/** @test */
+	public function cart_handles_conditions_with_no_action()
+	{
+		$condition = $this->createCondition('Free product', 'other', null);
+
+		$condition->forget('actions');
+
+		$this->cart->add(
+			$this->createItem('Foobar', 125, 2)
+		);
+
+		$this->cart->condition($condition);
+
+		$this->assertEquals($this->cart->total(), 250);
+		$this->assertEquals($this->cart->subtotal(), 250);
+	}
+
+	/** @test */
 	public function cart_calculates_item_total()
 	{
 		$tax = $this->createCondition('Tax 10%', 'tax', '10%');
