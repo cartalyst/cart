@@ -202,7 +202,7 @@ abstract class BaseCollection extends Collection {
 					$this->conditionResults[$type][$name] = $result;
 				}
 
-				if ( ! head($condition->get('actions'))->get('inclusive'))
+				if ($result && ! head($condition->get('actions'))->get('inclusive'))
 				{
 					$subtotal += $result;
 				}
