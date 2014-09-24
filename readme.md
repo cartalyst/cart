@@ -1,14 +1,24 @@
 # Cart
 
+[![Build Status](http://ci.cartalyst.com/build-status/svg/1)](http://ci.cartalyst.com/build-status/view/1)
+
 A framework agnostic shopping cart package featuring multiple cart instances, item attributes and [Conditions](https://cartalyst.com/manual/conditions).
 
-The package requires PHP 5.4+ and comes bundled with a Laravel 4 Facade and a Service Provider to simplify the optional framework integration and follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
+The package requires PHP 5.4+ and comes bundled with a Laravel 4 and Laravel 5 Facade and a Service Provider to simplify the optional framework integration and follows the FIG standard PSR-4 to ensure a high level of interoperability between shared PHP code and is fully unit-tested.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
 
 ## Package Story
 
 Package history and capabilities.
+
+#### 23-Sep-14 - v1.0.4
+
+- Loosen requirements to allow the usage on Laravel 5.0.
+
+#### 15-Sep-14 - v1.0.3
+
+- Minor tweak to check the condition result before applying the actions.
 
 #### 05-Sep-14 - v1.0.2
 
@@ -62,21 +72,17 @@ Package history and capabilities.
 - ```Cart::getRequiredIndexes()``` Returns the required indexes.
 - ```Cart::setRequiredIndexes(array $indexes, bool $merge)``` Sets the required indexes.
 
-## Requirements
-
-- PHP >=5.4
-
 ## Installation
 
 Cart is installable with Composer. Read further information on how to install.
 
-[Installation Guide](https://cartalyst.com/manual/cart#installation)
+[Installation Guide](https://cartalyst.com/manual/cart/1.0#installation)
 
 ## Documentation
 
 Refer to the following guide on how to use the Cart package.
 
-[Documentation](https://cartalyst.com/manual/cart)
+[Documentation](https://cartalyst.com/manual/cart/1.0)
 
 ## Versioning
 
