@@ -1,5 +1,7 @@
 ## Integration
 
+Cartalyst packages are framework agnostic and as such can be integrated easily natively or with your favorite framework.
+
 ### Laravel 4
 
 The Cart package has optional support for Laravel 4 and it comes bundled with a Service Provider and a Facade for easy integration.
