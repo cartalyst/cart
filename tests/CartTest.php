@@ -246,70 +246,41 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function it_can_set_meta_data()
 	{
-		$this->cart->setMetaData(['abc' => 'aaa']);
+		$this->cart->setMetaData('abc', 'aaa');
 	}
 
 	/** @test */
-	public function it_can_set_meta_data_and_merge_the_old_values()
+	public function it_can_set_meta_data_with_dot_notation()
 	{
-		$this->cart->setMetaData(['foo' => 'bar']);
+		$this->cart->setMetaData('foo', 'bar');
+
+		$this->assertEquals($this->cart->getMetaData('foo'), 'bar');
+
+
+		$this->cart->setMetaData('foo', ['bar' => 'baz']);
 
 		$this->assertEquals(count($this->cart->getMetaData('foo')), 1);
-		$this->assertEquals($this->cart->getMetaData('foo.0'), 'bar');
+		$this->assertEquals($this->cart->getMetaData('foo.bar'), 'baz');
 
 
-		$this->cart->setMetaData(['foo' => ['bar' => 'baz']]);
+		$this->cart->setMetaData('foo.bat', 'qux');
 
 		$this->assertEquals(count($this->cart->getMetaData('foo')), 2);
 		$this->assertEquals($this->cart->getMetaData('foo.bar'), 'baz');
-
-
-		$this->cart->setMetaData(['foo' => ['bat' => 'baz']]);
-
-		$this->assertEquals(count($this->cart->getMetaData('foo')), 3);
-		$this->assertEquals($this->cart->getMetaData('foo.0'), 'bar');
-		$this->assertEquals($this->cart->getMetaData('foo.bar'), 'baz');
-		$this->assertEquals($this->cart->getMetaData('foo.bat'), 'baz');
+		$this->assertEquals($this->cart->getMetaData('foo.bat'), 'qux');
 	}
 
-	/** @test */
-	public function it_cat_set_meta_data_and_override_old_values()
-	{
-		$this->cart->setMetaData([
-			'foo' => [
-				'bar' => 'bat',
-				'bat' => 'baz',
-			],
-		]);
-
-		$this->assertEquals(count($this->cart->getMetaData('foo')), 2);
-		$this->assertEquals($this->cart->getMetaData('foo.bar'), 'bat');
-		$this->assertEquals($this->cart->getMetaData('foo.bat'), 'baz');
-
-
-		$this->cart->setMetaData([
-			'foo' => [
-				'bar' => 'baz',
-			],
-		]);
-
-		$this->assertEquals(count($this->cart->getMetaData('foo')), 2);
-		$this->assertEquals($this->cart->getMetaData('foo.bar'), 'baz');
-		$this->assertEquals($this->cart->getMetaData('foo.bat'), 'baz');
-	}
 
 	/** @test */
 	public function it_can_retrieve_meta_data()
 	{
-		$this->cart->setMetaData([
-			'shipping_info' => [
-				'personal_details' => [
-					'name' => 'John Doe',
-				],
-				'billing_address' => [
-					'house'  => 123,
-					'street' => '123 Street.',
-				],
+		$this->cart->setMetaData('shipping_info', [
+			'personal_details' => [
+				'name' => 'John Doe',
+			],
+			'billing_address' => [
+				'house'  => 123,
+				'street' => '123 Street.',
 			],
 		]);
 
@@ -320,15 +291,13 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function it_can_remove_meta_data()
 	{
-		$this->cart->setMetaData([
-			'shipping_info' => [
-				'personal_details' => [
-					'name' => 'John Doe',
-				],
-				'billing_address' => [
-					'house'  => 123,
-					'street' => '123 Street.',
-				],
+		$this->cart->setMetaData('shipping_info', [
+			'personal_details' => [
+				'name' => 'John Doe',
+			],
+			'billing_address' => [
+				'house'  => 123,
+				'street' => '123 Street.',
 			],
 		]);
 
