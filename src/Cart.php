@@ -17,10 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Collections\CartCollection;
-use Cartalyst\Cart\Storage\StorageInterface;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Collection;
+use Cartalyst\Cart\Storage\StorageInterface;
+use Cartalyst\Cart\Collections\CartCollection;
 
 class Cart {
 
@@ -212,7 +212,7 @@ class Cart {
 	 * Handle dynamic calls into CartCollection.
 	 *
 	 * @param  string  $method
-	 * @param  array   $parameters
+	 * @param  array  $parameters
 	 * @return mixed
 	 */
 	public function __call($method, $parameters)

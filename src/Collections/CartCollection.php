@@ -19,8 +19,8 @@
 
 use Serializable;
 use Cartalyst\Cart\Cart;
-use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
+use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
 use Cartalyst\Cart\Exceptions\CartInvalidAttributesException;
 use Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException;
@@ -33,12 +33,12 @@ class CartCollection extends BaseCollection implements Serializable {
 	 * @var array
 	 */
 	protected $serialize = [
-		'itemsConditionsOrder',
-		'requiredIndexes',
-		'conditionsOrder',
-		'conditions',
-		'metaData',
 		'items',
+		'metaData',
+		'conditions',
+		'conditionsOrder',
+		'requiredIndexes',
+		'itemsConditionsOrder',
 	];
 
 	/**
