@@ -355,17 +355,13 @@ class CartCollection extends BaseCollection implements Serializable {
 	/**
 	 * Sets meta data.
 	 *
-	 * @param  array  $data
+	 * @param  string  $key
+	 * @param  mixed  $data
 	 * @return void
 	 */
-	public function setMetaData($data)
+	public function setMetaData($key, $data)
 	{
-		foreach ($data as $key => $value)
-		{
-			$value = array_merge(array_get($this->metaData, $key, []), (array) $value);
-
-			array_set($this->metaData, $key, $value);
-		}
+		array_set($this->metaData, $key, $data);
 	}
 
 	/**
