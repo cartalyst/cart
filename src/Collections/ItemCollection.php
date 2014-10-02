@@ -62,6 +62,22 @@ class ItemCollection extends BaseCollection {
 		return $this->get('quantity');
 	}
 
+    /**
+     * Returns this item price and it will take into
+     * consideration the attributes total.
+     *
+     * @param  float  $price
+     * @return float
+     */
+    public function subprice($price = null)
+    {
+        $price = $price ?: $this->price();
+
+        $attributesTotal = $this->attributes()->getTotal();
+
+        return ($price + $attributesTotal);
+    }
+
 	/**
 	 * Returns this item subtotal and it will take into
 	 * consideration the attributes total.
