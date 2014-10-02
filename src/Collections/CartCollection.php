@@ -32,7 +32,7 @@ class CartCollection extends BaseCollection implements Serializable {
 	 *
 	 * @var array
 	 */
-	protected $serialize = [
+	protected $serializable = [
 		'items',
 		'metaData',
 		'conditions',
@@ -703,7 +703,7 @@ class CartCollection extends BaseCollection implements Serializable {
 	{
 		$data = [];
 
-		foreach ($this->serialize as $key)
+		foreach ($this->serializable as $key)
 		{
 			$data[$key] = $this->$key;
 		}
@@ -721,12 +721,34 @@ class CartCollection extends BaseCollection implements Serializable {
 	{
 		$data = unserialize($data);
 
-		foreach ($this->serialize as $key)
+		foreach ($this->serializable as $key)
 		{
 			$this->$key = $data[$key];
 		}
 	}
 
+	/**
+	 * Returns the properties that should be serialized.
+	 *
+	 * @return array
+	 */
+	public function getSerializableProperties()
+	{
+		return $this->serializable;
+	}
+
+	/**
+	 * Sets the properties that should be serialized.
+	 *
+	 * @param  array  $properties
+	 * @return $this
+	 */
+	public function setSerializableProperties(array $properties)
+	{
+		$this->serializable = $properties;
+
+		return $this;
+	}
 
 	/**
 	 * Prepares the item attributes.
