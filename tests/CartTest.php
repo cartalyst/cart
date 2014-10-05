@@ -314,4 +314,61 @@ class CartTest extends CartTestCase {
 		$this->assertEmpty($this->cart->getMetaData('shipping_info.billing_address'));
 	}
 
+	/** @test */
+	public function it_can_serialize_and_unserialize_the_cart()
+	{
+		$this->cart->add([
+			$this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00),
+			$this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00),
+			$this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00),
+		]);
+
+		$this->assertEquals(9, $this->cart->quantity());
+
+		$cart = $this->cart->serialize();
+
+		$this->cart->clear();
+
+		$this->assertEquals(0, $this->cart->quantity());
+
+		$this->cart->unserialize($cart);
+
+		$this->assertEquals(9, $this->cart->quantity());
+	}
+
+	/** @test */
+	public function it_can_get_the_serializable_properties()
+	{
+		$expected = [
+			'items',
+			'metaData',
+			'conditions',
+			'conditionsOrder',
+			'requiredIndexes',
+			'itemsConditionsOrder',
+		];
+
+		$properties = $this->cart->getSerializable();
+
+		$this->assertEquals($properties, $expected);
+	}
+
+	/** @test */
+	public function it_can_set_the_serializable_properties()
+	{
+		$expected = [
+			'items',
+			'metaData',
+			'conditions',
+			'conditionsOrder',
+			'itemsConditionsOrder',
+		];
+
+		$this->cart->setSerializable($expected);
+
+		$properties = $this->cart->getSerializable();
+
+		$this->assertEquals($properties, $expected);
+	}
+
 }
