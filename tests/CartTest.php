@@ -315,6 +315,12 @@ class CartTest extends CartTestCase {
 	}
 
 	/** @test */
+	public function it_can_get_the_cart_instance_from_the_collection()
+	{
+		$this->assertInstanceOf('Cartalyst\Cart\Cart', $this->cart->getCart());
+	}
+
+	/** @test */
 	public function it_can_serialize_and_unserialize_the_cart()
 	{
 		$this->cart->add([
@@ -323,17 +329,28 @@ class CartTest extends CartTestCase {
 			$this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00),
 		]);
 
+		$this->cart->condition([
+			$this->createCondition('Discount 5%', 'discount', '-5.00%')
+		]);
+
+		$this->assertCount(3, $this->cart->items());
 		$this->assertEquals(9, $this->cart->quantity());
+		$this->assertEquals(677.35, $this->cart->total());
+		$this->assertCount(1, $this->cart->conditions('discount'));
 
 		$cart = $this->cart->serialize();
 
 		$this->cart->clear();
 
 		$this->assertEquals(0, $this->cart->quantity());
+		$this->assertCount(0, $this->cart->conditions('discount'));
 
 		$this->cart->unserialize($cart);
 
+		$this->assertCount(3, $this->cart->items());
 		$this->assertEquals(9, $this->cart->quantity());
+		$this->assertEquals(677.35, $this->cart->total());
+		$this->assertCount(1, $this->cart->conditions('discount'));
 	}
 
 	/** @test */
