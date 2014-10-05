@@ -226,6 +226,12 @@ $item = Cart::item('c14c437bc9ae7d35a7c18ee151c6acc0');
 $item->price();
 ```
 
+#### Get the item price + the item attributes total price
+
+```php
+$item->price(true);
+```
+
 #### Get the item quantity
 
 ```php
