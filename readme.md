@@ -20,6 +20,10 @@ Package history and capabilities.
 - Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
 - Some other minor tweaks and improvements.
 
+#### 05-Oct-14 - v1.0.5
+
+- Added flag `(bool)` to the `price(:withAttributes)` method to return the item price + the item attributes total.
+
 #### 23-Sep-14 - v1.0.4
 
 - Loosen requirements to allow the usage on Laravel 5.0.
