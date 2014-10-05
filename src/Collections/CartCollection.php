@@ -705,7 +705,7 @@ class CartCollection extends BaseCollection implements Serializable {
 
 		foreach ($this->serializable as $key)
 		{
-			$data[$key] = $this->$key;
+			$data[$key] = $this->{$key};
 		}
 
 		return serialize($data);
@@ -723,7 +723,7 @@ class CartCollection extends BaseCollection implements Serializable {
 
 		foreach ($this->serializable as $key)
 		{
-			$this->$key = $data[$key];
+			$this->{$key} = $data[$key];
 		}
 	}
 
@@ -732,7 +732,7 @@ class CartCollection extends BaseCollection implements Serializable {
 	 *
 	 * @return array
 	 */
-	public function getSerializableProperties()
+	public function getSerializable()
 	{
 		return $this->serializable;
 	}
@@ -743,7 +743,7 @@ class CartCollection extends BaseCollection implements Serializable {
 	 * @param  array  $properties
 	 * @return $this
 	 */
-	public function setSerializableProperties(array $properties)
+	public function setSerializable(array $properties)
 	{
 		$this->serializable = $properties;
 
