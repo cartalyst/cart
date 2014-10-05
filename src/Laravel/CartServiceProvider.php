@@ -63,7 +63,7 @@ class CartServiceProvider extends ServiceProvider {
 		{
 			$config = $app['config']->get('cartalyst/cart::config');
 
-			return new IlluminateSession($app['session.store'], $config['session_key'], $config['instance']);
+			return new IlluminateSession($app['session.store'], $config['instance'], $config['session_key']);
 		});
 	}
 
@@ -76,11 +76,11 @@ class CartServiceProvider extends ServiceProvider {
 	{
 		$this->app['cart'] = $this->app->share(function($app)
 		{
-			$config = $app['config']->get('cartalyst/cart::config');
+			$requiredIndexes = $app['config']->get('cartalyst/cart::config.requiredIndexes');
 
-			$cart = new Cart($config['instance'], $app['cart.session'], $app['events']);
+			$cart = new Cart($app['cart.session'], $app['events']);
 
-			$cart->setRequiredIndexes($config['requiredIndexes']);
+			$cart->setRequiredIndexes($requiredIndexes);
 
 			return $cart;
 		});
