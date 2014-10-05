@@ -38,11 +38,10 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function cart_can_be_instantiated()
 	{
-		$storage = m::mock('Cartalyst\Cart\Storage\IlluminateSession');
-
-		$dispatcher = m::mock('Illuminate\Events\Dispatcher');
-
-		new Cart('cart', $storage, $dispatcher);
+		new Cart(
+			m::mock('Cartalyst\Cart\Storage\IlluminateSession'),
+			m::mock('Illuminate\Events\Dispatcher')
+		);
 	}
 
 	/** @test */
@@ -58,15 +57,15 @@ class CartTest extends CartTestCase {
 	/** @test */
 	public function it_can_get_the_cart_identity()
 	{
-		$this->assertEquals($this->cart->getIdentity(), 'cart');
+		$this->assertEquals($this->cart->getInstance(), 'cart');
 	}
 
 	/** @test */
 	public function it_can_set_the_cart_identity()
 	{
-		$this->cart->setIdentity('testCart');
+		$this->cart->setInstance('testCart');
 
-		$this->assertEquals($this->cart->getIdentity(), 'testCart');
+		$this->assertEquals($this->cart->getInstance(), 'testCart');
 	}
 
 	/** @test */

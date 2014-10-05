@@ -25,13 +25,6 @@ use Cartalyst\Cart\Collections\CartCollection;
 class Cart {
 
 	/**
-	 * Holds the Cart identifier.
-	 *
-	 * @var mixed
-	 */
-	protected $id;
-
-	/**
 	 * The storage driver used by Cart.
 	 *
 	 * @var \Cartalyst\Cart\Storage\StorageInterface
@@ -62,39 +55,36 @@ class Cart {
 	/**
 	 * Constructor.
 	 *
-	 * @param  mixed  $id
 	 * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
 	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
 	 * @return void
 	 */
-	public function __construct($id, StorageInterface $storage, Dispatcher $dispatcher)
+	public function __construct(StorageInterface $storage, Dispatcher $dispatcher)
 	{
-		$this->id = $id;
-
 		$this->storage = $storage;
 
 		$this->dispatcher = $dispatcher;
 	}
 
 	/**
-	 * Returns the Cart identifier.
+	 * Returns the Cart instance identifier.
 	 *
 	 * @return mixed
 	 */
-	public function getIdentity()
+	public function getInstance()
 	{
-		return $this->id;
+		return $this->storage->getInstance();
 	}
 
 	/**
-	 * Sets the Cart identifier.
+	 * Sets the Cart instance identifier.
 	 *
-	 * @param  mixed  $id
+	 * @param  mixed  $instance
 	 * @return void
 	 */
-	public function setIdentity($id)
+	public function setInstance($instance)
 	{
-		$this->id = $id;
+		$this->storage->setInstance($instance);
 	}
 
 	/**

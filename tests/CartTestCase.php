@@ -42,9 +42,9 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase {
 	{
 		$sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
 
-		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
+		$session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler), 'cart');
 
-		$this->cart = new Cart('cart', $session, new Dispatcher);
+		$this->cart = new Cart($session, new Dispatcher);
 	}
 
 	/**

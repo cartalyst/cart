@@ -26,14 +26,14 @@ class NativeSession extends IlluminateSession implements StorageInterface {
 	 * Creates a new Native Session driver for Cart.
 	 *
 	 * @param  \Illuminate\Session\Store  $session
-	 * @param  string  $key
 	 * @param  string  $instance
+	 * @param  string  $key
 	 * @param  array  $config
 	 * @return void
 	 */
-	public function __construct(SessionStore $session, $key = null, $instance = null, $config = [])
+	public function __construct(SessionStore $session, $instance = null, $key = null, $config = [])
 	{
-		parent::__construct($session, $key, $instance);
+		parent::__construct($session, $instance, $key);
 
 		// Cookie configuration
 		$lifetime = array_get($config, 'lifetime', 120);

@@ -46,23 +46,17 @@ class IlluminateSession implements StorageInterface {
 	 * Creates a new Illuminate based Session driver for Cart.
 	 *
 	 * @param  \Illuminate\Session\Store  $session
-	 * @param  string  $key
 	 * @param  string  $instance
+	 * @param  string  $key
 	 * @return void
 	 */
-	public function __construct(SessionStore $session, $key = null, $instance = null)
+	public function __construct(SessionStore $session, $instance = null, $key = null)
 	{
 		$this->session = $session;
 
-		if (isset($key))
-		{
-			$this->key = $key;
-		}
+		$this->key = $key ?: $this->key;
 
-		if (isset($instance))
-		{
-			$this->instance = $instance;
-		}
+		$this->instance = $instance ?: $this->instance;
 	}
 
 	/**
@@ -76,9 +70,17 @@ class IlluminateSession implements StorageInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function identify()
+	public function getInstance()
 	{
 		return $this->instance;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setInstance($instance)
+	{
+		$this->instance = $instance;
 	}
 
 	/**
@@ -120,7 +122,7 @@ class IlluminateSession implements StorageInterface {
 	 */
 	protected function getSessionKey()
 	{
-		return "{$this->getKey()}.{$this->identify()}";
+		return "{$this->getKey()}.{$this->getInstance()}";
 	}
 
 }

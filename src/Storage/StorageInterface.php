@@ -27,11 +27,19 @@ interface StorageInterface {
 	public function getKey();
 
 	/**
-	 * Return the session instance.
+	 * Returns the session instance identifier.
 	 *
 	 * @return string
 	 */
-	public function identify();
+	public function getInstance();
+
+	/**
+	 * Sets the session instance identifier.
+	 *
+	 * @param  string  $instance
+	 * @return string
+	 */
+	public function setInstance($instance);
 
 	/**
 	 * Get the value from the storage.
