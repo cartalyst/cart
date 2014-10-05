@@ -12,6 +12,18 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
+#### xx-xx-14 - v1.1.0
+
+- Added a new `catalyst.cart.created` event which is fired when a cart instance is initialized.
+- Improved the conditions validation.
+- Improved the Cart MetaData feature once again to be more flexible.
+- Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
+- Some other minor tweaks and improvements.
+
+#### 05-Oct-14 - v1.0.5
+
+- Added flag `(bool)` to the `price(:withAttributes)` method to return the item price + the item attributes total.
+
 #### 23-Sep-14 - v1.0.4
 
 - Loosen requirements to allow the usage on Laravel 5.0.
