@@ -285,6 +285,7 @@ class CartTest extends CartTestCase {
 
 		$this->assertEquals($this->cart->getMetaData('shipping_info.personal_details.name'), 'John Doe');
 		$this->assertEquals($this->cart->getMetaData('shipping_info.billing_address.street'), '123 Street.');
+		$this->assertEquals($this->cart->getMetaData('nonexistent', 'default'), 'default');
 	}
 
 	/** @test */

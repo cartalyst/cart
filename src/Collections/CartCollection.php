@@ -345,11 +345,12 @@ class CartCollection extends BaseCollection implements Serializable {
 	 * Returns the meta data.
 	 *
 	 * @param  string  $key
+	 * @param  mixed  $default
 	 * @return mixed
 	 */
-	public function getMetaData($key = null)
+	public function getMetaData($key = null, $default = null)
 	{
-		return array_get($this->metaData, $key);
+		return array_get($this->metaData, $key, $default);
 	}
 
 	/**
