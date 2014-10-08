@@ -358,7 +358,7 @@ Cart::sync($collection);
 
 Managing metadata inside the cart like shipping or billing information is very easy.
 
-#### Cart::setMetadata()
+#### Cart::setMetaData()
 
 Setting metadata is very easy, just provide an array with a `key`/`value` pair and you're done.
 
@@ -374,10 +374,10 @@ $data = [
 	],
 ];
 
-Cart::setMetadata($data);
+Cart::setMetaData($data);
 ```
 
-#### Cart::getMetadata()
+#### Cart::getMetaData()
 
 Returning the metadata that you've set is simple.
 
@@ -388,20 +388,20 @@ $key  | false    | mixed | The metadata key to return.
 **To return all the available metadata**
 
 ```php
-$metadata = Cart::getMetadata();
+$metadata = Cart::getMetaData();
 ```
 
 **To return metadata by keys**
 
 ```php
-$metadata = Cart::getMetadata('shipping_information');
+$metadata = Cart::getMetaData('shipping_information');
 ```
 
 ```php
-$metadata = Cart::getMetadata('shipping_information.full_name');
+$metadata = Cart::getMetaData('shipping_information.full_name');
 ```
 
-#### Cart::removeMetadata()
+#### Cart::removeMetaData()
 
 Param | Required | Type  | Description
 ----- | -------- | ----- | ----------------------------------------------------
@@ -410,15 +410,15 @@ $key  | false    | mixed | The metadata key to remove.
 **To remove all the metadata**
 
 ```php
-Cart::removeMetadata();
+Cart::removeMetaData();
 ```
 
 **To remove metadata by keys**
 
 ```php
-Cart::removeMetadata('shipping_information.full_name');
+Cart::removeMetaData('shipping_information.full_name');
 ```
 
 ```php
-Cart::removeMetadata('shipping_information');
+Cart::removeMetaData('shipping_information');
 ```
