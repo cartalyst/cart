@@ -362,19 +362,22 @@ Managing metadata inside the cart like shipping or billing information is very e
 
 Setting metadata is very easy, just provide an array with a `key`/`value` pair and you're done.
 
-Param | Required | Type  | Description
------ | -------- | ----- | ----------------------------------------------------
-$data | true     | array | Array containing the data you want to attach.
+Param | Required | Type   | Description
+----- | -------- | ------ | ----------------------------------------------------
+$key  | true     | string | The metadata key.
+$data | true     | array  | Array containing the data you want to attach.
 
 ```php
 $data = [
-	'shipping_information' => [
-		'full_name' => 'John Doe',
-		'address'   => 'Example Street',
-	],
+	'full_name' => 'John Doe',
+	'address'   => 'Example Street',
 ];
 
-Cart::setMetaData($data);
+Cart::setMetaData('shipping_information', $data);
+```
+
+```php
+Cart::setMetaData('shipping_information.street', 'Street ABC');
 ```
 
 #### Cart::getMetaData()
