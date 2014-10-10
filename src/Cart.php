@@ -181,6 +181,9 @@ class Cart extends CartCollection {
 		// Generate the unique row id
 		$rowId = $this->generateRowId($item['id'], array_except($item, ['price', 'quantity']));
 
+		// Pull item conditions
+		$conditions = array_pull($item, 'conditions', []);
+
 		// Check if the item already exists on the cart
 		if ($this->exists($rowId))
 		{
@@ -200,7 +203,7 @@ class Cart extends CartCollection {
 		}
 
 		// Assign item conditions
-		$row->condition(array_get($item, 'conditions', []));
+		$row->condition($conditions);
 
 		// Set items conditions order
 		$row->setConditionsOrder($this->getItemsConditionsOrder());
@@ -291,6 +294,9 @@ class Cart extends CartCollection {
 		// Get the item we want to update
 		$row = $cart->get($rowId);
 
+		// Pull item conditions
+		$conditions = array_pull($data, 'conditions', $row->conditions());
+
 		// Do we have multiple item data?
 		if (is_array($data))
 		{
@@ -330,7 +336,7 @@ class Cart extends CartCollection {
 			$row->removeConditions();
 
 			// Assign conditions to the item
-			$row->condition(array_get($row, 'conditions'));
+			$row->condition($conditions);
 
 			// Set the item price
 			$row->setPrice($row->get('price'));

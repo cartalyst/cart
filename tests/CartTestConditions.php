@@ -474,6 +474,14 @@ class CartTestConditions extends CartTestCase {
 		$this->assertEquals($this->cart->subtotal(), 300);
 		$this->assertEquals($this->cart->total(), 300);
 		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
+
+		$this->cart->update('1085cc7857b8241294e0a45799a1c36e', [
+			'quantity' => 3,
+		]);
+
+		$this->assertEquals($this->cart->subtotal(), 300);
+		$this->assertEquals($this->cart->total(), 300);
+		$this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
 	}
 
 	/** @test */

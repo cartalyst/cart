@@ -199,7 +199,7 @@ class CartCollection extends BaseCollection {
 
 		foreach ($this->items() as $item)
 		{
-			$conditions = array_merge($conditions, $item->get('conditions'));
+			$conditions = array_merge($conditions, $item->conditions());
 		}
 
 		return $conditions;
