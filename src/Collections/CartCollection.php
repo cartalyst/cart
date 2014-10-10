@@ -161,6 +161,9 @@ class CartCollection extends BaseCollection implements Serializable {
 		// Generate the unique row id
 		$rowId = $this->generateRowId($item['id'], array_except($item, ['price', 'quantity']));
 
+		// Pull item conditions
+		$conditions = array_pull($item, 'conditions', []);
+
 		// Check if the item already exists on the cart
 		if ($this->exists($rowId))
 		{
@@ -180,7 +183,7 @@ class CartCollection extends BaseCollection implements Serializable {
 		}
 
 		// Assign item conditions
-		$row->condition(array_get($item, 'conditions', []));
+		$row->condition($conditions);
 
 		// Set items conditions order
 		$row->setConditionsOrder($this->getItemsConditionsOrder());
@@ -257,6 +260,9 @@ class CartCollection extends BaseCollection implements Serializable {
 		// Get the item we want to update
 		$row = $this->get($rowId);
 
+		// Pull item conditions
+		$conditions = array_pull($data, 'conditions', $row->conditions());
+
 		// Do we have multiple item data?
 		if (is_array($data))
 		{
@@ -296,7 +302,7 @@ class CartCollection extends BaseCollection implements Serializable {
 			$row->removeConditions();
 
 			// Assign conditions to the item
-			$row->condition(array_get($row, 'conditions'));
+			$row->condition($conditions);
 
 			// Set the item price
 			$row->setPrice($row->get('price'));
@@ -481,7 +487,7 @@ class CartCollection extends BaseCollection implements Serializable {
 
 		foreach ($this->items as $item)
 		{
-			$conditions = array_merge($conditions, $item->get('conditions'));
+			$conditions = array_merge($conditions, $item->conditions());
 		}
 
 		return $conditions;
