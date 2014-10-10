@@ -296,11 +296,11 @@ abstract class BaseCollection extends Collection {
 				{
 					$conditions[] = $condition;
 				}
+
+				continue;
 			}
-			else
-			{
-				$conditions[] = $condition;
-			}
+
+			$conditions[] = $condition;
 		}
 
 		return $conditions;
