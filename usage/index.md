@@ -2,13 +2,13 @@
 
 In this section we'll show how you can manage your shopping cart.
 
-#### Add Item
+### Add Item
 
 Having the ability to add items to the shopping cart is crucial and we've made it incredible simple to do it.
 
 You can pass a simple or a multidimensional array and to help you get started, we have listed below all the default `indexes` that you can pass when adding or updating a cart item.
 
-<a id="indexes"></a>
+##### Indexes <a id="indexes"></a>
 
 Key        | Required | Type   | Description
 ---------- | -------- | ------ | ----------------------------------------------
