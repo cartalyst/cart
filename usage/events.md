@@ -7,6 +7,7 @@ Event                   | Parameters        | Description
 cartalyst.cart.added    | $item, $cart      | Event fired when an item is added to the cart.
 cartalyst.cart.removed  | $item, $cart      | Event fired when an item is removed from the cart.
 cartalyst.cart.update   | $item, $cart      | Event fired when an item is updated.
+cartalyst.cart.created  | $cart             | Event fired when the cart is created.
 cartalyst.cart.cleared  | $cart             | Event fired when the cart is cleared.
 
 #### Examples
