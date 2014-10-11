@@ -12,6 +12,7 @@
 		"collections",
 		"instances",
 		"conditions",
+		"serialization",
 		"events",
 		"exceptions"
 	]
