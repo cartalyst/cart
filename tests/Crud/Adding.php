@@ -35,6 +35,18 @@ class Adding extends CartTestCase {
 	}
 
 	/** @test */
+	public function it_can_add_a_free_item()
+	{
+		$item = $this->createItem('Foobar 1', 0);
+
+		$this->cart->add($item);
+
+		$this->assertEquals($this->cart->quantity(), 1);
+
+		$this->assertCount(1, $this->cart->items());
+	}
+
+	/** @test */
 	public function it_can_add_a_single_item_with_quantity_as_string()
 	{
 		$item = $this->createItem('Foobar 1', 10.00, '0000002');
