@@ -139,6 +139,8 @@ abstract class BaseCollection extends Collection {
 	{
 		$this->conditionResults = [];
 
+		$this->subtotal = $this->subtotal();
+
 		$this->price = $this->get('price');
 
 		// Price conditions

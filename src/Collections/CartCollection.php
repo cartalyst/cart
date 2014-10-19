@@ -125,7 +125,7 @@ class CartCollection extends BaseCollection implements Serializable {
 		// Validate the required indexes
 		foreach ($this->getRequiredIndexes() as $index)
 		{
-			if (empty($item[$index]))
+			if ( ! array_key_exists($index, $item))
 			{
 				throw new CartMissingRequiredIndexException($index);
 			}

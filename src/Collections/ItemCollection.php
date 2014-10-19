@@ -45,11 +45,19 @@ class ItemCollection extends BaseCollection {
 	/**
 	 * Returns this item price.
 	 *
+	 * @param  bool  $withAttributes
 	 * @return float
 	 */
-	public function price()
+	public function price($withAttributes = false)
 	{
-		return $this->get('price');
+		$price = $this->get('price');
+
+		if ($withAttributes)
+		{
+			$price += $this->attributes()->getTotal();
+		}
+
+		return $price;
 	}
 
 	/**

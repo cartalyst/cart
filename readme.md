@@ -20,6 +20,10 @@ Package history and capabilities.
 - Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
 - Some other minor tweaks and improvements.
 
+#### 19-Oct-14 - v1.0.7
+
+- Allow to add free items (price = 0.00) into the cart.
+
 #### 11-Oct-14 - v1.0.6
 
 - Fixed a bug causing removed item conditions to be reapplied after updating the cart.

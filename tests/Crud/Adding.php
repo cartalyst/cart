@@ -35,6 +35,18 @@ class Adding extends CartTestCase {
 	}
 
 	/** @test */
+	public function it_can_add_a_free_item()
+	{
+		$item = $this->createItem('Foobar 1', 0);
+
+		$this->cart->add($item);
+
+		$this->assertEquals($this->cart->quantity(), 1);
+
+		$this->assertCount(1, $this->cart->items());
+	}
+
+	/** @test */
 	public function it_can_add_a_single_item_with_quantity_as_string()
 	{
 		$item = $this->createItem('Foobar 1', 10.00, '0000002');
@@ -57,11 +69,13 @@ class Adding extends CartTestCase {
 	/** @test */
 	public function it_can_add_a_single_item_with_attributes()
 	{
-		$item = $this->createItem('Foobar 1', 125, 2, null, [5, 3.5]);
-
-		$item = $this->cart->add($item);
+		$item = $this->cart->add(
+			$this->createItem('Foobar 1', 125, 2, null, [5, 3.5])
+		);
 
 		$this->assertCount(2, $item->attributes());
++		$this->assertEquals(125.00, $item->price());
++		$this->assertEquals(133.50, $item->price(true));
 
 		$this->assertCount(1, $this->cart->items());
 		$this->assertEquals($this->cart->quantity(), 2);
