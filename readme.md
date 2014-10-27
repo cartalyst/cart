@@ -12,7 +12,7 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
-#### xx-xx-14 - v1.1.0
+#### 27-Oct-14 - v1.1.0
 
 - Added a new `catalyst.cart.created` event which is fired when a cart instance is initialized.
 - Improved the conditions validation.
