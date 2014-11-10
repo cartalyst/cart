@@ -29,7 +29,7 @@ class ItemCollection extends BaseCollection {
 	 */
 	public function setPrice($price)
 	{
-		$this->price = (float) $price;
+		$this->put('price', (float) $price);
 	}
 
 	/**
