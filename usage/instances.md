@@ -16,9 +16,9 @@ $app['wishlist'] = $app->share(function($app)
 {
 	$config = $app['config']->get('cartalyst/cart::config');
 
-	$storage = new IlluminateSession($app['session.store'], $config['session_key'], 'wishlist');
+	$storage = new IlluminateSession($app['session.store'], 'wishlist', $config['session_key']);
 
-	return new Cart('wishlist', $storage, $app['events']);
+	return new Cart($storage, $app['events']);
 });
 ```
 
@@ -56,7 +56,7 @@ class WishlistServiceProvider extends ServiceProvider {
 		{
 			$config = $app['config']->get('cartalyst/cart::config');
 
-			return new IlluminateSession($app['session.store'], $config['session_key'], 'wishlist');
+			return new IlluminateSession($app['session.store'], 'wishlist', $config['session_key']);
 		});
 	}
 
@@ -69,7 +69,7 @@ class WishlistServiceProvider extends ServiceProvider {
 	{
 		$this->app['wishlist'] = $this->app->share(function($app)
 		{
-			return new Cart('wishlist', $app['wishlist.storage'], $app['events']);
+			return new Cart($app['wishlist.storage'], $app['events']);
 		});
 	}
 
