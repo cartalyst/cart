@@ -18,7 +18,7 @@ $app['wishlist'] = $app->share(function($app)
 
 	$storage = new IlluminateSession($app['session.store'], $config['session_key'], 'wishlist');
 
-	return new Cart('wishlist', $storage, $app['events']);
+	return new Cart($storage, $app['events']);
 });
 ```
 
@@ -69,7 +69,7 @@ class WishlistServiceProvider extends ServiceProvider {
 	{
 		$this->app['wishlist'] = $this->app->share(function($app)
 		{
-			return new Cart('wishlist', $app['wishlist.storage'], $app['events']);
+			return new Cart($app['wishlist.storage'], $app['events']);
 		});
 	}
 
