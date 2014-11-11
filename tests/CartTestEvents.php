@@ -51,9 +51,11 @@ class CartTestEvents extends CartTestCase {
 	}
 
 	/** @test */
-	public function can_listen_to_the_added_event()
+	public function can_listen_to_the_add_events()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
+
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.adding', m::any());
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
 
@@ -63,11 +65,15 @@ class CartTestEvents extends CartTestCase {
 	}
 
 	/** @test */
-	public function can_listen_to_the_updated_event()
+	public function can_listen_to_the_update_events()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
 
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.adding', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
+
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.updating', m::any());
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.updated', m::any());
 
@@ -81,11 +87,15 @@ class CartTestEvents extends CartTestCase {
 	}
 
 	/** @test */
-	public function can_listen_to_the_removed_event()
+	public function can_listen_to_the_removal_events()
 	{
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
 
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.adding', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
+
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.removing', m::any());
 
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.removed', m::any());
 
@@ -97,8 +107,10 @@ class CartTestEvents extends CartTestCase {
 	}
 
 	/** @test */
-	public function can_listen_to_the_cleared_event()
+	public function can_listen_to_the_clear_events()
 	{
+		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.clearing', m::any());
+
 		$this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.cleared', m::any());
 
 		$this->cart->clear();

@@ -158,6 +158,9 @@ class CartCollection extends BaseCollection implements Serializable {
 			throw new CartInvalidAttributesException;
 		}
 
+		// Fire the 'cartalyst.cart.adding' event
+		$this->cart->fire('adding', [$item, $this->cart]);
+
 		// Generate the unique row id
 		$rowId = $this->generateRowId($item['id'], array_except($item, ['price', 'quantity']));
 
@@ -220,6 +223,9 @@ class CartCollection extends BaseCollection implements Serializable {
 			// Get the item information
 			$item = $this->item($rowId);
 
+			// Fire the 'cartalyst.cart.removing' event
+			$this->cart->fire('removing', [$item, $this->cart]);
+
 			// Remove the item from the cart
 			$this->forget($rowId);
 
@@ -259,6 +265,9 @@ class CartCollection extends BaseCollection implements Serializable {
 
 		// Get the item we want to update
 		$row = $this->get($rowId);
+
+		// Fire the 'cartalyst.cart.updating' event
+		$this->cart->fire('updating', [$row, $data, $this->cart]);
 
 		// Pull item conditions
 		$conditions = array_pull($data, 'conditions', $row->conditions());
