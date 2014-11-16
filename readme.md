@@ -12,23 +12,24 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 History and capabilities are contained within CHANGELOG.md
 
-###Minor | [v1.1.0](CHANGELOG.md/#minor--v110--2014-10-27) | 2014-10-27
+Minor | [v1.1.0](CHANGELOG.md/#minor--v110--2014-10-27) | 2014-10-27
 
-###Patch | [v1.0.7](CHANGELOG.md/#patch--v107--2014-10-19) | 2014-10-14
+Patch | [v1.0.7](CHANGELOG.md/#patch--v107--2014-10-19) | 2014-10-14
 
-###Patch | [v1.0.6](CHANGELOG.md/#patch--v106--2014-10-11) | 2014-10-11
+Patch | [v1.0.6](CHANGELOG.md/#patch--v106--2014-10-11) | 2014-10-11
 
-###Patch | [v1.0.7](CHANGELOG.md/#patch--v105--2014-10-05) | 2014-10-05
+Patch | [v1.0.7](CHANGELOG.md/#patch--v105--2014-10-05) | 2014-10-05
 
-###Patch | [v1.0.5](CHANGELOG.md/#patch--v104--2014-09-23) | 2014-09-23
+Patch | [v1.0.5](CHANGELOG.md/#patch--v104--2014-09-23) | 2014-09-23
 
-###Patch | [v1.0.3](CHANGELOG.md/#patch--v103--2014-09-15) | 2014-09-15
+Patch | [v1.0.3](CHANGELOG.md/#patch--v103--2014-09-15) | 2014-09-15
 
-###Patch | [v1.0.2](CHANGELOG.md/#patch--v102--2014-09-05) | 2014-09-05
+Patch | [v1.0.2](CHANGELOG.md/#patch--v102--2014-09-05) | 2014-09-05
 
-###Patch | [v1.0.1](CHANGELOG.md/#patch--v101--2014-07-14) | 2014-07-24
+Patch | [v1.0.1](CHANGELOG.md/#patch--v101--2014-07-14) | 2014-07-24
 
-###Major | [v1.0.0](CHANGELOG.md/#major--v100--2014-05-09) | 2014-05-09
+Major | [v1.0.0](CHANGELOG.md/#major--v100--2014-05-09) | 2014-05-09
+
 
 ## Installation
 
