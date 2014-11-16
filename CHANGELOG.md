@@ -1,7 +1,7 @@
 
 #Cart Change Log
 
-##Minor | v1.1.0 | 2014-10-27
+###Minor | v1.1.0 | 2014-10-27
 
 `ADDED` A new catalyst.cart.created event which is fired when a cart instance is initialized.
 
@@ -13,34 +13,34 @@
 
 `REVISED` Minor tweaks and improvements.
 
-##Patch | v1.0.7 | 2014-10-19
+####Patch | v1.0.7 | 2014-10-19
 
 `ADDED` Allow adding free items (price = 0.00) into the cart.
 
-##Patch | v1.0.6 | 2014-10-11
+####Patch | v1.0.6 | 2014-10-11
 
 `FIXED` A bug causing removed item conditions to be reapplied after updating the cart.
 
 
-##Patch | v1.0.5 | 2014-10-05
+####Patch | v1.0.5 | 2014-10-05
 
 `ADDED` Flag (bool) to the price(:withAttributes) method to return the item price + the item attributes total.
 
-##Patch | v1.0.4 | 2014-09-23
+####Patch | v1.0.4 | 2014-09-23
 
 `REVISED` Loosen requirements to allow the usage on Laravel 5.0.
 
-##Patch | v1.0.3 | 2014-09-15
+####Patch | v1.0.3 | 2014-09-15
 
 `REVISED` Tweak to check the condition result before applying the actions.
 
-##Patch | v1.0.2 | 2014-09-05
+####Patch | v1.0.2 | 2014-09-05
 
 `ADDED` A IoC Container alias for the Cart class.
 `ADDED` The provides() method to the Service Provider.
 `REVISED` Unit tests improved.
 
-##Patch | v1.0.1 | 2014-07-14
+####Patch | v1.0.1 | 2014-07-14
 
 `REVISED` Improved the setMetadata() method to allow old values to be merged when setting new values on an existing key.
 
