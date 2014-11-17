@@ -114,6 +114,9 @@ class Cart {
 	 */
 	public function clear()
 	{
+		// Fire the 'cartalyst.cart.clearing' event
+		$this->fire('clearing', $this);
+
 		$this->storage->put($this->cart = null);
 
 		// Fire the 'cartalyst.cart.cleared' event
