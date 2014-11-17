@@ -12,9 +12,13 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 Package history and capabilities.
 
+#### 17-Nov-14 - v1.1.1
+
+- Added the following events `cartalyst.cart.adding`, `cartalyst.cart.updating`, `cartalyst.cart.removing` and `cartalyst.cart.clearing`
+
 #### 27-Oct-14 - v1.1.0
 
-- Added a new `catalyst.cart.created` event which is fired when a cart instance is initialized.
+- Added a `cartalyst.cart.created` event which is fired when a cart instance is initialized.
 - Improved the conditions validation.
 - Improved the Cart MetaData feature once again to be more flexible.
 - Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
