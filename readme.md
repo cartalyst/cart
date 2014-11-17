@@ -8,28 +8,89 @@ The package requires PHP 5.4+ and comes bundled with a Laravel 4 and Laravel 5 F
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
 
-## Change Log
+## Package Story
 
-History and capabilities are contained within CHANGELOG.md
+Package history and capabilities.
 
-Minor | [v1.1.0](CHANGELOG.md/#minor--v110--2014-10-27) | 2014-10-27
+#### 27-Oct-14 - v1.1.0
 
-Patch | [v1.0.7](CHANGELOG.md/#patch--v107--2014-10-19) | 2014-10-14
+- Added a new `catalyst.cart.created` event which is fired when a cart instance is initialized.
+- Improved the conditions validation.
+- Improved the Cart MetaData feature once again to be more flexible.
+- Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
+- Some other minor tweaks and improvements.
 
-Patch | [v1.0.6](CHANGELOG.md/#patch--v106--2014-10-11) | 2014-10-11
+#### 19-Oct-14 - v1.0.7
 
-Patch | [v1.0.7](CHANGELOG.md/#patch--v105--2014-10-05) | 2014-10-05
+- Allow to add free items (price = 0.00) into the cart.
 
-Patch | [v1.0.5](CHANGELOG.md/#patch--v104--2014-09-23) | 2014-09-23
+#### 11-Oct-14 - v1.0.6
 
-Patch | [v1.0.3](CHANGELOG.md/#patch--v103--2014-09-15) | 2014-09-15
+- Fixed a bug causing removed item conditions to be reapplied after updating the cart.
 
-Patch | [v1.0.2](CHANGELOG.md/#patch--v102--2014-09-05) | 2014-09-05
+#### 05-Oct-14 - v1.0.5
 
-Patch | [v1.0.1](CHANGELOG.md/#patch--v101--2014-07-14) | 2014-07-24
+- Added flag `(bool)` to the `price(:withAttributes)` method to return the item price + the item attributes total.
 
-Major | [v1.0.0](CHANGELOG.md/#major--v100--2014-05-09) | 2014-05-09
+#### 23-Sep-14 - v1.0.4
 
+- Loosen requirements to allow the usage on Laravel 5.0.
+
+#### 15-Sep-14 - v1.0.3
+
+- Minor tweak to check the condition result before applying the actions.
+
+#### 05-Sep-14 - v1.0.2
+
+- Added an IoC Container alias for the Cart class.
+- Added the provides() method to the Service Provider.
+- Unit tests improvements.
+
+#### 24-Jul-14 - v1.0.1
+
+- Improved the setMetadata() method to allow old values to be merged when setting new values on an existing key.
+
+#### 09-May-14 - v1.0.0
+
+- ```Cart::getIdentity()``` Returns the cart identity.
+- ```Cart::setIdentity($name)``` Sets the cart identity.
+- ```Cart::add($item)``` Adds a single item to the cart.
+- ```Cart::add($items)``` Adds multiple items to the cart.
+- ```Cart::remove($rowId)``` Removes an item from the cart.
+- ```Cart::remove([$rowId, $rowId])``` Removes multiple items from the cart by passing an array.
+- ```Cart::update($rowId, $data)``` Updates a single item.
+- ```Cart::update($items)``` Updates multiple items.
+- ```Cart::update($rowId, $quantity)``` Updates an item quantity.
+- ```Cart::exists($rowId)``` Check if the given item exists.
+- ```Cart::item($rowId)``` Returns information of the given item.
+- ```Cart::items()``` Returns all items.
+- ```Cart::itemsSubtotal()``` Returns the subtotal of the items without conditions.
+- ```Cart::quantity()``` Returns the total # of items that are in the cart.
+- ```Cart::subtotal()``` Returns the subtotal of the cart.
+- ```Cart::total($type|null)``` Returns subtotal after applying upto a specific condition type or null to calculate total.
+- ```Cart::weight()``` Returns the total cart weight.
+- ```Cart::clear()``` Empty the cart.
+- ```Cart::sync(Collection $items)``` Synchronizes a collection of data with the cart.
+- ```Cart::find($data)``` Search for items that are in the cart.
+- ```Cart::condition(Cartalyst\Conditions\Condition $condition)``` Applies a condition on the cart.
+- ```Cart::conditions($type|null, bool $includeItems)``` Returns all the applied conditions.
+- ```Cart::getConditionsOrder()``` Returns the order in which the conditions are applied.
+- ```Cart::setConditionsOrder($array)``` Sets the order in which the conditions are applied.
+- ```Cart::getItemsConditionsOrder()``` Returns the order in which the conditions are applied on items.
+- ```Cart::setItemsConditionsOrder($array)``` Sets the order in which the conditions are applied on items.
+- ```Cart::conditionsTotal($type|null, bool $includeItems)``` Returns all conditions totals grouped by type.
+- ```Cart::conditionsTotalSum($type|null)``` Returns the sum of all or a specific type of conditions.
+- ```Cart::itemsConditions()``` Returns all conditions applied only to items.
+- ```Cart::itemsConditionsTotal($type|null)``` Returns all or a specific type of items conditions sum grouped by type.
+- ```Cart::itemsConditionsTotalSum($type|null)``` Returns the sum of all or a specific type of items conditions.
+- ```Cart::removeConditionByName($name, bool $includeItems)``` Removes an applied condition by name.
+- ```Cart::removeConditionByType($name, bool $includeItems)``` Removes an applied condition by type.
+- ```Cart::removeConditions($id, bool $includeItems)``` Removes all or a specific type of applied conditions.
+- ```Cart::setMetaData($array)``` Sets the meta data on the cart.
+- ```Cart::getMetaData($key|null)``` Returns all or a specific key of meta data.
+- ```Cart::removeMetaData($key|null)``` Removes all or a specific key of meta data.
+- ```Cart::getRequiredIndexes()``` Returns the required indexes.
+- ```Cart::setRequiredIndexes(array $indexes, bool $merge)``` Sets the required indexes.
 
 ## Installation
 
