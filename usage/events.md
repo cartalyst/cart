@@ -2,12 +2,19 @@
 
 On this section we have a list of all the events fired by the cart that you can listen for.
 
-Event                   | Parameters        | Description
------------------------ | ----------------- | -----------
-cartalyst.cart.added    | $item, $cart      | Event fired when an item is added to the cart.
-cartalyst.cart.removed  | $item, $cart      | Event fired when an item is removed from the cart.
-cartalyst.cart.update   | $item, $cart      | Event fired when an item is updated.
-cartalyst.cart.cleared  | $cart             | Event fired when the cart is cleared.
+Event                  | Parameters   | Description
+---------------------- | ------------ | ----------------------------------------
+cartalyst.cart.added   | $item, $cart | Event fired after an item is added to the cart.
+cartalyst.cart.removed | $item, $cart | Event fired after an item is removed from the cart.
+cartalyst.cart.updated | $item, $cart | Event fired after an item is updated.
+cartalyst.cart.cleared | $cart        | Event fired after the cart is cleared.
+
+> **Note:** Please refer to the list below for the full event `parameter` object namespace.
+
+Parameter | Description                       | Namespace
+--------- | --------------------------------- | --------------------------------
+$item     | The item object.                  | Cartalyst\Cart\Collections\ItemCollection
+$cart     | The current cart instance object. | Cartalyst\Cart\Cart
 
 #### Examples
 
