@@ -25,6 +25,7 @@ $data     | The data that was passed.         | array
 #### Examples
 
 Whenever an item is about to be added to the shopping cart.
+
 ```php
 Event::listen('cartalyst.cart.adding', function(array $item, $cart)
 {
@@ -43,6 +44,7 @@ Event::listen('cartalyst.cart.added', function($item, $cart)
 ```
 
 Whenever an item is about to be removed to the shopping cart.
+
 ```php
 Event::listen('cartalyst.cart.removing', function($item, $cart)
 {
@@ -61,6 +63,7 @@ Event::listen('cartalyst.cart.removed', function($item, $cart)
 ```
 
 Whenever an item is about to be updated to the shopping cart.
+
 ```php
 Event::listen('cartalyst.cart.updating', function($item, $newData, $cart)
 {
@@ -79,6 +82,7 @@ Event::listen('cartalyst.cart.updated', function($item, $cart)
 ```
 
 Whenever the shopping cart is about to be cleared.
+
 ```php
 Event::listen('cartalyst.cart.clearing', function($cart)
 {
