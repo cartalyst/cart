@@ -1,6 +1,8 @@
 {
-	"introduction" : [
-		"index",
+	"preface" : [
+		"introduction",
+		"features",
+		"examples",
 		"installation",
 		"integration"
 	],
