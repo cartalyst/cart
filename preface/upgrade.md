@@ -2,7 +2,7 @@
 
 Please refer to the following guides to update your Converter installation to the 1.1 version.
 
-#### Upgrading To 1.1 From 1.0
+### From 1.0 to 1.1
 
 Some minor changes occurred from `1.0` to `1.1`, please take a moment to read about them on the next sections.
 
