@@ -2,9 +2,15 @@
 	"preface" : [
 		"introduction",
 		"features",
-		"examples",
-		"installation",
-		"integration"
+		"examples"
+	],
+	"setup" : [
+		"installation"
+	],
+	"integration" : [
+		"index",
+		"laravel-4",
+		"native"
 	],
 	"usage": [
 		"index",
