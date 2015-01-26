@@ -26,18 +26,10 @@ class CartServiceProvider extends ServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function boot()
-	{
-		$this->publishes([
-			__DIR__.'/../config/config.php' => config_path('cartalyst.cart.php'),
-		]);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function register()
 	{
+		$this->prepareResources();
+
 		$this->registerSession();
 
 		$this->registerCart();
@@ -52,6 +44,22 @@ class CartServiceProvider extends ServiceProvider {
 			'cart',
 			'cart.session',
 		];
+	}
+
+	/**
+	 * Prepare the package resources.
+	 *
+	 * @return void
+	 */
+	protected function prepareResources()
+	{
+		$configPath = __DIR__.'/../config/config.php';
+
+		$this->mergeConfigFrom('cartalyst.cart', $configPath);
+
+		$this->publishes([
+			$configPath => config_path('cartalyst.cart.php'),
+		]);
 	}
 
 	/**
