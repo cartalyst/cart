@@ -55,7 +55,7 @@ class CartServiceProvider extends ServiceProvider {
 	{
 		$configPath = __DIR__.'/../config/config.php';
 
-		$this->mergeConfigFrom('cartalyst.cart', $configPath);
+		$this->mergeConfigFrom($configPath, 'cartalyst.cart');
 
 		$this->publishes([
 			$configPath => config_path('cartalyst.cart.php'),
