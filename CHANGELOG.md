@@ -1,0 +1,106 @@
+# Cart Change Log
+
+This project follows [Semantic Versioning](CONTRIBUTING.md).
+
+## Proposals
+
+We do not give estimated times for completion on `Accepted` Proposals.
+
+- [Accepted](https://github.com/cartalyst/cart/labels/Accepted)
+- [Rejected](https://github.com/cartalyst/cart/labels/Rejected)
+
+---
+
+#### v1.0.8 - 2015-01-31
+
+`REVISED`
+
+- Updated coding standards to `PSR-2`.
+
+`REMOVED`
+
+- Remove Laravel 5 requirement, support for Laravel 5 will come from on the `2.0` release version.
+
+#### v1.0.7 - 2014-10-19
+
+`REVISED`
+
+- Allow to add free items (price = 0.00) into the cart.
+
+#### v1.0.6 - 2014-10-11
+
+`FIXED`
+
+- Fixed a bug causing removed item conditions to be reapplied after updating the cart.
+
+#### v1.0.5 - 2014-10-05
+
+`REVISED`
+
+- Added a flag `(bool)` to the `price(:withAttributes)` method to return the item price + the item attributes total.
+
+#### v1.0.4 - 2014-09-23
+
+`REVISED`
+
+- Loosen requirements to allow the usage on Laravel 5.0.
+
+#### v1.0.3 - 2014-09-15
+
+`REVISED`
+
+- Minor tweak to check the condition result before applying the actions.
+
+#### v1.0.2 - 2014-09-05
+
+`ADDED`
+
+- Added an IoC Container alias for the Cart class.
+- Added the provides() method to the Service Provider.
+
+`REVISED`
+
+- Unit tests improvements.
+
+#### v1.0.1 - 2014-07-24
+
+`REVISED`
+
+- Improved the setMetadata() method to allow old values to be merged when setting new values on an existing key.
+
+#### v1.0.0 - 2014-05-09
+
+`INIT`
+
+- Can add a single or multiple items to the cart.
+- Can remove a single or multiples item from the cart.
+- Can update a single or multiple items on the cart.
+- Can update an item quantity.
+- Can return all the items.
+- Can check if an item exists on the cart.
+- Can return information of an item.
+- Can return the total of the cart.
+- Can return the subtotal of the cart.
+- Can return the subtotal of the items without conditions.
+- Can return the total number of items that are in the cart.
+- Can return the total cart weight.
+- Can empty the cart.
+- Can search for items that are in the cart.
+- Can synchronize a collection of data with the cart.
+- Can manage cart metadata. Ex.: Shipping or Billing information.
+- Can get and set the cart required indexes.
+- Can get and set the cart identity.
+- Can apply conditions to the cart.
+- Can apply conditions to items.
+- Can return all the applied cart conditions.
+- Can return all the applied items conditions.
+- Can return all the applied conditions for specific types.
+- Can get and set the cart conditions order.
+- Can get and set the items conditions order.
+- Can get the cart conditions total.
+- Can get the cart conditions total for a specific type.
+- Can get the cart conditions total sum.
+- Can get the items conditions total.
+- Can get the items conditions total for a specfic type.
+- Can get the items conditions total sum.
+- Can remove contions by id, name or type.

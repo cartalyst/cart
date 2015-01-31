@@ -11,13 +11,16 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="Cart Test Suite">
+        <testsuite name="Cart Package Test Suite">
             <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory suffix=".php">./src/</directory>
+            <exclude>
+                <file>./src/Laravel/CartServiceProvider.php</file>
+            </exclude>
         </whitelist>
     </filter>
     <logging>
