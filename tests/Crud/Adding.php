@@ -1,4 +1,5 @@
-<?php namespace Cartalyst\Cart\Tests\Crud;
+<?php
+
 /**
  * Part of the Cart package.
  *
@@ -7,155 +8,156 @@
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
  * @package    Cart
- * @version    1.1.1
+ * @version    1.1.2
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2014, Cartalyst LLC
+ * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Cart\Tests\CartTestCase;
+namespace Cartalyst\Cart\tests\Crud;
+
 use Illuminate\Support\Collection;
+use Cartalyst\Cart\Tests\CartTestCase;
 
-class Adding extends CartTestCase {
+class Adding extends CartTestCase
+{
+    /** @test */
+    public function it_can_add_a_single_item()
+    {
+        $item = $this->createItem('Foobar 1', 10.00, 2);
 
-	/** @test */
-	public function it_can_add_a_single_item()
-	{
-		$item = $this->createItem('Foobar 1', 10.00, 2);
+        $this->cart->add($item);
 
-		$this->cart->add($item);
+        $this->assertEquals($this->cart->quantity(), 2);
 
-		$this->assertEquals($this->cart->quantity(), 2);
+        $this->assertCount(1, $this->cart->items());
+    }
 
-		$this->assertCount(1, $this->cart->items());
-	}
+    /** @test */
+    public function it_can_add_a_free_item()
+    {
+        $item = $this->createItem('Foobar 1', 0);
 
-	/** @test */
-	public function it_can_add_a_free_item()
-	{
-		$item = $this->createItem('Foobar 1', 0);
+        $this->cart->add($item);
 
-		$this->cart->add($item);
+        $this->assertEquals($this->cart->quantity(), 1);
 
-		$this->assertEquals($this->cart->quantity(), 1);
+        $this->assertCount(1, $this->cart->items());
+    }
 
-		$this->assertCount(1, $this->cart->items());
-	}
+    /** @test */
+    public function it_can_add_a_single_item_with_quantity_as_string()
+    {
+        $item = $this->createItem('Foobar 1', 10.00, '0000002');
 
-	/** @test */
-	public function it_can_add_a_single_item_with_quantity_as_string()
-	{
-		$item = $this->createItem('Foobar 1', 10.00, '0000002');
+        $this->cart->add($item);
 
-		$this->cart->add($item);
+        $this->assertEquals($this->cart->quantity(), 2);
+    }
 
-		$this->assertEquals($this->cart->quantity(), 2);
-	}
+    /** @test */
+    public function it_can_add_a_single_item_with_price_as_string()
+    {
+        $item = $this->createItem('Foobar 1', '10.00', 2);
 
-	/** @test */
-	public function it_can_add_a_single_item_with_price_as_string()
-	{
-		$item = $this->createItem('Foobar 1', '10.00', 2);
+        $item = $this->cart->add($item);
 
-		$item = $this->cart->add($item);
+        $this->assertEquals($item->get('price'), 10);
+    }
 
-		$this->assertEquals($item->get('price'), 10);
-	}
+    /** @test */
+    public function it_can_add_a_single_item_with_attributes()
+    {
+        $item = $this->cart->add(
+            $this->createItem('Foobar 1', 125, 2, null, [5, 3.5])
+        );
 
-	/** @test */
-	public function it_can_add_a_single_item_with_attributes()
-	{
-		$item = $this->cart->add(
-			$this->createItem('Foobar 1', 125, 2, null, [5, 3.5])
-		);
+        $this->assertCount(2, $item->attributes());
+        +        $this->assertEquals(125.00, $item->price());
+        +        $this->assertEquals(133.50, $item->price(true));
 
-		$this->assertCount(2, $item->attributes());
-+		$this->assertEquals(125.00, $item->price());
-+		$this->assertEquals(133.50, $item->price(true));
+        $this->assertCount(1, $this->cart->items());
+        $this->assertEquals($this->cart->quantity(), 2);
+        $this->assertEquals($this->cart->total(), 267);
+    }
 
-		$this->assertCount(1, $this->cart->items());
-		$this->assertEquals($this->cart->quantity(), 2);
-		$this->assertEquals($this->cart->total(), 267);
-	}
+    /** @test */
+    public function it_can_add_multiple_items()
+    {
+        $item1 = $this->createItem('Foobar 1', 4, 3);
+        $item2 = $this->createItem('Foobar 2', 21, 2);
+        $item3 = $this->createItem('Foobar 3', 120, 2);
 
-	/** @test */
-	public function it_can_add_multiple_items()
-	{
-		$item1 = $this->createItem('Foobar 1', 4, 3);
-		$item2 = $this->createItem('Foobar 2', 21, 2);
-		$item3 = $this->createItem('Foobar 3', 120, 2);
+        $this->cart->add([$item1, $item2, $item3]);
 
-		$this->cart->add([$item1, $item2, $item3]);
+        $this->assertCount(3, $this->cart->items());
+        $this->assertEquals($this->cart->quantity(), 7);
+        $this->assertEquals($this->cart->total(), 294);
+    }
 
-		$this->assertCount(3, $this->cart->items());
-		$this->assertEquals($this->cart->quantity(), 7);
-		$this->assertEquals($this->cart->total(), 294);
-	}
+    /** @test */
+    public function it_can_add_existing_item_to_update_its_quantity()
+    {
+        $item = $this->createItem('Foobar 1', 4, 3);
 
-	/** @test */
-	public function it_can_add_existing_item_to_update_its_quantity()
-	{
-		$item = $this->createItem('Foobar 1', 4, 3);
+        $item = $this->cart->add($item);
 
-		$item = $this->cart->add($item);
+        $this->assertEquals($item->get('quantity'), 3);
 
-		$this->assertEquals($item->get('quantity'), 3);
+        $item = $this->createItem('Foobar 1', 4, 6);
 
-		$item = $this->createItem('Foobar 1', 4, 6);
+        $item = $this->cart->add($item);
 
-		$item = $this->cart->add($item);
+        $this->assertEquals($item->get('quantity'), 9);
+    }
 
-		$this->assertEquals($item->get('quantity'), 9);
-	}
+    /** @test */
+    public function it_can_add_multiple_items_with_attributes()
+    {
+        $item1 = $this->createItem('Foobar 1', 4, 03, null, [5, 3.50]);
+        $item2 = [
+            'id'         => 'foobar3',
+            'name'       => 'Foobar 3',
+            'quantity'   => 4,
+            'price'      => 120.00,
+            'attributes' => [
+                'color' => [
+                    'label' => 'Blue',
+                    'value' => 'blue',
+                    'price' => 3.50,
+                ],
+            ],
+        ];
 
-	/** @test */
-	public function it_can_add_multiple_items_with_attributes()
-	{
-		$item1 = $this->createItem('Foobar 1', 4, 03, null, [5, 3.50]);
-		$item2 = [
-			'id'         => 'foobar3',
-			'name'       => 'Foobar 3',
-			'quantity'   => 4,
-			'price'      => 120.00,
-			'attributes' => [
-				'color' => [
-					'label' => 'Blue',
-					'value' => 'blue',
-					'price' => 3.50,
-				],
-			],
-		];
+        $items = $this->cart->add([$item1, $item2]);
 
-		$items = $this->cart->add([$item1, $item2]);
+        $item1 = $items[0];
+        $item2 = $items[1];
 
-		$item1 = $items[0];
-		$item2 = $items[1];
+        $this->assertCount(2, $item1->attributes());
+        $this->assertCount(1, $item2->attributes());
 
-		$this->assertCount(2, $item1->attributes());
-		$this->assertCount(1, $item2->attributes());
+        $this->assertCount(2, $this->cart->items());
+        $this->assertEquals($this->cart->quantity(), 7);
+        $this->assertEquals($this->cart->total(), 531.5);
+    }
 
-		$this->assertCount(2, $this->cart->items());
-		$this->assertEquals($this->cart->quantity(), 7);
-		$this->assertEquals($this->cart->total(), 531.5);
-	}
+    /** @test */
+    public function it_can_sync_data_from_a_collection()
+    {
+        $item1 = $this->createItem('Foobar 1', 50, 1);
+        $item2 = $this->createItem('Foobar 2', 50, 1);
 
-	/** @test */
-	public function it_can_sync_data_from_a_collection()
-	{
-		$item1 = $this->createItem('Foobar 1', 50, 1);
-		$item2 = $this->createItem('Foobar 2', 50, 1);
+        $this->assertEmpty($this->cart->items());
 
-		$this->assertEmpty($this->cart->items());
+        $data = new Collection([$item1, $item2]);
 
-		$data = new Collection([$item1, $item2]);
+        $this->cart->sync($data);
 
-		$this->cart->sync($data);
-
-		$this->assertCount(2, $this->cart->items());
-	}
-
+        $this->assertCount(2, $this->cart->items());
+    }
 }
