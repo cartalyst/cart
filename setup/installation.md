@@ -10,7 +10,7 @@ Open your `composer.json` file and add the following to the `require` array:
 
 	"cartalyst/cart": "2.0.*@dev"
 
-> **Note:** This version is still under develoment.
+> **Note:** This version is still under development.
 
 Add the following lines after the `require` array on your `composer.json` file:
 
