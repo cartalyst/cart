@@ -15,12 +15,14 @@ Reader-friendly Documentation can be found here. [Cart Manual](https://cartalyst
 Raw files can be found via this projects docs/version branch.
 
 - [1.0](https://github.com/cartalyst/cart/tree/docs/1.0)
+- [1.1](https://github.com/cartalyst/cart/tree/docs/1.1)
 
 ## Changelog
 
 Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
 - [1.0](CHANGELOG.md) - 2014-05-09
+- [1.1](CHANGELOG.md) - 2014-10-27
 
 ## Support
 
