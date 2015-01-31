@@ -8,7 +8,9 @@ The best and easiest way to install the Cart package is with [Composer](http://g
 
 Open your `composer.json` file and add the following to the `require` array:
 
-	"cartalyst/cart": "1.1.*"
+	"cartalyst/cart": "2.0.*@dev"
+
+> **Note:** This version is still under develoment.
 
 Add the following lines after the `require` array on your `composer.json` file:
 

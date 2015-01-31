@@ -9,7 +9,7 @@
 	],
 	"integration" : [
 		"index",
-		"laravel-4",
+		"laravel-5",
 		"native"
 	],
 	"usage": [
