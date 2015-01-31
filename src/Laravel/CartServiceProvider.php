@@ -29,16 +29,10 @@ class CartServiceProvider extends ServiceProvider
     /**
      * {@inheritDoc}
      */
-    public function boot()
-    {
-        $this->package('cartalyst/cart', 'cartalyst/cart', __DIR__.'/..');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function register()
     {
+        $this->prepareResources();
+
         $this->registerSession();
 
         $this->registerCart();
@@ -56,6 +50,22 @@ class CartServiceProvider extends ServiceProvider
     }
 
     /**
+     * Prepare the package resources.
+     *
+     * @return void
+     */
+    protected function prepareResources()
+    {
+        $configPath = __DIR__.'/../config/config.php';
+
+        $this->mergeConfigFrom($configPath, 'cartalyst.cart');
+
+        $this->publishes([
+            $configPath => config_path('cartalyst.cart.php'),
+        ]);
+    }
+
+    /**
      * Register the session driver used by the Cart.
      *
      * @return void
@@ -63,7 +73,7 @@ class CartServiceProvider extends ServiceProvider
     protected function registerSession()
     {
         $this->app['cart.session'] = $this->app->share(function ($app) {
-            $config = $app['config']->get('cartalyst/cart::config');
+            $config = $app['config']->get('cartalyst.cart');
 
             return new IlluminateSession($app['session.store'], $config['instance'], $config['session_key']);
         });
@@ -77,11 +87,11 @@ class CartServiceProvider extends ServiceProvider
     protected function registerCart()
     {
         $this->app['cart'] = $this->app->share(function ($app) {
-            $requiredIndexes = $app['config']->get('cartalyst/cart::config.requiredIndexes');
-
             $cart = new Cart($app['cart.session'], $app['events']);
 
-            $cart->setRequiredIndexes($requiredIndexes);
+            $cart->setRequiredIndexes(
+                $app['config']->get('cartalyst.cart.requiredIndexes', [])
+            );
 
             return $cart;
         });
