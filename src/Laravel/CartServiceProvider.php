@@ -56,12 +56,12 @@ class CartServiceProvider extends ServiceProvider
      */
     protected function prepareResources()
     {
-        $configPath = __DIR__.'/../config/config.php';
+        $config = realpath(__DIR__.'/../config/config.php');
 
-        $this->mergeConfigFrom($configPath, 'cartalyst.cart');
+        $this->mergeConfigFrom($config, 'cartalyst.cart');
 
         $this->publishes([
-            $configPath => config_path('cartalyst.cart.php'),
+            $config => config_path('cartalyst.cart.php'),
         ]);
     }
 
