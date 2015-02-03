@@ -62,7 +62,7 @@ class CartServiceProvider extends ServiceProvider
 
         $this->publishes([
             $config => config_path('cartalyst.cart.php'),
-        ]);
+        ], 'config');
     }
 
     /**
