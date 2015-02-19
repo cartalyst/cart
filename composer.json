@@ -44,7 +44,7 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"cartalyst/conditions": "~1.0",
+		"cartalyst/conditions": "~2.0@dev",
 		"illuminate/events": "~5.0",
 		"illuminate/support": "~5.0"
 	},
