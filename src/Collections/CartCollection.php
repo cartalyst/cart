@@ -575,6 +575,8 @@ class CartCollection extends BaseCollection implements Serializable
     {
         if ($id) {
             foreach ($this->conditions as $key => $value) {
+                if ( ! isset($value[$target])) continue;
+
                 if ($value[$target] === $id) {
                     unset($this->conditions[$key]);
                 }
