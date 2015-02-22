@@ -21,6 +21,7 @@
 namespace Cartalyst\Cart\Laravel;
 
 use Cartalyst\Cart\Cart;
+use Cartalyst\Conditions\Callback;
 use Illuminate\Support\ServiceProvider;
 use Cartalyst\Cart\Storage\IlluminateSession;
 
@@ -34,6 +35,8 @@ class CartServiceProvider extends ServiceProvider
         $this->registerSession();
 
         $this->registerCart();
+
+        $this->registerCallbackContainer();
     }
 
     /**
@@ -96,5 +99,15 @@ class CartServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('cart', 'Cartalyst\Cart\Cart');
+    }
+
+    /**
+     * Register the container with the callback class.
+     *
+     * @return void
+     */
+    protected function registerCallbackContainer()
+    {
+        Callback::setContainer($this->app);
     }
 }
