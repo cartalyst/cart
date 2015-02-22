@@ -546,6 +546,36 @@ class CartTestConditions extends CartTestCase
     }
 
     /** @test */
+    public function cart_removes_conditions_with_different_targets_from_cart()
+    {
+        $tax   = $this->createCondition('Tax 10%', 'tax', '10%');
+        $other = $this->createCondition('Other 10%', 'other', '10%');
+
+        $tax->put('code', 'foo');
+
+        $this->cart->add([
+            $this->createItem('Foobar 1', 244, 3, $tax, [3, 3]),
+            $this->createItem('Foobar 2', 125, 3, null, [3, 3]),
+        ]);
+
+        $this->cart->condition($tax);
+
+        $this->assertEquals($this->cart->total(), 1339.8);
+
+        $this->cart->condition([$tax, $other]);
+
+        $this->assertEquals($this->cart->total(), 1473.78);
+
+        $this->cart->removeConditions('foo', false, 'code');
+
+        $this->assertEquals($this->cart->total(), 1339.8);
+
+        $this->cart->removeConditions(null, false);
+
+        $this->assertEquals($this->cart->total(), 1218);
+    }
+
+    /** @test */
     public function cart_calculates_conditions_total()
     {
         $tax1 = $this->createCondition('Tax 5%', 'tax', '5%');
