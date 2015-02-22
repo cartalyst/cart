@@ -487,6 +487,8 @@ class Cart extends CartCollection
 
         if ($id) {
             foreach ($items->conditions as $key => $value) {
+                if ( ! isset($value[$target])) continue;
+
                 if ($value[$target] === $id) {
                     unset($items->conditions[$key]);
                 }
