@@ -25,7 +25,7 @@ $store = new Store('your_app_session_name', $fileSessionHandler);
 $session = new NativeSession($store, $config['session_key'], $config['instance']);
 
 // Instantiate the Cart and set the necessary configuration
-$cart = new Cart('cart', $session, new Dispatcher);
+$cart = new Cart($session, new Dispatcher);
 
 $cart->setRequiredIndexes($config['requiredIndexes']);
 ```
