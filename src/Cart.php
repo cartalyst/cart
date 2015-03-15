@@ -21,7 +21,7 @@
 namespace Cartalyst\Cart;
 
 use Illuminate\Events\Dispatcher;
-use Illuminate\Support\Collection;
+use Cartalyst\Collections\Collection;
 use Cartalyst\Cart\Storage\StorageInterface;
 use Cartalyst\Cart\Collections\CartCollection;
 
@@ -124,7 +124,7 @@ class Cart
     /**
      * Synchronizes a collection of data with the cart.
      *
-     * @param  \Illuminate\Support\Collection  $items
+     * @param  \Cartalyst\Collections\Collection  $items
      * @return void
      */
     public function sync(Collection $items)

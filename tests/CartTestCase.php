@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Cart\tests;
+namespace Cartalyst\Cart\Tests;
 
 use Cartalyst\Cart\Cart;
 use Illuminate\Session\Store;

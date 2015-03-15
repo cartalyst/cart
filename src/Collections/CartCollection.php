@@ -369,9 +369,7 @@ class CartCollection extends BaseCollection implements Serializable
      */
     public function subtotal()
     {
-        return $this->sum(function ($item) {
-            return $item->total();
-        });
+        return $this->sum('total');
     }
 
     /**
@@ -381,9 +379,7 @@ class CartCollection extends BaseCollection implements Serializable
      */
     public function itemsSubtotal()
     {
-        return $this->sum(function ($item) {
-            return $item->subtotal();
-        });
+        return $this->sum('subtotal');
     }
 
     /**
@@ -393,9 +389,7 @@ class CartCollection extends BaseCollection implements Serializable
      */
     public function quantity()
     {
-        return (int) $this->sum(function ($item) {
-            return $item->get('quantity');
-        });
+        return (int) $this->sum('quantity');
     }
 
     /**
@@ -405,9 +399,7 @@ class CartCollection extends BaseCollection implements Serializable
      */
     public function weight()
     {
-        return $this->sum(function ($item) {
-            return $item->weight();
-        });
+        return $this->sum('weight');
     }
 
     /**

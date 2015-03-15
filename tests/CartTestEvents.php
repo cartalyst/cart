@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Cart\tests;
+namespace Cartalyst\Cart\Tests;
 
 use Mockery as m;
 use Cartalyst\Cart\Cart;

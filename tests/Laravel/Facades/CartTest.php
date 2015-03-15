@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Cart\tests\Laravel\Facades;
+namespace Cartalyst\Cart\Tests\Laravel\Facades;
 
 use ReflectionClass;
 use PHPUnit_Framework_TestCase;

@@ -38,7 +38,7 @@ class ItemCollection extends BaseCollection
     /**
      * Returns this item attributes.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Cartalyst\Collections\Collection
      */
     public function attributes()
     {

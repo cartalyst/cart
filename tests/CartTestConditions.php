@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Cart\tests;
+namespace Cartalyst\Cart\Tests;
 
 class CartTestConditions extends CartTestCase
 {
@@ -494,7 +494,7 @@ class CartTestConditions extends CartTestCase
         $this->assertEquals($this->cart->total(), 300);
         $this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
 
-        $this->cart->update('1085cc7857b8241294e0a45799a1c36e', [
+        $this->cart->update('3544c874792b3af994b612b6c1fd2523', [
             'quantity' => 3,
         ]);
 

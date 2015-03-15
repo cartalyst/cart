@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Cart\tests;
+namespace Cartalyst\Cart\Tests;
 
 class CartTestExceptions extends CartTestCase
 {

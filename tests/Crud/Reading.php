@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Cart\tests\Crud;
+namespace Cartalyst\Cart\Tests\Crud;
 
 use Cartalyst\Cart\Tests\CartTestCase;
 

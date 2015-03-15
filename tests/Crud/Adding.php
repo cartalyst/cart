@@ -18,9 +18,9 @@
  * @link       http://cartalyst.com
  */
 
-namespace Cartalyst\Cart\tests\Crud;
+namespace Cartalyst\Cart\Tests\Crud;
 
-use Illuminate\Support\Collection;
+use Cartalyst\Collections\Collection;
 use Cartalyst\Cart\Tests\CartTestCase;
 
 class Adding extends CartTestCase

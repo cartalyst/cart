@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Cart\Collections;
 
-use Illuminate\Support\Collection;
+use Cartalyst\Collections\Collection;
 
 class ItemAttributesCollection extends Collection
 {
@@ -31,8 +31,6 @@ class ItemAttributesCollection extends Collection
      */
     public function getTotal()
     {
-        return $this->sum(function ($option) {
-            return $option->get('price');
-        });
+        return $this->sum('price');
     }
 }

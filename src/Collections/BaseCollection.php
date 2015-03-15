@@ -21,7 +21,7 @@
 namespace Cartalyst\Cart\Collections;
 
 use Cartalyst\Cart\Cart;
-use Illuminate\Support\Collection;
+use Cartalyst\Collections\Collection;
 
 abstract class BaseCollection extends Collection
 {
