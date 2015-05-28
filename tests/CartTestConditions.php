@@ -173,7 +173,7 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar', 125, 1, $tax1, [0, 3])
         );
         $this->cart->add(
-            $this->createItem('Foobar', 125, 1, $discount, [0, 3])
+            $this->createItem('Foobar2', 125, 1, $discount, [0, 3])
         );
 
         $this->cart->condition([$tax2]);
