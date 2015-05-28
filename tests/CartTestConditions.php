@@ -161,6 +161,28 @@ class CartTestConditions extends CartTestCase
         $this->assertEquals($this->cart->total(), 141.9264);
         $this->assertEquals($this->cart->subtotal(), 140.8);
     }
+    
+    /** @test */
+    public function cart_returns_item_and_cart_conditions()
+    {
+        $discount = $this->createCondition('Discount 10%', 'discount', '-10%');
+        $tax1     = $this->createCondition('Tax 10%', 'tax', '10%');
+        $tax2     = $this->createCondition('Tax 12%', 'tax', '12%');
+
+        $this->cart->add(
+            $this->createItem('Foobar', 125, 1, $tax1, [0, 3])
+        );
+        $this->cart->add(
+            $this->createItem('Foobar', 125, 1, $discount, [0, 3])
+        );
+
+        $this->cart->condition([$tax2]);
+
+        $this->assertEquals(3, count($this->cart->conditions()));
+        $this->assertEquals(2, count($this->cart->conditions('tax')));
+        $this->assertEquals(1, count($this->cart->conditions('tax', false)));
+        $this->assertEquals(1, count($this->cart->conditions('discount')));
+    }
 
     /** @test */
     public function cart_handles_conditions_with_no_action()
