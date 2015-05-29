@@ -169,12 +169,6 @@ class CartCollection extends BaseCollection
             return array_merge($conditions, $this->items()->conditions);
         }
 
-        if ($includeItems) {
-            foreach ($this->items as $item) {
-                $conditions = array_merge($conditions, $item->conditions($type));
-            }
-        }
-
         foreach ($this->items()->conditions as $condition) {
             if ($condition->get('type') === $type) {
                 $conditions[] = $condition;

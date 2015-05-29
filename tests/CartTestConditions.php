@@ -163,28 +163,6 @@ class CartTestConditions extends CartTestCase
     }
 
     /** @test */
-    public function cart_returns_item_and_cart_conditions()
-    {
-        $itemDiscount = $this->createCondition('Discount 10%', 'discount', '-10%');
-        $itemTax      = $this->createCondition('Tax 10%', 'tax', '10%');
-        $cartTax      = $this->createCondition('Tax 12%', 'tax', '12%');
-        
-        $this->cart->add(
-            $this->createItem('Foobar1', 125, 1, $itemTax, [0, 3])
-        );
-        
-        $this->cart->add(
-            $this->createItem('Foobar2', 125, 1, $discount, [0, 3])
-        );
-        
-        $this->cart->condition([$cartTax]);
-        $this->assertEquals(3, count($this->cart->conditions()));
-        $this->assertEquals(2, count($this->cart->conditions('tax')));
-        $this->assertEquals(1, count($this->cart->conditions('tax', false)));
-        $this->assertEquals(1, count($this->cart->conditions('discount')));
-    }
-
-    /** @test */
     public function cart_handles_conditions_with_no_action()
     {
         $condition = $this->createCondition('Free product', 'other', null);
