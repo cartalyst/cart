@@ -707,7 +707,7 @@ class CartCollection extends BaseCollection implements Serializable
         $data = [];
 
         foreach ($attributes as $index => $option) {
-            if (empty($option['value'])) {
+            if (! isset($option['value'])) {
                 throw new CartMissingRequiredIndexException('value');
             }
 
