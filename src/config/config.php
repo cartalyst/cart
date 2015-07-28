@@ -10,7 +10,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Cart
- * @version    1.0.8
+ * @version    1.0.9
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC

@@ -10,6 +10,11 @@ We do not give estimated times for completion on `Accepted` Proposals.
 - [Rejected](https://github.com/cartalyst/cart/labels/Rejected)
 
 ---
+### v1.0.9 - 2015-07-28
+
+`ADDED`
+
+- `.gitattributes` and `.travis.yml` file.
 
 #### v1.0.8 - 2015-01-31
 
