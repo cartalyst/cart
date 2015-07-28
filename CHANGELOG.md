@@ -11,6 +11,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+#### v2.0.1 - 2015-07-28
+
+`ADDED`
+
+- `.gitattributes` and `.travis.yml` file.
+
+`FIXED`
+
+- Attributes check on Cart Collection.
+
 #### v2.0.0 - 2015-03-15
 
 `REVISED`
