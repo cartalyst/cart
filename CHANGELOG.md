@@ -17,6 +17,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Added support for Laravel 5 and dropped support for Laravel 4.
 
+#### v1.1.3 - 2015-07-28
+
+`ADDED`
+
+- `.gitattributes` and `.travis.yml` file.
+
 #### v1.1.2 - 2015-01-31
 
 `REVISED`
@@ -48,6 +54,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 `REMOVED`
 
 - Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
+
+#### v1.0.9 - 2015-07-28
+
+`ADDED`
+
+- `.gitattributes` and `.travis.yml` file.
 
 #### v1.0.8 - 2015-01-31
 
