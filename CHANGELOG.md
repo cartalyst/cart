@@ -43,6 +43,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
 
+### v1.0.9 - 2015-07-28
+
+`ADDED`
+
+- `.gitattributes` and `.travis.yml` file.
+
 #### v1.0.8 - 2015-01-31
 
 `REVISED`

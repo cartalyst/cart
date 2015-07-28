@@ -1,6 +1,6 @@
 # Cart
 
-[![Build Status](http://ci.cartalyst.com/build-status/svg/1)](http://ci.cartalyst.com/build-status/view/1)
+[![Build Status](https://magnum.travis-ci.com/cartalyst/cart.svg?token=98Zt8zYdwyheTKqziswS&branch=1.1)](https://magnum.travis-ci.com/cartalyst/cart)
 
 A framework agnostic shopping cart package featuring multiple cart instances, item attributes and [Conditions](https://cartalyst.com/manual/conditions).
 
@@ -10,25 +10,25 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, ro
 
 ## Documentation
 
-Reader-friendly Documentation can be found here. [Cart Manual](https://cartalyst.com/manual/cart).
+Reader-friendly Documentation can be found here. [Cart Manual](https://cartalyst.com/manual/cart/1.1).
 
 Raw files can be found via this projects docs/version branch.
 
-- [1.0](https://github.com/cartalyst/cart/tree/docs/1.0)
 - [1.1](https://github.com/cartalyst/cart/tree/docs/1.1)
+- [1.0](https://github.com/cartalyst/cart/tree/docs/1.0)
 
 ## Changelog
 
 Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
-- [1.0](CHANGELOG.md) - 2014-05-09
 - [1.1](CHANGELOG.md) - 2014-10-27
+- [1.0](CHANGELOG.md) - 2014-05-09
 
 ## Support
 
 The following support channels can be used for contact.
 
-- [Twitter](https://cartalyst.com/@twitter)
+- [Twitter](https://twitter.com/@cartalyst)
 - [Email](mailto:help@cartalyst.com)
 
 Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
