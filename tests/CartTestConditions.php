@@ -888,4 +888,40 @@ class CartTestConditions extends CartTestCase
         $this->assertEquals($this->cart->total('tax'), 1064.085);
         $this->assertEquals($this->cart->total('shipping'), 1074.085);
     }
+
+    /** @test */
+    public function cart_can_handle_zeroed_out_subtotals()
+    {
+        $discount = $this->createCondition('Discount 100%', 'discount', '-100.00%');
+        $tax      = $this->createCondition('Tax 10%', 'tax', '10%');
+
+        $item = $this->cart->add(
+            $this->createItem('Foobar 1', 100, 5, [$discount, $tax])
+        );
+
+        $this->assertEquals($item->total('discount'), 0);
+        $this->assertEquals($item->subtotal(), 500);
+        $this->assertEquals($item->conditionsTotalSum('discount'), -500);
+        $this->assertEquals($item->conditionsTotalSum('tax'), 0);
+        $this->assertEquals($item->total(), 0);
+
+        $this->assertCount(2, $item->conditions());
+        $this->assertCount(1, $item->conditions('discount'));
+        $this->assertCount(1, $item->conditions('tax'));
+        $this->assertCount(2, $this->cart->itemsConditions());
+
+        $this->assertEquals($this->cart->itemsConditionsTotalSum('discount'), -500);
+        $this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 0);
+        $this->assertEquals($this->cart->itemsSubtotal(), 500);
+        $this->assertEquals($this->cart->subtotal(), 0);
+        $this->assertEquals($this->cart->total(), 0);
+
+        $item->removeConditions('tax');
+
+        $this->assertEquals($item->total(), 0);
+
+        $item->removeConditions();
+
+        $this->assertEquals($item->total(), 500);
+    }
 }
