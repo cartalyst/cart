@@ -173,11 +173,17 @@ abstract class BaseCollection extends Collection
 
         foreach ($this->conditions($conditionType) as $condition) {
             if ($condition->get('target') === $target) {
-                $condition->apply($this, $value);
-
                 $name = $condition->get('name');
 
                 $type = $condition->get('type');
+
+                if (! $value) {
+                    $this->conditionResults[$type][$name] = 0;
+
+                    continue;
+                }
+
+                $condition->apply($this, $value);
 
                 $result = $condition->result();
 
