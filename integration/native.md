@@ -22,7 +22,7 @@ $fileSessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/storage
 
 $store = new Store('your_app_session_name', $fileSessionHandler);
 
-$session = new NativeSession($store, $config['session_key'], $config['instance']);
+$session = new NativeSession($store, $config['instance'], $config['session_key']);
 
 // Instantiate the Cart and set the necessary configuration
 $cart = new Cart($session, new Dispatcher);
