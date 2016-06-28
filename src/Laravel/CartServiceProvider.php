@@ -75,7 +75,7 @@ class CartServiceProvider extends ServiceProvider
      */
     protected function registerSession()
     {
-        $this->app['cart.session'] = $this->app->share(function ($app) {
+        $this->app->singleton('cart.session', function ($app) {
             $config = $app['config']->get('cartalyst.cart');
 
             return new IlluminateSession($app['session.store'], $config['instance'], $config['session_key']);
@@ -89,7 +89,7 @@ class CartServiceProvider extends ServiceProvider
      */
     protected function registerCart()
     {
-        $this->app['cart'] = $this->app->share(function ($app) {
+        $this->app->bind('cart', function ($app) {
             $cart = new Cart($app['cart.session'], $app['events']);
 
             $cart->setRequiredIndexes(
