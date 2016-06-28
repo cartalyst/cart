@@ -10,15 +10,11 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, ro
 
 ## Documentation
 
-Reader-friendly Documentation can be found here. [Cart Manual](https://cartalyst.com/manual/cart/2.0).
+Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/cart/2.0).
 
-Raw files can be found via this projects docs/version branch.
+Raw files can be found [here](https://github.com/cartalyst/cart/tree/docs/2.0).
 
-- [2.0](https://github.com/cartalyst/cart/tree/docs/2.0)
-- [1.1](https://github.com/cartalyst/cart/tree/docs/1.1)
-- [1.0](https://github.com/cartalyst/cart/tree/docs/1.0)
-
-## Changelog
+## Change Log
 
 Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
@@ -30,7 +26,7 @@ Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a fu
 
 The following support channels can be used for contact.
 
-- [Twitter](https://twitter.com/@cartalyst)
+- [Twitter](https://twitter.com/cartalyst)
 - [Email](mailto:help@cartalyst.com)
 
 Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
@@ -45,4 +41,6 @@ Bug reports, feature requests, and pull requests can be submitted by following o
 
 This software is released under the [Cartalyst PSL](LICENSE) License.
 
-© 2011-2015 Cartalyst LLC, All rights reserved.
+© 2011-2016 Cartalyst LLC, All rights reserved.
+
+© 2011-2016 Cartalyst LLC, All rights reserved.

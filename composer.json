@@ -1,72 +1,53 @@
 {
-	"name": "cartalyst/cart",
-	"description": "Shopping cart package featuring multiple cart instances, item attributes and Conditions.",
-	"keywords": [
-		"php",
-		"cartalyst",
-		"laravel",
-		"ecommerce",
-		"cart",
-		"shopping"
-	],
-	"license": "proprietary",
-	"authors": [
-		{
-			"name": "Cartalyst LLC",
-			"email": "help@cartalyst.com"
-		},
-		{
-			"name": "Ben Corlett",
-			"email": "ben.corlett@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Bruno Gaspar",
-			"email": "bruno.gaspar@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Dan Syme",
-			"email": "dan.syme@cartalyst.com",
-			"role": "Project Lead"
-		},
-		{
-			"name": "Suhayb Wardany",
-			"email": "su.wardany@cartalyst.com",
-			"role": "Developer"
-		}
-	],
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "http://packages.cartalyst.com"
-		}
-	],
-	"require": {
-		"php": ">=5.4.0",
-		"cartalyst/conditions": "~2.0",
-		"illuminate/events": "~5.0",
-		"illuminate/support": "~5.0"
-	},
-	"require-dev": {
-		"illuminate/filesystem": "~5.0",
-		"illuminate/session": "~5.0",
-		"mockery/mockery": "~0.9",
-		"phpunit/phpunit": "~4.0"
-	},
-	"autoload": {
-		"files": [
-			"src/Exceptions.php"
-		],
-		"psr-4": {
-			"Cartalyst\\Cart\\": "src/"
-		}
-	},
-	"extra": {
-		"component": "package",
-		"branch-alias": {
-			"dev-master": "2.0.x-dev"
-		}
-	},
-	"minimum-stability": "stable"
+    "name": "cartalyst/cart",
+    "description": "Shopping cart package featuring multiple cart instances, item attributes and Conditions.",
+    "keywords": [
+        "php",
+        "cartalyst",
+        "laravel",
+        "ecommerce",
+        "cart",
+        "shopping"
+    ],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Cartalyst LLC",
+            "email": "help@cartalyst.com",
+            "homepage": "https://cartalyst.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.cartalyst.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "cartalyst/conditions": "~2.0",
+        "illuminate/events": "~5.0",
+        "illuminate/support": "~5.0"
+    },
+    "require-dev": {
+        "illuminate/filesystem": "~5.0",
+        "illuminate/session": "~5.0",
+        "mockery/mockery": "~0.9",
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "files": [
+            "src/Exceptions.php"
+        ],
+        "psr-4": {
+            "Cartalyst\\Cart\\": "src/"
+        }
+    },
+    "extra": {
+        "component": "package",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    },
+    "minimum-stability": "stable"
 }

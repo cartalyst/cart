@@ -1,4 +1,4 @@
-# Cart Change Log
+# Change Log
 
 This project follows [Semantic Versioning](CONTRIBUTING.md).
 
@@ -11,7 +11,17 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
-#### v2.0.1 - 2015-07-28
+### v2.0.2 - 2016-06-28
+
+`FIXED`
+
+- Issue with conditions having the wrong value if it was a 100% discount.
+
+`UPDATED`
+
+- Laravel bindings.
+
+### v2.0.1 - 2015-07-28
 
 `ADDED`
 
@@ -21,19 +31,19 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Attributes check on Cart Collection.
 
-#### v2.0.0 - 2015-03-15
+### v2.0.0 - 2015-03-15
 
 `REVISED`
 
 - Added support for Laravel 5 and dropped support for Laravel 4.
 
-#### v1.1.3 - 2015-07-28
+### v1.1.3 - 2015-07-28
 
 `ADDED`
 
 - `.gitattributes` and `.travis.yml` file.
 
-#### v1.1.2 - 2015-01-31
+### v1.1.2 - 2015-01-31
 
 `REVISED`
 
@@ -43,13 +53,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Remove Laravel 5 requirement, support for Laravel 5 will come from on the `2.0` release version.
 
-#### v1.1.1 - 2014-11-17
+### v1.1.1 - 2014-11-17
 
 `ADDED`
 
 - Added the following events `cartalyst.cart.adding`, `cartalyst.cart.updating`, `cartalyst.cart.removing` and `cartalyst.cart.clearing`
 
-#### v1.1.0 - 2014-10-27
+### v1.1.0 - 2014-10-27
 
 `ADDED`
 
@@ -65,13 +75,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Removed the updateCart() method and it's corresponding calls, keeping the code more simplified.
 
-#### v1.0.9 - 2015-07-28
+### v1.0.9 - 2015-07-28
 
 `ADDED`
 
 - `.gitattributes` and `.travis.yml` file.
 
-#### v1.0.8 - 2015-01-31
+### v1.0.8 - 2015-01-31
 
 `REVISED`
 
@@ -81,37 +91,37 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Remove Laravel 5 requirement, support for Laravel 5 will come from on the `2.0` release version.
 
-#### v1.0.7 - 2014-10-19
+### v1.0.7 - 2014-10-19
 
 `REVISED`
 
 - Allow to add free items (price = 0.00) into the cart.
 
-#### v1.0.6 - 2014-10-11
+### v1.0.6 - 2014-10-11
 
 `FIXED`
 
 - Fixed a bug causing removed item conditions to be reapplied after updating the cart.
 
-#### v1.0.5 - 2014-10-05
+### v1.0.5 - 2014-10-05
 
 `REVISED`
 
 - Added a flag `(bool)` to the `price(:withAttributes)` method to return the item price + the item attributes total.
 
-#### v1.0.4 - 2014-09-23
+### v1.0.4 - 2014-09-23
 
 `REVISED`
 
 - Loosen requirements to allow the usage on Laravel 5.0.
 
-#### v1.0.3 - 2014-09-15
+### v1.0.3 - 2014-09-15
 
 `REVISED`
 
 - Minor tweak to check the condition result before applying the actions.
 
-#### v1.0.2 - 2014-09-05
+### v1.0.2 - 2014-09-05
 
 `ADDED`
 
@@ -122,13 +132,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Unit tests improvements.
 
-#### v1.0.1 - 2014-07-24
+### v1.0.1 - 2014-07-24
 
 `REVISED`
 
 - Improved the setMetadata() method to allow old values to be merged when setting new values on an existing key.
 
-#### v1.0.0 - 2014-05-09
+### v1.0.0 - 2014-05-09
 
 `INIT`
 
