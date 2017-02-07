@@ -44,7 +44,7 @@ class CartTestEvents extends CartTestCase
      */
     public function setUp()
     {
-        $sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions');
+        $sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions', 120);
 
         $session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
 

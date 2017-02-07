@@ -33,7 +33,7 @@ class Updating extends CartTestCase
 
         $this->assertEquals($item->get('quantity'), 5);
 
-        $this->cart->update('b37f673e46a33038305c1dc411215c07', 2);
+        $this->cart->update('b37f673e46a33038305c1dc411215c07', ['quantity' => 2]);
 
         $this->assertEquals($item->get('quantity'), 2);
     }
@@ -47,7 +47,7 @@ class Updating extends CartTestCase
 
         $this->assertEquals($item->get('quantity'), 5);
 
-        $this->cart->update('b37f673e46a33038305c1dc411215c07', -1);
+        $this->cart->update('b37f673e46a33038305c1dc411215c07', ['quantity' => -1]);
 
         $this->assertEquals($this->cart->quantity(), 0);
     }

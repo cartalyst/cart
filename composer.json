@@ -43,6 +43,11 @@
             "Cartalyst\\Cart\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Cartalyst\\Cart\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "component": "package",
         "branch-alias": {
