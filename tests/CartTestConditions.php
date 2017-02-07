@@ -924,4 +924,24 @@ class CartTestConditions extends CartTestCase
 
         $this->assertEquals($item->total(), 500);
     }
+
+    /** @test */
+    public function cart_can_handle_100_percent_price_based_item_conditions()
+    {
+        $discount = $this->createCondition('Discount 100%', 'discount', '-100.00%', 'price');
+
+        $item = $this->cart->add(
+            $this->createItem('Foobar 1', 100, 1, [$discount])
+        );
+
+        $this->assertEquals($item->total(), 0);
+        $this->assertEquals($item->subtotal(), 100);
+
+        $this->assertEquals($this->cart->total(), 0);
+        $this->assertEquals($this->cart->subtotal(), 0);
+
+        $item->removeConditions();
+
+        $this->assertEquals($item->total(), 100);
+    }
 }

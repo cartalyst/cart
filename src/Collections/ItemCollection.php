@@ -81,7 +81,9 @@ class ItemCollection extends BaseCollection
      */
     public function subtotal($price = null)
     {
-        $price = $price ?: $this->price();
+        if ($price !== 0.00) {
+            $price = $price ?: $this->price();
+        }
 
         $attributesTotal = $this->attributes()->getTotal();
 
