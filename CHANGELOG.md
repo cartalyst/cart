@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.3 - 2017-02-07
+
+`FIXED`
+
+- Issue with price-based item conditions having the wrong value if it was a 100% discount.
+
 ### v2.0.2 - 2016-06-28
 
 `FIXED`
