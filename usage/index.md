@@ -127,7 +127,7 @@ $data   | true     | mixed  | This can be either an array or an integer, if an i
 #### Update an item quantity
 
 ```php
-Cart::update('c14c437bc9ae7d35a7c18ee151c6acc0', 2);
+Cart::update('c14c437bc9ae7d35a7c18ee151c6acc0', ['quantity' => 2]);
 ```
 
 #### Update a single item
