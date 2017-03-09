@@ -20,8 +20,8 @@
 
 namespace Cartalyst\Cart;
 
-use Illuminate\Events\Dispatcher;
 use Cartalyst\Collections\Collection;
+use Illuminate\Contracts\Events\Dispatcher;
 use Cartalyst\Cart\Storage\StorageInterface;
 use Cartalyst\Cart\Collections\CartCollection;
 
@@ -37,7 +37,7 @@ class Cart
     /**
      * The event dispatcher instance.
      *
-     * @var \Illuminate\Events\Dispatcher
+     * @var \Illuminate\Contracts\Events\Dispatcher
      */
     protected $dispatcher;
 
@@ -59,7 +59,7 @@ class Cart
      * Constructor.
      *
      * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
-     * @param  \Illuminate\Events\Dispatcher  $dispatcher
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @return void
      */
     public function __construct(StorageInterface $storage, Dispatcher $dispatcher)
@@ -164,7 +164,7 @@ class Cart
     /**
      * Returns the event dispatcher instance.
      *
-     * @return \Illuminate\Events\Dispatcher
+     * @return \Illuminate\Contracts\Events\Dispatcher
      */
     public function getDispatcher()
     {
@@ -174,7 +174,7 @@ class Cart
     /**
      * Sets the event dispatcher instance.
      *
-     * @param  \Illuminate\Events\Dispatcher  $dispatcher
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @return void
      */
     public function setDispatcher(Dispatcher $dispatcher)

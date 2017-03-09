@@ -48,7 +48,7 @@ class CartTestEvents extends CartTestCase
 
         $session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
 
-        $this->dispatcher = m::mock('Illuminate\Events\Dispatcher');
+        $this->dispatcher = m::mock('Illuminate\Contracts\Events\Dispatcher');
 
         $this->cart = new Cart($session, $this->dispatcher);
     }

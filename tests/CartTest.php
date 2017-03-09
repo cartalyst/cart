@@ -24,7 +24,7 @@ require 'CartTestCase.php';
 
 use Mockery as m;
 use Cartalyst\Cart\Cart;
-use Illuminate\Events\Dispatcher;
+use Illuminate\Contracts\Events\Dispatcher;
 
 class CartTest extends CartTestCase
 {
@@ -43,7 +43,7 @@ class CartTest extends CartTestCase
     {
         new Cart(
             m::mock('Cartalyst\Cart\Storage\IlluminateSession'),
-            m::mock('Illuminate\Events\Dispatcher')
+            m::mock('Illuminate\Contracts\Events\Dispatcher')
         );
     }
 
@@ -90,15 +90,15 @@ class CartTest extends CartTestCase
     /** @test */
     public function it_can_get_the_cart_dispatcher()
     {
-        $this->assertInstanceOf('Illuminate\Events\Dispatcher', $this->cart->getDispatcher());
+        $this->assertInstanceOf('Illuminate\Contracts\Events\Dispatcher', $this->cart->getDispatcher());
     }
 
     /** @test */
     public function it_can_set_the_cart_dispatcher()
     {
-        $this->cart->setDispatcher(m::mock('Illuminate\Events\Dispatcher'));
+        $this->cart->setDispatcher(m::mock('Illuminate\Contracts\Events\Dispatcher'));
 
-        $this->assertInstanceOf('Illuminate\Events\Dispatcher', $this->cart->getDispatcher());
+        $this->assertInstanceOf('Illuminate\Contracts\Events\Dispatcher', $this->cart->getDispatcher());
     }
 
     /** @test */
