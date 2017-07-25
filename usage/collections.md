@@ -2,7 +2,7 @@
 
 Collections are merely a wrapper for an array of objects, but offers a bunch of other useful methods to help you pluck items out of the array.
 
-Below we'll reference a few of the many useful methods available within the Laravel [`Collection`](https://github.com/laravel/framework/blob/master/src/Illuminate/Support/Collection.php) class.
+Below we'll reference a few of the many useful methods available within the Cartalyst [`Collection`](https://github.com/cartalyst/collections/blob/1.1/src/Collection.php) class.
 
 ##### first()
 
