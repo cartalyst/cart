@@ -128,7 +128,7 @@ class ItemCollection extends BaseCollection
             } elseif ($key === 'price' || $key == 'weight') {
                 $value = (float) $value;
             } elseif ($key === 'quantity') {
-                $value = (int) $value;
+                $value = $value;
             }
 
             $valid = $valid && $this->get($key) === $value;
