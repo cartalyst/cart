@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Cart
- * @version    2.0.3
+ * @version    2.0.4
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -105,11 +105,11 @@ class CartTest extends CartTestCase
     public function it_can_get_the_total_number_of_items_inside_the_cart()
     {
         $this->cart->add([
-            $this->createItem('Foobar 1', 97, 4),
+            $this->createItem('Foobar 1', 97, 4.5),
             $this->createItem('Foobar 2', 85, 2),
         ]);
 
-        $this->assertEquals($this->cart->quantity(), 6);
+        $this->assertEquals($this->cart->quantity(), 6.5);
     }
 
     /** @test */

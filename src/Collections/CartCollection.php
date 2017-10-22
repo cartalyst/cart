@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Cart
- * @version    2.0.3
+ * @version    2.0.4
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -131,7 +131,7 @@ class CartCollection extends BaseCollection implements Serializable
         }
 
         // Make sure the quantity is an integer
-        $quantity = (int) $item['quantity'];
+        $quantity = $item['quantity'];
 
         // Check if the quantity value is correct
         if ( ! is_numeric($quantity) || $quantity < 1) {
@@ -257,7 +257,7 @@ class CartCollection extends BaseCollection implements Serializable
                 if ($key === 'price') {
                     $value = (float) $value;
                 } elseif ($key === 'quantity') {
-                    $value = (int) $value;
+                    $value = $value;
                 } elseif ($key === 'attributes') {
                     $value = $this->prepareItemAttributes($value);
                 }
@@ -268,7 +268,7 @@ class CartCollection extends BaseCollection implements Serializable
 
         // We are probably updating the item quantity
         else {
-            $row->put('quantity', (int) $data);
+            $row->put('quantity', $data);
         }
 
         // Remove the item if the quantity is less than one
@@ -389,7 +389,7 @@ class CartCollection extends BaseCollection implements Serializable
      */
     public function quantity()
     {
-        return (int) $this->sum('quantity');
+        return $this->sum('quantity');
     }
 
     /**

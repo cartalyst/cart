@@ -11,6 +11,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.4 - 2017-10-22
+
+`ADDED`
+
+- Support for Laravel 5.5 Package Discovery.
+- Support for decimal quantities.
+
 ### v2.0.3 - 2017-02-07
 
 `FIXED`

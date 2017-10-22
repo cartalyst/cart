@@ -52,6 +52,14 @@
         "component": "package",
         "branch-alias": {
             "dev-master": "2.1.x-dev"
+        },
+         "laravel": {
+            "providers": [
+                "Cartalyst\\Cart\\Laravel\\CartServiceProvider"
+            ],
+            "aliases": {
+                "Cart": "Cartalyst\\Cart\\Laravel\\Facades\\Cart"
+            }
         }
     },
     "minimum-stability": "stable"
