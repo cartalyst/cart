@@ -193,7 +193,7 @@ class Cart
     {
         // Check if we should fire events
         if ($this->fireEvents) {
-            $this->dispatcher->fire("cartalyst.cart.{$event}", $data);
+            $this->dispatcher->dispatch("cartalyst.cart.{$event}", $data);
         }
     }
 
