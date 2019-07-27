@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Cart
- * @version    2.0.4
+ * @version    2.0.5
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -193,7 +193,9 @@ class Cart
     {
         // Check if we should fire events
         if ($this->fireEvents) {
-            $this->dispatcher->fire("cartalyst.cart.{$event}", $data);
+            $method = method_exists($this->dispatcher, 'fire') ? 'fire' : 'dispatch';
+
+            $this->dispatcher->{$method}("cartalyst.cart.{$event}", $data);
         }
     }
 

@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.5 - 2019-03-29
+
+`FIXED`
+
+- Issue with Laravel 5.8 events dispatching
+
 ### v2.0.4 - 2017-10-22
 
 `ADDED`

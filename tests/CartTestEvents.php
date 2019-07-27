@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Cart
- * @version    2.0.4
+ * @version    2.0.5
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -50,15 +50,17 @@ class CartTestEvents extends CartTestCase
 
         $this->dispatcher = m::mock('Illuminate\Contracts\Events\Dispatcher');
 
+        $this->dispatcherMethod = method_exists($this->dispatcher, 'fire') ? 'fire' : 'dispatch';
+
         $this->cart = new Cart($session, $this->dispatcher);
     }
 
     /** @test */
     public function can_listen_to_the_added_event()
     {
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.created', m::any());
 
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.added', m::any());
 
         $this->cart->add(
             $this->createItem('Foobar 1', 125, 2)
@@ -68,11 +70,11 @@ class CartTestEvents extends CartTestCase
     /** @test */
     public function can_listen_to_the_updated_event()
     {
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.created', m::any());
 
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.added', m::any());
 
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.updated', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.updated', m::any());
 
         $item = $this->cart->add(
             $this->createItem('Foobar 1', 125, 2)
@@ -86,11 +88,11 @@ class CartTestEvents extends CartTestCase
     /** @test */
     public function can_listen_to_the_removed_event()
     {
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.created', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.created', m::any());
 
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.added', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.added', m::any());
 
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.removed', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.removed', m::any());
 
         $item = $this->cart->add(
             $this->createItem('Foobar 1', 125, 2)
@@ -102,7 +104,7 @@ class CartTestEvents extends CartTestCase
     /** @test */
     public function can_listen_to_the_cleared_event()
     {
-        $this->dispatcher->shouldReceive('fire')->once()->with('cartalyst.cart.cleared', m::any());
+        $this->dispatcher->shouldReceive($this->dispatcherMethod)->once()->with('cartalyst.cart.cleared', m::any());
 
         $this->cart->clear();
     }
