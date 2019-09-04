@@ -40,10 +40,12 @@ class CartTest extends CartTestCase
     /** @test */
     public function cart_can_be_instantiated()
     {
-        new Cart(
+        $cart = new Cart(
             m::mock('Cartalyst\Cart\Storage\IlluminateSession'),
             m::mock('Illuminate\Contracts\Events\Dispatcher')
         );
+
+        $this->assertInstanceOf('Cartalyst\Cart\Cart', $cart);
     }
 
     /** @test */
@@ -242,12 +244,6 @@ class CartTest extends CartTestCase
     public function see_if_item_does_not_exist()
     {
         $this->assertFalse($this->cart->exists('foobar'));
-    }
-
-    /** @test */
-    public function it_can_set_meta_data()
-    {
-        $this->cart->setMetaData('abc', 'aaa');
     }
 
     /** @test */
