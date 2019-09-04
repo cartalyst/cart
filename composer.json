@@ -25,7 +25,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "cartalyst/conditions": "~2.0",
+        "cartalyst/conditions": "^3.0",
         "illuminate/events": "^6.0",
         "illuminate/support": "^6.0"
     },
