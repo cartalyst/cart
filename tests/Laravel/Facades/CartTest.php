@@ -21,9 +21,9 @@
 namespace Cartalyst\Cart\Tests\Laravel\Facades;
 
 use ReflectionClass;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class CartTest extends PHPUnit_Framework_TestCase
+class CartTest extends TestCase
 {
     /** @test */
     public function it_can_test_it_is_a_facade()
@@ -43,6 +43,6 @@ class CartTest extends PHPUnit_Framework_TestCase
         $method = $reflection->getMethod('getFacadeAccessor');
         $method->setAccessible(true);
 
-        $this->assertEquals('cart', $method->invoke(null));
+        $this->assertSame('cart', $method->invoke(null));
     }
 }

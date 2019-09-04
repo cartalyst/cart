@@ -33,51 +33,51 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 1', 100, 5, [$discount, $other, $tax])
         );
 
-        $this->assertEquals($item->total('discount'), 498.75);
-        $this->assertEquals($item->subtotal(), 500);
-        $this->assertEquals($item->conditionsTotalSum('discount'), -26.25);
-        $this->assertEquals($item->conditionsTotalSum('tax'), 49.875);
-        $this->assertEquals($item->total(), 548.625);
+        $this->assertSame($item->total('discount'), 498.75);
+        $this->assertSame($item->subtotal(), 500.00);
+        $this->assertSame($item->conditionsTotalSum('discount'), -26.25);
+        $this->assertSame($item->conditionsTotalSum('tax'), 49.875);
+        $this->assertSame($item->total(), 548.625);
 
         $this->assertCount(3, $item->conditions());
         $this->assertCount(1, $item->conditions('discount'));
         $this->assertCount(3, $this->cart->itemsConditions());
 
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('discount', false), -26.25);
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 49.875);
-        $this->assertEquals($this->cart->itemsSubtotal(), 500);
-        $this->assertEquals($this->cart->subtotal(), 548.625);
-        $this->assertEquals($this->cart->total(), 548.625);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('discount', false), -26.25);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('tax'), 49.875);
+        $this->assertSame($this->cart->itemsSubtotal(), 500.00);
+        $this->assertSame($this->cart->subtotal(), 548.625);
+        $this->assertSame($this->cart->total(), 548.625);
 
         $this->cart->condition($tax);
 
         $this->assertCount(4, $this->cart->conditions());
         $this->assertCount(1, $this->cart->conditions(null, false));
 
-        $this->assertEquals($this->cart->itemsConditionsTotalSum(), 48.625);
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('discount'), -26.25);
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('other'), 25);
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 49.875);
+        $this->assertSame($this->cart->itemsConditionsTotalSum(), 48.625);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('discount'), -26.25);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('other'), 25.00);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('tax'), 49.875);
 
-        $this->assertEquals($this->cart->conditionsTotalSum(), 103.4875);
-        $this->assertEquals($this->cart->conditionsTotalSum('discount'), -26.25);
-        $this->assertEquals($this->cart->conditionsTotalSum('other'), 25);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 104.7375);
+        $this->assertSame($this->cart->conditionsTotalSum(), 103.4875);
+        $this->assertSame($this->cart->conditionsTotalSum('discount'), -26.25);
+        $this->assertSame($this->cart->conditionsTotalSum('other'), 25.00);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 104.7375);
 
         $this->cart->condition($discount);
 
-        $this->assertEquals($this->cart->conditionsTotalSum(), 73.313125);
-        $this->assertEquals($this->cart->conditionsTotalSum('discount'), -53.68125);
-        $this->assertEquals($this->cart->conditionsTotalSum('other'), 25);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 101.994375);
+        $this->assertSame($this->cart->conditionsTotalSum(), 73.313125);
+        $this->assertSame($this->cart->conditionsTotalSum('discount'), -53.68125);
+        $this->assertSame($this->cart->conditionsTotalSum('other'), 25.00);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 101.994375);
 
         $item->removeConditions('tax');
 
-        $this->assertEquals($item->total(), 498.75);
+        $this->assertSame($item->total(), 498.75);
 
         $item->removeConditions();
 
-        $this->assertEquals($item->total(), 500);
+        $this->assertSame($item->total(), 500.00);
     }
 
     /** @test */
@@ -95,7 +95,7 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition([$discount, $other3, $tax]);
 
-        $this->assertEquals($this->cart->total(), 632.225);
+        $this->assertSame($this->cart->total(), 632.225);
     }
 
     /** @test */
@@ -108,25 +108,25 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar', 100, 5, $tax)
         );
 
-        $this->assertEquals($item->conditionsTotalSum('tax'), 25);
-        $this->assertEquals($item->total(), 525);
+        $this->assertSame($item->conditionsTotalSum('tax'), 25.00);
+        $this->assertSame($item->total(), 525.00);
 
         $item->condition($shipping);
 
         $item->setConditionsOrder([
             'tax',
-            'shipping'
+            'shipping',
         ]);
 
-        $this->assertEquals($item->total(), 577.5);
+        $this->assertSame($item->total(), 577.50);
 
         $item->setConditionsOrder([
             'tax',
             'other',
-            'discount'
+            'discount',
         ]);
 
-        $this->assertEquals($item->total(), 525);
+        $this->assertSame($item->total(), 525.00);
     }
 
     /** @test */
@@ -139,10 +139,10 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 2', 85, 1, $discount, [15, 0]),
         ]);
 
-        $this->assertEquals($items[0]->total(), 90);
-        $this->assertEquals($items[1]->total(), 90);
-        $this->assertEquals($this->cart->itemsSubtotal(), 200);
-        $this->assertEquals($this->cart->total(), 180.00);
+        $this->assertSame($items[0]->total(), 90.00);
+        $this->assertSame($items[1]->total(), 90.00);
+        $this->assertSame($this->cart->itemsSubtotal(), 200.00);
+        $this->assertSame($this->cart->total(), 180.00);
     }
 
     /** @test */
@@ -158,8 +158,8 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition([$discount, $tax2]);
 
-        $this->assertEquals($this->cart->total(), 141.9264);
-        $this->assertEquals($this->cart->subtotal(), 140.8);
+        $this->assertSame($this->cart->total(), 141.9264);
+        $this->assertSame($this->cart->subtotal(), 140.80);
     }
 
     /** @test */
@@ -175,8 +175,8 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition($condition);
 
-        $this->assertEquals($this->cart->total(), 250);
-        $this->assertEquals($this->cart->subtotal(), 250);
+        $this->assertSame($this->cart->total(), 250.00);
+        $this->assertSame($this->cart->subtotal(), 250.00);
     }
 
     /** @test */
@@ -188,8 +188,8 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar', 125, 2, $tax, [3, 3])
         );
 
-        $this->assertEquals($item->subtotal(), 262);
-        $this->assertEquals($item->total(), 288.2);
+        $this->assertSame($item->subtotal(), 262.00);
+        $this->assertSame($item->total(), 288.2);
     }
 
     /** @test */
@@ -202,8 +202,8 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar', 125, 2, [$tax, $discount], [0, 3])
         );
 
-        $this->assertEquals($item->subtotal(), 256);
-        $this->assertEquals($item->total(), 265.32);
+        $this->assertSame($item->subtotal(), 256.00);
+        $this->assertSame($item->total(), 265.32);
     }
 
     /** @test */
@@ -219,25 +219,25 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 2', 85, 2, [$discount, $other, $tax1, $tax2]),
         ]);
 
-        $this->assertEquals($items[0]->subtotal(), 200);
-        $this->assertEquals($items[0]->conditionsTotalSum('tax'), 20);
-        $this->assertEquals($items[0]->conditionsTotalSum('discount'), 0);
-        $this->assertEquals($items[0]->total(), 220);
+        $this->assertSame($items[0]->subtotal(), 200.00);
+        $this->assertSame($items[0]->conditionsTotalSum('tax'), 20.00);
+        $this->assertSame($items[0]->conditionsTotalSum('discount'), 0);
+        $this->assertSame($items[0]->total(), 220.00);
 
-        $this->assertEquals($items[1]->subtotal(), 170);
-        $this->assertEquals($items[1]->conditionsTotalSum('tax'), 25.65);
-        $this->assertEquals($items[1]->conditionsTotalSum('discount'), -9);
-        $this->assertEquals($items[1]->total(), 196.65);
+        $this->assertSame($items[1]->subtotal(), 170.00);
+        $this->assertSame($items[1]->conditionsTotalSum('tax'), 25.65);
+        $this->assertSame($items[1]->conditionsTotalSum('discount'), -9.00);
+        $this->assertSame($items[1]->total(), 196.65);
 
         $this->cart->condition($tax2);
 
-        $this->assertEquals($this->cart->subtotal(), 416.65);
-        $this->assertEquals($this->cart->itemsSubtotal(), 370);
-        $this->assertEquals($this->cart->total(), 437.4825);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax', false), 20.8325);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 66.4825);
-        $this->assertEquals($this->cart->conditionsTotalSum('discount'), -9);
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 45.65);
+        $this->assertSame($this->cart->subtotal(), 416.65);
+        $this->assertSame($this->cart->itemsSubtotal(), 370.00);
+        $this->assertSame($this->cart->total(), 437.4825);
+        $this->assertSame($this->cart->conditionsTotalSum('tax', false), 20.8325);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 66.4825);
+        $this->assertSame($this->cart->conditionsTotalSum('discount'), -9.00);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('tax'), 45.65);
     }
 
     /** @test */
@@ -253,27 +253,27 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 2', 100, 2, [$discount, $other1], [15, 0]),
         ]);
 
-        $this->assertEquals($items[0]->subtotal(), 412);
-        $this->assertEquals($items[0]->conditionsTotalSum('discount'), -40);
-        $this->assertEquals($items[0]->total(), 372);
+        $this->assertSame($items[0]->subtotal(), 412.00);
+        $this->assertSame($items[0]->conditionsTotalSum('discount'), -40.00);
+        $this->assertSame($items[0]->total(), 372.00);
 
-        $this->assertEquals($items[1]->subtotal(), 230);
-        $this->assertEquals($items[1]->conditionsTotalSum('discount'), -20);
-        $this->assertEquals($items[1]->total(), 219);
+        $this->assertSame($items[1]->subtotal(), 230.00);
+        $this->assertSame($items[1]->conditionsTotalSum('discount'), -20.00);
+        $this->assertSame($items[1]->total(), 219.00);
 
-        $this->assertEquals($this->cart->subtotal(), 591);
-        $this->assertEquals($this->cart->itemsSubtotal(), 642);
-        $this->assertEquals($this->cart->total(), 591);
+        $this->assertSame($this->cart->subtotal(), 591.00);
+        $this->assertSame($this->cart->itemsSubtotal(), 642.00);
+        $this->assertSame($this->cart->total(), 591.00);
 
         $this->cart->condition($tax);
 
-        $this->assertEquals($this->cart->subtotal(), 591);
-        $this->assertEquals($this->cart->total(), 650.1);
+        $this->assertSame($this->cart->subtotal(), 591.00);
+        $this->assertSame($this->cart->total(), 650.10);
 
         $this->cart->condition($other2);
 
-        $this->assertEquals($this->cart->subtotal(), 591);
-        $this->assertEquals($this->cart->total(), 682.605);
+        $this->assertSame($this->cart->subtotal(), 591.00);
+        $this->assertSame($this->cart->total(), 682.605);
     }
 
     /** @test */
@@ -286,15 +286,15 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar', 125, 3, $other, [3, 3])
         );
 
-        $this->assertEquals($item->subtotal(), 393);
-        $this->assertEquals($item->total(), 408);
-        $this->assertEquals($this->cart->subtotal(), 408);
-        $this->assertEquals($this->cart->total(), 408);
+        $this->assertSame($item->subtotal(), 393.00);
+        $this->assertSame($item->total(), 408.00);
+        $this->assertSame($this->cart->subtotal(), 408.00);
+        $this->assertSame($this->cart->total(), 408.00);
 
         $this->cart->condition($tax);
 
-        $this->assertEquals($this->cart->subtotal(), 408);
-        $this->assertEquals($this->cart->total(), 448.8);
+        $this->assertSame($this->cart->subtotal(), 408.00);
+        $this->assertSame($this->cart->total(), 448.80);
     }
 
     /** @test */
@@ -306,8 +306,8 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar', 125, 3, $other, [3, 3])
         );
 
-        $this->assertEquals($item->subtotal(), 393);
-        $this->assertEquals($item->total(), 393);
+        $this->assertSame($item->subtotal(), 393.00);
+        $this->assertSame($item->total(), 393.00);
     }
 
     /** @test */
@@ -318,17 +318,17 @@ class CartTestConditions extends CartTestCase
 
         $items = $this->cart->add([
             $this->createItem('Foobar 1', 244, 3, [$tax, $other], [3, 3]),
-            $this->createItem('Foobar 2', 125, 3, $other, [3, 3])
+            $this->createItem('Foobar 2', 125, 3, $other, [3, 3]),
         ]);
 
-        $this->assertEquals($items[0]->subtotal(), 750);
-        $this->assertEquals($items[0]->total(), 841.5);
+        $this->assertSame($items[0]->subtotal(), 750.00);
+        $this->assertSame($items[0]->total(), 841.50);
 
-        $this->assertEquals($items[1]->subtotal(), 393);
-        $this->assertEquals($items[1]->total(), 393);
+        $this->assertSame($items[1]->subtotal(), 393.00);
+        $this->assertSame($items[1]->total(), 393.00);
 
-        $this->assertEquals($this->cart->subtotal(), 1234.5);
-        $this->assertEquals($this->cart->total(), 1234.5);
+        $this->assertSame($this->cart->subtotal(), 1234.50);
+        $this->assertSame($this->cart->total(), 1234.50);
     }
 
     /** @test */
@@ -340,11 +340,11 @@ class CartTestConditions extends CartTestCase
 
         $item = $this->cart->add($item);
 
-        $this->assertEquals($item->subtotal(), 60);
-        $this->assertEquals($item->total(), 55);
+        $this->assertSame($item->subtotal(), 60.00);
+        $this->assertSame($item->total(), 55.00);
 
-        $this->assertEquals($this->cart->subtotal(), 55);
-        $this->assertEquals($this->cart->total(), 55);
+        $this->assertSame($this->cart->subtotal(), 55.00);
+        $this->assertSame($this->cart->total(), 55.00);
     }
 
     /** @test */
@@ -359,24 +359,24 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 2', 125, 3, $other, [3, 3]),
         ]);
 
-        $this->assertEquals($items[0]->subtotal(), 750);
-        $this->assertEquals($items[0]->conditionsTotalSum('discount'), -38.25);
-        $this->assertEquals($items[0]->total(), 726.75);
+        $this->assertSame($items[0]->subtotal(), 750.00);
+        $this->assertSame($items[0]->conditionsTotalSum('discount'), -38.25);
+        $this->assertSame($items[0]->total(), 726.75);
 
-        $this->assertEquals($items[1]->subtotal(), 393);
-        $this->assertEquals($items[1]->conditionsTotalSum('other'), 0);
-        $this->assertEquals($items[1]->total(), 393);
+        $this->assertSame($items[1]->subtotal(), 393.00);
+        $this->assertSame($items[1]->conditionsTotalSum('other'), 0.00);
+        $this->assertSame($items[1]->total(), 393.00);
 
-        $this->assertEquals($this->cart->subtotal(), 1119.75);
-        $this->assertEquals($this->cart->itemsSubtotal(), 1143);
-        $this->assertEquals($this->cart->total(), 1119.75);
+        $this->assertSame($this->cart->subtotal(), 1119.75);
+        $this->assertSame($this->cart->itemsSubtotal(), 1143.00);
+        $this->assertSame($this->cart->total(), 1119.75);
 
         $this->cart->condition($discount2);
 
-        $this->assertEquals($this->cart->subtotal(), 1119.75);
-        $this->assertEquals($this->cart->total(), 1007.775);
-        $this->assertEquals($this->cart->conditionsTotalSum('discount', false), -111.975);
-        $this->assertEquals($this->cart->conditionsTotalSum('discount'), -150.225);
+        $this->assertSame($this->cart->subtotal(), 1119.75);
+        $this->assertSame($this->cart->total(), 1007.775);
+        $this->assertSame($this->cart->conditionsTotalSum('discount', false), -111.975);
+        $this->assertSame($this->cart->conditionsTotalSum('discount'), -150.225);
     }
 
     /** @test */
@@ -390,40 +390,40 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 2', 125, 3, $other, [3, 3]),
         ]);
 
-        $this->assertEquals($items[0]->total(), 841.5);
-        $this->assertEquals($items[1]->total(), 408);
+        $this->assertSame($items[0]->total(), 841.50);
+        $this->assertSame($items[1]->total(), 408.00);
 
         $this->cart->update([
             $items[0]['rowId'] => [
-                'conditions' => $tax
-            ]
+                'conditions' => $tax,
+            ],
         ]);
 
-        $this->assertEquals($items[0]->total(), 825);
+        $this->assertSame($items[0]->total(), 825.00);
 
         $this->cart->update([
             $items[1]['rowId'] => [
-                'conditions' => null
-            ]
+                'conditions' => null,
+            ],
         ]);
 
-        $this->assertEquals($items[1]->total(), 393);
+        $this->assertSame($items[1]->total(), 393.00);
 
         $this->cart->update([
             $items[1]['rowId'] => [
-                'conditions' => [$tax, $other]
-            ]
+                'conditions' => [$tax, $other],
+            ],
         ]);
 
-        $this->assertEquals($items[1]->total(), 448.8);
+        $this->assertSame($items[1]->total(), 448.80);
 
         $this->cart->update([
             $items[1]['rowId'] => [
-                'weights' => 20.00
-            ]
+                'weights' => 20.00,
+            ],
         ]);
 
-        $this->assertEquals($items[1]->total(), 448.8);
+        $this->assertSame($items[1]->total(), 448.80);
     }
 
     /** @test */
@@ -439,19 +439,19 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition($tax);
 
-        $this->assertEquals($this->cart->total(), 1339.8);
+        $this->assertSame($this->cart->total(), 1339.80);
 
         $this->cart->condition([$tax, $other]);
 
-        $this->assertEquals($this->cart->total(), 1473.78);
+        $this->assertSame($this->cart->total(), 1473.78);
 
         $this->cart->removeConditionByType('tax', false);
 
-        $this->assertEquals($this->cart->total(), 1339.8);
+        $this->assertSame($this->cart->total(), 1339.80);
 
         $this->cart->removeConditions(null, false);
 
-        $this->assertEquals($this->cart->total(), 1218);
+        $this->assertSame($this->cart->total(), 1218.00);
     }
 
     /** @test */
@@ -465,42 +465,42 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 1', 100, 3, [$tax2, $tax3])
         );
 
-        $this->assertEquals($item->total(), 345);
+        $this->assertSame($item->total(), 345.00);
 
-        $this->assertEquals($this->cart->total(), 345);
-        $this->assertEquals($this->cart->subtotal(), 345);
+        $this->assertSame($this->cart->total(), 345.00);
+        $this->assertSame($this->cart->subtotal(), 345.00);
 
         $this->cart->condition($tax1);
 
-        $this->assertEquals($this->cart->subtotal(), 345);
-        $this->assertEquals($this->cart->total(), 379.5);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 79.5);
+        $this->assertSame($this->cart->subtotal(), 345.00);
+        $this->assertSame($this->cart->total(), 379.50);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 79.50);
 
         $this->cart->removeConditionByName('Tax 10%');
 
-        $this->assertEquals($this->cart->subtotal(), 345);
-        $this->assertEquals($this->cart->total(), 345);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 45);
+        $this->assertSame($this->cart->subtotal(), 345.00);
+        $this->assertSame($this->cart->total(), 345.00);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 45.00);
 
         $this->cart->removeConditionByType('tax');
 
-        $this->assertEquals($this->cart->subtotal(), 300);
-        $this->assertEquals($this->cart->total(), 300);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
+        $this->assertSame($this->cart->subtotal(), 300.00);
+        $this->assertSame($this->cart->total(), 300.00);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 0);
 
         $this->cart->removeConditions();
 
-        $this->assertEquals($this->cart->subtotal(), 300);
-        $this->assertEquals($this->cart->total(), 300);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
+        $this->assertSame($this->cart->subtotal(), 300.00);
+        $this->assertSame($this->cart->total(), 300.00);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 0);
 
         $this->cart->update('3544c874792b3af994b612b6c1fd2523', [
             'quantity' => 3,
         ]);
 
-        $this->assertEquals($this->cart->subtotal(), 300);
-        $this->assertEquals($this->cart->total(), 300);
-        $this->assertEquals($this->cart->conditionsTotalSum('tax'), 0);
+        $this->assertSame($this->cart->subtotal(), 300.00);
+        $this->assertSame($this->cart->total(), 300.00);
+        $this->assertSame($this->cart->conditionsTotalSum('tax'), 0);
     }
 
     /** @test */
@@ -519,9 +519,9 @@ class CartTestConditions extends CartTestCase
 
         $discountCondition = $discounts[0];
 
-        $this->assertEquals($discountCondition->get('name'), 'Discount 10%');
-        $this->assertEquals($discountCondition->get('type'), 'discount');
-        $this->assertEquals($discountCondition->get('target'), 'subtotal');
+        $this->assertSame($discountCondition->get('name'), 'Discount 10%');
+        $this->assertSame($discountCondition->get('type'), 'discount');
+        $this->assertSame($discountCondition->get('target'), 'subtotal');
     }
 
     /** @test */
@@ -540,9 +540,9 @@ class CartTestConditions extends CartTestCase
 
         $taxCondition = $taxes[0];
 
-        $this->assertEquals($taxCondition->get('name'), 'Tax 10%');
-        $this->assertEquals($taxCondition->get('type'), 'tax');
-        $this->assertEquals($taxCondition->get('target'), 'subtotal');
+        $this->assertSame($taxCondition->get('name'), 'Tax 10%');
+        $this->assertSame($taxCondition->get('type'), 'tax');
+        $this->assertSame($taxCondition->get('target'), 'subtotal');
     }
 
     /** @test */
@@ -560,19 +560,19 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition($tax);
 
-        $this->assertEquals($this->cart->total(), 1339.8);
+        $this->assertSame($this->cart->total(), 1339.80);
 
         $this->cart->condition([$tax, $other]);
 
-        $this->assertEquals($this->cart->total(), 1473.78);
+        $this->assertSame($this->cart->total(), 1473.78);
 
         $this->cart->removeConditions('foo', false, 'code');
 
-        $this->assertEquals($this->cart->total(), 1339.8);
+        $this->assertSame($this->cart->total(), 1339.80);
 
         $this->cart->removeConditions(null, false);
 
-        $this->assertEquals($this->cart->total(), 1218);
+        $this->assertSame($this->cart->total(), 1218.00);
     }
 
     /** @test */
@@ -589,16 +589,16 @@ class CartTestConditions extends CartTestCase
         $this->cart->condition([$tax1, $tax2]);
 
         $conditionsTotal = [
-            'Tax 10%' => 125.73,
-            'Tax 5%'    => 62.865,
+            'Tax 5%'  => 62.86500000000001,
+            'Tax 10%' => 125.73000000000002,
         ];
 
         $conditionResults = [
-            'Tax 10%' => 114.3,
+            'Tax 10%' => 114.30000000000001,
         ];
 
-        $this->assertEquals($this->cart->itemsConditionsTotal('tax'), $conditionResults);
-        $this->assertEquals($this->cart->conditionsTotal('tax', false), $conditionsTotal);
+        $this->assertSame($this->cart->itemsConditionsTotal('tax'), $conditionResults);
+        $this->assertSame($this->cart->conditionsTotal('tax', false), $conditionsTotal);
     }
 
     /** @test */
@@ -622,16 +622,16 @@ class CartTestConditions extends CartTestCase
         $conditions = $items[0]->conditions();
         $condition  = head($conditions);
 
-        $this->assertEquals($condition->get('name'), 'Tax 10%');
-        $this->assertEquals($condition->get('type'), 'tax');
-        $this->assertEquals($condition->get('target'), 'subtotal');
+        $this->assertSame($condition->get('name'), 'Tax 10%');
+        $this->assertSame($condition->get('type'), 'tax');
+        $this->assertSame($condition->get('target'), 'subtotal');
 
         $conditions = $this->cart->conditions(null, false);
         $condition  = head($conditions);
 
-        $this->assertEquals($condition->get('name'), 'Tax 5%');
-        $this->assertEquals($condition->get('type'), 'tax');
-        $this->assertEquals($condition->get('target'), 'subtotal');
+        $this->assertSame($condition->get('name'), 'Tax 5%');
+        $this->assertSame($condition->get('type'), 'tax');
+        $this->assertSame($condition->get('target'), 'subtotal');
     }
 
     /** @test */
@@ -644,14 +644,14 @@ class CartTestConditions extends CartTestCase
 
         $items = $this->cart->add([
             $this->createItem('Foobar 1', 244, 3, $tax2, [3, 3]),
-            $this->createItem('Foobar 2', 125, 3, $tax2, [3, 3])
+            $this->createItem('Foobar 2', 125, 3, $tax2, [3, 3]),
         ]);
 
-        $this->assertEquals($items[0]->total(), 825);
-        $this->assertEquals($items[1]->total(), 432.3);
+        $this->assertSame($items[0]->total(), 825.00);
+        $this->assertSame($items[1]->total(), 432.30);
 
-        $this->assertEquals($this->cart->total(), 1257.3);
-        $this->assertEquals($this->cart->subtotal(), 1257.3);
+        $this->assertSame($this->cart->total(), 1257.30);
+        $this->assertSame($this->cart->subtotal(), 1257.30);
 
         $this->cart->setConditionsOrder([
             'discount',
@@ -660,14 +660,14 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition([$tax2, $tax1, $shipping]);
 
-        $this->assertEquals($this->cart->total(), 1445.895);
+        $this->assertSame($this->cart->total(), 1445.895);
 
         $conditionsOrder = [
             'discount',
             'tax',
         ];
 
-        $this->assertEquals($this->cart->getConditionsOrder(), $conditionsOrder);
+        $this->assertSame($this->cart->getConditionsOrder(), $conditionsOrder);
 
         $this->cart->setConditionsOrder([
             'discount',
@@ -677,19 +677,19 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition([$tax2, $tax1, $shipping]);
 
-        $this->assertEquals($this->cart->total(), 1455.895);
+        $this->assertSame($this->cart->total(), 1455.895);
 
         $conditionResults = [
             'tax' => [
-                'Tax 10%' => 240.03,
-                'Tax 5%'    => 62.865,
+                'Tax 10%' => 240.03000000000003,
+                'Tax 5%'  => 62.86500000000001,
             ],
             'shipping' => [
                 'Shipping' => 10.00,
             ],
         ];
 
-        $this->assertEquals($this->cart->conditionsTotal(), $conditionResults);
+        $this->assertSame($this->cart->conditionsTotal(), $conditionResults);
 
         $this->cart->setConditionsOrder([
             'discount',
@@ -700,59 +700,59 @@ class CartTestConditions extends CartTestCase
 
         $this->cart->condition([$tax2, $tax1, $shipping, $other]);
 
-        $this->assertEquals($this->cart->total(), 1600.4845);
+        $this->assertSame($this->cart->total(), 1600.4845);
 
         $conditionResults = [
             'tax' => [
-                'Tax 10%' => 252.603,
-                'Tax 5%'    => 69.1515,
+                'Tax 10%' => 252.60300000000012,
+                'Tax 5%'  => 69.15149999999994,
             ],
             'other' => [
-                'Other 10%' => 125.73,
+                'Other 10%' => 125.73000000000002,
             ],
             'shipping' => [
                 'Shipping' => 10.00,
             ],
         ];
 
-        $this->assertEquals($this->cart->conditionsTotal(), $conditionResults);
+        $this->assertSame($this->cart->conditionsTotal(), $conditionResults);
 
         $conditionResults = [
-            'tax' => [
-                'Tax 10%' => 138.303,
-                'Tax 5%'    => 69.1515,
-            ],
             'other' => [
-                'Other 10%' => 125.73,
+                'Other 10%' => 125.73000000000002,
+            ],
+            'tax' => [
+                'Tax 10%' => 138.3030000000001,
+                'Tax 5%'  => 69.15149999999994,
             ],
             'shipping' => [
                 'Shipping' => 10.00,
             ],
         ];
 
-        $this->assertEquals($this->cart->conditionsTotal(null, false), $conditionResults);
+        $this->assertSame($this->cart->conditionsTotal(null, false), $conditionResults);
 
         $conditionResults = [
-            'Tax 10%' => 252.603,
-            'Tax 5%'    => 69.1515,
+            'Tax 10%' => 252.60300000000012,
+            'Tax 5%'  => 69.15149999999994,
         ];
 
-        $this->assertEquals($this->cart->conditionsTotal('tax'), $conditionResults);
+        $this->assertSame($this->cart->conditionsTotal('tax'), $conditionResults);
 
         $conditionResults = [
             'tax' => [
-                'Tax 10%' => 114.3,
+                'Tax 10%' => 114.30000000000001,
             ],
         ];
 
-        $this->assertEquals($this->cart->itemsConditionsTotal(), $conditionResults);
+        $this->assertSame($this->cart->itemsConditionsTotal(), $conditionResults);
 
         $conditionResults = [
-            'Tax 10%' => 114.3,
+            'Tax 10%' => 114.30000000000001,
         ];
 
-        $this->assertEquals($this->cart->itemsConditionsTotal('tax'), $conditionResults);
-        $this->assertEquals($this->cart->itemsConditionsTotal('nonexisting'), []);
+        $this->assertSame($this->cart->itemsConditionsTotal('tax'), $conditionResults);
+        $this->assertSame($this->cart->itemsConditionsTotal('nonexisting'), []);
     }
 
     /** @test */
@@ -765,22 +765,22 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 2', 200, 2, $tax),
         ]);
 
-        $this->assertEquals($items[0]->subtotal(), 500);
-        $this->assertEquals($items[0]->total(), 500);
-        $this->assertEquals(round($items[0]->conditionsTotalSum('tax')), 45);
+        $this->assertSame($items[0]->subtotal(), 500.00);
+        $this->assertSame($items[0]->total(), 500.00);
+        $this->assertSame(round($items[0]->conditionsTotalSum('tax')), 45.00);
 
-        $this->assertEquals($items[1]->subtotal(), 400);
-        $this->assertEquals($items[1]->total(), 400);
-        $this->assertEquals(round($items[1]->conditionsTotalSum('tax')), 36);
+        $this->assertSame($items[1]->subtotal(), 400.00);
+        $this->assertSame($items[1]->total(), 400.00);
+        $this->assertSame(round($items[1]->conditionsTotalSum('tax')), 36.00);
 
-        $this->assertEquals($this->cart->subtotal(), 900);
-        $this->assertEquals($this->cart->total(), 900);
+        $this->assertSame($this->cart->subtotal(), 900.00);
+        $this->assertSame($this->cart->total(), 900.00);
 
         $this->cart->condition($tax);
 
-        $this->assertEquals($this->cart->total(), 900);
-        $this->assertEquals(round($this->cart->conditionsTotalSum('tax', false)), 82);
-        $this->assertEquals(round($this->cart->conditionsTotalSum('tax')), 164);
+        $this->assertSame($this->cart->total(), 900.00);
+        $this->assertSame(round($this->cart->conditionsTotalSum('tax', false)), 82.00);
+        $this->assertSame(round($this->cart->conditionsTotalSum('tax')), 164.00);
     }
 
     /** @test */
@@ -794,22 +794,22 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 2', 200, 2, [$taxInc, $taxExc]),
         ]);
 
-        $this->assertEquals($items[0]->subtotal(), 500);
-        $this->assertEquals($items[0]->total(), 550);
-        $this->assertEquals(round($items[0]->conditionsTotalSum('tax')), 95);
+        $this->assertSame($items[0]->subtotal(), 500.00);
+        $this->assertSame($items[0]->total(), 550.00);
+        $this->assertSame(round($items[0]->conditionsTotalSum('tax')), 95.00);
 
-        $this->assertEquals($items[1]->subtotal(), 400);
-        $this->assertEquals($items[1]->total(), 440);
-        $this->assertEquals(round($items[1]->conditionsTotalSum('tax')), 76);
+        $this->assertSame($items[1]->subtotal(), 400.00);
+        $this->assertSame($items[1]->total(), 440.00);
+        $this->assertSame(round($items[1]->conditionsTotalSum('tax')), 76.00);
 
-        $this->assertEquals($this->cart->subtotal(), 990);
-        $this->assertEquals($this->cart->total(), 990);
+        $this->assertSame($this->cart->subtotal(), 990.00);
+        $this->assertSame($this->cart->total(), 990.00);
 
         $this->cart->condition($taxInc);
 
-        $this->assertEquals($this->cart->total(), 990);
-        $this->assertEquals(round($this->cart->conditionsTotalSum('tax', false)), 90);
-        $this->assertEquals(round($this->cart->conditionsTotalSum('tax')), 262);
+        $this->assertSame($this->cart->total(), 990.00);
+        $this->assertSame(round($this->cart->conditionsTotalSum('tax', false)), 90.00);
+        $this->assertSame(round($this->cart->conditionsTotalSum('tax')), 262.00);
     }
 
     /** @test */
@@ -831,10 +831,10 @@ class CartTestConditions extends CartTestCase
 
         $item = $this->cart->add($item);
 
-        $this->assertEquals($item->total('discount'), 475);
-        $this->assertEquals($item->total('other'), 480);
-        $this->assertEquals($item->total('tax'), 528);
-        $this->assertEquals($item->total('shipping'), 538);
+        $this->assertSame($item->total('discount'), 475.00);
+        $this->assertSame($item->total('other'), 480.00);
+        $this->assertSame($item->total('tax'), 528.00);
+        $this->assertSame($item->total('shipping'), 538.00);
     }
 
     /** @test */
@@ -871,22 +871,22 @@ class CartTestConditions extends CartTestCase
             'discount',
         ]);
 
-        $this->assertEquals($item1->total('discount'), 475);
-        $this->assertEquals($item1->total('other'), 475);
-        $this->assertEquals($item1->total('tax'), 475);
-        $this->assertEquals($item1->total('shipping'), 475);
+        $this->assertSame($item1->total('discount'), 475.00);
+        $this->assertSame($item1->total('other'), 475.00);
+        $this->assertSame($item1->total('tax'), 475.00);
+        $this->assertSame($item1->total('shipping'), 475.00);
 
-        $this->assertEquals($item2->total('discount'), 475);
-        $this->assertEquals($item2->total('other'), 480);
-        $this->assertEquals($item2->total('tax'), 528);
-        $this->assertEquals($item2->total('shipping'), 538);
+        $this->assertSame($item2->total('discount'), 475.00);
+        $this->assertSame($item2->total('other'), 480.00);
+        $this->assertSame($item2->total('tax'), 528.00);
+        $this->assertSame($item2->total('shipping'), 538.00);
 
         $this->cart->condition([$discount, $shipping, $other, $tax]);
 
-        $this->assertEquals($this->cart->total('discount'), 962.35);
-        $this->assertEquals($this->cart->total('other'), 967.35);
-        $this->assertEquals($this->cart->total('tax'), 1064.085);
-        $this->assertEquals($this->cart->total('shipping'), 1074.085);
+        $this->assertSame($this->cart->total('discount'), 962.35);
+        $this->assertSame($this->cart->total('other'), 967.35);
+        $this->assertSame($this->cart->total('tax'), 1064.085);
+        $this->assertSame($this->cart->total('shipping'), 1074.085);
     }
 
     /** @test */
@@ -899,30 +899,30 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 1', 100, 5, [$discount, $tax])
         );
 
-        $this->assertEquals($item->total('discount'), 0);
-        $this->assertEquals($item->subtotal(), 500);
-        $this->assertEquals($item->conditionsTotalSum('discount'), -500);
-        $this->assertEquals($item->conditionsTotalSum('tax'), 0);
-        $this->assertEquals($item->total(), 0);
+        $this->assertSame($item->total('discount'), 0.00);
+        $this->assertSame($item->subtotal(), 500.00);
+        $this->assertSame($item->conditionsTotalSum('discount'), -500.00);
+        $this->assertSame($item->conditionsTotalSum('tax'), 0);
+        $this->assertSame($item->total(), 0.00);
 
         $this->assertCount(2, $item->conditions());
         $this->assertCount(1, $item->conditions('discount'));
         $this->assertCount(1, $item->conditions('tax'));
         $this->assertCount(2, $this->cart->itemsConditions());
 
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('discount'), -500);
-        $this->assertEquals($this->cart->itemsConditionsTotalSum('tax'), 0);
-        $this->assertEquals($this->cart->itemsSubtotal(), 500);
-        $this->assertEquals($this->cart->subtotal(), 0);
-        $this->assertEquals($this->cart->total(), 0);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('discount'), -500.00);
+        $this->assertSame($this->cart->itemsConditionsTotalSum('tax'), 0);
+        $this->assertSame($this->cart->itemsSubtotal(), 500.00);
+        $this->assertSame($this->cart->subtotal(), 0.00);
+        $this->assertSame($this->cart->total(), 0.00);
 
         $item->removeConditions('tax');
 
-        $this->assertEquals($item->total(), 0);
+        $this->assertSame($item->total(), 0.00);
 
         $item->removeConditions();
 
-        $this->assertEquals($item->total(), 500);
+        $this->assertSame($item->total(), 500.00);
     }
 
     /** @test */
@@ -934,14 +934,14 @@ class CartTestConditions extends CartTestCase
             $this->createItem('Foobar 1', 100, 1, [$discount])
         );
 
-        $this->assertEquals($item->total(), 0);
-        $this->assertEquals($item->subtotal(), 100);
+        $this->assertSame($item->total(), 0.00);
+        $this->assertSame($item->subtotal(), 100.00);
 
-        $this->assertEquals($this->cart->total(), 0);
-        $this->assertEquals($this->cart->subtotal(), 0);
+        $this->assertSame($this->cart->total(), 0.00);
+        $this->assertSame($this->cart->subtotal(), 0.00);
 
         $item->removeConditions();
 
-        $this->assertEquals($item->total(), 100);
+        $this->assertSame($item->total(), 100.00);
     }
 }

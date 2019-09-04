@@ -48,9 +48,10 @@ class IlluminateSession implements StorageInterface
     /**
      * Creates a new Illuminate based Session driver for Cart.
      *
-     * @param  \Illuminate\Session\Store  $session
-     * @param  string  $instance
-     * @param  string  $key
+     * @param \Illuminate\Session\Store $session
+     * @param string                    $instance
+     * @param string                    $key
+     *
      * @return void
      */
     public function __construct(SessionStore $session, $instance = null, $key = null)
@@ -63,7 +64,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getKey()
     {
@@ -71,7 +72,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getInstance()
     {
@@ -79,7 +80,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setInstance($instance)
     {
@@ -87,7 +88,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get()
     {
@@ -95,7 +96,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function put($value)
     {
@@ -103,7 +104,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has()
     {
@@ -111,7 +112,7 @@ class IlluminateSession implements StorageInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function forget()
     {

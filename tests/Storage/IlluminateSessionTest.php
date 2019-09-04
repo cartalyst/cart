@@ -31,7 +31,7 @@ class IlluminateSessionTest extends CartTestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown()
     {
         m::close();
     }
@@ -39,8 +39,8 @@ class IlluminateSessionTest extends CartTestCase
     /** @test */
     public function it_can_get_cart_session_key_and_cart_identity()
     {
-        $this->assertEquals($this->cart->getStorage()->getInstance(), 'cart');
-        $this->assertEquals($this->cart->getStorage()->getKey(), 'cartalyst_cart');
+        $this->assertSame($this->cart->getStorage()->getInstance(), 'cart');
+        $this->assertSame($this->cart->getStorage()->getKey(), 'cartalyst_cart');
         $this->assertInstanceOf('Cartalyst\Cart\Storage\IlluminateSession', $this->cart->getStorage());
 
         $this->cart->add($this->createItem('Foobar 1', 125, 2));
@@ -57,7 +57,7 @@ class IlluminateSessionTest extends CartTestCase
     {
         $session = new IlluminateSession(m::mock('Illuminate\Session\Store'), 'instance', 'cart');
 
-        $this->assertEquals($session->getKey(), 'cart');
-        $this->assertEquals($session->getInstance(), 'instance');
+        $this->assertSame($session->getKey(), 'cart');
+        $this->assertSame($session->getInstance(), 'instance');
     }
 }

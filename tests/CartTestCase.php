@@ -22,14 +22,14 @@ namespace Cartalyst\Cart\Tests;
 
 use Cartalyst\Cart\Cart;
 use Illuminate\Session\Store;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Events\Dispatcher;
 use Cartalyst\Conditions\Condition;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Session\FileSessionHandler;
 use Cartalyst\Cart\Storage\IlluminateSession;
 
-abstract class CartTestCase extends PHPUnit_Framework_TestCase
+abstract class CartTestCase extends TestCase
 {
     /**
      * Holds the cart instance.
@@ -39,26 +39,27 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase
     protected $cart;
 
     /**
-     * Setup resources and dependencies
+     * Setup resources and dependencies.
      */
-    public function setUp()
+    protected function setUp()
     {
-        $sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions', 120);
+        $sessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/storage/sessions', 120);
 
         $session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler), 'cart');
 
-        $this->cart = new Cart($session, new Dispatcher);
+        $this->cart = new Cart($session, new Dispatcher());
     }
 
     /**
      * Creates an item.
      *
-     * @param  string  $name
-     * @param  float  $price
-     * @param  int  $quantity
-     * @param  array  $conditions
-     * @param  array  $attrPrices
-     * @param  int  $weight
+     * @param string $name
+     * @param float  $price
+     * @param int    $quantity
+     * @param array  $conditions
+     * @param array  $attrPrices
+     * @param int    $weight
+     *
      * @return array
      */
     protected function createItem(
@@ -94,12 +95,13 @@ abstract class CartTestCase extends PHPUnit_Framework_TestCase
     /**
      * Creates a condition.
      *
-     * @param  string  $name
-     * @param  string  $type
-     * @param  int  $value
-     * @param  string  $target
-     * @param  array  $rules
-     * @param  bool  $inclusive
+     * @param string $name
+     * @param string $type
+     * @param int    $value
+     * @param string $target
+     * @param array  $rules
+     * @param bool   $inclusive
+     *
      * @return \Cartalyst\Conditions\Condition
      */
     protected function createCondition(
