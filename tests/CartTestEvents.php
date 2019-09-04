@@ -34,7 +34,7 @@ class CartTestEvents extends CartTestCase
      *
      * @return void
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -42,7 +42,7 @@ class CartTestEvents extends CartTestCase
     /**
      * Setup resources and dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $sessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/storage/sessions', 120);
 

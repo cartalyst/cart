@@ -31,7 +31,7 @@ class IlluminateSessionTest extends CartTestCase
      *
      * @return void
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }

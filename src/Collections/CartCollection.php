@@ -22,6 +22,7 @@ namespace Cartalyst\Cart\Collections;
 
 use Serializable;
 use Cartalyst\Cart\Cart;
+use Illuminate\Support\Arr;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
@@ -150,17 +151,17 @@ class CartCollection extends BaseCollection implements Serializable
         $price = (float) $price;
 
         // Make sure we have proper and valid item attributes
-        $attributes = array_get($item, 'attributes', []);
+        $attributes = Arr::get($item, 'attributes', []);
 
         if (! is_array($attributes)) {
             throw new CartInvalidAttributesException();
         }
 
         // Generate the unique row id
-        $rowId = $this->generateRowId($item['id'], array_except($item, ['price', 'quantity']));
+        $rowId = $this->generateRowId($item['id'], Arr::except($item, ['price', 'quantity']));
 
         // Pull item conditions
-        $conditions = array_pull($item, 'conditions', []);
+        $conditions = Arr::pull($item, 'conditions', []);
 
         // Check if the item already exists on the cart
         if ($this->exists($rowId)) {
@@ -255,7 +256,7 @@ class CartCollection extends BaseCollection implements Serializable
         $row = $this->get($rowId);
 
         // Pull item conditions
-        $conditions = array_pull($data, 'conditions', $row->conditions());
+        $conditions = Arr::pull($data, 'conditions', $row->conditions());
 
         // Do we have multiple item data?
         if (is_array($data)) {
@@ -342,7 +343,7 @@ class CartCollection extends BaseCollection implements Serializable
      */
     public function getMetaData($key = null, $default = null)
     {
-        return array_get($this->metaData, $key, $default);
+        return Arr::get($this->metaData, $key, $default);
     }
 
     /**
@@ -355,7 +356,7 @@ class CartCollection extends BaseCollection implements Serializable
      */
     public function setMetaData($key, $data)
     {
-        array_set($this->metaData, $key, $data);
+        Arr::set($this->metaData, $key, $data);
     }
 
     /**
@@ -370,7 +371,7 @@ class CartCollection extends BaseCollection implements Serializable
         if (! $key) {
             $this->metaData = [];
         } else {
-            array_forget($this->metaData, $key);
+            Arr::forget($this->metaData, $key);
         }
     }
 
@@ -495,7 +496,7 @@ class CartCollection extends BaseCollection implements Serializable
             }
         }
 
-        return array_get($this->conditionResults, $type, $this->conditionResults);
+        return Arr::get($this->conditionResults, $type, $this->conditionResults);
     }
 
     /**

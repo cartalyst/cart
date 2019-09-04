@@ -20,6 +20,7 @@
 
 namespace Cartalyst\Cart\Collections;
 
+use Illuminate\Support\Arr;
 use Cartalyst\Collections\Collection;
 
 abstract class BaseCollection extends Collection
@@ -248,7 +249,7 @@ abstract class BaseCollection extends Collection
             }
         }
 
-        return array_get($this->conditionResults, $type, $this->conditionResults);
+        return Arr::get($this->conditionResults, $type, $this->conditionResults);
     }
 
     /**

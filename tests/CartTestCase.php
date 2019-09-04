@@ -41,7 +41,7 @@ abstract class CartTestCase extends TestCase
     /**
      * Setup resources and dependencies.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $sessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/storage/sessions', 120);
 
