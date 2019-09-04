@@ -77,8 +77,8 @@ class Adding extends CartTestCase
         );
 
         $this->assertCount(2, $item->attributes());
-        +$this->assertSame(125.00, $item->price());
-        +$this->assertSame(133.50, $item->price(true));
+        $this->assertSame(125.00, $item->price());
+        $this->assertSame(133.50, $item->price(true));
 
         $this->assertCount(1, $this->cart->items());
         $this->assertSame($this->cart->quantity(), 2);
