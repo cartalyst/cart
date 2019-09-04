@@ -1,6 +1,6 @@
-### Laravel 5
+### Laravel
 
-The Cart package has optional support for Laravel 5 and it comes bundled with a Service Provider and a Facade for easy integration.
+The Cart package has optional support for Laravel 6 and it comes bundled with a Service Provider and a Facade for easy integration.
 
 After installing the package, open your Laravel config file located at `config/app.php` and add the following lines.
 
@@ -19,5 +19,3 @@ After installing, you can publish the package configuration file into your appli
 	php artisan vendor:publish
 
 This will publish the config file to `config/cartalyst.cart.php` where you can modify the package configuration.
-
-> **Note:** Looking for support for Laravel 4? Please check the [1.1](https://cartalyst.com/manual/cart/1.1) docs.

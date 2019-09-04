@@ -1,26 +1,26 @@
 {
-	"preface" : [
-		"introduction",
-		"features",
-		"examples"
-	],
-	"setup" : [
-		"installation"
-	],
-	"integration" : [
-		"index",
-		"laravel-5",
-		"native"
-	],
-	"usage": [
-		"index",
-		"search",
-		"attributes",
-		"collections",
-		"instances",
-		"conditions",
-		"serialization",
-		"events",
-		"exceptions"
-	]
+    "preface": [
+        "introduction",
+        "features",
+        "examples"
+    ],
+    "setup": [
+        "installation"
+    ],
+    "integration": [
+        "index",
+        "laravel",
+        "native"
+    ],
+    "usage": [
+        "index",
+        "search",
+        "attributes",
+        "collections",
+        "instances",
+        "conditions",
+        "serialization",
+        "events",
+        "exceptions"
+    ]
 }
