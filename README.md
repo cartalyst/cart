@@ -36,6 +36,6 @@ If you discover any security related issues, please email help@cartalyst.com ins
 This software is released under the [Cartalyst PSL](LICENSE) License.
 
 [link-docs]:   https://cartalyst.com/manual/cart
-[link-travis]: https://travis-ci.com/cartalyst/attributes
+[link-travis]: https://travis-ci.com/cartalyst/cart
 
 [icon-travis]: https://travis-ci.com/cartalyst/cart.svg?token=98Zt8zYdwyheTKqziswS&branch=3.0
