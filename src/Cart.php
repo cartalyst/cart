@@ -199,9 +199,7 @@ class Cart
     {
         // Check if we should fire events
         if ($this->fireEvents) {
-            $method = method_exists($this->dispatcher, 'fire') ? 'fire' : 'dispatch';
-
-            $this->dispatcher->{$method}("cartalyst.cart.{$event}", $data);
+            $this->dispatcher->dispatch("cartalyst.cart.{$event}", $data);
         }
     }
 
