@@ -8,7 +8,7 @@ labels: bug
 
 - OS and Version: #.#.#
 - PHP Version: #.#.#
-- Attributes Version: #.#.#
+- Cart Version: #.#.#
 
 ### Expected behaviour
 
