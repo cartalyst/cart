@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -32,7 +32,7 @@ class Adding extends CartTestCase
 
         $this->cart->add($item);
 
-        $this->assertEquals($this->cart->quantity(), 2);
+        $this->assertSame($this->cart->quantity(), 2);
 
         $this->assertCount(1, $this->cart->items());
     }
@@ -44,7 +44,7 @@ class Adding extends CartTestCase
 
         $this->cart->add($item);
 
-        $this->assertEquals($this->cart->quantity(), 1);
+        $this->assertSame($this->cart->quantity(), 1);
 
         $this->assertCount(1, $this->cart->items());
     }
@@ -56,17 +56,17 @@ class Adding extends CartTestCase
 
         $this->cart->add($item);
 
-        $this->assertEquals($this->cart->quantity(), 2);
+        $this->assertSame($this->cart->quantity(), 2);
     }
 
     /** @test */
     public function it_can_add_a_single_item_with_price_as_string()
     {
-        $item = $this->createItem('Foobar 1', '10.00', 2);
+        $item = $this->createItem('Foobar 1', '10.00', 2.00);
 
         $item = $this->cart->add($item);
 
-        $this->assertEquals($item->get('price'), 10);
+        $this->assertSame($item->get('price'), 10.00);
     }
 
     /** @test */
@@ -77,26 +77,26 @@ class Adding extends CartTestCase
         );
 
         $this->assertCount(2, $item->attributes());
-        +        $this->assertEquals(125.00, $item->price());
-        +        $this->assertEquals(133.50, $item->price(true));
+        +$this->assertSame(125.00, $item->price());
+        +$this->assertSame(133.50, $item->price(true));
 
         $this->assertCount(1, $this->cart->items());
-        $this->assertEquals($this->cart->quantity(), 2);
-        $this->assertEquals($this->cart->total(), 267);
+        $this->assertSame($this->cart->quantity(), 2);
+        $this->assertSame($this->cart->total(), 267.00);
     }
 
     /** @test */
     public function it_can_add_multiple_items()
     {
         $item1 = $this->createItem('Foobar 1', 4, 3);
-        $item2 = $this->createItem('Foobar 2', 21, 2);
-        $item3 = $this->createItem('Foobar 3', 120, 2);
+        $item2 = $this->createItem('Foobar 2', 21, 2.00);
+        $item3 = $this->createItem('Foobar 3', 120, 2.00);
 
         $this->cart->add([$item1, $item2, $item3]);
 
         $this->assertCount(3, $this->cart->items());
-        $this->assertEquals($this->cart->quantity(), 7);
-        $this->assertEquals($this->cart->total(), 294);
+        $this->assertSame($this->cart->quantity(), 7.00);
+        $this->assertSame($this->cart->total(), 294.00);
     }
 
     /** @test */
@@ -106,13 +106,13 @@ class Adding extends CartTestCase
 
         $item = $this->cart->add($item);
 
-        $this->assertEquals($item->get('quantity'), 3);
+        $this->assertSame($item->get('quantity'), 3);
 
         $item = $this->createItem('Foobar 1', 4, 6);
 
         $item = $this->cart->add($item);
 
-        $this->assertEquals($item->get('quantity'), 9);
+        $this->assertSame($item->get('quantity'), 9);
     }
 
     /** @test */
@@ -142,8 +142,8 @@ class Adding extends CartTestCase
         $this->assertCount(1, $item2->attributes());
 
         $this->assertCount(2, $this->cart->items());
-        $this->assertEquals($this->cart->quantity(), 7);
-        $this->assertEquals($this->cart->total(), 531.5);
+        $this->assertSame($this->cart->quantity(), 7);
+        $this->assertSame($this->cart->total(), 531.50);
     }
 
     /** @test */

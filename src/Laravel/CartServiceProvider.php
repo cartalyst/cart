@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -28,7 +28,7 @@ use Cartalyst\Cart\Storage\IlluminateSession;
 class CartServiceProvider extends ServiceProvider
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -42,7 +42,7 @@ class CartServiceProvider extends ServiceProvider
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function provides()
     {

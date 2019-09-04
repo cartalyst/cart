@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -27,7 +27,8 @@ class ItemCollection extends BaseCollection
     /**
      * Sets the item price.
      *
-     * @param  float  $price
+     * @param float $price
+     *
      * @return void
      */
     public function setPrice($price)
@@ -48,7 +49,8 @@ class ItemCollection extends BaseCollection
     /**
      * Returns this item price.
      *
-     * @param  bool  $withAttributes
+     * @param bool $withAttributes
+     *
      * @return float
      */
     public function price($withAttributes = false)
@@ -76,7 +78,8 @@ class ItemCollection extends BaseCollection
      * Returns this item subtotal and it will take into
      * consideration the attributes total.
      *
-     * @param  float  $price
+     * @param float $price
+     *
      * @return float
      */
     public function subtotal($price = null)
@@ -107,7 +110,8 @@ class ItemCollection extends BaseCollection
     /**
      * Search for items with the given criteria.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return bool
      */
     public function find($data)
@@ -125,7 +129,9 @@ class ItemCollection extends BaseCollection
                 }
 
                 return $valid;
-            } elseif ($key === 'price' || $key == 'weight') {
+            }
+
+            if ($key === 'price' || $key == 'weight') {
                 $value = (float) $value;
             } elseif ($key === 'quantity') {
                 $value = $value;
@@ -148,7 +154,7 @@ class ItemCollection extends BaseCollection
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function conditionsTotal($type = null, $includeItems = true)
     {

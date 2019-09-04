@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -32,12 +32,12 @@ class Removing extends CartTestCase
 
         $this->cart->add([$item1, $item2]);
 
-        $this->assertEquals($this->cart->quantity(), 10);
+        $this->assertSame($this->cart->quantity(), 10);
         $this->assertCount(2, $this->cart->items());
 
         $this->cart->remove('b37f673e46a33038305c1dc411215c07');
 
-        $this->assertEquals($this->cart->quantity(), 3);
+        $this->assertSame($this->cart->quantity(), 3);
         $this->assertCount(1, $this->cart->items());
         $this->assertEmpty($this->cart->find(['b37f673e46a33038305c1dc411215c07']));
     }

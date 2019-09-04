@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -34,17 +34,17 @@ class CartTestEvents extends CartTestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
 
     /**
-     * Setup resources and dependencies
+     * Setup resources and dependencies.
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $sessionHandler = new FileSessionHandler(new Filesystem, __DIR__.'/storage/sessions', 120);
+        $sessionHandler = new FileSessionHandler(new Filesystem(), __DIR__.'/storage/sessions', 120);
 
         $session = new IlluminateSession(new Store('cartalyst_cart_session', $sessionHandler));
 

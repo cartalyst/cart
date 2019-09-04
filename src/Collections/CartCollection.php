@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -22,6 +22,7 @@ namespace Cartalyst\Cart\Collections;
 
 use Serializable;
 use Cartalyst\Cart\Cart;
+use Illuminate\Support\Arr;
 use Cartalyst\Cart\Exceptions\CartInvalidPriceException;
 use Cartalyst\Cart\Exceptions\CartItemNotFoundException;
 use Cartalyst\Cart\Exceptions\CartInvalidQuantityException;
@@ -103,12 +104,14 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Adds a single or multiple items to the cart.
      *
-     * @param  array  $item
-     * @return mixed
+     * @param array $item
+     *
      * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
      * @throws \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
      * @throws \Cartalyst\Cart\Exceptions\CartInvalidPriceException
      * @throws \Cartalyst\Cart\Exceptions\CartInvalidAttributesException
+     *
+     * @return mixed
      */
     public function add($item)
     {
@@ -125,7 +128,7 @@ class CartCollection extends BaseCollection implements Serializable
 
         // Validate the required indexes
         foreach ($this->getRequiredIndexes() as $index) {
-            if ( ! array_key_exists($index, $item)) {
+            if (! array_key_exists($index, $item)) {
                 throw new CartMissingRequiredIndexException($index);
             }
         }
@@ -134,31 +137,31 @@ class CartCollection extends BaseCollection implements Serializable
         $quantity = $item['quantity'];
 
         // Check if the quantity value is correct
-        if ( ! is_numeric($quantity) || $quantity < 1) {
-            throw new CartInvalidQuantityException;
+        if (! is_numeric($quantity) || $quantity < 1) {
+            throw new CartInvalidQuantityException();
         }
 
         // Make sure we have a proper price value
         $price = $item['price'];
 
-        if ( ! is_numeric($price)) {
-            throw new CartInvalidPriceException;
+        if (! is_numeric($price)) {
+            throw new CartInvalidPriceException();
         }
 
         $price = (float) $price;
 
         // Make sure we have proper and valid item attributes
-        $attributes = array_get($item, 'attributes', []);
+        $attributes = Arr::get($item, 'attributes', []);
 
-        if ( ! is_array($attributes)) {
-            throw new CartInvalidAttributesException;
+        if (! is_array($attributes)) {
+            throw new CartInvalidAttributesException();
         }
 
         // Generate the unique row id
-        $rowId = $this->generateRowId($item['id'], array_except($item, ['price', 'quantity']));
+        $rowId = $this->generateRowId($item['id'], Arr::except($item, ['price', 'quantity']));
 
         // Pull item conditions
-        $conditions = array_pull($item, 'conditions', []);
+        $conditions = Arr::pull($item, 'conditions', []);
 
         // Check if the item already exists on the cart
         if ($this->exists($rowId)) {
@@ -196,16 +199,18 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Removes a single or multiple items from the cart.
      *
-     * @param  mixed  $items
-     * @return bool
+     * @param mixed $items
+     *
      * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+     *
+     * @return bool
      */
     public function remove($items)
     {
         foreach ((array) $items as $rowId) {
             // Check if the item exists
-            if ( ! $this->exists($rowId)) {
-                throw new CartItemNotFoundException;
+            if (! $this->exists($rowId)) {
+                throw new CartItemNotFoundException();
             }
 
             // Get the item information
@@ -224,10 +229,12 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Updates a single or multiple items that are on the cart.
      *
-     * @param  string  $rowId
-     * @param  array  $data
-     * @return mixed
+     * @param string $rowId
+     * @param array  $data
+     *
      * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+     *
+     * @return mixed
      */
     public function update($rowId, $data = null)
     {
@@ -241,15 +248,15 @@ class CartCollection extends BaseCollection implements Serializable
         }
 
         // Check if the item exists
-        if ( ! $this->exists($rowId)) {
-            throw new CartItemNotFoundException;
+        if (! $this->exists($rowId)) {
+            throw new CartItemNotFoundException();
         }
 
         // Get the item we want to update
         $row = $this->get($rowId);
 
         // Pull item conditions
-        $conditions = array_pull($data, 'conditions', $row->conditions());
+        $conditions = Arr::pull($data, 'conditions', $row->conditions());
 
         // Do we have multiple item data?
         if (is_array($data)) {
@@ -297,7 +304,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Check if the item exists in the cart.
      *
-     * @param  string  $rowId
+     * @param string $rowId
+     *
      * @return bool
      */
     public function exists($rowId)
@@ -308,15 +316,17 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Returns information about the provided item.
      *
-     * @param  string  $rowId
-     * @return \Cartalyst\Cart\Collections\ItemCollection
+     * @param string $rowId
+     *
      * @throws \Cartalyst\Cart\Exceptions\CartItemNotFoundException
+     *
+     * @return \Cartalyst\Cart\Collections\ItemCollection
      */
     public function item($rowId)
     {
         // Check if the item exists
-        if ( ! $this->exists($rowId)) {
-            throw new CartItemNotFoundException;
+        if (! $this->exists($rowId)) {
+            throw new CartItemNotFoundException();
         }
 
         // Return the item
@@ -326,39 +336,42 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Returns the meta data.
      *
-     * @param  string  $key
-     * @param  mixed  $default
+     * @param string $key
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function getMetaData($key = null, $default = null)
     {
-        return array_get($this->metaData, $key, $default);
+        return Arr::get($this->metaData, $key, $default);
     }
 
     /**
      * Sets meta data.
      *
-     * @param  string  $key
-     * @param  mixed  $data
+     * @param string $key
+     * @param mixed  $data
+     *
      * @return void
      */
     public function setMetaData($key, $data)
     {
-        array_set($this->metaData, $key, $data);
+        Arr::set($this->metaData, $key, $data);
     }
 
     /**
      * Removes the meta data.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return void
      */
     public function removeMetaData($key = null)
     {
-        if ( ! $key) {
+        if (! $key) {
             $this->metaData = [];
         } else {
-            array_forget($this->metaData, $key);
+            Arr::forget($this->metaData, $key);
         }
     }
 
@@ -405,15 +418,16 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Returns the conditions by type.
      *
-     * @param  string  $type
-     * @param  bool  $includeItems
+     * @param string $type
+     * @param bool   $includeItems
+     *
      * @return array
      */
     public function conditions($type = null, $includeItems = true)
     {
         $conditions = [];
 
-        if ( ! $type) {
+        if (! $type) {
             if ($includeItems) {
                 foreach ($this->items as $item) {
                     $conditions = array_merge($conditions, $item->conditions());
@@ -451,7 +465,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Returns the items conditions total.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return float
      */
     public function itemsConditionsTotal($type = null)
@@ -459,7 +474,7 @@ class CartCollection extends BaseCollection implements Serializable
         $this->conditionResults = [];
 
         foreach ($this->items as $item) {
-            if ( ! $item->conditionResults()) {
+            if (! $item->conditionResults()) {
                 $item->total();
             }
 
@@ -481,18 +496,19 @@ class CartCollection extends BaseCollection implements Serializable
             }
         }
 
-        return array_get($this->conditionResults, $type, $this->conditionResults);
+        return Arr::get($this->conditionResults, $type, $this->conditionResults);
     }
 
     /**
      * Returns the sum of item conditions.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return float
      */
     public function itemsConditionsTotalSum($type = null)
     {
-        if ( ! $type) {
+        if (! $type) {
             return array_sum(array_map(function ($item) {
                 return is_array($item) ? array_sum($item) : $item;
             }, $this->itemsConditionsTotal()));
@@ -514,7 +530,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Sets the items conditions order.
      *
-     * @param  array  $order
+     * @param array $order
+     *
      * @return void
      */
     public function setItemsConditionsOrder(array $order)
@@ -525,8 +542,9 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Removes a condition by its name.
      *
-     * @param  string  $name
-     * @param  bool  $includeItems
+     * @param string $name
+     * @param bool   $includeItems
+     *
      * @return void
      */
     public function removeConditionByName($name, $includeItems = true)
@@ -537,8 +555,9 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Removes a condition by its type.
      *
-     * @param  string  $type
-     * @param  bool  $includeItems
+     * @param string $type
+     * @param bool   $includeItems
+     *
      * @return void
      */
     public function removeConditionByType($type, $includeItems = true)
@@ -549,16 +568,19 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Removes conditions.
      *
-     * @param  string  $id
-     * @param  bool  $includeItems
-     * @param  string  $target
+     * @param string $id
+     * @param bool   $includeItems
+     * @param string $target
+     *
      * @return void
      */
     public function removeConditions($id = null, $includeItems = true, $target = 'type')
     {
         if ($id) {
             foreach ($this->conditions as $key => $value) {
-                if ( ! isset($value[$target])) continue;
+                if (! isset($value[$target])) {
+                    continue;
+                }
 
                 if ($value[$target] === $id) {
                     unset($this->conditions[$key]);
@@ -578,7 +600,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Search for items with the given criteria.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return array
      */
     public function find($data)
@@ -607,8 +630,9 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Sets the required indexes.
      *
-     * @param  array  $indexes
-     * @param  bool  $merge
+     * @param array $indexes
+     * @param bool  $merge
+     *
      * @return void
      */
     public function setRequiredIndexes($indexes = [], $merge = true)
@@ -631,7 +655,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Sets the cart instance.
      *
-     * @param \Cartalyst\Cart\Cart  $cart
+     * @param \Cartalyst\Cart\Cart $cart
+     *
      * @return $this
      */
     public function setCart(Cart $cart)
@@ -660,7 +685,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Unserialize.
      *
-     * @param  string  $data
+     * @param string $data
+     *
      * @return void
      */
     public function unserialize($data)
@@ -685,7 +711,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Sets the properties that should be serialized.
      *
-     * @param  array  $properties
+     * @param array $properties
+     *
      * @return $this
      */
     public function setSerializable(array $properties)
@@ -698,9 +725,11 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Prepares the item attributes.
      *
-     * @param  array  $attributes
-     * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
+     * @param array $attributes
+     *
      * @throws \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
+     *
+     * @return \Cartalyst\Cart\Collections\ItemAttributesCollection
      */
     protected function prepareItemAttributes(array $attributes)
     {
@@ -720,8 +749,9 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Generates a unique identifier based on the item data.
      *
-     * @param  mixed  $id
-     * @param  array  $item
+     * @param mixed $id
+     * @param array $item
+     *
      * @return string
      */
     protected function generateRowId($id, $item)
@@ -732,7 +762,8 @@ class CartCollection extends BaseCollection implements Serializable
     /**
      * Checks if the given array is a multidimensional array.
      *
-     * @param  array  $array
+     * @param array $array
+     *
      * @return bool
      */
     protected function isMulti($array)

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -58,8 +58,9 @@ class Cart
     /**
      * Constructor.
      *
-     * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
+     * @param \Cartalyst\Cart\Storage\StorageInterface $storage
+     * @param \Illuminate\Events\Dispatcher            $dispatcher
+     *
      * @return void
      */
     public function __construct(StorageInterface $storage, Dispatcher $dispatcher)
@@ -82,7 +83,8 @@ class Cart
     /**
      * Sets the Cart instance identifier.
      *
-     * @param  mixed  $instance
+     * @param mixed $instance
+     *
      * @return void
      */
     public function setInstance($instance)
@@ -124,7 +126,8 @@ class Cart
     /**
      * Synchronizes a collection of data with the cart.
      *
-     * @param  \Cartalyst\Collections\Collection  $items
+     * @param \Cartalyst\Collections\Collection $items
+     *
      * @return void
      */
     public function sync(Collection $items)
@@ -153,7 +156,8 @@ class Cart
     /**
      * Sets the storage driver.
      *
-     * @param  \Cartalyst\Cart\Storage\StorageInterface  $storage
+     * @param \Cartalyst\Cart\Storage\StorageInterface $storage
+     *
      * @return void
      */
     public function setStorage(StorageInterface $storage)
@@ -174,7 +178,8 @@ class Cart
     /**
      * Sets the event dispatcher instance.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
+     * @param \Illuminate\Events\Dispatcher $dispatcher
+     *
      * @return void
      */
     public function setDispatcher(Dispatcher $dispatcher)
@@ -185,8 +190,9 @@ class Cart
     /**
      * Fires an event.
      *
-     * @param  string  $event
-     * @param  mixed  $data
+     * @param string $event
+     * @param mixed  $data
+     *
      * @return void
      */
     public function fire($event, $data)
@@ -202,8 +208,9 @@ class Cart
     /**
      * Handle dynamic calls into CartCollection.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -218,7 +225,7 @@ class Cart
      */
     protected function newCartCollection()
     {
-        $cart = (new CartCollection)->setCart($this);
+        $cart = (new CartCollection())->setCart($this);
 
         $this->storage->put($cart);
 

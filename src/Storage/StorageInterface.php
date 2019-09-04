@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -39,7 +39,8 @@ interface StorageInterface
     /**
      * Sets the session instance identifier.
      *
-     * @param  string  $instance
+     * @param string $instance
+     *
      * @return string
      */
     public function setInstance($instance);
@@ -54,7 +55,8 @@ interface StorageInterface
     /**
      * Put a value.
      *
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return void
      */
     public function put($value);

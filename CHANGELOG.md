@@ -1,15 +1,9 @@
-# Change Log
+# Changelog
 
-This project follows [Semantic Versioning](CONTRIBUTING.md).
+### v3.0.0 - 2019-09-04
 
-## Proposals
-
-We do not give estimated times for completion on `Accepted` Proposals.
-
-- [Accepted](https://github.com/cartalyst/cart/labels/Accepted)
-- [Rejected](https://github.com/cartalyst/cart/labels/Rejected)
-
----
+- BC Break: PHP 7.2 is the minimum required PHP version
+- BC Break: Laravel 6.0 is the minimum supported Laravel version
 
 ### v2.0.5 - 2019-03-29
 

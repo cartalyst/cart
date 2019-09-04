@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -18,7 +19,6 @@
  */
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Session Key
@@ -52,5 +52,4 @@ return [
     */
 
     'requiredIndexes' => [],
-
 ];

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -24,10 +24,11 @@ class CartTestExceptions extends CartTestCase
 {
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
      */
     public function it_throws_exception_when_missing_a_required_index()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException');
+
         $this->cart->add([
             'name'     => 'foo',
             'price'    => 20.00,
@@ -37,10 +38,11 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException
      */
     public function it_throws_exception_when_missing_a_required_index_on_attributes()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartMissingRequiredIndexException');
+
         $this->cart->add([
             'id'         => 'foo',
             'name'       => 'bar',
@@ -56,10 +58,11 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
      */
     public function it_throws_exception_when_adding_single_item_with_invalid_quantity()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartInvalidQuantityException');
+
         $this->cart->add([
             'id'       => 'foobar1',
             'name'     => 'Foobar 1',
@@ -70,10 +73,11 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
      */
     public function it_throws_exception_when_adding_single_item_with_invalid_price()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartInvalidPriceException');
+
         $this->cart->add([
             'id'       => 'foobar1',
             'name'     => 'Foobar 1',
@@ -84,10 +88,11 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidQuantityException
      */
     public function it_throws_exception_when_invalid_quantity_is_passed()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartInvalidQuantityException');
+
         $this->cart->add([
             'id'       => 1,
             'name'     => 'foo',
@@ -98,10 +103,11 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidPriceException
      */
     public function it_throws_exception_when_invalid_price_is_passed()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartInvalidPriceException');
+
         $this->cart->add([
             'id'       => 1,
             'name'     => 'foo',
@@ -112,10 +118,11 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartInvalidAttributesException
      */
     public function it_throws_exception_when_invalid_attributes_are_passed()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartInvalidAttributesException');
+
         $this->cart->add([
             'id'         => 1,
             'name'       => 'foo',
@@ -127,10 +134,11 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
      */
     public function it_throws_exception_updating_an_item_that_does_not_exist()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartItemNotFoundException');
+
         $this->cart->update('foo', [
             'price' => 20.00,
         ]);
@@ -138,19 +146,21 @@ class CartTestExceptions extends CartTestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
      */
     public function it_throws_exception_when_removing_an_item_that_does_not_exist()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartItemNotFoundException');
+
         $this->cart->remove('foo');
     }
 
     /**
      * @test
-     * @expectedException \Cartalyst\Cart\Exceptions\CartItemNotFoundException
      */
     public function it_throws_exception_when_getting_an_item_that_does_not_exist()
     {
+        $this->expectException('Cartalyst\Cart\Exceptions\CartItemNotFoundException');
+
         $this->cart->item('foo');
     }
 }

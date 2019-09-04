@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Cart package.
  *
  * NOTICE OF LICENSE
@@ -20,7 +20,7 @@
 
 namespace Cartalyst\Cart\Collections;
 
-use Cartalyst\Cart\Cart;
+use Illuminate\Support\Arr;
 use Cartalyst\Collections\Collection;
 
 abstract class BaseCollection extends Collection
@@ -54,7 +54,7 @@ abstract class BaseCollection extends Collection
     protected $subtotal;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($key, $default = null)
     {
@@ -78,7 +78,8 @@ abstract class BaseCollection extends Collection
     /**
      * Sets the conditions order.
      *
-     * @param  array  $order
+     * @param array $order
+     *
      * @return void
      */
     public function setConditionsOrder(array $order)
@@ -89,7 +90,8 @@ abstract class BaseCollection extends Collection
     /**
      * Sets a new condition.
      *
-     * @param  mixed  $conditions
+     * @param mixed $conditions
+     *
      * @return void
      */
     public function condition($conditions)
@@ -98,7 +100,7 @@ abstract class BaseCollection extends Collection
             return;
         }
 
-        if ( ! is_array($conditions)) {
+        if (! is_array($conditions)) {
             $conditions = [$conditions];
         }
 
@@ -110,7 +112,8 @@ abstract class BaseCollection extends Collection
     /**
      * Clear the conditions.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return void
      */
     public function removeConditions($type = null)
@@ -129,7 +132,8 @@ abstract class BaseCollection extends Collection
     /**
      * Returns the total.
      *
-     * @param  string  $conditionType
+     * @param string $conditionType
+     *
      * @return float
      */
     public function total($conditionType = null)
@@ -162,9 +166,10 @@ abstract class BaseCollection extends Collection
     /**
      * Apply a condition.
      *
-     * @param  string  $conditionType
-     * @param  string  $target
-     * @param  int  $value
+     * @param string $conditionType
+     * @param string $target
+     * @param int    $value
+     *
      * @return float
      */
     public function applyCondition($conditionType, $target = 'subtotal', $value = 0)
@@ -212,8 +217,9 @@ abstract class BaseCollection extends Collection
      * When passing a boolean true as the second parameter,
      * it will include the items discounts as well.
      *
-     * @param  string  $type
-     * @param  bool  $includeItems
+     * @param string $type
+     * @param bool   $includeItems
+     *
      * @return array
      */
     public function conditionsTotal($type = null, $includeItems = true)
@@ -243,19 +249,20 @@ abstract class BaseCollection extends Collection
             }
         }
 
-        return array_get($this->conditionResults, $type, $this->conditionResults);
+        return Arr::get($this->conditionResults, $type, $this->conditionResults);
     }
 
     /**
      * Returns the sum of conditions.
      *
-     * @param  string  $type
-     * @param  bool  $includeItems
+     * @param string $type
+     * @param bool   $includeItems
+     *
      * @return float
      */
     public function conditionsTotalSum($type = null, $includeItems = true)
     {
-        if ( ! $type) {
+        if (! $type) {
             return array_sum(array_map(function ($item) {
                 return is_array($item) ? array_sum($item) : $item;
             }, $this->conditionsTotal($type, $includeItems)));
@@ -267,7 +274,8 @@ abstract class BaseCollection extends Collection
     /**
      * Returns all the conditions with the given type.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return array
      */
     public function conditions($type = null)
