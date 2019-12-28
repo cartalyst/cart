@@ -81,12 +81,12 @@ abstract class CartTestCase extends TestCase
                 'size' => [
                     'label' => 'Large',
                     'value' => 'l',
-                    'price' => $attrPrices[0],
+                    'price' => $attrPrices[0] ?? 0,
                 ],
                 'color' => [
                     'label' => 'Red',
                     'value' => 'red',
-                    'price' => $attrPrices[1],
+                    'price' => $attrPrices[1] ?? 0,
                 ],
             ],
         ];
