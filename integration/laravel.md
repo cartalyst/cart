@@ -1,6 +1,6 @@
 ### Laravel
 
-The Cart package has optional support for Laravel 6 and it comes bundled with a Service Provider and a Facade for easy integration.
+The Cart package has optional support for Laravel 7 and it comes bundled with a Service Provider and a Facade for easy integration.
 
 After installing the package, open your Laravel config file located at `config/app.php` and add the following lines.
 
