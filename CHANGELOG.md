@@ -1,5 +1,11 @@
 # Changelog
 
+### v4.0.1 - 2020-04-11
+
+`FIXED`
+
+- Composer autoload warnings
+
 ### v4.0.0 - 2020-03-03
 
 - Updated for Laravel 7.
