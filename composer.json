@@ -37,9 +37,6 @@
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
-        "files": [
-            "src/Exceptions.php"
-        ],
         "psr-4": {
             "Cartalyst\\Cart\\": "src/"
         }
