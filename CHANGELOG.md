@@ -1,5 +1,11 @@
 # Changelog
 
+### v4.0.2 - 2020-04-12
+
+`UPDATED`
+
+- Bump Cartalyst Conditions dependency version
+
 ### v4.0.1 - 2020-04-11
 
 `FIXED`
