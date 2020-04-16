@@ -1,4 +1,4 @@
-CartItemNotFoundException<?php
+<?php
 
 /*
  * Part of the Cart package.
