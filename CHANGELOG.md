@@ -1,5 +1,11 @@
 # Changelog
 
+### v4.0.3 - 2020-04-18
+
+`FIXED`
+
+- Left over text on some Exception classes.
+
 ### v4.0.2 - 2020-04-12
 
 `UPDATED`
