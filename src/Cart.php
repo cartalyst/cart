@@ -133,14 +133,14 @@ class Cart
     public function sync(Collection $items)
     {
         // Turn events off
-        $this->fireEvents = false;
+        $this->disableEvents();
 
         foreach ($items->all() as $item) {
             $this->add($item);
         }
 
         // Turn events on
-        $this->fireEvents = true;
+        $this->enableEvents();
     }
 
     /**
