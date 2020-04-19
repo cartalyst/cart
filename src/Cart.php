@@ -188,6 +188,26 @@ class Cart
     }
 
     /**
+     * Enable event fire
+     *
+     * @return void
+     */
+    public function enableEvents()
+    {
+        $this->fireEvents = true;
+    }
+
+    /**
+     * Disable event fire
+     *
+     * @return void
+     */
+    public function disableEvents()
+    {
+        $this->fireEvents = false;
+    }
+
+    /**
      * Fires an event.
      *
      * @param string $event
