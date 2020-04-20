@@ -53,7 +53,7 @@ class Cart
      *
      * @var bool
      */
-    protected $fireEvents = true;
+    protected $eventDispatcherStatus = true;
 
     /**
      * Constructor.
@@ -133,14 +133,14 @@ class Cart
     public function sync(Collection $items)
     {
         // Turn events off
-        $this->setFireEvents(false);
+        $this->setEventDispatcherStatus(false);
 
         foreach ($items->all() as $item) {
             $this->add($item);
         }
 
         // Turn events on
-        $this->setFireEvents(true);
+        $this->setEventDispatcherStatus(true);
     }
 
     /**
@@ -188,25 +188,25 @@ class Cart
     }
 
     /**
-     * Set fireEvents
+     * Determines if the event dispatcher should be triggered.
      *
-     * @param bool $flag
-     *
-     * @return void
+     * @return bool
      */
-    public function setFireEvents($flag)
+    public function getEventDispatcherStatus()
     {
-        $this->fireEvents = $flag;
+        return $this->eventDispatcherStatus;
     }
 
     /**
-     * Disable event fire
+     * Sets the event dispatcher status.
+     *
+     * @param bool $status
      *
      * @return void
      */
-    public function getFireEvents()
+    public function setEventDispatcherStatus($status)
     {
-        return $this->fireEvents;
+        $this->eventDispatcherStatus = $status;
     }
 
     /**
@@ -220,7 +220,7 @@ class Cart
     public function fire($event, $data)
     {
         // Check if we should fire events
-        if ($this->getFireEvents()) {
+        if ($this->eventDispatcherStatus === true) {
             $this->dispatcher->dispatch("cartalyst.cart.{$event}", $data);
         }
     }

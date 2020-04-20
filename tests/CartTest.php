@@ -382,4 +382,14 @@ class CartTest extends CartTestCase
 
         $this->assertSame($properties, $expected);
     }
+
+    /** @test */
+    public function it_can_get_and_set_the_event_dispatcher_status()
+    {
+        $this->assertTrue($this->cart->getEventDispatcherStatus());
+
+        $this->cart->setEventDispatcherStatus(false);
+
+        $this->assertFalse($this->cart->getEventDispatcherStatus());
+    }
 }
