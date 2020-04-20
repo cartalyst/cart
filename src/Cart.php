@@ -133,14 +133,14 @@ class Cart
     public function sync(Collection $items)
     {
         // Turn events off
-        $this->fireEvents = false;
+        $this->setFireEvents(false);
 
         foreach ($items->all() as $item) {
             $this->add($item);
         }
 
         // Turn events on
-        $this->fireEvents = true;
+        $this->setFireEvents(true);
     }
 
     /**
@@ -188,6 +188,28 @@ class Cart
     }
 
     /**
+     * Set fireEvents
+     *
+     * @param bool $flag
+     *
+     * @return void
+     */
+    public function setFireEvents($flag)
+    {
+        $this->fireEvents = $flag;
+    }
+
+    /**
+     * Disable event fire
+     *
+     * @return void
+     */
+    public function getFireEvents()
+    {
+        return $this->fireEvents;
+    }
+
+    /**
      * Fires an event.
      *
      * @param string $event
@@ -198,7 +220,7 @@ class Cart
     public function fire($event, $data)
     {
         // Check if we should fire events
-        if ($this->fireEvents) {
+        if ($this->getFireEvents()) {
             $this->dispatcher->dispatch("cartalyst.cart.{$event}", $data);
         }
     }
