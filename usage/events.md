@@ -99,3 +99,11 @@ Event::listen('cartalyst.cart.cleared', function($cart)
 	// Apply your own logic here
 });
 ```
+
+#### Change the status of the dispatcher
+
+There might be situations where you will need to disable the event dispatcher.
+
+To disable it just call `Cart::setEventDispatcherStatus(false);` and to enable it just `Cart::setEventDispatcherStatus(true);`.
+
+You can also retrieve the current status of the event dispatcher by calling the `Cart::getEventDispatcherStatus();`.
