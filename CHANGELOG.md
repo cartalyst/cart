@@ -1,5 +1,11 @@
 # Changelog
 
+### v4.0.4 - 2020-04-20
+
+`ADDED`
+
+- Getter and setter to change the behaviour of the event dispatcher.
+
 ### v4.0.3 - 2020-04-18
 
 `FIXED`
