@@ -25,7 +25,7 @@
     ],
     "require": {
         "php": "^7.2.5",
-        "cartalyst/conditions": "^4.0",
+        "danselley/conditions": "^4.0",
         "illuminate/events": "^7.0",
         "illuminate/support": "^7.0"
     },
