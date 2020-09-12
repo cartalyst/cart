@@ -1,5 +1,9 @@
 # Changelog
 
+### v5.0.0 - TBA
+
+- Updated for Laravel 8.
+
 ### v4.0.4 - 2020-04-20
 
 `ADDED`
