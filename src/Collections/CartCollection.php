@@ -683,6 +683,34 @@ class CartCollection extends BaseCollection implements Serializable
     }
 
     /**
+     * Serialize.
+     *
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        $data = [];
+
+        foreach ($this->serializable as $key) {
+            $data[$key] = $this->{$key};
+        }
+
+        return $data;
+    }
+
+    /**
+     * Unserialize.
+     *
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        foreach ($this->serializable as $key) {
+            $this->{$key} = $data[$key];
+        }
+    }
+
+    /**
      * Unserialize.
      *
      * @param string $data

@@ -349,6 +349,39 @@ class CartTest extends CartTestCase
     }
 
     /** @test */
+    public function it_can_serialize_and_unserialize_the_cart_using_magic_methods()
+    {
+        $this->cart->add([
+            $this->createItem('Foobar 1', 97, 2, null, [0, 17.00], 21.00),
+            $this->createItem('Foobar 2', 85, 2, null, [15, 0], 21.00),
+            $this->createItem('Foobar 3', 35, 5, null, [5, 17.00], 21.00),
+        ]);
+
+        $this->cart->condition([
+            $this->createCondition('Discount 5%', 'discount', '-5.00%'),
+        ]);
+
+        $this->assertCount(3, $this->cart->items());
+        $this->assertSame(9, $this->cart->quantity());
+        $this->assertSame(677.35, $this->cart->total());
+        $this->assertCount(1, $this->cart->conditions('discount'));
+
+        $cart = serialize($this->cart);
+
+        $this->cart->clear();
+
+        $this->assertSame(0, $this->cart->quantity());
+        $this->assertCount(0, $this->cart->conditions('discount'));
+
+        $cart = unserialize($cart);
+
+        $this->assertCount(3, $cart->items());
+        $this->assertSame(9, $cart->quantity());
+        $this->assertSame(677.35, $cart->total());
+        $this->assertCount(1, $cart->conditions('discount'));
+    }
+
+    /** @test */
     public function it_can_get_the_serializable_properties()
     {
         $expected = [
