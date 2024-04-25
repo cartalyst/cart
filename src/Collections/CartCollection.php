@@ -357,6 +357,9 @@ class CartCollection extends BaseCollection implements Serializable
     public function setMetaData($key, $data)
     {
         Arr::set($this->metaData, $key, $data);
+
+        // Fire the 'cartalyst.cart.metadata.added' event
+        $this->cart->fire('metadata.added', [[$key => $data], $this->cart]);
     }
 
     /**
@@ -373,6 +376,9 @@ class CartCollection extends BaseCollection implements Serializable
         } else {
             Arr::forget($this->metaData, $key);
         }
+
+        // Fire the 'cartalyst.cart.metadata.removed' event
+        $this->cart->fire('metadata.removed', [$key, $this->cart]);
     }
 
     /**
