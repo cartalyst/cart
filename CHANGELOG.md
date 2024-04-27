@@ -1,5 +1,9 @@
 # Changelog
 
+### v8.0.1 - 2024-04-27
+
+- Add events for adding and removing metadata
+
 ### v8.0.0 - 2024-03-25
 
 - Add Laravel 11 support
