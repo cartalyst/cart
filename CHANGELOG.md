@@ -1,5 +1,9 @@
 # Changelog
 
+### v9.0.0 - TBA
+
+- Add Laravel 12 support
+
 ### v8.0.1 - 2024-04-27
 
 - Add events for adding and removing metadata
